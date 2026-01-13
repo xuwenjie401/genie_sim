@@ -740,21 +740,48 @@ class CommandController:
                 prim_name = "hand_left"
         return prim_name
 
+    # def handle_get_observation(self):
+    #     """Handle Command 11: GetObservation / StartRecording / StopRecording"""
+    #     if self.data["startRecording"]:
+    #         with self._timing_context("start_recording"):
+    #             self.task_name = self.data["task_name"]
+    #             self.fps = self.data["fps"]
+    #             current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    #             root_path = current_directory + "/recording_data/"
+    #             recording_path = root_path + self.task_name
+    #             if os.path.isdir(recording_path):
+    #                 folder_index = 1
+    #                 while os.path.isdir(recording_path + str(folder_index)):
+    #                     folder_index += 1
+    #                 recording_path = recording_path + str(folder_index)
+    #             self.path_to_save = recording_path
+    #             self.camera_info_list = {}
+    #             tf_target = []
     def handle_get_observation(self):
         """Handle Command 11: GetObservation / StartRecording / StopRecording"""
         if self.data["startRecording"]:
             with self._timing_context("start_recording"):
                 self.task_name = self.data["task_name"]
                 self.fps = self.data["fps"]
+
                 current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                root_path = current_directory + "/recording_data/"
-                recording_path = root_path + self.task_name
+                root_path = os.path.join(current_directory, "recording_data")
+
+                # 基础目录：recording_data/<task_name>
+                recording_path = os.path.join(root_path, self.task_name)
+
+                # 如果已存在，则在末尾追加 _1, _2, ...
                 if os.path.isdir(recording_path):
                     folder_index = 1
-                    while os.path.isdir(recording_path + str(folder_index)):
+                    while os.path.isdir(f"{recording_path}_{folder_index}"):
                         folder_index += 1
-                    recording_path = recording_path + str(folder_index)
+                    recording_path = f"{recording_path}_{folder_index}"
+
                 self.path_to_save = recording_path
+
+                # ✅ 关键：保证目录存在（否则后面写 recording_info.json 会炸）
+                os.makedirs(self.path_to_save, exist_ok=True)
+
                 self.camera_info_list = {}
                 tf_target = []
                 for prim_path in self.data["camera_prim_list"]:

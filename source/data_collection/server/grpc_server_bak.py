@@ -778,18 +778,12 @@ class ObservationService(sim_observation_service_pb2_grpc.SimObservationService)
 class GrpcServer:
     def __init__(self, server_function):
         self.server_function = server_function
-        self._server = None
-        self._thread = None
 
     def start(self):
-        # daemon=True: 主进程退出时线程不阻塞（更适合这种后台服务）
-        self._thread = threading.Thread(target=self._serve, daemon=True)
-        self._thread.start()
+        server_thread = threading.Thread(target=self.server)
+        server_thread.start()
 
-    def _serve(self):
-        # 如果之前启动过，先停掉旧的（这里才是 stop 应该出现的位置）
-        self.stop()
-
+    def server(self):
         self._server = grpc.server(
             ThreadPoolExecutor(max_workers=10),
             options=[
@@ -797,17 +791,11 @@ class GrpcServer:
                 ("grpc.max_receive_message_length", 16094304),
             ],
         )
-
-        # 注册所有 servicer
-        rs2_camera_pb2_grpc.add_CameraServiceServicer_to_server(
-            CameraService(self.server_function), self._server
-        )
+        rs2_camera_pb2_grpc.add_CameraServiceServicer_to_server(CameraService(self.server_function), self._server)
         sim_camera_service_pb2_grpc.add_SimCameraServiceServicer_to_server(
             SimCameraService(self.server_function), self._server
         )
-        arm_pb2_grpc.add_ArmControlServiceServicer_to_server(
-            armService(self.server_function), self._server
-        )
+        arm_pb2_grpc.add_ArmControlServiceServicer_to_server(armService(self.server_function), self._server)
         joint_channel_pb2_grpc.add_JointControlServiceServicer_to_server(
             JointService(self.server_function), self._server
         )
@@ -820,21 +808,10 @@ class GrpcServer:
         sim_observation_service_pb2_grpc.add_SimObservationServiceServicer_to_server(
             ObservationService(self.server_function), self._server
         )
-
-        # 绑定端口：返回 0 表示失败，必须检查
-        bind_ret = self._server.add_insecure_port("0.0.0.0:50051")
-        logger.info(f"gRPC add_insecure_port return: {bind_ret}")
-        if bind_ret == 0:
-            raise RuntimeError("Failed to bind gRPC port 50051")
-
-        # 启动 gRPC server
+        self.stop()
+        self._server.add_insecure_port("0.0.0.0:50051")
         self._server.start()
-        logger.info("gRPC server started on 0.0.0.0:50051")
-
-        # 阻塞等待（保持线程常驻）
-        self._server.wait_for_termination()
 
     def stop(self):
-        if self._server is not None:
+        if self._server:
             self._server.stop(0)
-            self._server = None
