@@ -43,7 +43,8 @@ except ImportError:
     pass
 
 
-CUROBO_BATCH_SIZE = 20
+# CUROBO_BATCH_SIZE = 20
+CUROBO_BATCH_SIZE = 10
 MAX_MESH_FACES = 1000  # Maximum face count limit
 
 
@@ -899,25 +900,15 @@ class CuroboMotion:
                         filtered_paths.append(paths[i])
                 if len(filtered_paths) == 0:
                     filtered_paths = paths
+                dof_weights = [1.0,1.0,1.0,1.0,3.0,3.0,1.0,
+                               1.0,1.0,1.0,1.0,3.0,3.0,1.0]
+                if "aloha" in self.robot_prim_path:
+                    dof_weights = [1.0,1.0,1.0,1.0,3.0,3.0,
+                                   1.0,1.0,1.0,1.0,3.0,3.0,]
                 sorted_indices = sort_by_difference_js(
                     filtered_paths,
                     weights=self.tensor_args.to_device(
-                        [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            3.0,
-                            3.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            3.0,
-                            3.0,
-                            1.0,
-                        ]
+                        dof_weights
                     ),
                 )
                 self.cmd_plan = paths[sorted_indices[0]]

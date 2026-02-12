@@ -1,0 +1,124 @@
+2026-02-11T07:56:04Z [142,483ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/galbot_one_golf'
+2026-02-11T07:56:04Z [142,483ms] [Error] [omni.physx.tensors.plugin] Pattern '/galbot_one_golf' did not match any rigid bodies
+
+2026-02-11T07:56:04Z [142,483ms] [Error] [omni.physx.tensors.plugin] Provided pattern list did not match any articulations
+
+2026-02-11T07:56:04Z [142,483ms] [Error] [omni.graph.core.plugin] /World/RobotTFActionGraph/PublishJointState: [/World/RobotTFActionGraph] Prim /galbot_one_golf is not an articulation
+2026-02-11T07:56:04Z [142,505ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/galbot_one_golf'
+2026-02-11T07:56:04Z [142,505ms] [Error] [omni.physx.tensors.plugin] Pattern '/galbot_one_golf' did not match any rigid bodies
+
+2026-02-11T07:56:04Z [142,505ms] [Error] [omni.physx.tensors.plugin] Provided pattern list did not match any articulations
+
+2026-02-11T07:56:04Z [142,536ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/galbot_one_golf'
+2026-02-11T07:56:04Z [142,536ms] [Error] [omni.physx.tensors.plugin] Pattern '/galbot_one_golf' did not match any rigid bodies
+
+2026-02-11T07:56:04Z [142,536ms] [Error] [omni.physx.tensors.plugin] Provided pattern list did not match any articulations
+
+
+
+2026-02-11T08:42:24Z [27,147ms] [Error] [omni.physx.plugin] PhysicsUSD: Parse collision - triangle mesh collision (approximation None/MeshSimplification) cannot be a part of a dynamic body, falling back to convexHull approximation: /galbot_one_golf/right_arm_link7/collisions.For dynamic collision please use approximations : convex hull, convex decomposition, box, sphere or SDF approximation.
+2026-02-11T08:42:24Z [27,149ms] [Error] [omni.physx.plugin] PhysicsUSD: Parse collision - triangle mesh collision (approximation None/MeshSimplification) cannot be a part of a dynamic body, falling back to convexHull approximation: /galbot_one_golf/right_gripper_l_finger_link/collisions.For dynamic collision please use approximations : convex hull, convex decomposition, box, sphere or SDF approximation.
+2026-02-11T08:42:24Z [27,149ms] [Error] [omni.physx.plugin] PhysicsUSD: Parse collision - triangle mesh collision (approximation None/MeshSimplification) cannot be a part of a dynamic body, falling back to convexHull approximation: /galbot_one_golf/right_gripper_l_knuckle_link/collisions.For dynamic collision please use approximations : convex hull, convex decomposition, box, sphere or SDF approximation.
+2026-02-11T08:42:24Z [27,149ms] [Error] [omni.physx.plugin] PhysicsUSD: Parse collision - triangle mesh collision (approximation None/MeshSimplification) cannot be a part of a dynamic body, falling back to convexHull approximation: /galbot_one_golf/right_gripper_r_inner_knuckle_link/collisions.For dynamic collision please use approximations : convex hull, convex decomposition, box, sphere or SDF approximation.
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] PhysicsUSD: CreateJoint - found a joint with disjointed body transforms, the simulation will most likely snap objects together: /galbot_one_golf/base_link/FixedJoint
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/head_end_effector_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/left_arm_end_effector_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/leg_end_effector_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/omni_chassis_leg_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,160ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/right_arm_end_effector_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,161ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/torso_head_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,161ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/torso_left_arm_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,161ms] [Warning] [omni.physx.plugin] The rigid body at /galbot_one_golf/torso_right_arm_mount_link has a possibly invalid inertia tensor of {1.0, 1.0, 1.0} and a negative mass, small sphere approximated inertia was used. Either specify correct values in the mass properties, or add collider(s) to any shape(s) that you wish to automatically compute mass properties for.
+2026-02-11T08:42:24Z [27,303ms] [Warning] [omni.fabric.plugin] getAttributeCount called on non-existent path /galbot_one_golf/torso_base_link/collisions/torso_base_link_convex_hull/node_STL_BINARY_
+2026-02-11T08:42:24Z [27,303ms] [Warning] [omni.fabric.plugin] getTypes called on non-existent path /galbot_one_golf/torso_base_link/collisions/torso_base_link_convex_hull/node_STL_BINARY_
+2026-02-11T08:42:29Z [32,231ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:31Z [34,409ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:31Z [34,631ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:32Z [34,781ms] INFO     [motion_gen_reacher.py:450] Extracting and caching obstacle geometries...
+2026-02-11T08:42:32Z [34,749ms] [Warning] [curobo] Mesh /World/Table/table/collider has non-triangular faces, triangulating...
+2026-02-11T08:42:32Z [34,797ms] INFO     [motion_gen_reacher.py:201] Processing mesh 1/3: /World/Table/table/part_00
+2026-02-11T08:42:32Z [34,797ms] INFO     [motion_gen_reacher.py:201] Original face count: 1244
+2026-02-11T08:42:32Z [34,797ms] INFO     [motion_gen_reacher.py:201] Starting mesh simplification
+2026-02-11T08:42:32Z [34,908ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-11T08:42:32Z [34,908ms] INFO     [motion_gen_reacher.py:201] Simplification time: 0.11124634742736816 seconds
+2026-02-11T08:42:32Z [34,908ms] INFO     [motion_gen_reacher.py:201] Simplification successful: 622 faces
+2026-02-11T08:42:32Z [34,908ms] INFO     [motion_gen_reacher.py:201] Processing mesh 2/3: /World/Table/table/body
+2026-02-11T08:42:32Z [34,908ms] INFO     [motion_gen_reacher.py:201] Original face count: 3576
+2026-02-11T08:42:32Z [34,908ms] INFO     [motion_gen_reacher.py:201] Starting mesh simplification
+2026-02-11T08:42:32Z [34,941ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-11T08:42:32Z [34,941ms] INFO     [motion_gen_reacher.py:201] Simplification time: 0.033051490783691406 seconds
+2026-02-11T08:42:32Z [34,941ms] INFO     [motion_gen_reacher.py:201] Simplification successful: 1000 faces
+2026-02-11T08:42:32Z [34,942ms] INFO     [motion_gen_reacher.py:201] Processing mesh 3/3: /World/Table/table/collider
+2026-02-11T08:42:32Z [34,942ms] INFO     [motion_gen_reacher.py:201] Original face count: 12
+2026-02-11T08:42:32Z [34,942ms] INFO     [motion_gen_reacher.py:201] Face count is within reasonable range, no simplification needed
+2026-02-11T08:42:32Z [34,942ms] INFO     [motion_gen_reacher.py:450] extract simplified geometry time: 0.14471697807312012 seconds
+2026-02-11T08:42:32Z [34,942ms] INFO     [motion_gen_reacher.py:450] Cache completed, extracted 3 obstacle geometries
+2026-02-11T08:42:32Z [34,976ms] INFO     [motion_gen_reacher.py:453] Fast obstacle update completed, time: 0.0343s, needs update: True
+2026-02-11T08:42:32Z [34,981ms] INFO     [ui_builder.py:414] Fast obstacle update completed, time: 0.0021s, needs update: False
+2026-02-11T08:42:32Z [34,981ms] INFO     [ui_builder.py:92] init curobo motion for right takes 5.779384136199951
+2026-02-11T08:42:33Z [36,527ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:35Z [38,362ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:35Z [38,467ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-11T08:42:35Z [38,618ms] INFO     [motion_gen_reacher.py:450] Extracting and caching obstacle geometries...
+2026-02-11T08:42:35Z [38,620ms] INFO     [motion_gen_reacher.py:453] Fast obstacle update completed, time: 0.0022s, needs update: False
+2026-02-11T08:42:35Z [38,625ms] INFO     [ui_builder.py:414] Fast obstacle update completed, time: 0.0019s, needs update: False
+2026-02-11T08:42:35Z [38,625ms] INFO     [ui_builder.py:92] init curobo motion for left takes 3.6434688568115234
+2026-02-11T08:42:35Z [38,581ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (1.5) and 'horizontalAperture' (2.0) are inconsistent with the pixel resolution aspect ratio (1.6). Setting 'verticalAperture' to 1.25 to ensure square pixels.
+[Lula] Joint 'left_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+2026-02-11T08:42:36Z [38,698ms] [Warning] [omni.fabric.plugin] USD->Fabric: Unhandled array type string[]
+2026-02-11T08:42:36Z [38,779ms] [Warning] [rtx.postprocessing.plugin] DLSS increasing input dimensions: Render resolution of (320, 200) is below minimal input resolution of 300.
+2026-02-11T08:42:36Z [38,924ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-02-11T08:42:36Z [38,989ms] INFO     [command_controller.py:2001] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-11T08:42:36Z [38,996ms] INFO     [command_controller.py:2018] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-11T08:42:36Z [38,996ms] INFO     [command_controller.py:1693] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-11T08:42:36Z [38,996ms] INFO     [command_controller.py:1694] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-11T08:42:37Z [40,029ms] INFO     [command_controller.py:2001] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-11T08:42:37Z [40,031ms] INFO     [command_controller.py:2018] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-11T08:42:37Z [40,032ms] INFO     [command_controller.py:1693] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-11T08:42:37Z [40,032ms] INFO     [command_controller.py:1694] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-11T08:42:38Z [41,107ms] INFO     [command_controller.py:703]  add rigid body to  /World/Objects/geniesim_2025_target_grasp_object
+2026-02-11T08:42:38Z [41,116ms] INFO     [command_controller.py:1907] Adding obstacles under prim path /World/Objects/geniesim_2025_target_grasp_object...
+2026-02-11T08:42:38Z [41,153ms] INFO     [motion_gen_reacher.py:255] Processing mesh 1/2: /World/Objects/geniesim_2025_target_grasp_object/Aligned/part_00
+2026-02-11T08:42:38Z [41,153ms] INFO     [motion_gen_reacher.py:255] Original face count: 16498
+2026-02-11T08:42:38Z [41,153ms] INFO     [motion_gen_reacher.py:255] Starting mesh simplification
+2026-02-11T08:42:38Z [41,327ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-11T08:42:38Z [41,327ms] INFO     [motion_gen_reacher.py:255] Simplification time: 0.17378830909729004 seconds
+2026-02-11T08:42:38Z [41,327ms] INFO     [motion_gen_reacher.py:255] Simplification successful: 1000 faces
+2026-02-11T08:42:38Z [41,327ms] INFO     [motion_gen_reacher.py:255] Processing mesh 2/2: /World/Objects/geniesim_2025_target_grasp_object/Aligned/body
+2026-02-11T08:42:38Z [41,327ms] INFO     [motion_gen_reacher.py:255] Original face count: 4320
+2026-02-11T08:42:38Z [41,327ms] INFO     [motion_gen_reacher.py:255] Starting mesh simplification
+2026-02-11T08:42:38Z [41,351ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-11T08:42:38Z [41,351ms] INFO     [motion_gen_reacher.py:255] Simplification time: 0.023765087127685547 seconds
+2026-02-11T08:42:38Z [41,351ms] INFO     [motion_gen_reacher.py:255] Simplification successful: 1000 faces
+2026-02-11T08:42:38Z [41,351ms] INFO     [command_controller.py:1907] Simplified geometry time: 0.1983 seconds
+2026-02-11T08:42:38Z [41,351ms] INFO     [command_controller.py:1907] New obstacle: /World/Objects/geniesim_2025_target_grasp_object/Aligned/part_00 (type: mesh)
+2026-02-11T08:42:38Z [41,351ms] INFO     [command_controller.py:1907] New obstacle: /World/Objects/geniesim_2025_target_grasp_object/Aligned/body (type: mesh)
+2026-02-11T08:42:38Z [41,351ms] INFO     [command_controller.py:1907] Successfully added 2 new obstacles to cache
+2026-02-11T08:42:38Z [41,351ms] INFO     [command_controller.py:1907] Current total cache count: 5
+2026-02-11T08:42:39Z [41,766ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+
+
+
+
+
+
+

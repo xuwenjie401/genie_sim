@@ -1,0 +1,582 @@
+
+try1
+======================================================================================================================================
+server
+------------------------------------------------------------------------------------------
+2026-01-27T08:35:29Z [176,340ms] INFO     [command_controller.py:1140] ik lula time cost0.2047269344329834
+2026-01-27T08:35:29Z [176,822ms] INFO     [command_controller.py:1140] ik lula time cost0.4411590099334717
+2026-01-27T08:35:29Z [176,866ms] INFO     [command_controller.py:1140] ik lula time cost0.0058438777923583984
+2026-01-27T08:35:30Z [177,321ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.45781779289245605
+2026-01-27T08:35:30Z [177,321ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 27
+2026-01-27T08:35:30Z [177,367ms] INFO     [motion_gen_reacher.py:700] update kinematics lock joints
+2026-01-27T08:35:30Z [177,688ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.365903377532959
+2026-01-27T08:35:30Z [177,840ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.1516096591949463
+2026-01-27T08:35:30Z [177,886ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0003247261047363281
+2026-01-27T08:35:30Z [177,985ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 0.14319443702697754
+2026-01-27T08:35:30Z [178,031ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0002980232238769531
+2026-01-27T08:35:31Z [178,116ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 2 time is 0.12869548797607422
+2026-01-27T08:35:31Z [178,162ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0002903938293457031
+2026-01-27T08:35:31Z [178,118ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.7966704368591309
+2026-01-27T08:35:31Z [178,163ms] INFO     [command_controller.py:1140] ik curobo time cost1.2554833889007568
+2026-01-27T08:35:31Z [178,519ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:31Z [178,525ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:31Z [178,891ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.38039064407348633
+2026-01-27T08:35:31Z [178,937ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T08:35:31Z [178,892ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:35:32Z [180,016ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.1245012283325195
+2026-01-27T08:35:32Z [180,063ms] INFO     [ui_builder.py:188] 227
+2026-01-27T08:35:32Z [180,018ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:35:32Z [180,018ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.1272401809692383
+2026-01-27T08:35:38Z [186,053ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:35:39Z [187,113ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:39Z [187,127ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:40Z [187,510ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.39473533630371094
+2026-01-27T08:35:40Z [187,512ms] [Warning] [curobo] Partial position between start and goal is not equal.
+2026-01-27T08:35:40Z [187,512ms] [Warning] [server.motion_generator.motion_gen_reacher] update pose cost metric failed
+2026-01-27T08:35:40Z [187,606ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:35:40Z [187,606ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:35:40Z [187,808ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:35:40Z [187,808ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:35:40Z [187,825ms] INFO     [command_controller.py:1258] playback finish
+2026-01-27T08:35:40Z [188,124ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:40Z [188,125ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:41Z [188,490ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.3840928077697754
+2026-01-27T08:35:41Z [188,537ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T08:35:41Z [188,492ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:35:42Z [189,155ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.6645112037658691
+2026-01-27T08:35:42Z [189,202ms] INFO     [ui_builder.py:188] 216
+2026-01-27T08:35:42Z [189,157ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:35:42Z [189,157ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.6672773361206055
+2026-01-27T08:35:47Z [194,675ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:35:48Z [195,788ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:48Z [195,788ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:49Z [196,168ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.38570070266723633
+2026-01-27T08:35:49Z [196,172ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:35:50Z [197,742ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.5728695392608643
+2026-01-27T08:35:50Z [197,789ms] INFO     [ui_builder.py:188] 174
+2026-01-27T08:35:50Z [197,744ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:35:50Z [197,744ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.5760023593902588
+2026-01-27T08:35:55Z [202,287ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:35:57Z [204,988ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:35:57Z [204,973ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:35:57Z [205,019ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0284s, needs update: True
+2026-01-27T08:35:57Z [205,019ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:35:57Z [204,986ms] [Warning] [trimesh] only got 18/26 samples!
+2026-01-27T08:35:57Z [205,032ms] INFO     [ui_builder.py:429] attach_result=True
+2026-01-27T08:35:58Z [205,547ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:58Z [205,547ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:35:58Z [205,911ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.382051944732666
+2026-01-27T08:35:58Z [205,913ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:35:59Z [206,339ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.4276998043060303
+2026-01-27T08:35:59Z [206,386ms] INFO     [ui_builder.py:188] 174
+2026-01-27T08:35:59Z [206,341ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:35:59Z [206,341ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.43036437034606934
+2026-01-27T08:36:03Z [211,016ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:36:06Z [213,638ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:36:06Z [213,623ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:36:06Z [213,623ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:36:06Z [213,623ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:36:06Z [213,623ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:36:06Z [213,624ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:36:06Z [213,624ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:36:06Z [213,624ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:36:06Z [213,624ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:36:06Z [213,669ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0279s, needs update: True
+2026-01-27T08:36:06Z [213,670ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:36:06Z [213,625ms] [Warning] [server.motion_generator.motion_gen_reacher] No spheres found for the given objects.
+2026-01-27T08:36:06Z [213,670ms] INFO     [ui_builder.py:429] attach_result=False
+2026-01-27T08:36:06Z [214,035ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:36:06Z [214,036ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:36:07Z [214,254ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:36:07Z [214,254ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:36:07Z [214,271ms] INFO     [command_controller.py:1258] playback finish
+2026-01-27T08:36:07Z [214,577ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:07Z [214,577ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:07Z [214,940ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.3812980651855469
+2026-01-27T08:36:07Z [214,986ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T08:36:07Z [214,941ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:36:08Z [215,696ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.7551758289337158
+2026-01-27T08:36:08Z [215,743ms] INFO     [ui_builder.py:188] 333
+2026-01-27T08:36:08Z [215,698ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:36:08Z [215,698ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.757798433303833
+2026-01-27T08:36:17Z [224,579ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:36:18Z [225,187ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:36:18Z [225,169ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:36:18Z [225,169ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:36:18Z [225,169ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:36:18Z [225,169ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:36:18Z [225,169ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:36:18Z [225,170ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:36:18Z [225,170ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:36:18Z [225,170ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:36:18Z [225,215ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0234s, needs update: True
+2026-01-27T08:36:18Z [225,215ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:36:18Z [225,171ms] [Warning] [server.motion_generator.motion_gen_reacher] No spheres found for the given objects.
+2026-01-27T08:36:18Z [225,216ms] INFO     [ui_builder.py:429] attach_result=False
+2026-01-27T08:36:18Z [225,829ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:18Z [225,829ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:19Z [226,207ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.3847348690032959
+2026-01-27T08:36:19Z [226,210ms] [Warning] [curobo] Partial orientation between start and goal is not equaltensor([[0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358],
+        [0.4358]], device='cuda:0')
+2026-01-27T08:36:19Z [226,210ms] [Warning] [server.motion_generator.motion_gen_reacher] update pose cost metric failed
+2026-01-27T08:36:19Z [226,310ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:36:19Z [226,310ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:36:19Z [226,554ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T08:36:19Z [226,555ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T08:36:19Z [226,574ms] INFO     [command_controller.py:1258] playback finish
+2026-01-27T08:36:19Z [226,874ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:19Z [226,880ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:20Z [227,287ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.4110126495361328
+2026-01-27T08:36:20Z [227,333ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T08:36:20Z [227,288ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:36:20Z [227,682ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.39472293853759766
+2026-01-27T08:36:20Z [227,729ms] INFO     [ui_builder.py:188] 228
+2026-01-27T08:36:20Z [227,684ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:36:20Z [227,684ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.39746856689453125
+2026-01-27T08:36:26Z [233,899ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:36:27Z [234,375ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:36:27Z [234,357ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:36:27Z [234,358ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:36:27Z [234,404ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0255s, needs update: True
+2026-01-27T08:36:27Z [234,404ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:36:27Z [234,359ms] [Warning] [server.motion_generator.motion_gen_reacher] No spheres found for the given objects.
+2026-01-27T08:36:27Z [234,405ms] INFO     [ui_builder.py:429] attach_result=False
+2026-01-27T08:36:27Z [234,984ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:27Z [234,991ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:28Z [235,356ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.38277673721313477
+2026-01-27T08:36:28Z [235,360ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:36:29Z [236,587ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.2298583984375
+2026-01-27T08:36:29Z [236,634ms] INFO     [ui_builder.py:188] 172
+2026-01-27T08:36:29Z [236,589ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:36:29Z [236,589ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.2327258586883545
+2026-01-27T08:36:34Z [241,460ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:36:36Z [244,083ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:36:36Z [244,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:36:36Z [244,111ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0247s, needs update: True
+2026-01-27T08:36:36Z [244,111ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:36:36Z [244,067ms] [Warning] [server.motion_generator.motion_gen_reacher] No spheres found for the given objects.
+2026-01-27T08:36:36Z [244,112ms] INFO     [ui_builder.py:429] attach_result=False
+2026-01-27T08:36:37Z [244,760ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:37Z [244,770ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T08:36:38Z [245,172ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.40047430992126465
+2026-01-27T08:36:38Z [245,175ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T08:36:38Z [245,872ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.6991474628448486
+2026-01-27T08:36:38Z [245,919ms] INFO     [ui_builder.py:188] 171
+2026-01-27T08:36:38Z [245,874ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T08:36:38Z [245,874ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.702075719833374
+2026-01-27T08:36:43Z [250,732ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T08:36:46Z [253,351ms] INFO     [command_controller.py:1011] Attach!!!!
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-27T08:36:46Z [253,336ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-27T08:36:46Z [253,382ms] INFO     [motion_gen_reacher.py:990] Fast obstacle update completed, time: 0.0279s, needs update: True
+2026-01-27T08:36:46Z [253,382ms] INFO     [ui_builder.py:429] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-01-27T08:36:46Z [253,337ms] [Warning] [server.motion_generator.motion_gen_reacher] No spheres found for the given objects.
+2026-01-27T08:36:46Z [253,383ms] INFO     [ui_builder.py:429] attach_result=False
+
+
+
+
+
+client
+------------------------------------------------------------------------------------------
+
+2026-01-27T08:33:14Z [35,020ms] INFO     [omniagent.py:71] Grasp num after NMS: 168/300
+2026-01-27T08:33:14Z [35,277ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-27T08:33:14Z [35,277ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-27T08:33:14Z [35,278ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-27T08:33:14Z [35,278ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-27T08:33:14Z [35,278ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-27T08:33:16Z [36,967ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json loaded
+2026-01-27T08:33:16Z [36,968ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-27T08:33:16Z [36,968ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-27T08:33:16Z [36,970ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 168
+2026-01-27T08:33:18Z [39,110ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-27T08:33:18Z [39,110ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-27T08:33:18Z [39,269ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:18Z [39,269ms] INFO     [omni_robot.py:217] target_position is[0.45936553 0.05042825 0.82376585]
+2026-01-27T08:33:18Z [39,270ms] INFO     [omni_robot.py:217] target_rotation is[-0.30370405 -0.54167993 -0.68304416 -0.38444425]
+2026-01-27T08:33:26Z [46,428ms] INFO     [omni_robot.py:217] move! (array([2.7443453 , 0.87003195, 0.82376585]), array([-0.30370405, -0.54167993, -0.68304416, -0.38444425]), True)
+2026-01-27T08:33:26Z [46,428ms] INFO     [omni_robot.py:217] Yaw: -179.59791838052018, Pitch: 76.77950898380523, Roll: -59.06362769271979
+2026-01-27T08:33:26Z [46,845ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-27T08:33:26Z [46,845ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:33:26Z [47,102ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-27T08:33:26Z [47,361ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:26Z [47,362ms] INFO     [omni_robot.py:217] target_position is[0.50094848 0.06023996 0.79776648]
+2026-01-27T08:33:26Z [47,362ms] INFO     [omni_robot.py:217] target_rotation is[-0.30360788 -0.54174654 -0.68308383 -0.38435586]
+2026-01-27T08:33:27Z [47,800ms] INFO     [omni_robot.py:217] move! (array([2.78592824, 0.87984366, 0.79776648]), array([-0.30360788, -0.54174654, -0.68308383, -0.38435586]), False)
+2026-01-27T08:33:27Z [47,800ms] INFO     [omni_robot.py:217] Yaw: -179.5821530450483, Pitch: 76.78110260694353, Roll: -59.0620216295655
+2026-01-27T08:33:27Z [47,800ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:33:27Z [48,016ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:33:27Z [48,016ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-27T08:33:27Z [48,278ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:27Z [48,279ms] INFO     [omni_robot.py:217] target_position is[0.46794411 0.05492944 0.78758042]
+2026-01-27T08:33:27Z [48,279ms] INFO     [omni_robot.py:217] target_rotation is[-0.23610937  0.54730483 -0.70481162  0.38464317]
+2026-01-27T08:33:37Z [58,159ms] INFO     [omni_robot.py:217] move! (array([2.75292387, 0.87453314, 0.78758042]), array([-0.23610937,  0.54730483, -0.70481162,  0.38464317]), True)
+2026-01-27T08:33:37Z [58,159ms] INFO     [omni_robot.py:217] Yaw: -163.04990086926225, Pitch: -72.38837921438373, Roll: 69.6910896991713
+2026-01-27T08:33:38Z [59,180ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:33:39Z [59,446ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:33:39Z [59,446ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-27T08:33:39Z [59,756ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:39Z [59,757ms] INFO     [omni_robot.py:217] target_position is[0.50056631 0.0802627  0.82152493]
+2026-01-27T08:33:39Z [59,757ms] INFO     [omni_robot.py:217] target_rotation is[0.51845833 0.85345154 0.04574294 0.02700013]
+2026-01-27T08:33:46Z [66,886ms] INFO     [omni_robot.py:217] move! (array([2.78554607, 0.89986641, 0.82152493]), array([0.51845833, 0.85345154, 0.04574294, 0.02700013]), True)
+2026-01-27T08:33:46Z [66,886ms] INFO     [omni_robot.py:217] Yaw: 0.07750017664890546, Pitch: 6.089142995578761, Roll: 117.43983911356992
+2026-01-27T08:33:46Z [67,417ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 0] success
+2026-01-27T08:33:46Z [67,417ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:33:47Z [67,719ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 1: pick
+2026-01-27T08:33:47Z [67,921ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:47Z [67,922ms] INFO     [omni_robot.py:217] target_position is[0.50475591 0.03628341 0.7985135 ]
+2026-01-27T08:33:47Z [67,922ms] INFO     [omni_robot.py:217] target_rotation is[0.51986223 0.85259552 0.04333396 0.03076198]
+2026-01-27T08:33:55Z [75,462ms] INFO     [omni_robot.py:217] move! (array([2.78973567, 0.85588711, 0.7985135 ]), array([0.51986223, 0.85259552, 0.04333396, 0.03076198]), True)
+2026-01-27T08:33:55Z [75,462ms] INFO     [omni_robot.py:217] Yaw: -0.4263703667415508, Pitch: 6.077677550481452, Roll: 117.27790673331154
+2026-01-27T08:33:57Z [78,132ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 1] success
+2026-01-27T08:33:57Z [78,133ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:33:58Z [78,500ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 2: pick
+2026-01-27T08:33:58Z [78,824ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:33:58Z [78,825ms] INFO     [omni_robot.py:217] target_position is[0.50468096 0.03630945 0.79851016]
+2026-01-27T08:33:58Z [78,825ms] INFO     [omni_robot.py:217] target_rotation is[0.52006757 0.85246824 0.04295914 0.03133897]
+2026-01-27T08:34:03Z [84,156ms] INFO     [omni_robot.py:217] move! (array([2.78966072, 0.85591316, 0.79851016]), array([0.52006757, 0.85246824, 0.04295914, 0.03133897]), True)
+2026-01-27T08:34:03Z [84,156ms] INFO     [omni_robot.py:217] Yaw: -0.5040409480941807, Pitch: 6.075527977937909, Roll: 117.25429839393435
+2026-01-27T08:34:06Z [86,668ms] INFO     [grasp.py:625] currently simple_check_completion is not supported with goal_offset
+2026-01-27T08:34:06Z [86,689ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 2] success
+2026-01-27T08:34:06Z [86,689ms] INFO     [omniagent.py:923] 
+
+2026-01-27T08:34:06Z [86,979ms] INFO     [run_data_collection.py:84] stage finish: 0, checker: {'checker_name': 'distance_to_target', 'params': {'object_id': '/World/Objects/geniesim_2025_target_grasp_object', 'rule': 'lessThan', 'target_id': 'left', 'value': 0.08}}, status: fail
+2026-01-27T08:34:06Z [87,203ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:34:06Z [87,203ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-27T08:34:07Z [87,526ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-27T08:34:07Z [87,527ms] INFO     [omni_robot.py:217] target_position is[0.47365975 0.03394307 0.79019237]
+2026-01-27T08:34:07Z [87,527ms] INFO     [omni_robot.py:217] target_rotation is[-0.1806369   0.68985543 -0.61955663  0.32805393]
+2026-01-27T08:34:13Z [94,210ms] INFO     [omni_robot.py:217] move! (array([2.75863951, 0.85354677, 0.79019237]), array([-0.1806369 ,  0.68985543, -0.61955663,  0.32805393]), True)
+2026-01-27T08:34:13Z [94,210ms] INFO     [omni_robot.py:217] Yaw: -85.73546423919053, Pitch: -76.73676755511342, Roll: 136.72563444899018
+2026-01-27T08:34:14Z [94,970ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:34:14Z [95,246ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:34:14Z [95,246ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-27T08:34:14Z [95,247ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json failed
+2026-01-27T08:34:17Z [97,458ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json
+2026-01-27T08:34:26Z [106,672ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 2.30345354e-02, -8.88870885e-02,  9.95775324e-01,
+         2.70198197e+00],
+       [ 9.99734640e-01,  1.80383090e-03, -2.29651058e-02,
+         5.21331526e-01],
+       [ 2.45091096e-04,  9.96040075e-01,  8.89050518e-02,
+         9.94145327e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 2.30077473e-02, -8.88155120e-02,  9.95782330e-01,
+         2.71577284e+00],
+       [ 9.99735267e-01,  1.84496600e-03, -2.29345251e-02,
+         1.12118441e+00],
+       [ 1.99757043e-04,  9.96046385e-01,  8.88344481e-02,
+         9.93968441e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-27T08:34:26Z [106,674ms] INFO     [omniagent.py:71] Grasp num after NMS: 168/300
+2026-01-27T08:34:26Z [107,020ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-27T08:34:26Z [107,020ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-27T08:34:26Z [107,020ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-27T08:34:26Z [107,020ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-27T08:34:26Z [107,020ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-27T08:34:31Z [111,541ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json loaded
+2026-01-27T08:34:31Z [111,541ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-27T08:34:31Z [111,541ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-27T08:34:31Z [111,543ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 168
+2026-01-27T08:34:33Z [113,719ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-27T08:34:33Z [113,720ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-27T08:34:33Z [114,075ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:34:33Z [114,076ms] INFO     [omni_robot.py:217] target_position is[ 0.5408386  -0.02845913  0.81717704]
+2026-01-27T08:34:33Z [114,076ms] INFO     [omni_robot.py:217] target_rotation is[ 0.58013922 -0.79504879 -0.02922928 -0.17458967]
+2026-01-27T08:34:43Z [123,429ms] INFO     [omni_robot.py:217] move! (array([2.82581837, 0.79114457, 0.81717704]), array([ 0.58013922, -0.79504879, -0.02922928, -0.17458967]), True)
+2026-01-27T08:34:43Z [123,429ms] INFO     [omni_robot.py:217] Yaw: -18.384650101955636, Pitch: -8.980321114064129, Roll: -109.22044751910062
+2026-01-27T08:34:43Z [123,920ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-27T08:34:43Z [123,920ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:34:43Z [124,274ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-27T08:34:44Z [124,542ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:34:44Z [124,542ms] INFO     [omni_robot.py:217] target_position is[0.55302374 0.01817545 0.80388197]
+2026-01-27T08:34:44Z [124,542ms] INFO     [omni_robot.py:217] target_rotation is[ 0.58013262 -0.79505352 -0.02922133 -0.17459141]
+2026-01-27T08:34:44Z [124,601ms] INFO     [omni_robot.py:217] move! (array([2.8380035 , 0.83777915, 0.80388197]), array([ 0.58013262, -0.79505352, -0.02922133, -0.17459141]), False)
+2026-01-27T08:34:44Z [124,602ms] INFO     [omni_robot.py:217] Yaw: -18.384369552070822, Pitch: -8.981021928812822, Roll: -109.2214841723076
+2026-01-27T08:34:44Z [124,602ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:34:44Z [124,855ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:34:44Z [124,855ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-27T08:34:44Z [125,151ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:34:44Z [125,151ms] INFO     [omni_robot.py:217] target_position is[ 0.55101334 -0.02859266  0.7995152 ]
+2026-01-27T08:34:44Z [125,152ms] INFO     [omni_robot.py:217] target_rotation is[ 0.5471527  -0.83542466  0.02968682 -0.04252352]
+2026-01-27T08:34:54Z [134,907ms] INFO     [omni_robot.py:217] move! (array([2.83599311, 0.79101105, 0.7995152 ]), array([ 0.5471527 , -0.83542466,  0.02968682, -0.04252352]), True)
+2026-01-27T08:34:54Z [134,907ms] INFO     [omni_robot.py:217] Yaw: -2.2203887567662735, Pitch: -5.516701822896296, Roll: -113.66223578951343
+2026-01-27T08:34:54Z [135,376ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 0] success
+2026-01-27T08:34:54Z [135,377ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:34:55Z [135,704ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 1: pick
+2026-01-27T08:34:55Z [136,051ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:34:55Z [136,052ms] INFO     [omni_robot.py:217] target_position is[0.5561873  0.01698941 0.77963524]
+2026-01-27T08:34:55Z [136,052ms] INFO     [omni_robot.py:217] target_rotation is[ 0.54715677 -0.83542104  0.02967143 -0.04255292]
+2026-01-27T08:34:56Z [136,474ms] INFO     [omni_robot.py:217] move! (array([2.84116706, 0.83659311, 0.77963524]), array([ 0.54715677, -0.83542104,  0.02967143, -0.04255292]), False)
+2026-01-27T08:34:56Z [136,474ms] INFO     [omni_robot.py:217] Yaw: -2.2241585351837676, Pitch: -5.517082233388544, Roll: -113.66180653508937
+2026-01-27T08:34:56Z [136,474ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:34:56Z [136,773ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:34:56Z [136,773ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-27T08:34:56Z [137,103ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:34:56Z [137,104ms] INFO     [omni_robot.py:217] target_position is[ 0.54611792 -0.02710469  0.8637974 ]
+2026-01-27T08:34:56Z [137,104ms] INFO     [omni_robot.py:217] target_rotation is[ 0.5369213  -0.83215239 -0.07961196 -0.11357748]
+2026-01-27T08:35:05Z [145,429ms] INFO     [omni_robot.py:217] move! (array([2.83109768, 0.79249902, 0.8637974 ]), array([ 0.5369213 , -0.83215239, -0.07961196, -0.11357748]), True)
+2026-01-27T08:35:05Z [145,430ms] INFO     [omni_robot.py:217] Yaw: -15.93421549027516, Pitch: 0.6035780637465992, Roll: -114.25369780311965
+2026-01-27T08:35:05Z [145,930ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 0] success
+2026-01-27T08:35:05Z [145,930ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:35:05Z [146,242ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 1: pick
+2026-01-27T08:35:06Z [146,583ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:06Z [146,584ms] INFO     [omni_robot.py:217] target_position is[0.55128761 0.01847697 0.84391707]
+2026-01-27T08:35:06Z [146,584ms] INFO     [omni_robot.py:217] target_rotation is[ 0.53692149 -0.8321468  -0.07962672 -0.11360725]
+2026-01-27T08:35:06Z [147,041ms] INFO     [omni_robot.py:217] move! (array([2.83626737, 0.83808068, 0.84391707]), array([ 0.53692149, -0.8321468 , -0.07962672, -0.11360725]), False)
+2026-01-27T08:35:06Z [147,041ms] INFO     [omni_robot.py:217] Yaw: -15.938036781147394, Pitch: 0.6031006353976209, Roll: -114.25337480118482
+2026-01-27T08:35:06Z [147,041ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:35:06Z [147,332ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:35:06Z [147,332ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-27T08:35:07Z [147,659ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:07Z [147,660ms] INFO     [omni_robot.py:217] target_position is[0.50341447 0.02248386 0.89250023]
+2026-01-27T08:35:07Z [147,660ms] INFO     [omni_robot.py:217] target_rotation is[0.36898092 0.66115988 0.5701144  0.31888911]
+2026-01-27T08:35:14Z [154,880ms] INFO     [omni_robot.py:217] move! (array([2.78839423, 0.84208756, 0.89250023]), array([0.36898092, 0.66115988, 0.5701144 , 0.31888911]), True)
+2026-01-27T08:35:14Z [154,881ms] INFO     [omni_robot.py:217] Yaw: -0.3716635328112153, Pitch: 81.57227600583562, Roll: 121.99052216491056
+2026-01-27T08:35:14Z [155,370ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 4 step_id 0] success
+2026-01-27T08:35:14Z [155,370ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:35:15Z [155,740ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 1: pick
+2026-01-27T08:35:15Z [156,041ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:15Z [156,042ms] INFO     [omni_robot.py:217] target_position is[0.54552582 0.01626814 0.86628459]
+2026-01-27T08:35:15Z [156,042ms] INFO     [omni_robot.py:217] target_rotation is[0.36900166 0.66115512 0.5700971  0.31890591]
+2026-01-27T08:35:16Z [156,493ms] INFO     [omni_robot.py:217] move! (array([2.83050558, 0.83587185, 0.86628459]), array([0.36900166, 0.66115512, 0.5700971 , 0.31890591]), False)
+2026-01-27T08:35:16Z [156,493ms] INFO     [omni_robot.py:217] Yaw: -0.3748626987626255, Pitch: 81.57122930982723, Roll: 121.99018464982173
+2026-01-27T08:35:16Z [156,493ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:35:16Z [156,808ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:35:16Z [156,808ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-27T08:35:16Z [156,808ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json failed
+2026-01-27T08:35:18Z [159,212ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json
+2026-01-27T08:35:27Z [167,590ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 3.84987010e-02, -8.51521196e-02,  9.95623908e-01,
+         2.69535433e+00],
+       [ 9.99258176e-01,  4.25174568e-03, -3.82755941e-02,
+         5.25502165e-01],
+       [-9.73891683e-04,  9.96358891e-01,  8.52526384e-02,
+         9.93382061e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 3.85570764e-02, -8.26873397e-02,  9.95829381e-01,
+         2.71865591e+00],
+       [ 9.99255689e-01,  4.37871724e-03, -3.83261572e-02,
+         1.12504767e+00],
+       [-1.19136729e-03,  9.96565919e-01,  8.27946251e-02,
+         9.92576413e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-27T08:35:27Z [167,594ms] INFO     [omniagent.py:71] Grasp num after NMS: 168/300
+2026-01-27T08:35:27Z [167,874ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-27T08:35:27Z [167,874ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-27T08:35:27Z [167,874ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-27T08:35:27Z [167,874ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-27T08:35:27Z [167,874ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-27T08:35:28Z [169,350ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json loaded
+2026-01-27T08:35:28Z [169,350ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-27T08:35:28Z [169,350ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-27T08:35:28Z [169,352ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 168
+2026-01-27T08:35:31Z [171,495ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-27T08:35:31Z [171,495ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-27T08:35:31Z [171,773ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:31Z [171,773ms] INFO     [omni_robot.py:217] target_position is[ 0.51038265 -0.12929116  0.82377738]
+2026-01-27T08:35:31Z [171,773ms] INFO     [omni_robot.py:217] target_rotation is[-0.02581486 -0.04770006 -0.87052686 -0.48912298]
+2026-01-27T08:35:38Z [179,317ms] INFO     [omni_robot.py:217] move! (array([2.79536241, 0.69031254, 0.82377738]), array([-0.02581486, -0.04770006, -0.87052686, -0.48912298]), True)
+2026-01-27T08:35:38Z [179,317ms] INFO     [omni_robot.py:217] Yaw: -179.90102138672344, Pitch: 6.217422186827135, Roll: -58.66603276039392
+2026-01-27T08:35:39Z [179,746ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-27T08:35:39Z [179,747ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:35:39Z [180,088ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-27T08:35:39Z [180,369ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:39Z [180,370ms] INFO     [omni_robot.py:217] target_position is[ 0.51496358 -0.08683379  0.79776871]
+2026-01-27T08:35:39Z [180,370ms] INFO     [omni_robot.py:217] target_rotation is[-0.02580637 -0.04770967 -0.87052486 -0.48912604]
+2026-01-27T08:35:40Z [180,821ms] INFO     [omni_robot.py:217] move! (array([2.79994334, 0.73276991, 0.79776871]), array([-0.02580637, -0.04770967, -0.87052486, -0.48912604]), False)
+2026-01-27T08:35:40Z [180,821ms] INFO     [omni_robot.py:217] Yaw: -179.89960487391735, Pitch: 6.217905762438898, Roll: -58.66652819003676
+2026-01-27T08:35:40Z [180,821ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:35:40Z [181,089ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:35:40Z [181,089ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-27T08:35:40Z [181,375ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:40Z [181,375ms] INFO     [omni_robot.py:217] target_position is[ 0.51280938 -0.08569114  0.89252821]
+2026-01-27T08:35:40Z [181,375ms] INFO     [omni_robot.py:217] target_rotation is[0.16518763 0.80172741 0.55487662 0.14851982]
+2026-01-27T08:35:47Z [187,938ms] INFO     [omni_robot.py:217] move! (array([2.79778914, 0.73391257, 0.89252821]), array([0.16518763, 0.80172741, 0.55487662, 0.14851982]), True)
+2026-01-27T08:35:47Z [187,938ms] INFO     [omni_robot.py:217] Yaw: -9.157626811718004, Pitch: 69.84881506814209, Roll: 163.1166725745733
+2026-01-27T08:35:47Z [188,407ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 0] success
+2026-01-27T08:35:47Z [188,407ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:35:48Z [188,727ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 1: pick
+2026-01-27T08:35:48Z [189,026ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:48Z [189,027ms] INFO     [omni_robot.py:217] target_position is[ 0.53387829 -0.09069069  0.8474627 ]
+2026-01-27T08:35:48Z [189,027ms] INFO     [omni_robot.py:217] target_rotation is[0.16520815 0.80173173 0.55486188 0.14852879]
+2026-01-27T08:35:55Z [195,551ms] INFO     [omni_robot.py:217] move! (array([2.81885805, 0.72891301, 0.8474627 ]), array([0.16520815, 0.80173173, 0.55486188, 0.14852879]), True)
+2026-01-27T08:35:55Z [195,551ms] INFO     [omni_robot.py:217] Yaw: -9.156534280535368, Pitch: 69.84718603776311, Roll: 163.1130212146894
+2026-01-27T08:35:57Z [198,212ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 1] success
+2026-01-27T08:35:57Z [198,212ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:35:58Z [198,513ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 2: pick
+2026-01-27T08:35:58Z [198,794ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:35:58Z [198,795ms] INFO     [omni_robot.py:217] target_position is[ 0.53387554 -0.09068129  0.84746268]
+2026-01-27T08:35:58Z [198,795ms] INFO     [omni_robot.py:217] target_rotation is[0.16523554 0.80156763 0.55509953 0.14849602]
+2026-01-27T08:36:03Z [204,280ms] INFO     [omni_robot.py:217] move! (array([2.8188553 , 0.72892242, 0.84746268]), array([0.16523554, 0.80156763, 0.55509953, 0.14849602]), True)
+2026-01-27T08:36:03Z [204,280ms] INFO     [omni_robot.py:217] Yaw: -9.135432223618077, Pitch: 69.8798387047098, Roll: 163.09371470008054
+2026-01-27T08:36:06Z [206,826ms] INFO     [grasp.py:625] currently simple_check_completion is not supported with goal_offset
+2026-01-27T08:36:06Z [206,864ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 2] success
+2026-01-27T08:36:06Z [206,864ms] INFO     [omniagent.py:923] 
+
+2026-01-27T08:36:06Z [207,249ms] INFO     [run_data_collection.py:84] stage finish: 0, checker: {'checker_name': 'distance_to_target', 'params': {'object_id': '/World/Objects/geniesim_2025_target_grasp_object', 'rule': 'lessThan', 'target_id': 'right', 'value': 0.08}}, status: fail
+2026-01-27T08:36:07Z [207,535ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:36:07Z [207,535ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-27T08:36:07Z [207,826ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:36:07Z [207,827ms] INFO     [omni_robot.py:217] target_position is[ 0.50871052 -0.12009861  0.78716209]
+2026-01-27T08:36:07Z [207,827ms] INFO     [omni_robot.py:217] target_rotation is[ 0.41951081 -0.85144636  0.25867963 -0.17926134]
+2026-01-27T08:36:17Z [217,842ms] INFO     [omni_robot.py:217] move! (array([2.79369028, 0.6995051 , 0.78716209]), array([ 0.41951081, -0.85144636,  0.25867963, -0.17926134]), True)
+2026-01-27T08:36:17Z [217,842ms] INFO     [omni_robot.py:217] Yaw: -6.278427122573481, Pitch: -36.22145474292055, Roll: -129.59596275202873
+2026-01-27T08:36:17Z [218,394ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 0] success
+2026-01-27T08:36:17Z [218,394ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:36:18Z [218,756ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 1: pick
+2026-01-27T08:36:18Z [219,068ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:36:18Z [219,069ms] INFO     [omni_robot.py:217] target_position is[ 0.53533638 -0.08519787  0.76200805]
+2026-01-27T08:36:18Z [219,069ms] INFO     [omni_robot.py:217] target_rotation is[ 0.29806345 -0.90238795  0.23889231 -0.19946086]
+2026-01-27T08:36:19Z [219,519ms] INFO     [omni_robot.py:217] move! (array([2.82031614, 0.73440584, 0.76200805]), array([ 0.29806345, -0.90238795,  0.23889231, -0.19946086]), False)
+2026-01-27T08:36:19Z [219,519ms] INFO     [omni_robot.py:217] Yaw: -15.101181581611854, Pitch: -33.37051640331868, Roll: -147.99301211143154
+2026-01-27T08:36:19Z [219,519ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-27T08:36:19Z [219,837ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:36:19Z [219,837ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-27T08:36:19Z [220,124ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:36:19Z [220,125ms] INFO     [omni_robot.py:217] target_position is[ 0.49545629 -0.08120558  0.82136544]
+2026-01-27T08:36:19Z [220,125ms] INFO     [omni_robot.py:217] target_rotation is[0.4064056  0.67102358 0.52752245 0.32600905]
+2026-01-27T08:36:26Z [227,163ms] INFO     [omni_robot.py:217] move! (array([2.78043606, 0.73839813, 0.82136544]), array([0.4064056 , 0.67102358, 0.52752245, 0.32600905]), True)
+2026-01-27T08:36:26Z [227,163ms] INFO     [omni_robot.py:217] Yaw: -2.1687761116526976, Pitch: 76.64158395207718, Roll: 119.31174312908767
+2026-01-27T08:36:27Z [227,601ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 4 step_id 0] success
+2026-01-27T08:36:27Z [227,601ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:36:27Z [227,973ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 1: pick
+2026-01-27T08:36:27Z [228,239ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:36:27Z [228,240ms] INFO     [omni_robot.py:217] target_position is[ 0.53876813 -0.09127662  0.79851036]
+2026-01-27T08:36:27Z [228,240ms] INFO     [omni_robot.py:217] target_rotation is[0.40642812 0.67102336 0.52750434 0.32601073]
+2026-01-27T08:36:34Z [234,723ms] INFO     [omni_robot.py:217] move! (array([2.82374789, 0.72832708, 0.79851036]), array([0.40642812, 0.67102336, 0.52750434, 0.32601073]), True)
+2026-01-27T08:36:34Z [234,723ms] INFO     [omni_robot.py:217] Yaw: -2.1667198100287766, Pitch: 76.63947988312242, Roll: 119.30722294200815
+2026-01-27T08:36:36Z [237,318ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 4 step_id 1] success
+2026-01-27T08:36:36Z [237,318ms] INFO     [omniagent.py:923] jump to next action
+2026-01-27T08:36:37Z [237,713ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 2: pick
+2026-01-27T08:36:37Z [238,013ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-27T08:36:37Z [238,014ms] INFO     [omni_robot.py:217] target_position is[ 0.53994558 -0.08947551  0.79863397]
+2026-01-27T08:36:37Z [238,014ms] INFO     [omni_robot.py:217] target_rotation is[0.47123419 0.77166492 0.36381793 0.22384838]
+2026-01-27T08:36:43Z [243,995ms] INFO     [omni_robot.py:217] move! (array([2.82492535, 0.7301282 , 0.79863397]), array([0.47123419, 0.77166492, 0.36381793, 0.22384838]), True)
+2026-01-27T08:36:43Z [243,995ms] INFO     [omni_robot.py:217] Yaw: -0.233220363198501, Pitch: 50.57541064622874, Roll: 117.28769078634744
+2026-01-27T08:36:46Z [246,534ms] INFO     [grasp.py:625] currently simple_check_completion is not supported with goal_offset
+2026-01-27T08:36:46Z [246,562ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 4 step_id 2] success
+2026-01-27T08:36:46Z [246,562ms] INFO     [omniagent.py:923] 
+
+2026-01-27T08:36:46Z [246,906ms] INFO     [run_data_collection.py:84] stage finish: 0, checker: {'checker_name': 'distance_to_target', 'params': {'object_id': '/World/Objects/geniesim_2025_target_grasp_object', 'rule': 'lessThan', 'target_id': 'right', 'value': 0.08}}, status: fail
+2026-01-27T08:36:46Z [247,147ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-27T08:36:46Z [247,147ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-27T08:36:46Z [247,147ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json failed
+
+
+
+
+
+try2
+======================================================================================================================================
+server
+------------------------------------------------------------------------------------------
+
+2026-01-27T11:41:00Z [7,174,896ms] INFO     [command_controller.py:1140] ik lula time cost0.13173747062683105
+2026-01-27T11:41:10Z [7,185,058ms] INFO     [command_controller.py:1140] ik lula time cost0.3128087520599365
+2026-01-27T11:41:24Z [7,199,603ms] INFO     [command_controller.py:1140] ik lula time cost0.007585048675537109
+2026-01-27T11:42:09Z [7,243,866ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.36980700492858887
+2026-01-27T11:42:18Z [7,253,125ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 20
+2026-01-27T11:42:20Z [7,255,548ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 3.0994415283203125e-06
+2026-01-27T11:42:35Z [7,270,532ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 14.982918500900269
+2026-01-27T11:42:36Z [7,270,970ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0003952980041503906
+2026-01-27T11:42:37Z [7,272,312ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 1.379915714263916
+2026-01-27T11:42:37Z [7,272,354ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0011687278747558594
+2026-01-27T11:42:37Z [7,272,320ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 19.194884538650513
+2026-01-27T11:43:18Z [7,313,393ms] INFO     [command_controller.py:1140] ik curobo time cost76.46338415145874
+2026-01-27T11:43:41Z [7,336,713ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T11:43:41Z [7,336,713ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T11:43:52Z [7,347,332ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-01-27T11:44:18Z [7,373,585ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T11:44:29Z [7,383,934ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T11:44:51Z [7,406,057ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is46.92559337615967
+2026-01-27T11:44:51Z [7,406,105ms] INFO     [ui_builder.py:188] 223
+2026-01-27T11:44:51Z [7,406,066ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T11:44:51Z [7,406,066ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 46.95012545585632
+2026-01-27T11:46:58Z [7,533,367ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T11:59:46Z [8,300,938ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T11:59:46Z [8,300,938ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T11:59:46Z [8,301,302ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.36981987953186035
+2026-01-27T11:59:46Z [8,301,309ms] [Warning] [curobo] Partial orientation between start and goal is not equaltensor([[0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206],
+        [0.1206]], device='cuda:0')
+2026-01-27T11:59:46Z [8,301,309ms] [Warning] [server.motion_generator.motion_gen_reacher] update pose cost metric failed
+2026-01-27T12:03:37Z [8,532,293ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T12:03:37Z [8,532,293ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T12:04:06Z [8,561,129ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-27T12:04:06Z [8,561,129ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-27T12:04:26Z [8,581,403ms] INFO     [command_controller.py:1258] playback finish
+2026-01-27T12:14:01Z [9,156,298ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T12:14:01Z [9,156,298ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T12:14:01Z [9,156,282ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-01-27T12:14:01Z [9,156,337ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-01-27T12:14:01Z [9,156,298ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-27T12:14:03Z [9,157,795ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.5062785148620605
+2026-01-27T12:14:03Z [9,157,836ms] INFO     [ui_builder.py:188] 215
+2026-01-27T12:14:03Z [9,157,797ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-01-27T12:14:03Z [9,157,797ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.5147273540496826
+2026-01-27T12:14:58Z [9,213,455ms] INFO     [command_controller.py:425] ReachedTrue
+2026-01-27T12:27:35Z [9,970,429ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T12:27:35Z [9,970,440ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-01-27T12:27:36Z [9,970,846ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.40317416191101074
+2026-01-27T12:27:36Z [9,970,965ms] [Warning] [curobo] Partial orientation between start and goal is not equaltensor([[0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842],
+        [0.0842]], device='cuda:0')
+2026-01-27T12:27:36Z [9,970,965ms] [Warning] [server.motion_generator.motion_gen_reacher] update pose cost metric failed
+
+
+
+
+
+
+

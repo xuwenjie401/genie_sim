@@ -1,0 +1,453 @@
+2026-01-23T09:52:28Z [24,852ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:29Z [26,087ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:29Z [26,283ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:30Z [26,691ms] INFO     [motion_gen_reacher.py:449] Extracting and caching obstacle geometries...
+2026-01-23T09:52:30Z [26,492ms] [Warning] [curobo] Mesh /World/Table/table/collider has non-triangular faces, triangulating...
+2026-01-23T09:52:30Z [26,712ms] INFO     [motion_gen_reacher.py:200] Processing mesh 1/3: /World/Table/table/part_00
+2026-01-23T09:52:30Z [26,712ms] INFO     [motion_gen_reacher.py:200] Original face count: 1244
+2026-01-23T09:52:30Z [26,712ms] INFO     [motion_gen_reacher.py:200] Starting mesh simplification
+2026-01-23T09:52:30Z [26,973ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:30Z [26,973ms] INFO     [motion_gen_reacher.py:200] Simplification time: 0.2613799571990967 seconds
+2026-01-23T09:52:30Z [26,973ms] INFO     [motion_gen_reacher.py:200] Simplification successful: 622 faces
+2026-01-23T09:52:30Z [26,973ms] INFO     [motion_gen_reacher.py:200] Processing mesh 2/3: /World/Table/table/body
+2026-01-23T09:52:30Z [26,973ms] INFO     [motion_gen_reacher.py:200] Original face count: 3576
+2026-01-23T09:52:30Z [26,973ms] INFO     [motion_gen_reacher.py:200] Starting mesh simplification
+2026-01-23T09:52:30Z [27,005ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:200] Simplification time: 0.03145551681518555 seconds
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:200] Simplification successful: 1000 faces
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:200] Processing mesh 3/3: /World/Table/table/collider
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:200] Original face count: 12
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:200] Face count is within reasonable range, no simplification needed
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:449] extract simplified geometry time: 0.2932722568511963 seconds
+2026-01-23T09:52:30Z [27,005ms] INFO     [motion_gen_reacher.py:449] Cache completed, extracted 3 obstacle geometries
+2026-01-23T09:52:30Z [27,059ms] INFO     [motion_gen_reacher.py:452] Fast obstacle update completed, time: 0.0541s, needs update: True
+2026-01-23T09:52:30Z [27,065ms] INFO     [ui_builder.py:411] Fast obstacle update completed, time: 0.0021s, needs update: False
+2026-01-23T09:52:30Z [27,065ms] INFO     [ui_builder.py:89] init curobo motion for right takes 3.8819127082824707
+2026-01-23T09:52:31Z [27,455ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:32Z [28,708ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:32Z [29,154ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-01-23T09:52:33Z [29,815ms] INFO     [motion_gen_reacher.py:449] Extracting and caching obstacle geometries...
+2026-01-23T09:52:33Z [29,817ms] INFO     [motion_gen_reacher.py:452] Fast obstacle update completed, time: 0.0023s, needs update: False
+2026-01-23T09:52:33Z [29,822ms] INFO     [ui_builder.py:411] Fast obstacle update completed, time: 0.0020s, needs update: False
+2026-01-23T09:52:33Z [29,822ms] INFO     [ui_builder.py:89] init curobo motion for left takes 2.7570090293884277
+2026-01-23T09:52:33Z [29,609ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (0.2453000068664551) and 'horizontalAperture' (0.3895999908447266) are inconsistent with the pixel resolution aspect ratio (1.6). Setting 'verticalAperture' to 0.2434999942779541 to ensure square pixels.
+2026-01-23T09:52:33Z [29,630ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (0.2453000068664551) and 'horizontalAperture' (0.3895999908447266) are inconsistent with the pixel resolution aspect ratio (1.3333333333333333). Setting 'verticalAperture' to 0.29219999313354494 to ensure square pixels.
+2026-01-23T09:52:33Z [29,645ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (0.2453000068664551) and 'horizontalAperture' (0.3895999908447266) are inconsistent with the pixel resolution aspect ratio (1.3333333333333333). Setting 'verticalAperture' to 0.29219999313354494 to ensure square pixels.
+2026-01-23T09:52:33Z [29,763ms] [Warning] [omni.fabric.plugin] USD->Fabric: Unhandled array type string[]
+2026-01-23T09:52:33Z [29,851ms] [Warning] [rtx.postprocessing.plugin] DLSS increasing input dimensions: Render resolution of (320, 200) is below minimal input resolution of 300.
+2026-01-23T09:52:33Z [29,992ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-01-23T09:52:33Z [30,244ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-23T09:52:33Z [30,244ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-23T09:52:33Z [30,096ms] [Warning] [omni.hydra] Mesh '/__Prototype_2473107107713145519/link6/Scene/mesh' update topology/point without updating normal, fallback to smooth normal.
+2026-01-23T09:52:34Z [31,308ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-23T09:52:34Z [31,308ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-23T09:52:35Z [32,433ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_target_grasp_object
+2026-01-23T09:52:35Z [32,446ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_target_grasp_object...
+2026-01-23T09:52:35Z [32,494ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-01-23T09:52:35Z [32,494ms] INFO     [motion_gen_reacher.py:254] Original face count: 30568
+2026-01-23T09:52:35Z [32,494ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:36Z [32,790ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:36Z [32,790ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.29521632194519043 seconds
+2026-01-23T09:52:36Z [32,790ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:52:36Z [32,790ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.2961 seconds
+2026-01-23T09:52:36Z [32,790ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_target_grasp_object/body/body (type: mesh)
+2026-01-23T09:52:36Z [32,790ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:52:36Z [32,790ms] INFO     [command_controller.py:1632] Current total cache count: 4
+2026-01-23T09:52:36Z [33,196ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_cup_105
+2026-01-23T09:52:36Z [33,212ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_cup_105...
+2026-01-23T09:52:36Z [33,451ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-01-23T09:52:36Z [33,451ms] INFO     [motion_gen_reacher.py:254] Original face count: 30602
+2026-01-23T09:52:36Z [33,451ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:37Z [33,702ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:37Z [33,702ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.25103759765625 seconds
+2026-01-23T09:52:37Z [33,702ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:52:37Z [33,702ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.2519 seconds
+2026-01-23T09:52:37Z [33,702ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_cup_105/Aligned/body (type: mesh)
+2026-01-23T09:52:37Z [33,702ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:52:37Z [33,702ms] INFO     [command_controller.py:1632] Current total cache count: 5
+2026-01-23T09:52:37Z [34,173ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_beverage_bottle_003
+2026-01-23T09:52:37Z [34,183ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_beverage_bottle_003...
+2026-01-23T09:52:37Z [34,256ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_beverage_bottle_003/Aligned/Scan_Scan_005
+2026-01-23T09:52:37Z [34,256ms] INFO     [motion_gen_reacher.py:254] Original face count: 50000
+2026-01-23T09:52:37Z [34,256ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:38Z [34,721ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:38Z [34,721ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.46529531478881836 seconds
+2026-01-23T09:52:38Z [34,721ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:52:38Z [34,722ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.4666 seconds
+2026-01-23T09:52:38Z [34,722ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_003/Aligned/Scan_Scan_005 (type: mesh)
+2026-01-23T09:52:38Z [34,723ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:52:38Z [34,723ms] INFO     [command_controller.py:1632] Current total cache count: 6
+2026-01-23T09:52:38Z [34,896ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+2026-01-23T09:52:38Z [35,110ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_storage_box_2
+2026-01-23T09:52:38Z [35,118ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_storage_box_2...
+2026-01-23T09:52:38Z [35,124ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-01-23T09:52:38Z [35,124ms] INFO     [motion_gen_reacher.py:254] Original face count: 1590
+2026-01-23T09:52:38Z [35,124ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:38Z [35,133ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:38Z [35,133ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.008918046951293945 seconds
+2026-01-23T09:52:38Z [35,133ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 794 faces
+2026-01-23T09:52:38Z [35,133ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.0091 seconds
+2026-01-23T09:52:38Z [35,133ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_storage_box_2/body/visual (type: mesh)
+2026-01-23T09:52:38Z [35,133ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:52:38Z [35,133ms] INFO     [command_controller.py:1632] Current total cache count: 7
+2026-01-23T09:52:38Z [35,065ms] [Warning] [carb] Client gpu.foundation.plugin has acquired [gpu::unstable::IMemoryBudgetManagerFactory v0.1] 100 times. Consider accessing this interface with carb::getCachedInterface() (Performance warning)
+2026-01-23T09:52:39Z [35,328ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+2026-01-23T09:52:39Z [35,543ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_target_storage_box
+2026-01-23T09:52:39Z [35,551ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_target_storage_box...
+2026-01-23T09:52:39Z [35,556ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-01-23T09:52:39Z [35,556ms] INFO     [motion_gen_reacher.py:254] Original face count: 1590
+2026-01-23T09:52:39Z [35,556ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:39Z [35,566ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:39Z [35,566ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.009221553802490234 seconds
+2026-01-23T09:52:39Z [35,566ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 794 faces
+2026-01-23T09:52:39Z [35,566ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.0094 seconds
+2026-01-23T09:52:39Z [35,566ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_target_storage_box/body/visual (type: mesh)
+2026-01-23T09:52:39Z [35,566ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:52:39Z [35,566ms] INFO     [command_controller.py:1632] Current total cache count: 8
+2026-01-23T09:52:41Z [38,440ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0088s, needs update: True
+2026-01-23T09:52:41Z [38,440ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:52:41Z [38,445ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0045s, needs update: False
+2026-01-23T09:52:41Z [38,445ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:52:44Z [40,740ms] INFO     [command_controller.py:1307] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_agilex_3]_11 --exclude '.*_rgb(?!_)' -a
+                        
+2026-01-23T09:52:47Z [43,835ms] INFO     [command_controller.py:1307] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-01-23T09:52:47Z [43,835ms] INFO     [command_controller.py:1307] noised_probability0.1
+2026-01-23T09:52:47Z [43,836ms] INFO     [command_controller.py:1307] noised_camera_indices[0 1 2]
+2026-01-23T09:52:47Z [43,836ms] INFO     [command_controller.py:1307] noised_camera_prim_list['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera']
+2026-01-23T09:52:47Z [43,836ms] INFO     [command_controller.py:856] ROS domain ID: 2
+2026-01-23T09:52:47Z [43,836ms] INFO     [command_controller.py:1307] tf_target['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_cup_105', '/World/Objects/geniesim_2025_beverage_bottle_003', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/aloha_description/fl_link6', '/aloha_description/fr_link6', '/aloha_description/fl_link6/fl_ee_link', '/aloha_description/fr_link6/fr_ee_link', '/aloha_description']
+2026-01-23T09:52:47Z [43,632ms] [Warning] [omni.timeline.plugin] Deprecated: direct use of ITimeline callbacks is deprecated. Use ITimeline::getTimeline (Python: omni.timeline.get_timeline_interface) instead.
+2026-01-23T09:52:47Z [44,117ms] INFO     [sim_ros_node.py:128] Created node: articulation_action_node, topic: /articulation_action, type: <class 'sensor_msgs.msg._joint_state.JointState'>
+2026-01-23T09:52:47Z [44,117ms] INFO     [command_controller.py:1307] republish camera/aloha_description/body_Link/head_camera
+2026-01-23T09:52:47Z [44,117ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_camera_rgb --remap /out:=/head_camera_rgb_compressed
+                        
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1769161967.600858    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:52:47Z [44,195ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fl_link6/left_wrist_camera
+2026-01-23T09:52:47Z [44,195ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_wrist_camera_rgb --remap /out:=/left_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769161967.679356    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [1769161967.723437923] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:52:47Z [44,273ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fr_link6/right_wrist_camera
+2026-01-23T09:52:47Z [44,273ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_wrist_camera_rgb --remap /out:=/right_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769161967.788121    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [1769161967.797042403] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+[ERROR] [1769161967.872449079] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:52:47Z [44,201ms] [Warning] [omni.syntheticdata.plugin] SdRenderVarPtr missing valid input renderVar DistanceToImagePlaneSD
+2026-01-23T09:52:47Z [44,201ms] [Warning] [omni.timeline.plugin] Deprecated: direct use of ITimeline callbacks is deprecated. Use ITimeline::getTimeline (Python: omni.timeline.get_timeline_interface) instead.
+[ERROR] [1769161967.987739039] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:52:49Z [45,666ms] INFO     [command_controller.py:1140] ik lula time cost0.14718294143676758
+2026-01-23T09:52:49Z [46,174ms] INFO     [command_controller.py:1140] ik lula time cost0.48308372497558594
+2026-01-23T09:52:49Z [46,248ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.2616109848022461
+2026-01-23T09:52:49Z [46,248ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 9
+2026-01-23T09:52:49Z [46,249ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 1.1920928955078125e-06
+2026-01-23T09:52:50Z [46,314ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.06468081474304199
+2026-01-23T09:52:50Z [46,718ms] INFO     [motion_gen_reacher.py:725] kinematic forward time0.0005228519439697266
+2026-01-23T09:52:50Z [46,508ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.25954556465148926
+2026-01-23T09:52:50Z [46,721ms] INFO     [command_controller.py:1140] ik curobo time cost0.5221207141876221
+2026-01-23T09:52:52Z [48,985ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-23T09:52:52Z [48,985ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-23T09:52:53Z [50,419ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_beverage_bottle_002
+2026-01-23T09:52:53Z [50,429ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_beverage_bottle_002...
+2026-01-23T09:52:53Z [50,464ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/2: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-01-23T09:52:53Z [50,464ms] INFO     [motion_gen_reacher.py:254] Original face count: 16498
+2026-01-23T09:52:53Z [50,464ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:54Z [50,655ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:54Z [50,655ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.19049954414367676 seconds
+2026-01-23T09:52:54Z [50,655ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 999 faces
+2026-01-23T09:52:54Z [50,655ms] INFO     [motion_gen_reacher.py:254] Processing mesh 2/2: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-01-23T09:52:54Z [50,655ms] INFO     [motion_gen_reacher.py:254] Original face count: 4320
+2026-01-23T09:52:54Z [50,655ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:52:54Z [50,680ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:52:54Z [50,680ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.024947166442871094 seconds
+2026-01-23T09:52:54Z [50,680ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 999 faces
+2026-01-23T09:52:54Z [50,681ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.2164 seconds
+2026-01-23T09:52:54Z [50,681ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (type: mesh)
+2026-01-23T09:52:54Z [50,681ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (type: mesh)
+2026-01-23T09:52:54Z [50,681ms] INFO     [command_controller.py:1632] Successfully added 2 new obstacles to cache
+2026-01-23T09:52:54Z [50,681ms] INFO     [command_controller.py:1632] Current total cache count: 10
+2026-01-23T09:52:58Z [54,581ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0172s, needs update: True
+2026-01-23T09:52:58Z [54,581ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:52:58Z [54,587ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0056s, needs update: False
+2026-01-23T09:52:58Z [54,587ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:53:00Z [57,001ms] INFO     [command_controller.py:1307] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_agilex_1] --exclude '.*_rgb(?!_)' -a
+                        
+I0000 00:00:1769161980.499412    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:1307] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:1307] noised_probability0.1
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:1307] noised_camera_indices[0 1 2]
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:1307] noised_camera_prim_list['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera']
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:856] ROS domain ID: 3
+2026-01-23T09:53:00Z [57,096ms] INFO     [command_controller.py:1307] tf_target['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_beverage_bottle_002', '/World/Objects/geniesim_2025_beverage_bottle_003', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/aloha_description/fl_link6', '/aloha_description/fr_link6', '/aloha_description/fl_link6/fl_ee_link', '/aloha_description/fr_link6/fr_ee_link', '/aloha_description']
+2026-01-23T09:53:00Z [57,113ms] INFO     [command_controller.py:1307] republish camera/aloha_description/body_Link/head_camera
+2026-01-23T09:53:00Z [57,113ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_camera_rgb --remap /out:=/head_camera_rgb_compressed
+                        
+I0000 00:00:1769161980.596544    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:53:00Z [57,191ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fl_link6/left_wrist_camera
+2026-01-23T09:53:00Z [57,191ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_wrist_camera_rgb --remap /out:=/left_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769161980.675274    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [1769161980.693499003] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:53:00Z [57,270ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fr_link6/right_wrist_camera
+2026-01-23T09:53:00Z [57,270ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_wrist_camera_rgb --remap /out:=/right_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769161980.753845    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [1769161980.784133257] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+[ERROR] [1769161980.865299798] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+[ERROR] [1769161980.961296260] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:53:02Z [58,636ms] INFO     [command_controller.py:1140] ik lula time cost0.12849164009094238
+2026-01-23T09:53:02Z [59,116ms] INFO     [command_controller.py:1140] ik lula time cost0.4484257698059082
+2026-01-23T09:53:02Z [59,203ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.26267075538635254
+2026-01-23T09:53:02Z [59,203ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 15
+2026-01-23T09:53:02Z [59,417ms] INFO     [motion_gen_reacher.py:699] update kinematics lock joints
+2026-01-23T09:53:03Z [59,394ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.19017815589904785
+2026-01-23T09:53:03Z [59,473ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.07906365394592285
+2026-01-23T09:53:03Z [59,687ms] INFO     [motion_gen_reacher.py:725] kinematic forward time0.0005249977111816406
+2026-01-23T09:53:03Z [59,477ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.2738635540008545
+2026-01-23T09:53:03Z [59,690ms] INFO     [command_controller.py:1140] ik curobo time cost0.5374867916107178
+2026-01-23T09:53:05Z [61,959ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-23T09:53:05Z [61,959ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-23T09:53:06Z [63,403ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_pen_006
+2026-01-23T09:53:06Z [63,411ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_pen_006...
+2026-01-23T09:53:06Z [63,416ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_pen_006/body
+2026-01-23T09:53:06Z [63,416ms] INFO     [motion_gen_reacher.py:254] Original face count: 812
+2026-01-23T09:53:06Z [63,416ms] INFO     [motion_gen_reacher.py:254] Face count is within reasonable range, no simplification needed
+2026-01-23T09:53:06Z [63,416ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.0001 seconds
+2026-01-23T09:53:06Z [63,416ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_pen_006/body (type: mesh)
+2026-01-23T09:53:06Z [63,417ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:53:06Z [63,417ms] INFO     [command_controller.py:1632] Current total cache count: 11
+2026-01-23T09:53:07Z [63,816ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_cup_043
+2026-01-23T09:53:07Z [63,826ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_cup_043...
+2026-01-23T09:53:07Z [64,125ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_cup_043/Aligned/body
+2026-01-23T09:53:07Z [64,126ms] INFO     [motion_gen_reacher.py:254] Original face count: 54618
+2026-01-23T09:53:07Z [64,126ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:53:08Z [64,997ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:53:08Z [64,998ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.8719198703765869 seconds
+2026-01-23T09:53:08Z [64,998ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:53:08Z [64,999ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.8734 seconds
+2026-01-23T09:53:08Z [64,999ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_cup_043/Aligned/body (type: mesh)
+2026-01-23T09:53:08Z [64,999ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:53:08Z [64,999ms] INFO     [command_controller.py:1632] Current total cache count: 12
+2026-01-23T09:53:12Z [68,781ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0175s, needs update: True
+2026-01-23T09:53:12Z [68,781ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:53:12Z [68,788ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0066s, needs update: False
+2026-01-23T09:53:12Z [68,788ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:53:14Z [71,237ms] INFO     [command_controller.py:1307] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_agilex_0] --exclude '.*_rgb(?!_)' -a
+                        
+I0000 00:00:1769161994.721149    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:1307] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:1307] noised_probability0.1
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:1307] noised_camera_indices[0 1 2]
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:1307] noised_camera_prim_list['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera']
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:856] ROS domain ID: 4
+2026-01-23T09:53:14Z [71,321ms] INFO     [command_controller.py:1307] tf_target['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_pen_006', '/World/Objects/geniesim_2025_cup_043', '/World/Objects/geniesim_2025_beverage_bottle_003', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/aloha_description/fl_link6', '/aloha_description/fr_link6', '/aloha_description/fl_link6/fl_ee_link', '/aloha_description/fr_link6/fr_ee_link', '/aloha_description']
+2026-01-23T09:53:14Z [71,341ms] INFO     [command_controller.py:1307] republish camera/aloha_description/body_Link/head_camera
+2026-01-23T09:53:14Z [71,341ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_camera_rgb --remap /out:=/head_camera_rgb_compressed
+                        
+I0000 00:00:1769161994.824607    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:53:14Z [71,421ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fl_link6/left_wrist_camera
+2026-01-23T09:53:14Z [71,421ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_wrist_camera_rgb --remap /out:=/left_wrist_camera_rgb_compressed
+                        
+[ERROR] [1769161994.911336855] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+I0000 00:00:1769161994.919529    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-23T09:53:14Z [71,517ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fr_link6/right_wrist_camera
+2026-01-23T09:53:15Z [71,517ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_wrist_camera_rgb --remap /out:=/right_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769161995.000550    3469 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [1769161995.011036656] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+[ERROR] [1769161995.111316247] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+[ERROR] [1769161995.207201723] [rcl]: Error getting RMW implementation identifier / RMW implementation not installed (expected identifier of 'rmw_cyclonedds_cpp'), with error message 'failed to load shared library 'librmw_cyclonedds_cpp.so' due to dlopen error: librmw_cyclonedds_cpp.so: cannot open shared object file: No such file or directory, at ./src/shared_library.c:99, at ./src/functions.cpp:65', exiting with 1., at ./src/rcl/rmw_implementation_identifier_check.c:139
+
+2026-01-23T09:53:16Z [72,867ms] INFO     [command_controller.py:1140] ik lula time cost0.142225980758667
+2026-01-23T09:53:16Z [73,349ms] INFO     [command_controller.py:1140] ik lula time cost0.43604612350463867
+2026-01-23T09:53:17Z [73,463ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.27095913887023926
+2026-01-23T09:53:17Z [73,463ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 14
+2026-01-23T09:53:17Z [73,677ms] INFO     [motion_gen_reacher.py:699] update kinematics lock joints
+2026-01-23T09:53:17Z [73,653ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.1898641586303711
+2026-01-23T09:53:17Z [73,715ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.06171417236328125
+2026-01-23T09:53:17Z [73,930ms] INFO     [motion_gen_reacher.py:725] kinematic forward time0.0005052089691162109
+2026-01-23T09:53:17Z [73,719ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.2561945915222168
+2026-01-23T09:53:17Z [73,933ms] INFO     [command_controller.py:1140] ik curobo time cost0.5285634994506836
+2026-01-23T09:53:19Z [76,236ms] INFO     [command_controller.py:1418] /aloha_description/joints/fl_joint7
+2026-01-23T09:53:19Z [76,236ms] INFO     [command_controller.py:1419] /aloha_description/joints/fr_joint7
+2026-01-23T09:53:21Z [77,987ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_toy_car_018
+2026-01-23T09:53:21Z [77,998ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_toy_car_018...
+2026-01-23T09:53:21Z [78,285ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache
+2026-01-23T09:53:21Z [78,285ms] INFO     [motion_gen_reacher.py:254] Original face count: 44610
+2026-01-23T09:53:21Z [78,285ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:53:22Z [78,761ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:53:22Z [78,761ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.475968599319458 seconds
+2026-01-23T09:53:22Z [78,761ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:53:22Z [78,762ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.4772 seconds
+2026-01-23T09:53:22Z [78,762ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_toy_car_018/Aligned/kache (type: mesh)
+2026-01-23T09:53:22Z [78,762ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:53:22Z [78,762ms] INFO     [command_controller.py:1632] Current total cache count: 13
+2026-01-23T09:53:22Z [78,958ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+2026-01-23T09:53:22Z [79,173ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_mouse_000
+2026-01-23T09:53:22Z [79,189ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_mouse_000...
+2026-01-23T09:53:23Z [80,103ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_mouse_000/body/visual
+2026-01-23T09:53:23Z [80,104ms] INFO     [motion_gen_reacher.py:254] Original face count: 204308
+2026-01-23T09:53:23Z [80,104ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:53:25Z [82,180ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:53:25Z [82,181ms] INFO     [motion_gen_reacher.py:254] Simplification time: 2.0767154693603516 seconds
+2026-01-23T09:53:25Z [82,181ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 999 faces
+2026-01-23T09:53:25Z [82,185ms] INFO     [command_controller.py:1632] Simplified geometry time: 2.0813 seconds
+2026-01-23T09:53:25Z [82,185ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_mouse_000/body/visual (type: mesh)
+2026-01-23T09:53:25Z [82,185ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:53:25Z [82,185ms] INFO     [command_controller.py:1632] Current total cache count: 14
+2026-01-23T09:53:26Z [82,558ms] INFO     [command_controller.py:682]  add rigid body to  /World/Objects/geniesim_2025_snack_000
+2026-01-23T09:53:26Z [82,569ms] INFO     [command_controller.py:1632] Adding obstacles under prim path /World/Objects/geniesim_2025_snack_000...
+2026-01-23T09:53:26Z [82,639ms] INFO     [motion_gen_reacher.py:254] Processing mesh 1/1: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-01-23T09:53:26Z [82,639ms] INFO     [motion_gen_reacher.py:254] Original face count: 49052
+2026-01-23T09:53:26Z [82,639ms] INFO     [motion_gen_reacher.py:254] Starting mesh simplification
+2026-01-23T09:53:26Z [83,032ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-01-23T09:53:26Z [83,032ms] INFO     [motion_gen_reacher.py:254] Simplification time: 0.3935983180999756 seconds
+2026-01-23T09:53:26Z [83,032ms] INFO     [motion_gen_reacher.py:254] Simplification successful: 1000 faces
+2026-01-23T09:53:26Z [83,034ms] INFO     [command_controller.py:1632] Simplified geometry time: 0.3950 seconds
+2026-01-23T09:53:26Z [83,034ms] INFO     [command_controller.py:1632] New obstacle: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005 (type: mesh)
+2026-01-23T09:53:26Z [83,034ms] INFO     [command_controller.py:1632] Successfully added 1 new obstacles to cache
+2026-01-23T09:53:26Z [83,034ms] INFO     [command_controller.py:1632] Current total cache count: 15
+2026-01-23T09:53:30Z [86,601ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0184s, needs update: True
+2026-01-23T09:53:30Z [86,602ms] INFO     [command_controller.py:1018] Detach!!!!!
+2026-01-23T09:53:30Z [86,610ms] INFO     [motion_gen_reacher.py:980] Fast obstacle update completed, time: 0.0079s, needs update: False
+2026-01-23T09:53:30Z [86,610ms] INFO     [command_controller.py:1018] Detach!!!!!
+^C(issac) agxi@agxi:~/RealityLab/genie_sim/source/data_collection$ 
+
+
+
+
+
+
+2026-01-23T09:52:43Z [29,012ms] INFO     [omniagent.py:71] Grasp num after NMS: 119/300
+2026-01-23T09:52:44Z [29,232ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-23T09:52:44Z [29,232ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-23T09:52:44Z [29,232ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-23T09:52:44Z [29,232ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-23T09:52:44Z [29,232ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-23T09:52:48Z [33,995ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json loaded
+2026-01-23T09:52:48Z [33,996ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-23T09:52:48Z [33,996ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-23T09:52:48Z [33,999ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 119
+2026-01-23T09:52:50Z [35,251ms] WARNING  [stage.py:354] pick: No best_grasp_poses can pass curobo IK
+2026-01-23T09:52:50Z [35,251ms] WARNING  [run_data_collection.py:84] Stage 0 pick initialize action sequence buffer failed
+2026-01-23T09:52:50Z [35,251ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json failed
+2026-01-23T09:52:52Z [37,462ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json
+2026-01-23T09:53:00Z [45,235ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 8.39002496e-03, -8.84397174e-02,  9.96046196e-01,
+         2.71117594e+00],
+       [ 9.99964803e-01,  7.20371786e-04, -8.35907031e-03,
+         4.33008704e-01],
+       [ 2.17502397e-05,  9.96081271e-01,  8.84426486e-02,
+         9.94041754e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 8.41207580e-03, -8.84674206e-02,  9.96043549e-01,
+         2.71616710e+00],
+       [ 9.99964617e-01,  7.91487468e-04, -8.37489215e-03,
+         1.03299051e+00],
+       [-4.74508804e-05,  9.96078756e-01,  8.84709484e-02,
+         9.93892696e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-23T09:53:00Z [45,240ms] INFO     [omniagent.py:71] Grasp num after NMS: 119/300
+2026-01-23T09:53:00Z [45,475ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-23T09:53:00Z [45,475ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-23T09:53:00Z [45,475ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-23T09:53:00Z [45,475ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-23T09:53:00Z [45,475ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-23T09:53:01Z [46,984ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json loaded
+2026-01-23T09:53:01Z [46,984ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-23T09:53:01Z [46,985ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-23T09:53:01Z [46,989ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 119
+2026-01-23T09:53:03Z [48,215ms] WARNING  [stage.py:354] pick: No best_grasp_poses can pass curobo IK
+2026-01-23T09:53:03Z [48,216ms] WARNING  [run_data_collection.py:84] Stage 0 pick initialize action sequence buffer failed
+2026-01-23T09:53:03Z [48,216ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json failed
+2026-01-23T09:53:05Z [50,440ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json
+2026-01-23T09:53:14Z [59,375ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 1.46622600e-02, -8.87527686e-02,  9.95945764e-01,
+         2.70949580e+00],
+       [ 9.99892475e-01,  1.06391519e-03, -1.46255535e-02,
+         4.33612993e-01],
+       [ 2.38456538e-04,  9.96053118e-01,  8.87588249e-02,
+         9.94110930e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 1.46934610e-02, -8.87555531e-02,  9.95945056e-01,
+         2.71825969e+00],
+       [ 9.99892039e-01,  1.19279213e-03, -1.46453940e-02,
+         1.03354921e+00],
+       [ 1.11904618e-04,  9.96052724e-01,  8.87634972e-02,
+         9.93956497e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-23T09:53:14Z [59,376ms] INFO     [omniagent.py:71] Grasp num after NMS: 119/300
+2026-01-23T09:53:14Z [59,710ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-23T09:53:14Z [59,710ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-23T09:53:14Z [59,710ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-23T09:53:14Z [59,711ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-23T09:53:14Z [59,711ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-23T09:53:16Z [61,204ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json loaded
+2026-01-23T09:53:16Z [61,204ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-23T09:53:16Z [61,204ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-23T09:53:16Z [61,207ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 119
+2026-01-23T09:53:17Z [62,465ms] WARNING  [stage.py:354] pick: No best_grasp_poses can pass curobo IK
+2026-01-23T09:53:17Z [62,465ms] WARNING  [run_data_collection.py:84] Stage 0 pick initialize action sequence buffer failed
+2026-01-23T09:53:17Z [62,465ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json failed
+2026-01-23T09:53:19Z [64,719ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_6.json
+

@@ -1,0 +1,325 @@
+cu_js
+JointState(position=tensor([[-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04],
+        [-4.0116e-05,  9.2760e-05, -8.5172e-06,  1.8664e-04, -1.8724e-03,
+          1.2748e-04, -3.9510e-05,  9.2221e-05, -1.1011e-05,  1.8537e-04,
+         -1.9992e-03,  1.2858e-04]], device='cuda:0'), velocity=tensor([[-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.],
+        [-0., 0., -0., 0., -0., 0., -0., 0., -0., 0., -0., 0.]],
+       device='cuda:0'), acceleration=tensor([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]], device='cuda:0'), joint_names=['fr_joint1', 'fr_joint2', 'fr_joint3', 'fr_joint4', 'fr_joint5', 'fr_joint6', 'fl_joint1', 'fl_joint2', 'fl_joint3', 'fl_joint4', 'fl_joint5', 'fl_joint6'], jerk=tensor([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]], device='cuda:0'), tensor_args=TensorDeviceType(device=device(type='cuda', index=0), dtype=torch.float32, collision_geometry_dtype=torch.float32, collision_gradient_dtype=torch.float32, collision_distance_dtype=torch.float32), aux_data={})
+
+ik_goal
+Pose(position=tensor([[ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615],
+        [ 0.5099, -0.2560,  0.8615]], device='cuda:0'), quaternion=tensor([[0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647],
+        [0.1385, 0.2521, 0.8374, 0.4647]], device='cuda:0'), rotation=None, batch=10, n_goalset=1, name='ee_link', normalize_rotation=True)
+
+success
+
+
+target_gripper_pose
+array([[-0.83446463,  0.29418313,  0.46596683,  2.72655839],
+       [ 0.55105414,  0.44109565,  0.70836003,  0.54246809],
+       [ 0.00285162,  0.84787429, -0.53018954,  0.83505434],
+       [ 0.        ,  0.        ,  0.        ,  1.        ]])
+
+
+
+
+===================================================================
+
+client
+
+2026-01-28T07:00:14Z [26,040ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json
+2026-01-28T07:00:26Z [38,407ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 4.11798925e-03, -8.82005036e-02,  9.96094229e-01,
+         2.52129954e+00],
+       [ 9.99991497e-01,  5.82333630e-04, -4.08253757e-03,
+         4.42165815e-01],
+       [-2.19977298e-04,  9.96102571e-01,  8.82021517e-02,
+         9.93990655e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 4.07960242e-03, -8.80881851e-02,  9.96104326e-01,
+         2.52370297e+00],
+       [ 9.99991653e-01,  5.85236454e-04, -4.04376915e-03,
+         1.04218347e+00],
+       [-2.26748278e-04,  9.96112508e-01,  8.80898374e-02,
+         9.93802616e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-28T07:00:26Z [38,711ms] INFO     [omniagent.py:71] Grasp num after NMS: 577/48900
+2026-01-28T07:00:27Z [38,927ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-28T07:00:27Z [38,927ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-28T07:00:27Z [38,928ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-28T07:00:27Z [38,928ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-28T07:00:27Z [38,928ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-28T07:00:28Z [40,665ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json loaded
+2026-01-28T07:00:28Z [40,665ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-28T07:00:28Z [40,665ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-28T07:00:28Z [40,666ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 300
+2026-01-28T07:00:30Z [42,899ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-28T07:00:30Z [42,899ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-28T07:00:31Z [43,370ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:31Z [43,371ms] INFO     [omni_robot.py:217] target_position is[ 0.64214351 -0.08302431  0.86940308]
+2026-01-28T07:00:31Z [43,371ms] INFO     [omni_robot.py:217] target_rotation is[-0.03338285 -0.16516782 -0.84946094 -0.50002129]
+2026-01-28T07:00:38Z [49,917ms] INFO     [omni_robot.py:217] move! (array([2.74053147, 0.6572687 , 0.86940308]), array([-0.03338285, -0.16516782, -0.84946094, -0.50002129]), True)
+2026-01-28T07:00:38Z [49,918ms] INFO     [omni_robot.py:217] Yaw: -173.4403550632239, Pitch: 18.299941611098905, Roll: -62.02267641177551
+2026-01-28T07:00:38Z [50,384ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-28T07:00:38Z [50,384ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:00:38Z [50,644ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-28T07:00:38Z [50,882ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:38Z [50,883ms] INFO     [omni_robot.py:217] target_position is[ 0.65323942 -0.04110024  0.84451623]
+2026-01-28T07:00:38Z [50,883ms] INFO     [omni_robot.py:217] target_rotation is[-0.0333822  -0.16516566 -0.84946195 -0.50002033]
+2026-01-28T07:00:39Z [51,310ms] INFO     [omni_robot.py:217] move! (array([2.75162738, 0.69919278, 0.84451623]), array([-0.0333822 , -0.16516566, -0.84946195, -0.50002033]), False)
+2026-01-28T07:00:39Z [51,310ms] INFO     [omni_robot.py:217] Yaw: -173.44045185400614, Pitch: 18.299697563343983, Roll: -62.022490225153284
+2026-01-28T07:00:39Z [51,310ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:00:39Z [51,736ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-28T07:00:39Z [51,736ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-28T07:00:40Z [52,039ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:40Z [52,039ms] INFO     [omni_robot.py:217] target_position is[ 0.67122445 -0.09027409  0.85146343]
+2026-01-28T07:00:40Z [52,039ms] INFO     [omni_robot.py:217] target_rotation is[-0.03338409 -0.16516944 -0.84946098 -0.50002061]
+2026-01-28T07:00:46Z [58,742ms] INFO     [omni_robot.py:217] move! (array([2.76961241, 0.65001893, 0.85146343]), array([-0.03338409, -0.16516944, -0.84946098, -0.50002061]), True)
+2026-01-28T07:00:46Z [58,742ms] INFO     [omni_robot.py:217] Yaw: -173.44038949553251, Pitch: 18.300181155102674, Roll: -62.02261393720526
+2026-01-28T07:00:47Z [59,194ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 0] success
+2026-01-28T07:00:47Z [59,194ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:00:47Z [59,430ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 1: pick
+2026-01-28T07:00:47Z [59,697ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:47Z [59,698ms] INFO     [omni_robot.py:217] target_position is[ 0.68232076 -0.04835249  0.82657692]
+2026-01-28T07:00:47Z [59,698ms] INFO     [omni_robot.py:217] target_rotation is[-0.03338427 -0.16517032 -0.84946048 -0.50002114]
+2026-01-28T07:00:47Z [59,867ms] INFO     [omni_robot.py:217] move! (array([2.78070873, 0.69194053, 0.82657692]), array([-0.03338427, -0.16517032, -0.84946048, -0.50002114]), False)
+2026-01-28T07:00:47Z [59,868ms] INFO     [omni_robot.py:217] Yaw: -173.44033709087472, Pitch: 18.3002743580244, Roll: -62.02271079100915
+2026-01-28T07:00:47Z [59,868ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:00:48Z [60,150ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-28T07:00:48Z [60,150ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-28T07:00:48Z [60,438ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:48Z [60,439ms] INFO     [omni_robot.py:217] target_position is[ 0.66280456 -0.0907826   0.85596367]
+2026-01-28T07:00:48Z [60,439ms] INFO     [omni_robot.py:217] target_rotation is[ 0.43138525 -0.87298662  0.20015157 -0.10835347]
+2026-01-28T07:00:55Z [67,043ms] INFO     [omni_robot.py:217] move! (array([2.76119253, 0.64951041, 0.85596367]), array([ 0.43138525, -0.87298662,  0.20015157, -0.10835347]), True)
+2026-01-28T07:00:55Z [67,043ms] INFO     [omni_robot.py:217] Yaw: -1.0543587678226967, Pitch: -26.291836765085993, Roll: -127.65380949166243
+2026-01-28T07:00:55Z [67,452ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 3 step_id 0] success
+2026-01-28T07:00:55Z [67,452ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:00:55Z [67,722ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 1: pick
+2026-01-28T07:00:56Z [68,010ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:56Z [68,011ms] INFO     [omni_robot.py:217] target_position is[ 0.68089952 -0.05529378  0.82574702]
+2026-01-28T07:00:56Z [68,011ms] INFO     [omni_robot.py:217] target_rotation is[ 0.43138563 -0.87298588  0.20015362 -0.10835415]
+2026-01-28T07:00:56Z [68,435ms] INFO     [omni_robot.py:217] move! (array([2.77928748, 0.68499924, 0.82574702]), array([ 0.43138563, -0.87298588,  0.20015362, -0.10835415]), False)
+2026-01-28T07:00:56Z [68,435ms] INFO     [omni_robot.py:217] Yaw: -1.0543032311128204, Pitch: -26.29209012387876, Roll: -127.65372000144123
+2026-01-28T07:00:56Z [68,435ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:00:56Z [68,765ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-28T07:00:56Z [68,765ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-28T07:00:57Z [69,032ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:00:57Z [69,033ms] INFO     [omni_robot.py:217] target_position is[ 0.64999872 -0.0734769   0.8680499 ]
+2026-01-28T07:00:57Z [69,033ms] INFO     [omni_robot.py:217] target_rotation is[ 0.49961868 -0.81759235  0.24410163 -0.14946005]
+2026-01-28T07:01:04Z [76,227ms] INFO     [omni_robot.py:217] move! (array([2.74838668, 0.66681612, 0.8680499 ]), array([ 0.49961868, -0.81759235,  0.24410163, -0.14946005]), True)
+2026-01-28T07:01:04Z [76,227ms] INFO     [omni_robot.py:217] Yaw: -0.032844388131773934, Pitch: -33.263984102337815, Roll: -117.15283193047581
+2026-01-28T07:01:04Z [76,813ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 4 step_id 0] success
+2026-01-28T07:01:04Z [76,813ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:01:05Z [77,084ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 1: pick
+2026-01-28T07:01:05Z [77,356ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:01:05Z [77,357ms] INFO     [omni_robot.py:217] target_position is[ 0.67441568 -0.03627785  0.84524562]
+2026-01-28T07:01:05Z [77,357ms] INFO     [omni_robot.py:217] target_rotation is[ 0.49961892 -0.81759132  0.24410396 -0.14946109]
+2026-01-28T07:01:05Z [77,805ms] INFO     [omni_robot.py:217] move! (array([2.77280364, 0.70401517, 0.84524562]), array([ 0.49961892, -0.81759132,  0.24410396, -0.14946109]), False)
+2026-01-28T07:01:05Z [77,805ms] INFO     [omni_robot.py:217] Yaw: -0.03277239862815936, Pitch: -33.264286973645795, Roll: -117.15272187806589
+2026-01-28T07:01:05Z [77,805ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:01:06Z [78,091ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-28T07:01:06Z [78,091ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-28T07:01:06Z [78,091ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json failed
+2026-01-28T07:01:08Z [80,411ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json
+2026-01-28T07:01:16Z [88,690ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 1.99355764e-02, -8.31332105e-02,  9.96339020e-01,
+         2.51211024e+00],
+       [ 9.99801213e-01,  1.98420461e-03, -1.98392915e-02,
+         4.49167861e-01],
+       [-3.27636478e-04,  9.96536468e-01,  8.31562410e-02,
+         9.92879187e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 1.99988044e-02, -8.19269072e-02,  9.96437670e-01,
+         2.52424201e+00],
+       [ 9.99799945e-01,  1.98122455e-03, -1.99033904e-02,
+         1.04904278e+00],
+       [-3.43543563e-04,  9.96636371e-01,  8.19501394e-02,
+         9.92397094e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-28T07:01:17Z [88,958ms] INFO     [omniagent.py:71] Grasp num after NMS: 577/48900
+2026-01-28T07:01:17Z [89,257ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-28T07:01:17Z [89,258ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-28T07:01:17Z [89,258ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-28T07:01:17Z [89,258ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-28T07:01:17Z [89,258ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-28T07:01:21Z [93,749ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json loaded
+2026-01-28T07:01:21Z [93,750ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-28T07:01:21Z [93,750ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-28T07:01:21Z [93,751ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 300
+2026-01-28T07:01:24Z [96,064ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-28T07:01:24Z [96,064ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-28T07:01:24Z [96,336ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-28T07:01:24Z [96,336ms] INFO     [omni_robot.py:217] target_position is[0.5595788  0.33219681 0.8598229 ]
+2026-01-28T07:01:24Z [96,336ms] INFO     [omni_robot.py:217] target_rotation is[-0.29140251  0.4681118  -0.68952022  0.46959321]
+2026-01-28T07:01:31Z [103,020ms] INFO     [omni_robot.py:217] move! (array([2.65796676, 1.07248982, 0.8598229 ]), array([-0.29140251,  0.4681118 , -0.68952022,  0.46959321]), True)
+2026-01-28T07:01:31Z [103,020ms] INFO     [omni_robot.py:217] Yaw: -174.49252765429117, Pitch: -66.81324567694871, Roll: 72.14712931075164
+2026-01-28T07:01:31Z [103,442ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-28T07:01:31Z [103,443ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:01:31Z [103,699ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-28T07:01:32Z [103,950ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-28T07:01:32Z [103,951ms] INFO     [omni_robot.py:217] target_position is[0.60165524 0.31345748 0.84036622]
+2026-01-28T07:01:32Z [103,951ms] INFO     [omni_robot.py:217] target_rotation is[-0.29140206  0.46811137 -0.68952047  0.46959355]
+2026-01-28T07:01:38Z [110,109ms] INFO     [omni_robot.py:217] move! (array([2.7000432 , 1.0537505 , 0.84036622]), array([-0.29140206,  0.46811137, -0.68952047,  0.46959355]), True)
+2026-01-28T07:01:38Z [110,110ms] INFO     [omni_robot.py:217] Yaw: -174.49249219043332, Pitch: -66.81316083660313, Roll: 72.14716483920088
+2026-01-28T07:01:40Z [112,912ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 1] success
+2026-01-28T07:01:40Z [112,912ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:01:41Z [113,250ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 2: pick
+2026-01-28T07:01:41Z [113,465ms] INFO     [omni_robot.py:217] robot: armleft
+2026-01-28T07:01:41Z [113,466ms] INFO     [omni_robot.py:217] target_position is[0.60165693 0.31345646 0.84036616]
+2026-01-28T07:01:41Z [113,466ms] INFO     [omni_robot.py:217] target_rotation is[-0.29140098  0.46810958 -0.68952169  0.46959422]
+2026-01-28T07:01:42Z [113,953ms] INFO     [omni_robot.py:217] move! (array([2.70004489, 1.05374947, 0.84036616]), array([-0.29140098,  0.46810958, -0.68952169,  0.46959422]), False)
+2026-01-28T07:01:42Z [113,953ms] INFO     [omni_robot.py:217] Yaw: -174.49259414590614, Pitch: -66.81287670385318, Roll: 72.1470604753859
+2026-01-28T07:01:42Z [113,953ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:01:42Z [114,013ms] INFO     [run_data_collection.py:84] stage finish: 0, checker: {'checker_name': 'distance_to_target', 'params': {'object_id': '/World/Objects/geniesim_2025_target_grasp_object', 'rule': 'lessThan', 'target_id': 'left', 'value': 0.08}}, status: success
+2026-01-28T07:01:42Z [114,013ms] INFO     [run_data_collection.py:84] Stage 0 pick failed due to no more action sequence
+2026-01-28T07:01:42Z [114,013ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-28T07:01:42Z [114,013ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json failed
+
+
+
+
+
+
+2026-01-28T07:15:07Z [41,321ms] INFO     [omniagent.py:71] Grasp num after NMS: 103/165
+2026-01-28T07:15:07Z [41,690ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-28T07:15:07Z [41,690ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-28T07:15:07Z [41,690ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-28T07:15:07Z [41,690ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-28T07:15:07Z [41,690ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-28T07:15:09Z [43,521ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json loaded
+2026-01-28T07:15:09Z [43,522ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-28T07:15:09Z [43,522ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-28T07:15:09Z [43,522ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 56
+2026-01-28T07:15:10Z [44,018ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-28T07:15:10Z [44,018ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-28T07:15:10Z [44,343ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:15:13Z [47,299ms] INFO     [omni_robot.py:217] move! (array([2.74994443, 0.59921803, 0.85668424]), array([-0.2523511 ,  0.51821063, -0.68241092,  0.44954644]), True)
+2026-01-28T07:15:13Z [47,299ms] INFO     [omni_robot.py:217] Yaw: -160.0944780136251, Pitch: -69.09161536926905, Roll: 80.52764323541902
+2026-01-28T07:15:13Z [47,746ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 1 step_id 0] success
+2026-01-28T07:15:13Z [47,746ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:15:14Z [48,038ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 1: pick
+2026-01-28T07:15:14Z [48,289ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:15:17Z [51,701ms] INFO     [omni_robot.py:217] move! (array([2.78925978, 0.59704782, 0.83326512]), array([-0.1772181 ,  0.40250119, -0.75648905,  0.48405666]), True)
+2026-01-28T07:15:17Z [51,701ms] INFO     [omni_robot.py:217] Yaw: -168.78848085323287, Pitch: -51.310291406016574, Roll: 70.626318468187
+2026-01-28T07:15:21Z [54,913ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-28T07:15:21Z [55,172ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-28T07:15:21Z [55,172ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-28T07:15:21Z [55,493ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:15:24Z [58,221ms] INFO     [omni_robot.py:217] move! (array([2.74793402, 0.57729632, 0.90813298]), array([-0.41039064, -0.48451496, -0.58184518, -0.50821349]), True)
+2026-01-28T07:15:24Z [58,221ms] INFO     [omni_robot.py:217] Yaw: -175.59825761469278, Pitch: 78.800696992249, Roll: -85.88752202430932
+2026-01-28T07:15:24Z [58,660ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 0] success
+2026-01-28T07:15:24Z [58,660ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:15:25Z [58,956ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 1: pick
+2026-01-28T07:15:25Z [59,226ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:15:26Z [60,384ms] INFO     [omni_robot.py:217] move! (array([2.79643635, 0.58698254, 0.90080312]), array([-0.41039042, -0.48451485, -0.58184515, -0.50821382]), True)
+2026-01-28T07:15:26Z [60,385ms] INFO     [omni_robot.py:217] Yaw: -175.5981267367815, Pitch: 78.8006610962808, Roll: -85.88766734460074
+2026-01-28T07:15:29Z [63,110ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 1] success
+2026-01-28T07:15:29Z [63,110ms] INFO     [omniagent.py:923] jump to next action
+2026-01-28T07:15:29Z [63,481ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 2: pick
+2026-01-28T07:15:29Z [63,745ms] INFO     [omni_robot.py:217] robot: armright
+2026-01-28T07:15:29Z [63,777ms] INFO     [omni_robot.py:217] move! (array([2.82362773, 0.5809021 , 0.90100832]), array([-0.09519875, -0.12299656, -0.74936063, -0.6436363 ]), True)
+2026-01-28T07:15:29Z [63,777ms] INFO     [omni_robot.py:217] Yaw: -179.05759372232603, Pitch: 17.871563630395713, Roll: -81.46766656693484
+2026-01-28T07:15:32Z [66,493ms] INFO     [grasp.py:634] currently simple_check_completion is not supported with goal_offset
+2026-01-28T07:15:32Z [66,527ms] INFO     [omniagent.py:923] action_stages: 0, antion: pick, [stage 2 step_id 2] success
+2026-01-28T07:15:32Z [66,527ms] INFO     [omniagent.py:923] 
+
+2026-01-28T07:15:32Z [66,875ms] INFO     [run_data_collection.py:84] stage finish: 0, checker: {'checker_name': 'distance_to_target', 'params': {'object_id': '/World/Objects/geniesim_2025_target_grasp_object', 'rule': 'lessThan', 'target_id': 'right', 'value': 0.08}}, status: success
+2026-01-28T07:15:33Z [67,875ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 1 action_text: 将{物体}放入蓝色收纳盒中
+2026-01-28T07:15:33Z [67,875ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 1 english_action_text: Place the {object} into the blue storage box
+Traceback (most recent call last):
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/scripts/run_data_collection.py", line 84, in <module>
+    agent.run(
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/client/agent/omniagent.py", line 901, in run
+    if not stage.initialize_action_sequence_buffer(objects, self.robot):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/client/planner/action/stage.py", line 354, in initialize_action_sequence_buffer
+    for poses in self.select_pose(objects, robot):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/client/planner/action/place.py", line 303, in select_pose
+    idx_sorted = sorted_by_joint_pos_dist(robot, arm, ik_joint_positions, ik_joint_names, ik_jacobian_score)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/client/planner/func/common.py", line 61, in sorted_by_joint_pos_dist
+    weighted_sq_diff = (diff**2) * joint_weights  # Apply weights
+                       ~~~~~~~~~~^~~~~~~~~~~~~~~
+ValueError: operands could not be broadcast together with shapes (13,6) (7,) 
+
+
+
+
+
+
+
+
+
+
+
+
+

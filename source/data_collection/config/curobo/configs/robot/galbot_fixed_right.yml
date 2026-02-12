@@ -1,0 +1,308 @@
+robot_cfg:
+  kinematics:
+    use_usd_kinematics: False
+    urdf_path: "/home/agxi/Documents/assets/robots/isaac_sim_galbot_one_golf/galbot_one_golf.urdf"
+    # asset_root_path: null
+    isaac_usd_path: "/home/agxi/Documents/assets/robots/urdf_ws/src/galbot_one_golf_description/sim_ready/galbot_one_golf/usdv2/galbot_fixed.usda"
+
+    usd_path: "/home/agxi/Documents/assets/robots/urdf_ws/src/galbot_one_golf_description/sim_ready/galbot_one_golf/usdv2/galbot_fixed.usda"
+    usd_robot_root: "/galbot_one_golf"
+
+    base_link: "base_link"
+    # base_link: "torso_base_link"
+    ee_link: "right_gripper_tcp_link"
+
+    collision_link_names: [
+      "torso_base_link", 
+      "left_arm_link1", "left_arm_link2", "left_arm_link3", "left_arm_link4", "left_arm_link5", "left_arm_link6", "left_arm_link7", 
+      "left_gripper_flange_link", "left_gripper_base_link", 
+      "left_gripper_l_inner_knuckle_link", "left_gripper_l_knuckle_link", "left_gripper_l_finger_link", "left_gripper_r_inner_knuckle_link", "left_gripper_r_knuckle_link", "left_gripper_r_finger_link", 
+      "right_arm_link1", "right_arm_link2", "right_arm_link3", "right_arm_link4", "right_arm_link5", "right_arm_link6", "right_arm_link7", 
+      "right_gripper_flange_link", "right_gripper_base_link", 
+      "right_gripper_l_inner_knuckle_link", "right_gripper_l_knuckle_link", "right_gripper_l_finger_link", "right_gripper_r_inner_knuckle_link", "right_gripper_r_knuckle_link", "right_gripper_r_finger_link", 
+    ]
+
+    collision_spheres:
+      torso_base_link:
+        - "center": [0.0, 0.14, 0.0]
+          "radius": 0.14
+        - "center": [0.0, 0.06, 0.0]
+          "radius": 0.13
+        - "center": [0.0, -0.02, 0.0]
+          "radius": 0.11
+        - "center": [-0.06, 0.18, 0.0]
+          "radius": 0.11
+        - "center": [0.06, 0.18, 0.0]
+          "radius": 0.11
+      right_arm_link1:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.05
+      right_arm_link2:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.08
+        - "center": [0.0, -0.12, 0.0]
+          "radius": 0.07
+      right_arm_link3:
+        - "center": [0.0, 0.0, -0.156]
+          "radius": 0.047
+        - "center": [0.01955, 0.005, -0.09]
+          "radius": 0.035
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.07
+      right_arm_link4:
+        - "center": [0.0, -0.0965, 0.0]
+          "radius": 0.042
+      right_arm_link5:
+        - "center": [0.0, 0.0, -0.192]
+          "radius": 0.056
+        - "center": [0.0, 0.0, -0.1]
+          "radius": 0.07
+      right_arm_link6:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.06
+      right_arm_link7:
+        - "center": [-0.068, 0.0, -0.068]
+          "radius": 0.027
+        - "center": [-0.074, 0.0, 0.0]
+          "radius": 0.04
+        - "center": [-0.055, 0.0, 0.045]
+          "radius": 0.02
+        - "center": [0.0, 0.0, 0.04]
+          "radius": 0.03
+      left_arm_link1:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.06
+      left_arm_link2:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.08
+        - "center": [0.0, 0.12, 0.0]
+          "radius": 0.07
+      left_arm_link3:
+        - "center": [0.0, 0.0, -0.156]
+          "radius": 0.047
+        - "center": [0.01955, -0.005, -0.09]
+          "radius": 0.035
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.07
+      left_arm_link4:
+        - "center": [0.0, 0.0965, 0.0]
+          "radius": 0.042
+      left_arm_link5:
+        - "center": [0.0, 0.0, -0.192]
+          "radius": 0.056
+        - "center": [0.0, 0.0, -0.1]
+          "radius": 0.07
+      left_arm_link6:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.06
+      left_arm_link7:
+        - "center": [-0.068, 0.0, -0.068]
+          "radius": 0.027
+        - "center": [-0.074, 0.0, 0.0]
+          "radius": 0.04
+        - "center": [-0.055, 0.0, 0.045]
+          "radius": 0.02
+        - "center": [0.0, 0.0, 0.04]
+          "radius": 0.03
+      right_gripper_flange_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.01
+      right_gripper_base_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.05
+      right_gripper_l_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      right_gripper_l_inner_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      right_gripper_l_finger_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.02, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.04, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.06, 0.0, 0.0]
+          "radius": 0.01
+      right_gripper_r_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      right_gripper_r_inner_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      right_gripper_r_finger_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.02, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.04, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.06, 0.0, 0.0]
+          "radius": 0.01
+      left_gripper_flange_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.01
+      left_gripper_base_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.05
+      left_gripper_l_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      left_gripper_l_inner_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      left_gripper_l_finger_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.02, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.04, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.06, 0.0, 0.0]
+          "radius": 0.01
+      left_gripper_r_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      left_gripper_r_inner_knuckle_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.005
+      left_gripper_r_finger_link:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.02, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.04, 0.0, 0.0]
+          "radius": 0.015
+        - "center": [0.06, 0.0, 0.0]
+          "radius": 0.01
+
+
+    collision_sphere_buffer: 0.004
+    extra_collision_spheres: {
+      "attached_object": 4,
+      "left_attached_object": 4}
+
+    self_collision_ignore:
+      {
+        "torso_base_link": ['left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link1": ['torso_base_link', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link2": ['torso_base_link', 'left_arm_link1', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link3": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link4": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link5": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link6": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_arm_link7": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_flange_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_base_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_l_inner_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_l_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_l_finger_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_r_inner_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_r_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "left_gripper_r_finger_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link1": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link2": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link3": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link4": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link5": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link6": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_arm_link7": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_flange_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_base_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_l_inner_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_l_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_l_finger_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_r_inner_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_r_knuckle_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_finger_link'],
+        "right_gripper_r_finger_link": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link'],
+      }
+    self_collision_buffer:
+      {
+        "torso_base_link": 0.0,
+        "left_arm_link1": 0.0,
+        "left_arm_link2": 0.0,
+        "left_arm_link3": 0.0,
+        "left_arm_link4": 0.0,
+        "left_arm_link5": 0.0,
+        "left_arm_link6": 0.0,
+        "left_arm_link7": 0.0,
+        "left_gripper_flange_link": 0.0,
+        "left_gripper_base_link": 0.0,
+        "left_gripper_l_inner_knuckle_link": 0.0,
+        "left_gripper_l_knuckle_link": 0.0,
+        "left_gripper_l_finger_link": 0.0,
+        "left_gripper_r_inner_knuckle_link": 0.0,
+        "left_gripper_r_knuckle_link": 0.0,
+        "left_gripper_r_finger_link": 0.0,
+        "right_arm_link1": 0.0,
+        "right_arm_link2": 0.0,
+        "right_arm_link3": 0.0,
+        "right_arm_link4": 0.0,
+        "right_arm_link5": 0.0,
+        "right_arm_link6": 0.0,
+        "right_arm_link7": 0.0,
+        "right_gripper_flange_link": 0.0,
+        "right_gripper_base_link": 0.0,
+        "right_gripper_l_inner_knuckle_link": 0.0,
+        "right_gripper_l_knuckle_link": 0.0,
+        "right_gripper_l_finger_link": 0.0,
+        "right_gripper_r_inner_knuckle_link": 0.0,
+        "right_gripper_r_knuckle_link": 0.0,
+        "right_gripper_r_finger_link": 0.0,
+      }
+    use_global_cumul: True
+
+    extra_links: {
+      "attached_object":{
+          "parent_link_name": "right_arm_link7",
+          "link_name": "attached_object",
+          # "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
+          "fixed_transform": [0,0,0,1,0,0,0],
+          "joint_type": "FIXED",
+          "joint_name": "attach_joint"
+        },
+        "left_attached_object": {
+          "parent_link_name": "left_arm_link7",
+          "link_name": "left_attached_object",
+          # "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
+          "fixed_transform": [0,0,0,1,0,0,0],
+          "joint_type": "FIXED",
+          "joint_name": "left_attach_joint"
+        }
+    }
+    lock_joints: {
+      "leg_joint1": 0.5236, "leg_joint2": 1.0821, "leg_joint3": 0.6109, "leg_joint4": 0.0, "leg_joint5": 0.0,
+      # "head_joint1": 0.0, "head_joint2": 0.0,
+      # "right_arm_joint1": -1.932, "right_arm_joint2": 1.365, "right_arm_joint3": 0.6109, "right_arm_joint4": 2.4784, "right_arm_joint5": 0.173, "right_arm_joint6": 0.039, "right_arm_joint7": 0.0,
+      "left_arm_joint1": 1.932, "left_arm_joint2": -1.365, "left_arm_joint3": -0.6109, "left_arm_joint4": -2.4784, "left_arm_joint5": -0.173, "left_arm_joint6": -0.039, "left_arm_joint7": 0.0,
+      "left_gripper_r_knuckle_joint": 0.0, "right_gripper_r_knuckle_joint": 0.0
+    }
+
+    cspace:
+      joint_names: [
+        "leg_joint1", "leg_joint2", "leg_joint3", "leg_joint4", "leg_joint5", 
+        "head_joint1", "head_joint2",
+        # "left_arm_joint1", "left_arm_joint2", "left_arm_joint3", "left_arm_joint4", "left_arm_joint5", "left_arm_joint6", "left_arm_joint7",
+        "right_arm_joint1", "right_arm_joint2", "right_arm_joint3", "right_arm_joint4", "right_arm_joint5", "right_arm_joint6", "right_arm_joint7"
+      ]
+      retract_config: [
+        0.5236, 1.0821, 0.6109, 0.0, 0.0,
+        0.0, 0.0,
+        # 1.932, -1.365, -0.6109, -2.4784, -0.173, -0.039, 0.0,
+        -1.932, 1.365, 0.6109, 2.4784, 0.173, 0.039, 0.0
+      ]
+      null_space_weight: [
+        1.0, 1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+        # 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,        
+      ]
+      cspace_distance_weight: [
+        1.0, 1.0, 1.0, 1.0, 1.0,
+        1.0, 1.0,
+        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+        # 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+      ]
+      max_acceleration: 3.0
+      max_jerk: 100.0

@@ -1,5 +1,5 @@
 {
-    "G2":{
+    "G2": {
         "joint_state_order": [
             "idx21_arm_l_joint1",
             "idx22_arm_l_joint2",
@@ -127,7 +127,7 @@
             "idx89_gripper_r_outer_joint0"
         ]
     },
-    "G1":{
+    "G1": {
         "joint_state_order": [
             "idx01_body_joint1",
             "idx02_body_joint2",
@@ -162,7 +162,8 @@
             "idx39_gripper_l_inner_joint0",
             "idx49_gripper_l_outer_joint0",
             "idx79_gripper_r_inner_joint0",
-            "idx89_gripper_r_outer_joint0"],
+            "idx89_gripper_r_outer_joint0"
+        ],
         "arm_joint_names": [
             "idx21_arm_l_joint1",
             "idx22_arm_l_joint2",
@@ -224,6 +225,120 @@
             "idx53_gripper_l_outer_joint0",
             "idx94_gripper_r_inner_joint0",
             "idx93_gripper_r_outer_joint0"
+        ]
+    },
+    "AgileX": {
+        "joint_state_order": [
+            "fl_joint1",
+            "fl_joint2",
+            "fl_joint3",
+            "fl_joint4",
+            "fl_joint5",
+            "fl_joint6",
+            "fr_joint1",
+            "fr_joint2",
+            "fr_joint3",
+            "fr_joint4",
+            "fr_joint5",
+            "fr_joint6",
+            "fl_joint7",
+            "fl_joint8",
+            "fr_joint7",
+            "fr_joint8"
+        ],
+        "arm_joint_names": [
+            "fl_joint1",
+            "fl_joint2",
+            "fl_joint3",
+            "fl_joint4",
+            "fl_joint5",
+            "fl_joint6",
+            "fr_joint1",
+            "fr_joint2",
+            "fr_joint3",
+            "fr_joint4",
+            "fr_joint5",
+            "fr_joint6"
+        ],
+        "left_effector_joint_name": "fl_joint7",
+        "right_effector_joint_name": "fr_joint7",
+        "waist_joint_names": [],
+        "head_joint_names": [],
+        "dof_order": [
+            "fl_joint1",
+            "fl_joint2",
+            "fl_joint3",
+            "fl_joint4",
+            "fl_joint5",
+            "fl_joint6",
+            "fr_joint1",
+            "fr_joint2",
+            "fr_joint3",
+            "fr_joint4",
+            "fr_joint5",
+            "fr_joint6",
+            "fl_joint7",
+            "fl_joint8",
+            "fr_joint7",
+            "fr_joint8"
+        ]
+    },
+    "galbot": {
+        "joint_state_order": [
+            "left_arm_joint1",
+            "left_arm_joint2",
+            "left_arm_joint3",
+            "left_arm_joint4",
+            "left_arm_joint5",
+            "left_arm_joint6",
+            "left_arm_joint7",
+            "right_arm_joint1",
+            "right_arm_joint2",
+            "right_arm_joint3",
+            "right_arm_joint4",
+            "right_arm_joint5",
+            "right_arm_joint6",
+            "right_arm_joint7",
+            "left_gripper_r_knuckle_joint",
+            "right_gripper_r_knuckle_joint"
+        ],
+        "arm_joint_names": [
+            "left_arm_joint1",
+            "left_arm_joint2",
+            "left_arm_joint3",
+            "left_arm_joint4",
+            "left_arm_joint5",
+            "left_arm_joint6",
+            "left_arm_joint7",
+            "right_arm_joint1",
+            "right_arm_joint2",
+            "right_arm_joint3",
+            "right_arm_joint4",
+            "right_arm_joint5",
+            "right_arm_joint6",
+            "right_arm_joint7"
+        ],
+        "left_effector_joint_name": "left_gripper_r_knuckle_joint",
+        "right_effector_joint_name": "right_gripper_r_knuckle_joint",
+        "waist_joint_names": [],
+        "head_joint_names": [],
+        "dof_order": [
+            "left_arm_joint1",
+            "left_arm_joint2",
+            "left_arm_joint3",
+            "left_arm_joint4",
+            "left_arm_joint5",
+            "left_arm_joint6",
+            "left_arm_joint7",
+            "right_arm_joint1",
+            "right_arm_joint2",
+            "right_arm_joint3",
+            "right_arm_joint4",
+            "right_arm_joint5",
+            "right_arm_joint6",
+            "right_arm_joint7",
+            "left_gripper_r_knuckle_joint",
+            "right_gripper_r_knuckle_joint"
         ]
     }
 }

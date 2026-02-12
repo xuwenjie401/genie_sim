@@ -1,0 +1,61 @@
+2026-02-02T13:07:20Z [477,736ms] INFO     [command_controller.py:430] ReachedTrue
+[INFO] [1770037642.611168346] [rclcpp]: signal_handler(signum=2)
+2026-02-02T13:07:22Z [479,765ms] INFO     [command_controller.py:1345] Sent SIGINT to process group 15902
+[INFO] [1770037642.611288675] [rclcpp]: signal_handler(signum=2)
+2026-02-02T13:07:22Z [479,765ms] INFO     [command_controller.py:1345] Sent SIGINT to process group 15944
+[INFO] [1770037642.611327891] [rclcpp]: signal_handler(signum=2)
+2026-02-02T13:07:22Z [479,765ms] INFO     [command_controller.py:1345] Sent SIGINT to process group 15987
+[INFO] [1770037642.611347727] [rclcpp]: signal_handler(signum=2)
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault
+I0000 00:00:1770037647.179215   12461 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-02T13:07:27Z [484,425ms] INFO     [command_controller.py:1353] Extract process started
+2026-02-02T13:07:27Z [484,563ms] INFO     [command_controller.py:1456] /aloha_description/joints/fl_joint7
+2026-02-02T13:07:27Z [484,563ms] INFO     [command_controller.py:1457] /aloha_description/joints/fr_joint7
+2026-02-02T13:07:33Z [490,766ms] INFO     [motion_gen_reacher.py:971] Fast obstacle update completed, time: 0.0319s, needs update: True
+2026-02-02T13:07:33Z [490,766ms] INFO     [command_controller.py:1056] Detach!!!!!
+2026-02-02T13:07:33Z [490,776ms] INFO     [motion_gen_reacher.py:971] Fast obstacle update completed, time: 0.0092s, needs update: False
+2026-02-02T13:07:33Z [490,776ms] INFO     [command_controller.py:1056] Detach!!!!!
+2026-02-02T13:07:36Z [493,382ms] INFO     [command_controller.py:1345] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/place_object_into_box_of_specific_color_blue_agilex_5_20260202_2107_1 --exclude '.*_rgb(?!_)' -a
+                        
+I0000 00:00:1770037656.227947   12461 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-02T13:07:36Z [493,470ms] INFO     [command_controller.py:1345] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-02-02T13:07:36Z [493,471ms] INFO     [command_controller.py:1345] noised_probability0.1
+2026-02-02T13:07:36Z [493,471ms] INFO     [command_controller.py:1345] noised_camera_indices[0 1 2]
+2026-02-02T13:07:36Z [493,471ms] INFO     [command_controller.py:1345] noised_camera_prim_list['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera']
+2026-02-02T13:07:36Z [493,471ms] INFO     [command_controller.py:894] ROS domain ID: 9
+2026-02-02T13:07:36Z [493,471ms] INFO     [command_controller.py:1345] tf_target['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_toiletries_009', '/World/Objects/geniesim_2025_building_blocks_072', '/World/Objects/geniesim_2025_mouse_000', '/World/Objects/geniesim_2025_pen_006', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/aloha_description/fl_link6', '/aloha_description/fr_link6', '/aloha_description/fl_link6/fl_ee_link', '/aloha_description/fr_link6/fr_ee_link', '/aloha_description']
+2026-02-02T13:07:36Z [493,491ms] INFO     [command_controller.py:1345] republish camera/aloha_description/body_Link/head_camera
+2026-02-02T13:07:36Z [493,491ms] INFO     [command_controller.py:1345] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_camera_rgb --remap /out:=/head_camera_rgb_compressed
+                        
+I0000 00:00:1770037656.337734   12461 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-02T13:07:36Z [493,581ms] INFO     [command_controller.py:1345] republish camera/aloha_description/fl_link6/left_wrist_camera
+2026-02-02T13:07:36Z [493,582ms] INFO     [command_controller.py:1345] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_wrist_camera_rgb --remap /out:=/left_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1770037656.459079   12461 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [ros2bag]: Output folder '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/place_object_into_box_of_specific_color_blue_agilex_5_20260202_2107_1' already exists.
+2026-02-02T13:07:36Z [493,703ms] INFO     [command_controller.py:1345] republish camera/aloha_description/fr_link6/right_wrist_camera
+2026-02-02T13:07:36Z [493,703ms] INFO     [command_controller.py:1345] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_wrist_camera_rgb --remap /out:=/right_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1770037656.549470   12461 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-02T13:07:37Z [494,979ms] INFO     [command_controller.py:1178] ik lula time cost0.057794809341430664
+[INFO] [1770037659.870170797] [rclcpp]: signal_handler(signum=2)
+
+

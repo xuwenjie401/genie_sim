@@ -1,0 +1,4 @@
+agibot 正确位置
+
+2026-02-11T12:13:59Z [1,755ms] INFO     [task_generate.py:43] Random robot init position{'position': [-0.6278940623464379, -0.009802759719790742, 0.0], 'quaternion': [1, 0, 0, 0]}
+2026-02-11T12:14:34Z [36,666ms] INFO     [task_generate.py:43] Robot init pose{'position': [2.2821059376535624, 0.7501972402802093, 0.0], 'quaternion': [1.0, 0.0, 0.0, 0.0]}

@@ -30,6 +30,15 @@ def sorted_by_joint_pos_dist(robot, arm, ik_joint_positions, ik_joint_names, ik_
             1.0,  # joint6
             0.8,  # joint7
         ]
+        if "agile" in robot.robot_cfg.lower():
+            joint_weights = [
+                2.0,  # joint1
+                1.8,  # joint2
+                1.6,  # joint3
+                1.4,  # joint4
+                1.2,  # joint5
+                1.0,  # joint6
+            ]
     else:
         # Ensure weight vector matches number of joints
         assert len(joint_weights) == len(

@@ -66,13 +66,29 @@ class IsaacSimRpcRobot(Robot):
         self.cam_info = None
         if "omnipicker" in robot_cfg:
             self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, -1.0, 0.0]])
+        elif "agile" in robot_cfg.lower():
+            # self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [0.0, -1.0, 0.0], [1.0, 0.0, 0.0]])
+            # self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+            self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, -1.0, 0.0]])
+        elif "galbot" in robot_cfg.lower():
+            self.robot_gripper_2_grasp_gripper = np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
         else:
             self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]])
         self.robot_init_arm_pose = robot_init_arm_pose
         self.robot_init_arm_pose_noise = robot_init_arm_pose_noise
 
         # Read joint names from configuration file
-        robot_names_key = "G1" if "G1" in robot_cfg else "G2"
+        # TODO agx
+        if "G1" in robot_cfg:
+            robot_names_key = "G1"
+        elif "G2" in robot_cfg:
+            robot_names_key = "G2"
+        elif "agile" in robot_cfg.lower():
+            robot_names_key = "AgileX"
+        elif "galbot" in robot_cfg.lower():
+            robot_names_key = "galbot"
+        else:
+            raise ValueError("Unknown robot configuration")
         config = self._load_robot_config()
         arm_joint_names = config[robot_names_key]["arm_joint_names"]
 
@@ -105,7 +121,14 @@ class IsaacSimRpcRobot(Robot):
         return config
 
     def _get_robot_joint_names(self):
-        robot_names_key = "G1" if "G1" in self.robot_cfg else "G2"
+        # TODO agx
+        robot_names_key = "G1" 
+        if "G2" in self.robot_cfg:
+            robot_names_key = "G2"
+        elif "agile" in self.robot_cfg.lower():
+            robot_names_key = "AgileX"
+        elif "galbot" in self.robot_cfg.lower():
+            robot_names_key = "galbot"
         config = self._load_robot_config()
         robot_joint_names = config[robot_names_key]["dof_order"]
         return robot_joint_names

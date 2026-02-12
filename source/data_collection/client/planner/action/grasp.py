@@ -37,7 +37,8 @@ from common.base_utils.transform_utils import (
 class PickStage(Stage):
     def __init__(self, stage_config, objects):
         super().__init__(stage_config, objects)
-        self.use_pre_grasp = True
+        # self.use_pre_grasp = True
+        self.use_pre_grasp = False
         self.pick_up_step = 999
 
     def select_pose(self, objects, robot):
@@ -58,6 +59,7 @@ class PickStage(Stage):
         """Filter out grasp poses without IK solutions"""
         grasp_poses_canonical = self.passive_element["grasp_pose"].copy()
         grasp_widths = self.passive_element["width"]
+        # TODO: XU  xzy的顺序？？？
         if set_grasp_pose_xy:
             grasp_poses_canonical[:, 0, 3] = 0
             grasp_poses_canonical[:, 2, 3] = 0
@@ -70,6 +72,7 @@ class PickStage(Stage):
         mask = (z_values <= z_upper_threshold) & (z_values >= z_lower_threshold)
         grasp_poses_canonical = grasp_poses_canonical_bak[mask]
         grasp_widths = grasp_widths[mask]
+        # TODO: agx
         grasp_poses_canonical[:, :3, :3] = (
             grasp_poses_canonical[:, :3, :3] @ robot.robot_gripper_2_grasp_gripper[np.newaxis, ...]
         )
@@ -78,6 +81,7 @@ class PickStage(Stage):
             for i in range(grasp_poses_canonical.shape[0]):
                 local_y = grasp_poses_canonical[i][:3, 1]
                 target_y = np.array([0, 1, 0]) if arm == "right" else np.array([0, -1, 0])
+                
                 calc_rotation_matrix = calculate_rotation_matrix2(local_y, target_y)
                 grasp_poses_canonical[i][:3, :3] = calc_rotation_matrix @ grasp_poses_canonical[i][:3, :3]
 
@@ -112,6 +116,8 @@ class PickStage(Stage):
                     upright_mask = grasp_poses[:, 2, 1] < 0.0
                 else:
                     upright_mask = grasp_poses[:, 2, 1] > 0.0
+            elif "agile" in robot.robot_cfg.lower():
+                upright_mask = grasp_poses[:, 2, 1] > 0.0
             else:
                 upright_mask = grasp_poses[:, 2, 0] > 0.0
             grasp_poses = grasp_poses[upright_mask]
@@ -174,7 +180,8 @@ class PickStage(Stage):
                     random_poses,
                     ee_type="gripper",
                     arm=arm,
-                    type="AvoidObs",
+                    # type="AvoidObs",
+                    type="Simple",
                     output_link_pose=False,
                 )
                 success_poses = random_poses[ik_success]
@@ -415,7 +422,8 @@ class PickStage(Stage):
             ik_success, ik_info = robot.solve_ik(
                 best_grasp_poses,
                 ee_type="gripper",
-                type="AvoidObs",
+                # type="AvoidObs",
+                type="Simple",
                 arm=arm,
                 output_link_pose=True,
             )
@@ -441,6 +449,7 @@ class PickStage(Stage):
                     pre_grasp_poses,
                     ee_type="gripper",
                     type="AvoidObs",
+                    # type="Simple",
                     arm=arm,
                     output_link_pose=True,
                 )
@@ -478,7 +487,9 @@ class PickStage(Stage):
                     pre_grasp_offset=pre_grasp_offset,
                 )
             grasp_poses_sorted = best_grasp_poses[idx_sorted]
-            pre_grasp_poses_sorted = pre_grasp_poses[idx_sorted]
+            pre_grasp_poses_sorted = []
+            if self.use_pre_grasp:
+                pre_grasp_poses_sorted = pre_grasp_poses[idx_sorted]
 
         else:
             logger.info("No grasp pose found")
@@ -521,6 +532,7 @@ class PickStage(Stage):
                     gripper_action=None,
                     transform_world=np.eye(4),
                     motion_type="AvoidObs",
+                    # motion_type="Normal",
                 )
             )
             # then to grasp pose
@@ -530,6 +542,7 @@ class PickStage(Stage):
                     gripper_action="close",
                     transform_world=np.eye(4),
                     motion_type="AvoidObs",
+                    # motion_type="Normal",
                     extra_params={
                         "path_constraint": path_constraint,
                         "offset_and_constraint_in_goal_frame": offset_and_constraint_in_goal_frame,
@@ -555,6 +568,7 @@ class PickStage(Stage):
                         gripper_action,
                         np.eye(4),
                         "AvoidObs",
+                        # "Normal",
                         extra_params={
                             "goal_offset": goal_offset,
                             "path_constraint": path_constraint,
@@ -572,14 +586,17 @@ class PickStage(Stage):
                 transform[:3, 3] = np.array(pre_grasp_vector)
                 # sub-stage-0 moveTo pre-grasp pose
                 action_sequence.add_action(Action(grasp_pose, "open", transform, "AvoidObs"))
+                # action_sequence.add_action(Action(grasp_pose, "open", transform, "Normal"))/
             else:
                 self.pick_up_step = 1
             if self.error_type == "MissGrasp":
                 # sub-stage-0 moveTo grasp pose
                 action_sequence.add_action(Action(grasp_pose, None, np.eye(4), "AvoidObs"))
+                # action_sequence.add_action(Action(grasp_pose, None, np.eye(4), "Normal"))
             else:
                 # grasp
                 action_sequence.add_action(Action(grasp_pose, "close", np.eye(4), "AvoidObs"))
+                # action_sequence.add_action(Action(grasp_pose, "close", np.eye(4), "Normal"))
                 if self.error_type != "RandomPerturbations":
                     # pick-up
                     gripper_action = None
@@ -595,6 +612,7 @@ class PickStage(Stage):
                     action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
                 else:
                     action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "AvoidObs"))
+                    # action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "Normal"))/
         if self.error_type == "WrongTarget":
             action = action_sequence[0]
             action.gripper_action = "open"

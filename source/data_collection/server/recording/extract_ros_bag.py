@@ -287,8 +287,10 @@ def reorder_joint_state(msg, robot_name):
         config = json.load(f)
     if "G2" in robot_name:
         target_joint_name = config["G2"]["joint_state_order"]
-    else:
+    elif "G1" in robot_name:
         target_joint_name = config["G1"]["joint_state_order"]
+    else:
+        target_joint_name = config["AgileX"]["joint_state_order"]
     now_joint_name = msg.name
     now_joint_position = msg.position.tolist()
     now_joint_velocity = msg.velocity.tolist()
@@ -374,6 +376,18 @@ class RosExtrater:
             elif remove_name:
                 index = camera_name.rfind("_")
                 camera_name = camera_name[:index] + extra_name
+        # TODO agx
+        if "agile" in self.robot_name.lower() or "galbot" in self.robot_name.lower():
+            if "head" in camera_name.lower():
+                camera_name = "head" + extra_name
+            elif "left" in camera_name.lower() and "head" not in camera_name.lower():
+                camera_name = "hand_left" + extra_name
+            elif "right" in camera_name.lower() and "head" not in camera_name.lower():
+                camera_name = "hand_right" + extra_name
+            elif remove_name:
+                index = camera_name.rfind("_")
+                camera_name = camera_name[:index] + extra_name
+
         return camera_name
 
     def get_objects_size_map(self, label_dict):

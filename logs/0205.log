@@ -1,0 +1,90 @@
+2026-02-05T02:51:22Z [40,277ms] INFO     [ui_builder.py:89] init curobo motion for left takes 3.9642105102539062
+2026-02-05T02:51:22Z [40,235ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (1.5290800094604493) and 'horizontalAperture' (2.0954999923706055) are inconsistent with the pixel resolution aspect ratio (1.6). Setting 'verticalAperture' to 1.3096874952316284 to ensure square pixels.
+2026-02-05T02:51:22Z [40,256ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (1.5290800094604493) and 'horizontalAperture' (2.0954999923706055) are inconsistent with the pixel resolution aspect ratio (1.3333333333333333). Setting 'verticalAperture' to 1.571624994277954 to ensure square pixels.
+2026-02-05T02:51:22Z [40,274ms] [Warning] [isaacsim.sensors.camera.camera] 'verticalAperture' (1.5290800094604493) and 'horizontalAperture' (2.0954999923706055) are inconsistent with the pixel resolution aspect ratio (1.3333333333333333). Setting 'verticalAperture' to 1.571624994277954 to ensure square pixels.
+[Lula] Joint 'left_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_l_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_finger_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'left_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['left_gripper_r_inner_knuckle_joint' -> 'left_gripper_r_knuckle_joint'] terminates with a joint ['left_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_l_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_l_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_finger_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_finger_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+[Lula] Joint 'right_gripper_r_inner_knuckle_joint' is specified as a mimic joint, but its control chain ['right_gripper_r_inner_knuckle_joint' -> 'right_gripper_r_knuckle_joint'] terminates with a joint ['right_gripper_r_knuckle_joint'] that is not a c-space coordinate. Mimic attributes will be ignored.
+2026-02-05T02:51:22Z [40,350ms] [Warning] [omni.fabric.plugin] USD->Fabric: Unhandled array type string[]
+2026-02-05T02:51:23Z [40,429ms] [Warning] [rtx.postprocessing.plugin] DLSS increasing input dimensions: Render resolution of (320, 200) is below minimal input resolution of 300.
+2026-02-05T02:51:23Z [40,582ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]: Traceback (most recent call last):
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/scripts/data_collector_server.py", line 111, in <module>
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]:     rpc_server.server_function.on_physics_step()
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 434, in on_physics_step
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]:     self.on_command_step()
+2026-02-05T02:51:23Z [40,593ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1574, in on_command_step
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     self.handle_reset()
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1259, in handle_reset
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     self._on_reset()
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1623, in _on_reset
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     self._reset_stiffness()
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1682, in _reset_stiffness
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     self._init_grippers()
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1980, in _init_grippers
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     self.gripper_L = ParallelGripper(
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:                      ^^^^^^^^^^^^^^^^
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/controllers/parallel_gripper.py", line 50, in __init__
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     Gripper.__init__(self, end_effector_prim_path=end_effector_prim_path)
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.robot.manipulators/isaacsim/robot/manipulators/grippers/gripper.py", line 30, in __init__
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:     SingleRigidPrim.__init__(self, prim_path=end_effector_prim_path, name="gripper")
+2026-02-05T02:51:23Z [40,594ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/single_rigid_prim.py", line 121, in __init__
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:     self._rigid_prim_view = RigidPrim(
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:                             ^^^^^^^^^^
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/rigid_prim.py", line 166, in __init__
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:     XFormPrim.__init__(
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/xform_prim.py", line 136, in __init__
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:     Prim.__init__(self, prim_paths_expr, name)
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/prim.py", line 38, in __init__
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]:     raise Exception(
+2026-02-05T02:51:23Z [40,595ms] [Error] [omni.kit.app._impl] [py stderr]: Exception: Prim path expression ['/galbot_one_golf/left_gripper_tcp_link'] is invalid, a prim matching the expression needs to created before wrapping it as view
+
+
+
+
+2026-02-05T08:44:49Z [34,406ms] [Warning] [omni.fabric.plugin] USD->Fabric: Unhandled array type string[]
+2026-02-05T08:44:49Z [34,491ms] [Warning] [rtx.postprocessing.plugin] DLSS increasing input dimensions: Render resolution of (320, 200) is below minimal input resolution of 300.
+2026-02-05T08:44:49Z [34,634ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]: Traceback (most recent call last):
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/scripts/data_collector_server.py", line 111, in <module>
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     rpc_server.server_function.on_physics_step()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 434, in on_physics_step
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self.on_command_step()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1574, in on_command_step
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self.handle_reset()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1259, in handle_reset
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self._on_reset()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1623, in _on_reset
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self._reset_stiffness()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1682, in _reset_stiffness
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self._init_grippers()
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1991, in _init_grippers
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self.gripper_L.initialize(
+2026-02-05T08:44:49Z [34,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/controllers/parallel_gripper.py", line 131, in initialize
+2026-02-05T08:44:49Z [34,655ms] [Error] [omni.kit.app._impl] [py stderr]:     elif self._joint_prim_names[1] == dof_names[index]:
+2026-02-05T08:44:49Z [34,655ms] [Error] [omni.kit.app._impl] [py stderr]:          ~~~~~~~~~~~~~~~~~~~~~~^^^
+2026-02-05T08:44:49Z [34,655ms] [Error] [omni.kit.app._impl] [py stderr]: IndexError: list index out of range
+
+
+
+
+
+
+

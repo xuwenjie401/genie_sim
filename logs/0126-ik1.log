@@ -1,0 +1,142 @@
+2026-01-26T13:28:02Z [36,062ms] INFO     [omniagent.py:71] Grasp num after NMS: 273/621
+2026-01-26T13:28:03Z [36,292ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-01-26T13:28:03Z [36,292ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-26T13:28:03Z [36,292ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-26T13:28:03Z [36,292ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-26T13:28:03Z [36,292ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-26T13:28:04Z [38,083ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json loaded
+2026-01-26T13:28:04Z [38,083ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-01-26T13:28:04Z [38,083ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-01-26T13:28:04Z [38,088ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 273
+2026-01-26T13:28:07Z [40,396ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-26T13:28:07Z [40,396ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-26T13:28:07Z [40,531ms] INFO     [omni_robot.py:216] robot: armleft
+2026-01-26T13:28:07Z [40,532ms] INFO     [omni_robot.py:216] target_position is[0.57529769 0.21649496 0.90641838]
+2026-01-26T13:28:07Z [40,532ms] INFO     [omni_robot.py:216] target_rotation is[ 0.16446525  0.69851215 -0.6124323   0.33160011]
+2026-01-26T13:28:08Z [41,909ms] INFO     [omni_robot.py:216] move! (array([2.7796916 , 0.99937324, 0.90641838]), array([ 0.16446525,  0.69851215, -0.6124323 ,  0.33160011]), False)
+2026-01-26T13:28:08Z [41,909ms] INFO     [omni_robot.py:216] Yaw: -87.42131779194364, Pitch: -48.28891040288254, Roll: 107.10979105318795
+2026-01-26T13:28:08Z [41,909ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:09Z [42,139ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:09Z [42,139ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-26T13:28:09Z [42,360ms] INFO     [omni_robot.py:216] robot: armleft
+2026-01-26T13:28:09Z [42,360ms] INFO     [omni_robot.py:216] target_position is[0.54540784 0.21279349 0.91063525]
+2026-01-26T13:28:09Z [42,360ms] INFO     [omni_robot.py:216] target_rotation is[ 0.02908413  0.85190281 -0.10669301  0.51189092]
+2026-01-26T13:28:10Z [43,839ms] INFO     [omni_robot.py:216] move! (array([2.74980175, 0.99567177, 0.91063525]), array([ 0.02908413,  0.85190281, -0.10669301,  0.51189092]), False)
+2026-01-26T13:28:10Z [43,840ms] INFO     [omni_robot.py:216] Yaw: -62.70985736868772, Pitch: -8.74333156555278, Roll: 170.755317251585
+2026-01-26T13:28:10Z [43,840ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:11Z [44,095ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:11Z [44,095ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-26T13:28:11Z [44,299ms] INFO     [omni_robot.py:216] robot: armleft
+2026-01-26T13:28:11Z [44,300ms] INFO     [omni_robot.py:216] target_position is[0.56125442 0.19323596 0.91615733]
+2026-01-26T13:28:11Z [44,300ms] INFO     [omni_robot.py:216] target_rotation is[ 0.00145306  0.95790654 -0.04709681  0.28318692]
+2026-01-26T13:28:12Z [45,438ms] INFO     [omni_robot.py:216] move! (array([2.76564833, 0.97611424, 0.91615733]), array([ 0.00145306,  0.95790654, -0.04709681,  0.28318692]), False)
+2026-01-26T13:28:12Z [45,438ms] INFO     [omni_robot.py:216] Yaw: -33.01455432447835, Pitch: -5.129419312351529, Roll: 178.30513656636427
+2026-01-26T13:28:12Z [45,438ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:12Z [45,706ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:12Z [45,706ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-26T13:28:12Z [45,993ms] INFO     [omni_robot.py:216] robot: armleft
+2026-01-26T13:28:12Z [45,994ms] INFO     [omni_robot.py:216] target_position is[0.5413082  0.17952802 0.89797228]
+2026-01-26T13:28:12Z [45,994ms] INFO     [omni_robot.py:216] target_rotation is[ 0.00917177 -0.84281323 -0.0601052  -0.53476079]
+2026-01-26T13:28:14Z [47,803ms] INFO     [omni_robot.py:216] move! (array([2.74570211, 0.9624063 , 0.89797228]), array([ 0.00917177, -0.84281323, -0.0601052 , -0.53476079]), False)
+2026-01-26T13:28:14Z [47,803ms] INFO     [omni_robot.py:216] Yaw: -65.00055093183083, Pitch: 5.250224274797481, Roll: -175.40683844604476
+2026-01-26T13:28:14Z [47,803ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:14Z [48,018ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:14Z [48,018ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-26T13:28:14Z [48,018ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_3.json failed
+2026-01-26T13:28:17Z [50,275ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json
+2026-01-26T13:28:27Z [60,095ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 1.07454912e-02, -8.86914509e-02,  9.96001185e-01,
+         2.62606092e+00],
+       [ 9.99942211e-01,  6.25608479e-04, -1.07323006e-02,
+         4.84589828e-01],
+       [ 3.28756524e-04,  9.96058952e-01,  8.86930480e-02,
+         9.94088834e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 1.07452040e-02, -8.87973669e-02,  9.95991751e-01,
+         2.63247263e+00],
+       [ 9.99942205e-01,  6.00183766e-04, -1.07343140e-02,
+         1.08455516e+00],
+       [ 3.55400740e-04,  9.96049531e-01,  8.87986840e-02,
+         9.93956263e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-26T13:28:27Z [60,104ms] INFO     [omniagent.py:71] Grasp num after NMS: 273/621
+2026-01-26T13:28:27Z [60,304ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-26T13:28:27Z [60,304ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-26T13:28:27Z [60,304ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-26T13:28:27Z [60,305ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-26T13:28:27Z [60,305ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-26T13:28:28Z [61,872ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json loaded
+2026-01-26T13:28:28Z [61,872ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-26T13:28:28Z [61,872ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-26T13:28:28Z [61,874ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 273
+2026-01-26T13:28:30Z [63,106ms] INFO     [stage.py:354] No grasp pose can pass next action IK
+2026-01-26T13:28:30Z [63,106ms] WARNING  [run_data_collection.py:84] Stage 0 pick initialize action sequence buffer failed
+2026-01-26T13:28:30Z [63,107ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_1.json failed
+2026-01-26T13:28:32Z [65,313ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json
+2026-01-26T13:28:41Z [74,402ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 1.22390944e-02, -8.90772149e-02,  9.95949524e-01,
+         2.62588027e+00],
+       [ 9.99924928e-01,  5.06893085e-04, -1.22426114e-02,
+         4.84738553e-01],
+       [ 5.85697800e-04,  9.96024595e-01,  8.90767316e-02,
+         9.94169521e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]]), 'left': array([[ 1.22465414e-02, -8.91569120e-02,  9.95942301e-01,
+         2.63320106e+00],
+       [ 9.99924823e-01,  4.85162503e-04, -1.22520804e-02,
+         1.08469210e+00],
+       [ 6.09163792e-04,  9.96017475e-01,  8.91561509e-02,
+         9.94034353e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])}
+2026-01-26T13:28:41Z [74,405ms] INFO     [omniagent.py:71] Grasp num after NMS: 273/621
+2026-01-26T13:28:41Z [74,643ms] INFO     [omniagent.py:851] Auto select arm: right
+2026-01-26T13:28:41Z [74,643ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-01-26T13:28:41Z [74,643ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-01-26T13:28:41Z [74,643ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-01-26T13:28:41Z [74,643ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-01-26T13:28:43Z [76,196ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json loaded
+2026-01-26T13:28:43Z [76,196ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 右臂拿起桌面上的{物体}
+2026-01-26T13:28:43Z [76,196ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Right arm picks up the {object} on the table
+2026-01-26T13:28:43Z [76,201ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 273
+2026-01-26T13:28:45Z [78,797ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-01-26T13:28:45Z [78,797ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-01-26T13:28:45Z [79,034ms] INFO     [omni_robot.py:216] robot: armright
+2026-01-26T13:28:45Z [79,035ms] INFO     [omni_robot.py:216] target_position is[ 0.57599181 -0.18773794  0.89398928]
+2026-01-26T13:28:45Z [79,035ms] INFO     [omni_robot.py:216] target_rotation is[ 0.11159331  0.87589829 -0.08377827  0.46187696]
+2026-01-26T13:28:47Z [80,414ms] INFO     [omni_robot.py:216] move! (array([2.78038572, 0.59514034, 0.89398928]), array([ 0.11159331,  0.87589829, -0.08377827,  0.46187696]), False)
+2026-01-26T13:28:47Z [80,414ms] INFO     [omni_robot.py:216] Yaw: -55.95554194754291, Pitch: -2.5033458246380147, Roll: 164.1488024584164
+2026-01-26T13:28:47Z [80,414ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:47Z [80,704ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:47Z [80,704ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-01-26T13:28:47Z [80,978ms] INFO     [omni_robot.py:216] robot: armright
+2026-01-26T13:28:47Z [80,979ms] INFO     [omni_robot.py:216] target_position is[ 0.56935559 -0.17743865  0.89328678]
+2026-01-26T13:28:47Z [80,979ms] INFO     [omni_robot.py:216] target_rotation is[ 0.12766452  0.77758214 -0.11429052  0.60498385]
+2026-01-26T13:28:49Z [82,951ms] INFO     [omni_robot.py:216] move! (array([2.7737495 , 0.60543963, 0.89328678]), array([ 0.12766452,  0.77758214, -0.11429052,  0.60498385]), False)
+2026-01-26T13:28:49Z [82,951ms] INFO     [omni_robot.py:216] Yaw: -75.9995241975496, Pitch: -1.3334267649592684, Roll: 160.3107637999865
+2026-01-26T13:28:49Z [82,951ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:50Z [83,235ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:50Z [83,235ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-01-26T13:28:50Z [83,545ms] INFO     [omni_robot.py:216] robot: armright
+2026-01-26T13:28:50Z [83,546ms] INFO     [omni_robot.py:216] target_position is[ 0.56385322 -0.19300504  0.89769514]
+2026-01-26T13:28:50Z [83,546ms] INFO     [omni_robot.py:216] target_rotation is[ 0.12766452  0.77758214 -0.11429052  0.60498385]
+2026-01-26T13:28:52Z [85,551ms] INFO     [omni_robot.py:216] move! (array([2.76824713, 0.58987324, 0.89769514]), array([ 0.12766452,  0.77758214, -0.11429052,  0.60498385]), False)
+2026-01-26T13:28:52Z [85,551ms] INFO     [omni_robot.py:216] Yaw: -75.9995241975496, Pitch: -1.3334267649592684, Roll: 160.3107637999865
+2026-01-26T13:28:52Z [85,551ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:52Z [85,838ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:52Z [85,838ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-01-26T13:28:53Z [86,104ms] INFO     [omni_robot.py:216] robot: armright
+2026-01-26T13:28:53Z [86,105ms] INFO     [omni_robot.py:216] target_position is[ 0.58471252 -0.24222948  0.89884815]
+2026-01-26T13:28:53Z [86,105ms] INFO     [omni_robot.py:216] target_rotation is[ 0.09288386 -0.53609388 -0.6795373  -0.49214327]
+2026-01-26T13:28:55Z [88,943ms] INFO     [omni_robot.py:216] move! (array([2.78910643, 0.5406488 , 0.89884815]), array([ 0.09288386, -0.53609388, -0.6795373 , -0.49214327]), False)
+2026-01-26T13:28:55Z [88,943ms] INFO     [omni_robot.py:216] Yaw: -121.95876943576982, Pitch: 39.58091126211737, Roll: -94.40551600637298
+2026-01-26T13:28:55Z [88,943ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-01-26T13:28:56Z [89,283ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-01-26T13:28:56Z [89,283ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-01-26T13:28:56Z [89,283ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_0.json failed
+2026-01-26T13:28:58Z [91,519ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_agilex/place_object_into_box_of_specific_color_blue_agilex_6.json
+
+
+
+
+
+

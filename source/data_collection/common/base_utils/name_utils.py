@@ -50,4 +50,45 @@ G2_JOINT_NAMES = [
 ]
 
 
+AGILEX_JOINT_NAMES = [
+    "fl_joint1",
+    "fl_joint2",
+    "fl_joint3",
+    "fl_joint4",
+    "fl_joint5",
+    "fl_joint6",
+    "fr_joint1",
+    "fr_joint2",
+    "fr_joint3",
+    "fr_joint4",
+    "fr_joint5",
+    "fr_joint6",
+
+    "fl_joint7",
+    "fr_joint7",
+    "fl_joint8",
+    "fr_joint8",
+]
+
+GALBOT_JOINT_NAMES = [
+    "left_arm_joint1",
+    "left_arm_joint2",
+    "left_arm_joint3",
+    "left_arm_joint4",
+    "left_arm_joint5",
+    "left_arm_joint6",
+    "left_arm_joint7"
+    "right_arm_joint1",
+    "right_arm_joint2",
+    "right_arm_joint3",
+    "right_arm_joint4",
+    "right_arm_joint5",
+    "right_arm_joint6",
+    "right_arm_joint7",
+
+    "left_gripper_r_knuckle_joint",
+    "right_gripper_r_knuckle_joint"
+]
+
+
 OMNIPICKER_AJ_NAMES = ["idx41_gripper_l_outer_joint1", "idx81_gripper_r_outer_joint1"]

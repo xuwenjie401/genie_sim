@@ -1,0 +1,278 @@
+robot_cfg:
+  kinematics:
+    use_usd_kinematics: False
+    urdf_path: "robot/AgileX/aloha_new.urdf"
+    asset_root_path: null
+    # asset_root_path: "robot/AgileX"
+    # isaac_usd_path: "robot/AgileX/aloha_new.usda"
+    # usd_robot_root: "/AgileX"
+    # usd_path: "robot/AgileX/aloha_new.usda"
+
+    base_link: "body_Link"
+    ee_link: "fr_ee_link"
+    link_names: ["fr_ee_link"]
+    # link_names: ["fl_ee_link", "fr_ee_link"]
+
+
+    collision_link_names: [
+      "body_Link",
+      "fl_base_link", "fl_link1", "fl_link2", "fl_link3", "fl_link4", "fl_link5", "fl_link6", "fl_link7", "fl_link8",
+      "fr_base_link", "fr_link1", "fr_link2", "fr_link3", "fr_link4", "fr_link5", "fr_link6", "fr_link7", "fr_link8",
+      'attached_object', 'left_attached_object'
+    ]
+
+    collision_spheres:
+        body_Link:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+        fl_base_link:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+        fl_link1:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+        fl_link2:
+            - "center": [-0.03, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.06, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.09, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.12, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.15, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.18, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.21, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.24, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [-0.25, 0.0, 0.0]
+              "radius": 0.035
+            - "center": [0.002, -0.001, 0.001]
+              "radius": 0.035
+        fl_link3:
+            - "center": [0.02, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.06, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.01, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [-0.01, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.014, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.1, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.2, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.15, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.19, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.2, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.23, 0.0, -0.06]
+              "radius": 0.035
+            - "center": [0.24, 0.0, -0.06]
+              "radius": 0.035
+        fl_link4:
+            - "center": [0.06, 0.0, -0.06]
+              "radius": 0.03
+        fl_link6:
+            - "center": [0.037, 0.003, 0.007]
+              "radius": 0.03
+        fl_link7:
+            - "center": [0.055, -0.013, -0.0]
+              "radius": 0.01
+            - "center": [0.021, -0.006, -0.0]
+              "radius": 0.01
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.01
+            - "center": [0.04, -0.007, -0.0]
+              "radius": 0.01
+        fl_link5:
+            - "center": [0.0, 0.0, 0.08]
+              "radius": 0.03
+        fl_link8:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+            - "center": [0.01, 0.0, 0.0]
+              "radius": 0.01
+            - "center": [0.03, 0.01, 0.0]
+              "radius": 0.01
+            - "center": [0.04, 0.013, 0.0]
+              "radius": 0.01
+            - "center": [0.059, 0.015, 0.0]
+              "radius": 0.01
+        fr_base_link:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+        fr_link1:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.02
+        fr_link2:
+            - "center": [0.0, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.03, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.06, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.09, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.12, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.16, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.19, 0.0, 0.0]
+              "radius": 0.03
+            - "center": [-0.21, 0.0, 0.0]
+              "radius": 0.03
+        fr_link3:
+            - "center": [0.04, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.0, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.08, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.12, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.14, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.18, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.22, 0.0, -0.06]
+              "radius": 0.03
+            - "center": [0.23, 0.0, -0.06]
+              "radius": 0.03
+        fr_link4:
+            - "center": [0.065, 0.001, -0.062]
+              "radius": 0.027
+        fr_link5:
+            - "center": [-0.0, -0.0, 0.077]
+              "radius": 0.03
+        fr_link6:
+            - "center": [0.022, -0.0, -0.0]
+              "radius": 0.03
+            - "center": [0.05, 0.0, 0.0]
+              "radius": 0.01
+            - "center": [0.07, 0.0, 0.0]
+              "radius": 0.01
+            - "center": [0.07, 0.03, 0.0]
+              "radius": 0.01
+            - "center": [0.07, 0.06, 0.0]
+              "radius": 0.01
+            - "center": [0.07, -0.03, 0.0]
+              "radius": 0.01
+            - "center": [0.07, -0.06, 0.0]
+              "radius": 0.01
+        fr_link7:
+            - "center": [0.009, 0.001, 0.0]
+              "radius": 0.02
+            - "center": [0.057, -0.009, 0.0]
+              "radius": 0.01
+            - "center": [0.037, -0.007, -0.002]
+              "radius": 0.01
+        fr_link8:
+            - "center": [0.063, 0.015, 0.0]
+              "radius": 0.01
+            - "center": [0.044, 0.013, 0.0]
+              "radius": 0.01
+            - "center": [0.005, -0.0, 0.0]
+              "radius": 0.02
+
+    collision_sphere_buffer: 0.004
+    extra_collision_spheres: {
+      "attached_object": 50,
+      "left_attached_object": 50}
+
+    self_collision_ignore:
+      {
+        "fr_base_link": ["fr_link1", "left_attached_object", "attached_object"],
+        "fr_link1": ["fr_link2", "left_attached_object", "attached_object"],
+        "fr_link2": ["fr_link3", "left_attached_object", "attached_object"],
+        "fr_link3": ["fr_link4", "left_attached_object", "attached_object"],
+        "fr_link4": ["fr_link5", "fr_link7", "fr_link8", "left_attached_object", "attached_object"],
+        "fr_link5": ["fr_link6", "fr_link7", "fr_link8", "left_attached_object", "attached_object"],
+        "fr_link6": ["fr_link7", "fr_link8", "left_attached_object", "attached_object"],
+        "fr_link7": ["fr_link8", "left_attached_object", "attached_object"],
+        "fr_link8": ["fr_link7", "left_attached_object", "attached_object"]
+      }
+    self_collision_buffer:
+      {
+        "fr_base_link": 0.00,
+        "fr_link1": 0.00,
+        "fr_link2": 0.00,
+        "fr_link3": 0.00,
+        "fr_link4": 0.00,
+        "fr_link5": 0.00,
+        "fr_link6": 0.00,
+        "fr_link7": 0.00,
+        "fr_link8": 0.00,
+      }
+    use_global_cumul: True
+
+    extra_links: {
+        "attached_object":{
+          "parent_link_name": "fr_link6",
+          "link_name": "attached_object",
+          "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
+          "joint_type": "FIXED",
+          "joint_name": "attach_joint"
+        },
+        "left_attached_object": {
+          "parent_link_name": "fl_link6",
+          "link_name": "left_attached_object",
+          "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
+          "joint_type": "FIXED",
+          "joint_name": "left_attach_joint"
+        }
+    }
+    lock_joints: {"fl_joint7": 0.04, "fl_joint8": -0.04, "fr_joint7": 0.04, "fr_joint8": -0.04}
+    mesh_link_names: [
+        "body_Link",
+        "fl_base_link",
+        "fl_link1",
+        "fl_link2",
+        "fl_link3",
+        "fl_link4",
+        "fl_link5",
+        "fl_link6",
+        "fl_link7",
+        "fl_link8",
+        "fr_base_link",
+        "fr_link1",
+        "fr_link2",
+        "fr_link3",
+        "fr_link4",
+        "fr_link5",
+        "fr_link6",
+        "fr_link7",
+        "fr_link8",
+    ]
+
+    cspace:
+      joint_names: [
+        "fl_joint1",
+        "fl_joint2",
+        "fl_joint3",
+        "fl_joint4",
+        "fl_joint5",
+        "fl_joint6",
+        "fl_joint7",
+        "fl_joint8",
+        "fr_joint1",
+        "fr_joint2",
+        "fr_joint3",
+        "fr_joint4",
+        "fr_joint5",
+        "fr_joint6",
+        "fr_joint7",
+        "fr_joint8"
+      ]
+      retract_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.04, 0.04, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.04, 0.04]
+      null_space_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      cspace_distance_weight: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+      max_jerk: 100.0
+      max_acceleration: 3.0

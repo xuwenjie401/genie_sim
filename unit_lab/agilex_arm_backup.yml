@@ -1,0 +1,213 @@
+##
+## Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+##
+## NVIDIA CORPORATION, its affiliates and licensors retain all intellectual
+## property and proprietary rights in and to this material, related
+## documentation and any modifications thereto. Any use, reproduction,
+## disclosure or distribution of this material and related documentation
+## without an express license agreement from NVIDIA CORPORATION or
+## its affiliates is strictly prohibited.
+##
+
+robot_cfg:
+  kinematics:
+    use_usd_kinematics: False
+    isaac_usd_path: "/home/agxi/Documents/assets/robots/urdf_ws/src/aloha_new_description/urdf/sl_arm_left/sl_arm_left.usd"
+    usd_path: "/home/agxi/Documents/assets/robots/urdf_ws/src/aloha_new_description/urdf/sl_arm_left/sl_arm_left.usd"
+    usd_robot_root: "/aloha_description"
+    # usd_flip_joints: ["panda_joint1","panda_joint2","panda_joint3","panda_joint4", "panda_joint5",
+    #   "panda_joint6","panda_joint7","panda_finger_joint1", "panda_finger_joint2"]
+    # usd_flip_joints: {
+    #   "panda_joint1": "Z",
+    #   "panda_joint2": "Z",
+    #   "panda_joint3": "Z",
+    #   "panda_joint4": "Z",
+    #   "panda_joint5": "Z",
+    #   "panda_joint6": "Z",
+    #   "panda_joint7": "Z",
+    #   "panda_finger_joint1": "Y",
+    #   "panda_finger_joint2": "Y",
+    # }
+
+    # usd_flip_joint_limits: ["panda_finger_joint2"]
+    urdf_path: "/home/agxi/Documents/assets/robots/urdf_ws/src/aloha_new_description/urdf/sl_arm_left.urdf"
+    asset_root_path: "robot/franka_description"
+    base_link: "fl_base_link"
+    ee_link: "fl_ee_link"
+    collision_link_names:
+      [
+        "fl_link1",
+        "fl_link2",
+        "fl_link3",
+        "fl_link4",
+        "fl_link5",
+        "fl_link6",
+        "fl_link7",
+        "fl_link8",
+        "attached_object",
+      ]
+    collision_spheres:
+      fl_base_link: 
+        - center: [0.0, 0.0, 0.04]
+          radius: 0.03
+      fl_link1: 
+        - center: [0.0, 0.0, 0.0]
+          radius: 0.02
+      fl_link2: 
+        - center: [0.06, -0.01, 0.0]
+          radius: 0.02
+        - center: [0.08, -0.014, 0.0]
+          radius: 0.02
+        - center: [0.1, -0.017, 0.0]
+          radius: 0.02
+        - center: [0.12, -0.023, 0.0]
+          radius: 0.02
+        - center: [0.12, -0.022, 0.0]
+          radius: 0.02
+        - center: [0.14, -0.024, 0.0]
+          radius: 0.02
+        - center: [0.18, -0.032, 0.0]
+          radius: 0.02
+        - center: [0.2, -0.035, 0.0]
+          radius: 0.02
+        - center: [0.16, -0.027, 0.0]
+          radius: 0.02
+        - center: [0.22, -0.037, 0.0]
+          radius: 0.02
+        - center: [0.24, -0.038, 0.0]
+          radius: 0.02
+        - center: [0.26, -0.03, 0.0]
+          radius: 0.02
+        - center: [0.28, -0.02, 0.0]
+          radius: 0.02
+      fl_link3: 
+          - center: [-0.02, -0.12, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.1, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.08, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.06, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.04, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.14, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.16, 0.0]
+            radius: 0.015
+          - center: [-0.02, -0.18, 0.0]
+            radius: 0.015
+      fl_link4: 
+          - center: [0.0, 0.0, -0.01]
+            radius: 0.015
+      fl_link5: 
+          - center: [0.0, -0.06, 0.0]
+            radius: 0.02
+      fl_link6: 
+          - center: [0.0, 0.0, 0.017]
+            radius: 0.02
+          - center: [0.0, 0.0, 0.05]
+            radius: 0.01
+          - center: [0.0, 0.03, 0.05]
+            radius: 0.01
+          - center: [0.0, -0.03, 0.05]
+            radius: 0.01
+          - center: [0.0, 0.06, 0.05]
+            radius: 0.01
+          - center: [0.0, -0.06, 0.05]
+            radius: 0.01
+          - center: [0.0, -0.05, 0.06]
+            radius: 0.01
+          - center: [0.0, -0.04, 0.08]
+            radius: 0.01
+          - center: [0.0, -0.04, 0.1]
+            radius: 0.01
+          - center: [0.0, -0.04, 0.12]
+            radius: 0.01
+          - center: [0.0, 0.04, 0.12]
+            radius: 0.01
+          - center: [0.0, 0.04, 0.1]
+            radius: 0.01
+          - center: [0.0, 0.04, 0.08]
+            radius: 0.01
+          - center: [0.0, 0.05, 0.06]
+            radius: 0.01
+      fl_link7:
+          - "center": [0.055, -0.013, -0.0]
+            "radius": 0.01
+          - "center": [0.021, -0.006, -0.0]
+            "radius": 0.01
+          - "center": [0.0, 0.0, 0.0]
+            "radius": 0.01
+          - "center": [0.04, -0.007, -0.0]
+            "radius": 0.01
+      fl_link8:
+          - "center": [0.0, 0.0, 0.0]
+            "radius": 0.02
+          - "center": [0.01, 0.0, 0.0]
+            "radius": 0.01
+          - "center": [0.03, 0.01, 0.0]
+            "radius": 0.01
+          - "center": [0.04, 0.013, 0.0]
+            "radius": 0.01
+          - "center": [0.059, 0.015, 0.0]
+            "radius": 0.01
+
+    collision_sphere_buffer: 0.004 # 0.0025
+    extra_collision_spheres: {"attached_object": 4}
+    use_global_cumul: True
+    self_collision_ignore:
+      {
+        "fl_link1": ["fl_link2", "fl_link3"],
+        "fl_link2": ["fl_link3", "fl_link4"],
+        "fl_link3": ["fl_link4", "fl_link5"],
+        "fl_link4": ["fl_link5", "fl_link6"],
+        "fl_link5": ["fl_link6"],
+        "fl_link6": ["fl_link7", "fl_link8", "attached_object"],
+        "fl_link7": ["fl_link8", "attached_object"],
+        "fl_link8": ["fl_link7", "attached_object"],
+      }
+
+    self_collision_buffer:
+      {
+        "fl_base_link" : 0.0,
+        "fl_link1" : 0.0,
+        "fl_link2" : 0.0,
+        "fl_link3" : 0.0,
+        "fl_link4" : 0.0,
+        "fl_link5" : 0.0,
+        "fl_link6" : 0.0,
+      }
+    #link_names: ["panda_link4"]
+    # mesh_link_names:
+    #   [
+    #     "panda_link0",
+    #     "panda_link1",
+    #     "panda_link2",
+    #     "panda_link3",
+    #     "panda_link4",
+    #     "panda_link5",
+    #     "panda_link6",
+    #     "panda_link7",
+    #     "panda_hand",
+    #     "panda_leftfinger",
+    #     "panda_rightfinger",
+    #   ]
+
+    lock_joints: {"fl_joint7": 0.04, "fl_joint8": -0.04}
+    extra_links: {
+      "attached_object":{
+        "parent_link_name": "fl_link6" ,
+        "link_name": "attached_object",
+        "fixed_transform": [0,0,0,1,0,0,0],
+        "joint_type":"FIXED",
+        "joint_name": "attach_joint"
+      }
+    }
+    cspace:
+      joint_names: ["fl_joint1","fl_joint2","fl_joint3","fl_joint4", "fl_joint5","fl_joint6"]
+      retract_config: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      null_space_weight: [1,1,1,1, 1,1]
+      cspace_distance_weight: [1,1,1,1, 1,1]
+      max_acceleration: 3.0
+      max_jerk: 100.0

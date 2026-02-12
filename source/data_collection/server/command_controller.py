@@ -8,6 +8,8 @@ import sys
 import threading
 import time
 from typing import Tuple
+from datetime import datetime
+import re
 
 import numpy as np
 import omni
@@ -40,6 +42,7 @@ from server.robot import RobotCfg
 from server.ros_publisher.base import USDBase
 from server.ui_builder import UIBuilder
 from server.utils import batch_matrices_to_quaternions_scipy_w_first
+from server.utils import spawn_axes_as_usd, clear_grasp_axes, spawn_target_as_usd
 
 MAX_EXTRACT_PROCESS_NUM = 2
 
@@ -230,8 +233,11 @@ class CommandController:
             else:
                 add_reference_to_stage(self.robot_usd_path, "/World")
             add_reference_to_stage(self.scene_usd_path, "/World")
+            robot_prim = robot.robot_prim_path
+            if "galbot" in robot.robot_name.lower():
+                robot_prim = robot.robot_prim_path + "/base_link"
             self.usd_objects["robot"] = XFormPrim(
-                prim_path=robot.robot_prim_path,
+                prim_path=robot_prim,
                 position=init_position,
                 orientation=init_rotation,
             )
@@ -292,6 +298,10 @@ class CommandController:
                 viewport.set_active_camera("/G1/head_link2/Head_Camera")
             elif "G2" in robot.robot_name:
                 viewport.set_active_camera("/G2/head_link3/head_front_Camera")
+            elif "agile" in robot.robot_name.lower():
+                viewport.set_active_camera("/aloha_description/body_Link/head_camera")
+            elif "galbot" in robot.robot_name.lower():
+                viewport.set_active_camera("/galbot_one_golf/head_link2/head_front_left_color")
             with robot_rep:
                 rep.modify.semantics([("class", "robot")])
             self.robot_cfg = robot
@@ -320,6 +330,16 @@ class CommandController:
                     "idx11_head_joint1",
                     "idx12_head_joint2",
                     "idx13_head_joint3",
+                ]
+            elif "galbot" in robot.robot_name:
+                joint_names = [
+                    "leg_joint1",
+                    "leg_joint2",
+                    "leg_joint3",
+                    "leg_joint4",
+                    "leg_joint5",
+                    "head_joint1",
+                    "head_joint2"
                 ]
             joint_indices_mapping = {joint_name: articulation.get_dof_index(joint_name) for joint_name in joint_names}
             for idx, joint_name in enumerate(init_joint_names):
@@ -593,6 +613,10 @@ class CommandController:
         disable_collision_links = self.data.get("disable_collision_links", [])
         from_current_pose = self.data.get("from_current_pose", False)
         is_Right = False
+
+        # clear_grasp_axes()
+        # spawn_target_as_usd(target_position, target_rotation, axes_container_name="LinerMoveTarget")
+
         if self.data["isArmRight"]:
             is_Right = True
         if not is_backend:
@@ -757,31 +781,22 @@ class CommandController:
     #             self.path_to_save = recording_path
     #             self.camera_info_list = {}
     #             tf_target = []
+    
     def handle_get_observation(self):
         """Handle Command 11: GetObservation / StartRecording / StopRecording"""
         if self.data["startRecording"]:
             with self._timing_context("start_recording"):
                 self.task_name = self.data["task_name"]
                 self.fps = self.data["fps"]
-
                 current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                root_path = os.path.join(current_directory, "recording_data")
-
-                # 基础目录：recording_data/<task_name>
-                recording_path = os.path.join(root_path, self.task_name)
-
-                # 如果已存在，则在末尾追加 _1, _2, ...
+                root_path = current_directory + "/recording_data/"
+                recording_path = root_path + self.task_name
                 if os.path.isdir(recording_path):
                     folder_index = 1
-                    while os.path.isdir(f"{recording_path}_{folder_index}"):
+                    while os.path.isdir(recording_path + str(folder_index)):
                         folder_index += 1
-                    recording_path = f"{recording_path}_{folder_index}"
-
+                    recording_path = recording_path + str(folder_index)
                 self.path_to_save = recording_path
-
-                # ✅ 关键：保证目录存在（否则后面写 recording_info.json 会炸）
-                os.makedirs(self.path_to_save, exist_ok=True)
-
                 self.camera_info_list = {}
                 tf_target = []
                 for prim_path in self.data["camera_prim_list"]:
@@ -1783,6 +1798,11 @@ class CommandController:
 
     def _get_ik_status(self, target_poses, isRight, ObsAvoid=False, output_link_pose=False):
         joint_positions = {}
+
+        # clear_grasp_axes()
+        # clear_grasp_axes(axes_container_name="LinearMoveTarget")
+        # spawn_axes_as_usd(target_poses)
+        
         if not ObsAvoid:
             time00 = time.time()
             results = []

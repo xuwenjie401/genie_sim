@@ -23,6 +23,8 @@ logger.info(f"UTIL_DIR: {UTIL_DIR}")
 from common.base_utils.name_utils import (
     G1_JOINT_NAMES,
     G2_JOINT_NAMES,
+    AGILEX_JOINT_NAMES,
+    GALBOT_JOINT_NAMES,
     OMNIPICKER_AJ_NAMES,
 )
 
@@ -81,6 +83,10 @@ class SimNode(Node):
             self.robot_id = "G1"
         elif "G2" in self.robot_name:
             self.robot_id = "G2"
+        elif "AgileX" in self.robot_name:
+            self.robot_id = "AgileX"
+        elif "galbot" in self.robot_name:
+            self.robot_id = "galbot"
         else:
             raise Exception(f"Invalid robot name {self.robot_name}")
 
@@ -88,6 +94,10 @@ class SimNode(Node):
             self.joint_names = G1_JOINT_NAMES
         elif self.robot_id == "G2":
             self.joint_names = G2_JOINT_NAMES
+        elif self.robot_id == "AgileX":
+            self.joint_names = AGILEX_JOINT_NAMES
+        elif self.robot_id == "galbot":
+            self.joint_names = GALBOT_JOINT_NAMES
         self.config_eef()
 
     def config_eef(self):

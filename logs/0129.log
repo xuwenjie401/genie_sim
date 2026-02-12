@@ -1,0 +1,49 @@
+2026-01-29T02:09:03Z [79,857ms] INFO     [command_controller.py:1307] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_agilex_1] --exclude '.*_rgb(?!_)' -a
+                        
+I0000 00:00:1769652543.204218    5431 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-29T02:09:03Z [79,943ms] INFO     [command_controller.py:1307] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-01-29T02:09:03Z [79,943ms] INFO     [command_controller.py:1307] noised_probability0.1
+2026-01-29T02:09:03Z [79,944ms] INFO     [command_controller.py:1307] noised_camera_indices[0 1 2]
+2026-01-29T02:09:03Z [79,944ms] INFO     [command_controller.py:1307] noised_camera_prim_list['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera']
+2026-01-29T02:09:03Z [79,944ms] INFO     [command_controller.py:856] ROS domain ID: 3
+2026-01-29T02:09:03Z [79,944ms] INFO     [command_controller.py:1307] tf_target['/aloha_description/body_Link/head_camera', '/aloha_description/fl_link6/left_wrist_camera', '/aloha_description/fr_link6/right_wrist_camera', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_beverage_bottle_001', '/World/Objects/geniesim_2025_cup_105', '/World/Objects/geniesim_2025_beverage_bottle_003', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/aloha_description/fl_link6', '/aloha_description/fr_link6', '/aloha_description/fl_link6/fl_ee_link', '/aloha_description/fr_link6/fr_ee_link', '/aloha_description']
+2026-01-29T02:09:03Z [79,964ms] INFO     [command_controller.py:1307] republish camera/aloha_description/body_Link/head_camera
+2026-01-29T02:09:03Z [79,964ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_camera_rgb --remap /out:=/head_camera_rgb_compressed
+                        
+I0000 00:00:1769652543.311267    5431 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-29T02:09:03Z [80,047ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fl_link6/left_wrist_camera
+2026-01-29T02:09:03Z [80,047ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_wrist_camera_rgb --remap /out:=/left_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769652543.409587    5431 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[ERROR] [ros2bag]: Output folder '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_agilex_1]' already exists.
+2026-01-29T02:09:03Z [80,150ms] INFO     [command_controller.py:1307] republish camera/aloha_description/fr_link6/right_wrist_camera
+2026-01-29T02:09:03Z [80,150ms] INFO     [command_controller.py:1307] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_wrist_camera_rgb --remap /out:=/right_wrist_camera_rgb_compressed
+                        
+I0000 00:00:1769652543.497496    5431 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-01-29T02:09:04Z [81,402ms] INFO     [command_controller.py:1140] ik lula time cost0.07046270370483398
+[INFO] [1769652546.763976802] [rclcpp]: signal_handler(signum=2)
+2026-01-29T02:09:06Z [83,417ms] INFO     [command_controller.py:1307] Sent SIGINT to process group 7009
+[INFO] [1769652546.764111568] [rclcpp]: signal_handler(signum=2)
+2026-01-29T02:09:06Z [83,417ms] INFO     [command_controller.py:1307] Sent SIGINT to process group 7052
+[INFO] [1769652546.764163651] [rclcpp]: signal_handler(signum=2)
+2026-01-29T02:09:06Z [83,417ms] INFO     [command_controller.py:1307] Sent SIGINT to process group 7095
+[INFO] [1769652546.764192279] [rclcpp]: signal_handler(signum=2)
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault

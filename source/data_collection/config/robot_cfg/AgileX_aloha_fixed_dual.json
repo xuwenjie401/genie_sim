@@ -1,0 +1,153 @@
+{
+    "robot": {
+        "robot_name": "AgileX_aloha_fixed",
+        "base_prim_path": "/aloha_description",
+        "arm": "dual",
+        "urdf_name": "/AgileX/AgileX_aloha_fixed_dual.urdf",
+        "robot_description": {
+            "right": "/AgileX/AgileX_fixed_right.yaml",
+            "left": "/AgileX/AgileX_fixed_left.yaml"
+        },
+        "robot_usd": "robot/AgileX/aloha_new.usda",
+        "initial_position": [],
+        "dof_nums": 6,
+        "joint_delta_time": 0.01,
+        "lock_joints": [
+            "fl_castor_wheel",
+            "fr_castor_wheel",
+            "left_wheel",
+            "right_wheel",
+            "rl_castor_wheel",
+            "rr_castor_wheel",
+            "fl_wheel",
+            "fr_wheel",
+            "rl_wheel",
+            "rr_wheel",
+            "bl_joint1",
+            "br_joint1",
+            "bl_joint2",
+            "br_joint2",
+            "bl_joint3",
+            "br_joint3",
+            "bl_joint4",
+            "br_joint4",
+            "bl_joint5",
+            "br_joint5",
+            "bl_joint6",
+            "br_joint6",
+            "bl_joint7",
+            "bl_joint8",
+            "br_joint7",
+            "br_joint8",
+            "fl_joint7",
+            "fl_joint8",
+            "fr_joint7",
+            "fr_joint8"
+        ],
+        "active_arm_joints": {
+            "left": [
+                "fl_joint1",
+                "fl_joint2",
+                "fl_joint3",
+                "fl_joint4",
+                "fl_joint5",
+                "fl_joint6"
+            ],
+            "right": [
+                "fr_joint1",
+                "fr_joint2",
+                "fr_joint3",
+                "fr_joint4",
+                "fr_joint5",
+                "fr_joint6"
+            ]
+        },
+        "init_joint_position": []
+    },
+    "camera": {
+        "/aloha_description/body_Link/head_camera": [
+            640,
+            400
+        ],
+        "/aloha_description/fr_link6/right_wrist_camera": [
+            640,
+            480
+        ],
+        "/aloha_description/fl_link6/left_wrist_camera": [
+            640,
+            480
+        ]
+    },
+    "gripper": {
+        "gripper_type": "linear",
+        "gripper_name": {
+            "left": "gripper_sl",
+            "right": "gripper_sl"
+        },
+        "max_force": 10,
+        "finger_names": {
+            "left": [
+                "fl_joint7",
+                "fl_joint8"
+            ],
+            "right": [
+                "fr_joint7",
+                "fr_joint8"
+            ]
+        },
+        "end_effector_name": {
+            "left": "fl_ee_link",
+            "right": "fr_ee_link"
+        },
+        "end_effector_prim_path": {
+            "left": "/aloha_description/fl_link6",
+            "right": "/aloha_description/fr_link6"
+        },
+        "end_effector_center_prim_path": {
+            "left": "/aloha_description/fl_link6/fl_ee_link",
+            "right": "/aloha_description/fr_link6/fr_ee_link"
+        },
+        "gripper_controll_joint": {
+            "left": "/aloha_description/joints/fl_joint7",
+            "right": "/aloha_description/joints/fr_joint7"
+        },
+        "opened_positions": {
+            "left": [
+                0.04,
+                -0.04
+            ],
+            "right": [
+                0.04,
+                -0.04
+            ]
+        },
+        "closed_velocities": {
+            "left": [
+                80,
+                -80
+            ],
+            "right": [
+                80,
+                -80
+            ]
+        }
+    },
+    "closed_positions": {
+        "left": [
+            0,
+            0
+        ],
+        "right": [
+            0,
+            0
+        ]
+    },
+    "curobo": {
+        "curobo_config_file": {
+            "right": "AgileX_aloha_fixed_right.yml",
+            "left": "AgileX_aloha_fixed_left.yml"
+        },
+        "curobo_urdf_path": "AgileX",
+        "curobo_urdf_name": "AgileX/aloha_new.urdf"
+    }
+}
