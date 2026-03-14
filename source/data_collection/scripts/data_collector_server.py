@@ -40,7 +40,7 @@ parser.add_argument("--publish_ros", action="store_true", default=False)
 parser.add_argument(
     "--physics_step",
     type=int,
-    default=60,
+    default=30,
 )
 
 args = parser.parse_args()

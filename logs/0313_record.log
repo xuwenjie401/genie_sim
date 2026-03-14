@@ -1,0 +1,430 @@
+2026-03-13T10:07:45Z [579,601ms] INFO     [command_controller.py:1365] Sent SIGINT to process group 36179
+[INFO] [1773396465.214599907] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+2026-03-13T10:07:50Z [584,602ms] INFO     [command_controller.py:1365] Failed to force terminate process 36179: Command '
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_6_1 -a
+                        ' timed out after 5 seconds
+I0000 00:00:1773396471.736927   34171 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-03-13T10:07:51Z [586,248ms] INFO     [command_controller.py:1373] Extract process started
+2026-03-13T10:07:52Z [586,645ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:07:52Z [586,645ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:08:02Z [596,793ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 4.0671s, needs update: True
+2026-03-13T10:08:02Z [596,793ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:08:02Z [596,816ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 0.0220s, needs update: False
+2026-03-13T10:08:02Z [596,816ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:08:05Z [600,286ms] INFO     [command_controller.py:1365] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_2_ -a
+                        
+I0000 00:00:1773396485.891906   34171 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:1365] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:1365] noised_probability0.1
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:1365] noised_camera_indices[0 1 2]
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:1365] noised_camera_prim_list['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color']
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:912] ROS domain ID: 8
+2026-03-13T10:08:06Z [600,395ms] INFO     [command_controller.py:1365] tf_target['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_toiletries_009', '/World/Objects/geniesim_2025_snack_000', '/World/Objects/geniesim_2025_cup_105', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/galbot_one_golf/left_gripper_tcp_link', '/galbot_one_golf/right_gripper_tcp_link', '/galbot_one_golf']
+[INFO] [1773396486.249422374] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1773396486.250360564] [rosbag2_storage]: Opened database '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_2_/_place_object_into_box_of_specific_color_blue_galbot_2__0.db3' for READ_WRITE.
+[INFO] [1773396486.250611264] [rosbag2_recorder]: Listening for topics...
+[INFO] [1773396486.250623198] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1773396486.251327372] [rosbag2_recorder]: Subscribed to topic '/rosout'
+[INFO] [1773396486.252016313] [rosbag2_recorder]: Subscribed to topic '/events/write_split'
+[INFO] [1773396486.252084229] [rosbag2_recorder]: Recording...
+[INFO] [1773396486.253203224] [rosbag2_recorder]: Subscribed to topic '/articulation_action'
+[INFO] [1773396486.253546097] [rosbag2_recorder]: Subscribed to topic '/head_front_left_color_rgb'
+[INFO] [1773396486.253941663] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1773396486.254281716] [rosbag2_recorder]: Subscribed to topic '/right_arm_color_rgb'
+[INFO] [1773396486.254887866] [rosbag2_recorder]: Subscribed to topic '/soft_code'
+[INFO] [1773396486.255254957] [rosbag2_recorder]: Subscribed to topic '/left_arm_color_rgb'
+[INFO] [1773396486.255942922] [rosbag2_recorder]: Subscribed to topic '/parameter_events'
+[INFO] [1773396486.256259424] [rosbag2_recorder]: Subscribed to topic '/soft_state'
+[INFO] [1773396486.361570721] [rosbag2_recorder]: Subscribed to topic '/tf'
+[INFO] [1773396486.514509557] [rosbag2_recorder]: Subscribed to topic '/joint_states'
+2026-03-13T10:08:10Z [605,115ms] INFO     [command_controller.py:1198] ik lula time cost0.04528093338012695
+2026-03-13T10:08:11Z [605,894ms] INFO     [command_controller.py:1198] ik lula time cost0.7248291969299316
+2026-03-13T10:08:12Z [606,737ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.1404566764831543
+2026-03-13T10:08:12Z [606,737ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 43
+2026-03-13T10:08:12Z [606,784ms] INFO     [motion_gen_reacher.py:719] update kinematics lock joints
+2026-03-13T10:08:12Z [606,774ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.03637886047363281
+2026-03-13T10:08:12Z [606,874ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.09995746612548828
+2026-03-13T10:08:12Z [606,924ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.003264904022216797
+2026-03-13T10:08:12Z [606,963ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 0.08312463760375977
+2026-03-13T10:08:12Z [607,013ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0033109188079833984
+2026-03-13T10:08:12Z [607,065ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 2 time is 0.09635138511657715
+2026-03-13T10:08:12Z [607,115ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0032057762145996094
+2026-03-13T10:08:12Z [607,149ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 3 time is 0.07787752151489258
+2026-03-13T10:08:12Z [607,199ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.003201007843017578
+2026-03-13T10:08:12Z [607,233ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 4 time is 0.07893633842468262
+2026-03-13T10:08:12Z [607,283ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0032525062561035156
+2026-03-13T10:08:12Z [607,239ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.5020906925201416
+2026-03-13T10:08:12Z [607,286ms] INFO     [command_controller.py:1198] ik curobo time cost0.6442604064941406
+2026-03-13T10:08:13Z [607,945ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:13Z [607,945ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:13Z [607,971ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-13T10:08:13Z [608,034ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:08:13Z [607,987ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:08:15Z [609,920ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.9413366317749023
+2026-03-13T10:08:15Z [609,968ms] INFO     [ui_builder.py:188] 169
+2026-03-13T10:08:15Z [609,922ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:08:15Z [609,922ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.950092077255249
+2026-03-13T10:08:29Z [623,420ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:08:36Z [631,079ms] INFO     [command_controller.py:1069] Attach!!!!
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toiletries_009/body
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-13T10:08:36Z [631,065ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-13T10:08:36Z [631,113ms] INFO     [motion_gen_reacher.py:1029] Fast obstacle update completed, time: 0.0301s, needs update: True
+2026-03-13T10:08:36Z [631,113ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body/body']
+2026-03-13T10:08:36Z [631,113ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-13T10:08:38Z [632,395ms] INFO     [command_controller.py:1198] ik lula time cost0.0006885528564453125
+2026-03-13T10:08:38Z [632,396ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:38Z [632,396ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:44Z [639,185ms] INFO     [command_controller.py:1069] Attach!!!!
+2026-03-13T10:08:44Z [639,171ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-13T10:08:44Z [639,171ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toiletries_009/body
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-13T10:08:44Z [639,172ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-13T10:08:44Z [639,219ms] INFO     [motion_gen_reacher.py:1029] Fast obstacle update completed, time: 0.0307s, needs update: True
+2026-03-13T10:08:44Z [639,219ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body/body']
+2026-03-13T10:08:44Z [639,220ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-13T10:08:46Z [641,183ms] INFO     [command_controller.py:1198] ik lula time cost0.16638970375061035
+2026-03-13T10:08:46Z [641,258ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.052243709564208984
+2026-03-13T10:08:46Z [641,258ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 31
+2026-03-13T10:08:46Z [641,305ms] INFO     [motion_gen_reacher.py:719] update kinematics lock joints
+2026-03-13T10:08:46Z [641,299ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.0405423641204834
+2026-03-13T10:08:47Z [641,393ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.09363484382629395
+2026-03-13T10:08:47Z [641,443ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0034215450286865234
+2026-03-13T10:08:47Z [641,499ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 0.09968972206115723
+2026-03-13T10:08:47Z [641,549ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0033195018768310547
+2026-03-13T10:08:47Z [641,594ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 2 time is 0.08967185020446777
+2026-03-13T10:08:47Z [641,644ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0032241344451904297
+2026-03-13T10:08:47Z [641,694ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 3 time is 0.09378838539123535
+2026-03-13T10:08:47Z [641,744ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.0032706260681152344
+2026-03-13T10:08:47Z [641,699ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.4413783550262451
+2026-03-13T10:08:47Z [641,746ms] INFO     [command_controller.py:1198] ik curobo time cost0.4941403865814209
+2026-03-13T10:08:48Z [642,498ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:48Z [642,498ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:08:48Z [642,535ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-13T10:08:48Z [642,963ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:08:48Z [642,919ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:08:48Z [643,262ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.3475151062011719
+2026-03-13T10:08:48Z [643,310ms] INFO     [ui_builder.py:188] 120
+2026-03-13T10:08:48Z [643,263ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:08:48Z [643,264ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.3532552719116211
+2026-03-13T10:08:58Z [652,780ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:08:59Z [653,686ms] INFO     [command_controller.py:1069] Attach!!!!
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toiletries_009/body
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-13T10:08:59Z [653,672ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-13T10:08:59Z [653,720ms] INFO     [motion_gen_reacher.py:1029] Fast obstacle update completed, time: 0.0300s, needs update: True
+2026-03-13T10:08:59Z [653,720ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body/body']
+2026-03-13T10:08:59Z [653,721ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toiletries_009/body
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-13T10:09:01Z [655,626ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-13T10:09:01Z [655,673ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 0.0272s, needs update: True
+2026-03-13T10:09:01Z [655,673ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:09:01Z [655,683ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 0.0091s, needs update: False
+2026-03-13T10:09:01Z [655,683ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:09:04Z [659,180ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:09:04Z [659,180ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:09:04Z [659,270ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.054584503173828125
+2026-03-13T10:09:04Z [659,319ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:09:04Z [659,272ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:09:07Z [661,483ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is2.212047815322876
+2026-03-13T10:09:07Z [661,532ms] INFO     [ui_builder.py:188] 182
+2026-03-13T10:09:07Z [661,485ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:09:07Z [661,485ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 2.2147738933563232
+2026-03-13T10:09:21Z [675,410ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:09:23Z [677,463ms] INFO     [command_controller.py:1365] Sent SIGINT to process group 36448
+[INFO] [1773396563.124215218] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+2026-03-13T10:09:28Z [682,464ms] INFO     [command_controller.py:1365] Failed to force terminate process 36448: Command '
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_2_ -a
+                        ' timed out after 5 seconds
+I0000 00:00:1773396569.660534   34171 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-03-13T10:09:29Z [684,170ms] INFO     [command_controller.py:1373] Extract process started
+2026-03-13T10:09:29Z [684,291ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:09:29Z [684,292ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:09:35Z [689,969ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 0.0286s, needs update: True
+2026-03-13T10:09:35Z [689,969ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:09:35Z [689,978ms] INFO     [motion_gen_reacher.py:1010] Fast obstacle update completed, time: 0.0092s, needs update: False
+2026-03-13T10:09:35Z [689,978ms] INFO     [command_controller.py:1076] Detach!!!!!
+2026-03-13T10:09:38Z [692,971ms] INFO     [command_controller.py:1365] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_0_ -a
+                        
+I0000 00:00:1773396578.576921   34171 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:1365] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:1365] noised_probability0.1
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:1365] noised_camera_indices[0 1 2]
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:1365] noised_camera_prim_list['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color']
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:912] ROS domain ID: 9
+2026-03-13T10:09:38Z [693,081ms] INFO     [command_controller.py:1365] tf_target['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_toiletries_009', '/World/Objects/geniesim_2025_beverage_bottle_008', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/galbot_one_golf/left_gripper_tcp_link', '/galbot_one_golf/right_gripper_tcp_link', '/galbot_one_golf']
+[INFO] [1773396578.962840648] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1773396579.178976092] [rosbag2_storage]: Opened database '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_0_/_place_object_into_box_of_specific_color_blue_galbot_0__0.db3' for READ_WRITE.
+[INFO] [1773396579.179879121] [rosbag2_recorder]: Listening for topics...
+[INFO] [1773396579.179892692] [rosbag2_recorder]: Event publisher thread: Starting
+2026-03-13T10:09:39Z [694,352ms] INFO     [command_controller.py:1198] ik lula time cost0.10275483131408691
+2026-03-13T10:09:40Z [694,602ms] INFO     [command_controller.py:1198] ik lula time cost0.1988070011138916
+2026-03-13T10:09:40Z [694,681ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.07524752616882324
+2026-03-13T10:09:40Z [694,681ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 7
+2026-03-13T10:09:40Z [694,729ms] INFO     [motion_gen_reacher.py:719] update kinematics lock joints
+2026-03-13T10:09:40Z [694,742ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.059471845626831055
+[INFO] [1773396580.418474874] [rosbag2_recorder]: Subscribed to topic '/soft_state'
+[INFO] [1773396580.419637632] [rosbag2_recorder]: Subscribed to topic '/rosout'
+[INFO] [1773396580.420060136] [rosbag2_recorder]: Subscribed to topic '/parameter_events'
+[INFO] [1773396580.420419725] [rosbag2_recorder]: Subscribed to topic '/left_arm_color_rgb'
+[INFO] [1773396580.420630543] [rosbag2_recorder]: Subscribed to topic '/joint_states'
+[INFO] [1773396580.420833959] [rosbag2_recorder]: Subscribed to topic '/tf'
+[INFO] [1773396580.421036899] [rosbag2_recorder]: Subscribed to topic '/soft_code'
+[INFO] [1773396580.421222620] [rosbag2_recorder]: Subscribed to topic '/right_arm_color_rgb'
+[INFO] [1773396580.425842423] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1773396580.426084156] [rosbag2_recorder]: Subscribed to topic '/head_front_left_color_rgb'
+[INFO] [1773396580.426687934] [rosbag2_recorder]: Subscribed to topic '/events/write_split'
+[INFO] [1773396580.426896026] [rosbag2_recorder]: Subscribed to topic '/articulation_action'
+[INFO] [1773396580.426952475] [rosbag2_recorder]: Recording...
+2026-03-13T10:09:40Z [694,830ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.08770632743835449
+2026-03-13T10:09:40Z [694,880ms] INFO     [motion_gen_reacher.py:745] kinematic forward time0.003296375274658203
+2026-03-13T10:09:40Z [694,836ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.15423345565795898
+2026-03-13T10:09:40Z [694,882ms] INFO     [command_controller.py:1198] ik curobo time cost0.23044729232788086
+2026-03-13T10:09:41Z [695,509ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:09:41Z [695,509ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:09:41Z [695,538ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-13T10:09:41Z [695,600ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:09:41Z [695,554ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:09:41Z [696,292ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.7474474906921387
+2026-03-13T10:09:41Z [696,340ms] INFO     [ui_builder.py:188] 169
+2026-03-13T10:09:41Z [696,294ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:09:41Z [696,294ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.7562143802642822
+2026-03-13T10:09:56Z [711,086ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:10:04Z [719,066ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:10:04Z [719,067ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:10:05Z [719,755ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:10:05Z [719,756ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:10:05Z [719,756ms] INFO     [command_controller.py:1316] playback finish
+2026-03-13T10:10:05Z [720,288ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:05Z [720,288ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:06Z [720,395ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.061715126037597656
+2026-03-13T10:10:06Z [720,443ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:10:06Z [720,396ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:10:06Z [721,202ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.8060641288757324
+2026-03-13T10:10:06Z [721,250ms] INFO     [ui_builder.py:188] 194
+2026-03-13T10:10:06Z [721,203ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:10:06Z [721,203ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.808892011642456
+2026-03-13T10:10:22Z [736,783ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:10:29Z [743,917ms] INFO     [command_controller.py:1069] Attach!!!!
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body/body
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_toiletries_009/body
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_008/body
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-13T10:10:29Z [743,904ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-13T10:10:29Z [743,951ms] INFO     [motion_gen_reacher.py:1029] Fast obstacle update completed, time: 0.0308s, needs update: True
+2026-03-13T10:10:29Z [743,951ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body/body']
+2026-03-13T10:10:29Z [743,952ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-13T10:10:30Z [745,131ms] INFO     [command_controller.py:1198] ik lula time cost0.0004830360412597656
+2026-03-13T10:10:30Z [745,132ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:30Z [745,132ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:37Z [751,937ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:10:37Z [751,938ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:10:40Z [755,038ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:10:40Z [755,038ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:10:40Z [755,039ms] INFO     [command_controller.py:1316] playback finish
+2026-03-13T10:10:41Z [755,562ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:41Z [755,562ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:10:41Z [755,592ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-13T10:10:42Z [756,564ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:10:42Z [756,518ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:10:42Z [757,347ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.8324987888336182
+2026-03-13T10:10:43Z [757,395ms] INFO     [ui_builder.py:188] 187
+2026-03-13T10:10:43Z [757,349ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-13T10:10:43Z [757,349ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.8369150161743164
+2026-03-13T10:10:57Z [771,995ms] INFO     [command_controller.py:451] ReachedTrue
+2026-03-13T10:11:08Z [783,291ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:11:08Z [783,291ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:11:09Z [784,339ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:11:09Z [784,339ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:11:09Z [784,340ms] INFO     [command_controller.py:1316] playback finish
+2026-03-13T10:11:10Z [784,860ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:11:10Z [784,860ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-13T10:11:10Z [784,896ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-13T10:11:10Z [784,957ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-13T10:11:10Z [784,911ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-13T10:11:11Z [785,450ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-03-13T10:11:11Z [785,450ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.5541648864746094
+2026-03-13T10:11:11Z [785,564ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:11:11Z [785,564ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:11:11Z [786,261ms] INFO     [command_controller.py:1476] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-13T10:11:11Z [786,261ms] INFO     [command_controller.py:1477] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-13T10:11:11Z [786,262ms] INFO     [command_controller.py:1316] playback finish
+2026-03-13T10:11:13Z [788,283ms] INFO     [command_controller.py:1365] Sent SIGINT to process group 36669
+[INFO] [1773396673.973185101] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+2026-03-13T10:11:18Z [793,283ms] INFO     [command_controller.py:1365] Failed to force terminate process 36669: Command '
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_0_ -a
+                        ' timed out after 5 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] Timing Statistics Report
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] on_physics_step:
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Total time: 462.3620 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Call count: 14084
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Average time: 0.0328 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] ui_builder.my_world.step:
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Total time: 322.8130 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Call count: 14084
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Average time: 0.0229 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119] on_physics_step:publish_ros:
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Total time: 322.5929 seconds
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Call count: 14084
+2026-03-13T10:11:21Z [795,720ms] INFO     [data_collector_server.py:119]   Average time: 0.0229 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] on_command_step:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 133.5558 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 14084
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0095 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_OBSERVATION, START_RECORDING, STOP_RECORDING:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 48.1228 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 16
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 3.0077 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] stop_recording:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 42.6293 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 5.3287 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_LINEAR_MOVE:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 27.7883 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 4752
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0058 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_IK_STATUS:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 17.6029 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 46
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.3827 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_INIT_ROBOT:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 12.2009 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 12.2009 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] _init_robot_cfg:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 12.2008 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 12.2008 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_ADD_OBJECT:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 11.9376 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 88
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.1357 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] _init_robot:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 9.9301 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 9.9301 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_DETACH_OBJ:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 6.5620 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 14
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.4687 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] start_recording:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 5.4895 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.6862 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] on_physics_step:ui_builder:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 4.8366 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 14084
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0003 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_PLAYBACK:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 3.2524 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 70
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0465 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_TASK_STATUS:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 2.7765 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.3471 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_OBJECT_POSE:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 1.3403 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 624
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0021 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119] rpc_server.step_command_ATTACH_OBJ:
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Total time: 1.0049 seconds
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Call count: 22
+2026-03-13T10:11:21Z [795,721ms] INFO     [data_collector_server.py:119]   Average time: 0.0457 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_RESET:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.6752 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 9
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0750 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_EE_POSE:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0707 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 190
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0004 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_CHECKER_STATUS:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0444 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 13
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0034 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_OBJECT_POSE:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0359 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 44
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0008 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_GRIPPER_STATE:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0281 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 1109
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_FRAME_STATE:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0077 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 174
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_STORE_CURRENT_STATE:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0072 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 14
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0005 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_JOINT_POSITION:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0046 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 9
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0005 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_JOINT_POSITION:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0011 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 14
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0001 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_TASK_METRIC:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0004 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0001 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_EXIT:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0002 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0002 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_TARGET_POINT:
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Total time: 0.0001 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-13T10:11:21Z [795,722ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-13T10:11:23Z [797,694ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 14104/30
+2026-03-13T10:11:23Z [797,694ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 14104/30, returning current sim time

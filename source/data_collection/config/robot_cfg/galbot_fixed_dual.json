@@ -46,7 +46,7 @@
     "camera": {
         "/galbot_one_golf/head_link2/head_front_left_color": [
             640,
-            400
+            480
         ],
         "/galbot_one_golf/left_arm_link7/left_arm_color": [
             640,
@@ -66,9 +66,11 @@
         "max_force": 10,
         "finger_names": {
             "left": [
+                "left_gripper_l_knuckle_joint",
                 "left_gripper_r_knuckle_joint"
             ],
             "right": [
+                "right_gripper_l_knuckle_joint",
                 "right_gripper_r_knuckle_joint"
             ]
         },
@@ -90,26 +92,32 @@
         },
         "opened_positions": {
             "left": [
+                0.0,
                 0.0
             ],
             "right": [
+                0.0,
                 0.0
             ]
         },
         "closed_velocities": {
             "left": [
+                80,
                 80
             ],
             "right": [
+                80,
                 80
             ]
         }
     },
     "closed_positions": {
         "left": [
+            1.703,
             1.703
         ],
         "right": [
+            1.703,
             1.703
         ]
     },

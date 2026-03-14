@@ -15,7 +15,7 @@ cspace:
     - left_arm_joint6
     - left_arm_joint7
 default_q: [
-    # 1.932, -1.365, -0.615, -2.352, -0.173, -0.039, 0.0,
+    # 1.932, -1.365, -0.6109, -2.4784, -0.173, -0.039, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 ]
 
@@ -41,8 +41,8 @@ cspace_to_urdf_rules:
     - {name: head_joint2, rule: fixed, value: 0.0}
     - {name: right_arm_joint1, rule: fixed, value: -1.932}
     - {name: right_arm_joint2, rule: fixed, value: 1.365}
-    - {name: right_arm_joint3, rule: fixed, value: 0.615}
-    - {name: right_arm_joint4, rule: fixed, value: 2.352}
+    - {name: right_arm_joint3, rule: fixed, value: 0.6109}
+    - {name: right_arm_joint4, rule: fixed, value: 2.4784}
     - {name: right_arm_joint5, rule: fixed, value: 0.173}
     - {name: right_arm_joint6, rule: fixed, value: 0.039}
     - {name: right_arm_joint7, rule: fixed, value: 0.0}

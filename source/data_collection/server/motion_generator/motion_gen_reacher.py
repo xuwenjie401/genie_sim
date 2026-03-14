@@ -134,8 +134,8 @@ class AgibotUsdHelper(UsdHelper):
 class CuroboMotion:
     world_coll_checker = None
     cached_obstacle_info = {}
-    curobo_kinematics = None
-    curobo_kinematics_robot_cfg = {}
+    # curobo_kinematics = None
+    # curobo_kinematics_robot_cfg = {}
 
     def reset(self):
         self.motion_gen.clear_world_cache()
@@ -150,19 +150,38 @@ class CuroboMotion:
                 orientation=self.init_ee_pose[i]["orientation"],
             )
 
+    # def _get_curobo_kinematics(self):
+    #     if CuroboMotion.curobo_kinematics is None and hasattr(self, "robot_cfg") and self.robot_cfg is not None:
+    #         CuroboMotion.curobo_kinematics_robot_cfg = robot_cfg = copy.deepcopy(self.robot_cfg)
+    #         if robot_cfg["kinematics"].get("link_names", None) is None:
+    #             robot_cfg["kinematics"]["link_names"] = []
+    #         for link_name in robot_cfg["kinematics"]["collision_link_names"]:
+    #             if "arm" in link_name:
+    #                 robot_cfg["kinematics"]["link_names"].append(link_name)
+    #         cuda_robot_model_config = CudaRobotModelConfig.from_data_dict(
+    #             data_dict=robot_cfg, tensor_args=self.tensor_args
+    #         )
+    #         CuroboMotion.curobo_kinematics = CudaRobotModel(cuda_robot_model_config)
+    #     return CuroboMotion.curobo_kinematics
+    
     def _get_curobo_kinematics(self):
-        if CuroboMotion.curobo_kinematics is None and hasattr(self, "robot_cfg") and self.robot_cfg is not None:
-            CuroboMotion.curobo_kinematics_robot_cfg = robot_cfg = copy.deepcopy(self.robot_cfg)
-            if robot_cfg["kinematics"].get("link_names", None) is None:
-                robot_cfg["kinematics"]["link_names"] = []
-            for link_name in robot_cfg["kinematics"]["collision_link_names"]:
+        # Check instance attribute instead of Class attribute
+        if not hasattr(self, "curobo_kinematics") and hasattr(self, "robot_cfg") and self.robot_cfg is not None:
+            self.curobo_kinematics_robot_cfg = copy.deepcopy(self.robot_cfg)
+            
+            if self.curobo_kinematics_robot_cfg["kinematics"].get("link_names", None) is None:
+                self.curobo_kinematics_robot_cfg["kinematics"]["link_names"] = []
+                
+            for link_name in self.curobo_kinematics_robot_cfg["kinematics"]["collision_link_names"]:
                 if "arm" in link_name:
-                    robot_cfg["kinematics"]["link_names"].append(link_name)
+                    self.curobo_kinematics_robot_cfg["kinematics"]["link_names"].append(link_name)
+                    
             cuda_robot_model_config = CudaRobotModelConfig.from_data_dict(
-                data_dict=robot_cfg, tensor_args=self.tensor_args
+                data_dict=self.curobo_kinematics_robot_cfg, tensor_args=self.tensor_args
             )
-            CuroboMotion.curobo_kinematics = CudaRobotModel(cuda_robot_model_config)
-        return CuroboMotion.curobo_kinematics
+            self.curobo_kinematics = CudaRobotModel(cuda_robot_model_config)
+            
+        return getattr(self, "curobo_kinematics", None)
 
     def _extract_cached_obstacles(self, need_reset_cache=True):
         """
@@ -750,14 +769,31 @@ class CuroboMotion:
         else:
             carb.log_warn("lock joints is the same, no need to update")
 
+    # def update_curobo_kinematics_lock_joints(self, locked_joints):
+    #     before = time.time()
+    #     if CuroboMotion.curobo_kinematics is not None and locked_joints is not None:
+    #         if CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] != locked_joints:
+    #             logger.info("update kinematics lock joints")
+    #             CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] = locked_joints
+    #             robot_cfg = RobotConfig.from_dict(CuroboMotion.curobo_kinematics_robot_cfg, self.tensor_args)
+    #             CuroboMotion.curobo_kinematics.update_kinematics_config(robot_cfg.kinematics.kinematics_config)
+    #     after = time.time()
+    #     carb.log_warn("update curobo kinematics lock joints time is {}".format(after - before))
+
     def update_curobo_kinematics_lock_joints(self, locked_joints):
         before = time.time()
-        if CuroboMotion.curobo_kinematics is not None and locked_joints is not None:
-            if CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] != locked_joints:
+        
+        # Ensure the instance kinematics are initialized first
+        kinematics = self._get_curobo_kinematics()
+        
+        if kinematics is not None and locked_joints is not None:
+            if self.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] != locked_joints:
                 logger.info("update kinematics lock joints")
-                CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] = locked_joints
-                robot_cfg = RobotConfig.from_dict(CuroboMotion.curobo_kinematics_robot_cfg, self.tensor_args)
-                CuroboMotion.curobo_kinematics.update_kinematics_config(robot_cfg.kinematics.kinematics_config)
+                self.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] = locked_joints
+                
+                robot_cfg = RobotConfig.from_dict(self.curobo_kinematics_robot_cfg, self.tensor_args)
+                kinematics.update_kinematics_config(robot_cfg.kinematics.kinematics_config)
+                
         after = time.time()
         carb.log_warn("update curobo kinematics lock joints time is {}".format(after - before))
 
@@ -788,6 +824,7 @@ class CuroboMotion:
         disable_collision_links: Name of links to disable collision with the world.
         from_current_pose: If True, the goal pose is the current ee pose + offset.
         """
+        # self.set_obstacles()
         t0 = time.time()
         self.reached = False
         if from_current_pose and not goal_offset:
@@ -905,6 +942,8 @@ class CuroboMotion:
                 if "aloha" in self.robot_prim_path:
                     dof_weights = [1.0,1.0,1.0,1.0,3.0,3.0,
                                    1.0,1.0,1.0,1.0,3.0,3.0,]
+                elif "galbot" in self.robot_prim_path:
+                    dof_weights = [1.0,1.0,1.0,1.0,3.0,3.0,1.0]
                 sorted_indices = sort_by_difference_js(
                     filtered_paths,
                     weights=self.tensor_args.to_device(

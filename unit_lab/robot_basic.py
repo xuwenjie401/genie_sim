@@ -242,6 +242,38 @@ class BasicRunner:
             size=0.05,
         )
 
+        # 2. 创建三色轴并分别设置局部缩放和位移
+        # 轴的参数
+        axis_len = 0.1
+        thick = 0.005
+        # --- X 轴 (红) ---
+        self.ax_x = cuboid.VisualCuboid(
+            prim_path="/World/target/ax_x", # 路径级联确保绑定
+            name="local_ax_x",
+            scale=np.array([axis_len, thick, thick]), # 初始化时定义局部缩放
+            color=np.array([1, 0, 0])
+        )
+        # 修正局部位置（相对于父中心偏移）
+        self.ax_x.set_local_pose(translation=np.array([axis_len / 2, 0, 0]))
+
+        # --- Y 轴 (绿) ---
+        self.ax_y = cuboid.VisualCuboid(
+            prim_path="/World/target/ax_y",
+            name="local_ax_y",
+            scale=np.array([thick, axis_len, thick]),
+            color=np.array([0, 1, 0])
+        )
+        self.ax_y.set_local_pose(translation=np.array([0, axis_len / 2, 0]))
+
+        # --- Z 轴 (蓝) ---
+        self.ax_z = cuboid.VisualCuboid(
+            prim_path="/World/target/ax_z",
+            name="local_ax_z",
+            scale=np.array([thick, thick, axis_len]),
+            color=np.array([0, 0, 1])
+        )
+        self.ax_z.set_local_pose(translation=np.array([0, 0, axis_len / 2]))
+
         # warmup curobo instance
         self.usd_help = UsdHelper()
 
@@ -319,8 +351,8 @@ class BasicRunner:
         self.robot_name = robot.robot_name
         self.robot_prim_path = robot.robot_prim_path
         self.robot_articulation_path = self.robot_prim_path
-        if "galbot" in self.robot_name:
-            self.robot_articulation_path = "/galbot_one_golf/base_link"
+        # if "galbot" in self.robot_name:
+        #     self.robot_articulation_path = "/galbot_one_golf/base_link"
         self.dof_nums = robot.dof_nums
         self.lock_joints = robot.lock_joints
         self.joint_delta_time = robot.joint_delta_time

@@ -1,0 +1,19 @@
+
+1. 
+def setup_test_objects(self):
+    self.bottle_pos = self._sample_bottle_initial_pose()
+    self.obs1.set_world_pose(position=self.bottle_pos)
+    self.obs2.set_world_pose(position=self.box_pos)
+    self._apply_physics_to_obstacle("/World/obstacle1", mass=0.05,
+                                    static_friction=0.8, dynamic_friction=0.6)
+    self._apply_physics_to_obstacle("/World/obstacle2", mass=1000.0,
+                                    static_friction=0.5, dynamic_friction=0.4,
+                                    model_type="convexDecomposition", 
+                                    # model_type="meshSimplification",
+                                    kinematic=False)
+    self._sync_rigid_pose("/World/obstacle1", self.bottle_pos)
+    self._sync_rigid_pose("/World/obstacle2", self.box_pos)
+
+
+
+    

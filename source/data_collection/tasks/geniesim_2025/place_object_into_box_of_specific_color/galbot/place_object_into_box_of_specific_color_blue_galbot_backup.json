@@ -109,7 +109,7 @@
                 "workspace_relative_position": [
                     0.0,
                     0.0,
-                    0.0
+                    0.3
                 ],
                 "workspace_relative_orientation": [
                     0.5,
@@ -126,7 +126,7 @@
                 "workspace_relative_position": [
                     0.0,
                     0.0,
-                    0.0
+                    0.3
                 ],
                 "workspace_relative_orientation": [
                     0.5,
@@ -201,7 +201,7 @@
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.9,
+                -0.77,
                 0.0,
                 0.0
             ],
@@ -227,7 +227,7 @@
                 "position": [
                     -0.1300000000000036,
                     0.010000000000000009,
-                    0.75
+                    0.9
                 ],
                 "quaternion": [
                     1,
@@ -311,7 +311,7 @@
                         "object_id": "geniesim_2025_target_grasp_object",
                         "rule": "lessThan",
                         "target_id": "gripper",
-                        "value": 0.1
+                        "value": 0.08
                     }
                 }
             ],
@@ -319,9 +319,9 @@
                 "arm": "auto",
                 "disable_upside_down": true,
                 "flip_grasp": false,
-                "grasp_offset": -0.02,
-                "pick_up_distance": 0.16,
-                "pick_up_type": "Simple"
+                "grasp_offset": 0.0,
+                "pick_up_distance": 0.1,
+                "pick_up_type": "AvoidObs"
             },
             "passive": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -359,11 +359,7 @@
             ],
             "extra_params": {
                 "arm": "auto",
-                "place_with_origin_orientation": true,
-                "disable_collision_links": [
-                    "left_gripper.*",
-                    "right_gripper.*"
-                ]
+                "place_with_origin_orientation": true
             },
             "passive": {
                 "object_id": "geniesim_2025_target_storage_box",

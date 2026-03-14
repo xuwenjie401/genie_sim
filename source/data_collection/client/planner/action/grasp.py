@@ -44,7 +44,7 @@ class PickStage(Stage):
     def select_pose(self, objects, robot):
         gripper2obj = []
         arm = self.extra_params.get("arm", "right")
-        grasp_offset = self.extra_params.get("grasp_offset", 0.03)
+        grasp_offset = self.extra_params.get("grasp_offset", 0.0)
         pre_grasp_offset = self.extra_params.get("pre_grasp_offset", 0.0)
         grasp_lower_percentile = self.extra_params.get("grasp_lower_percentile", 0)
         grasp_upper_percentile = self.extra_params.get("grasp_upper_percentile", 100)
@@ -118,6 +118,8 @@ class PickStage(Stage):
                     upright_mask = grasp_poses[:, 2, 1] > 0.0
             elif "agile" in robot.robot_cfg.lower():
                 upright_mask = grasp_poses[:, 2, 1] > 0.0
+            elif "galbot" in robot.robot_cfg.lower():
+                upright_mask = grasp_poses[:, 2, 2] > 0.0
             else:
                 upright_mask = grasp_poses[:, 2, 0] > 0.0
             grasp_poses = grasp_poses[upright_mask]
@@ -422,8 +424,8 @@ class PickStage(Stage):
             ik_success, ik_info = robot.solve_ik(
                 best_grasp_poses,
                 ee_type="gripper",
-                # type="AvoidObs",
-                type="Simple",
+                type="AvoidObs",
+                # type="Simple",
                 arm=arm,
                 output_link_pose=True,
             )
@@ -462,7 +464,8 @@ class PickStage(Stage):
             if len(best_grasp_poses) == 0:
                 logger.warning(f"{self.action_type}: No best_grasp_poses can pass curobo IK")
                 return []
-            if "G2" in robot.robot_cfg:
+            # if "G2" in robot.robot_cfg:
+            if False:
                 is_right = arm == "right"
                 elbow_name = "arm_r_link4" if is_right else "arm_l_link4"
                 hand_name = "gripper_r_center_link" if is_right else "gripper_l_center_link"
@@ -586,7 +589,7 @@ class PickStage(Stage):
                 transform[:3, 3] = np.array(pre_grasp_vector)
                 # sub-stage-0 moveTo pre-grasp pose
                 action_sequence.add_action(Action(grasp_pose, "open", transform, "AvoidObs"))
-                # action_sequence.add_action(Action(grasp_pose, "open", transform, "Normal"))/
+                # action_sequence.add_action(Action(grasp_pose, "open", transform, "Normal"))
             else:
                 self.pick_up_step = 1
             if self.error_type == "MissGrasp":
@@ -612,7 +615,7 @@ class PickStage(Stage):
                     action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
                 else:
                     action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "AvoidObs"))
-                    # action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "Normal"))/
+                    # action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "Normal"))
         if self.error_type == "WrongTarget":
             action = action_sequence[0]
             action.gripper_action = "open"

@@ -1,0 +1,43 @@
+2026-03-02T07:36:27Z [161,747ms] INFO     [command_controller.py:1155] ik lula time cost0.13033604621887207
+2026-03-02T07:36:27Z [161,839ms] INFO     [command_controller.py:1155] ik lula time cost0.02697920799255371
+2026-03-02T07:36:27Z [160,604ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.163316011428833
+2026-03-02T07:36:27Z [160,604ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 1
+2026-03-02T07:36:27Z [162,045ms] INFO     [motion_gen_reacher.py:700] update kinematics lock joints
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]: Traceback (most recent call last):
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/scripts/data_collector_server.py", line 111, in <module>
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]:     rpc_server.server_function.on_physics_step()
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 447, in on_physics_step
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]:     self.on_command_step()
+2026-03-02T07:36:27Z [160,654ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1336, in on_command_step
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     self.handle_get_ik_status()
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1155, in handle_get_ik_status
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     ik_result = self._get_ik_status(target_poses, is_Right, ObsAvoid, output_link_pose)
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/command_controller.py", line 1839, in _get_ik_status
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     results = curoboMotion.solve_batch_ik(
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/motion_generator/motion_gen_reacher.py", line 700, in solve_batch_ik
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     self.update_curobo_kinematics_lock_joints(self.lock_joint_states)
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/motion_generator/motion_gen_reacher.py", line 759, in update_curobo_kinematics_lock_joints
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     robot_cfg = RobotConfig.from_dict(CuroboMotion.curobo_kinematics_robot_cfg, self.tensor_args)
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/types/robot.py", line 50, in from_dict
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     data_dict["kinematics"] = CudaRobotModelConfig.from_config(
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/cuda_robot_model/cuda_robot_model.py", line 248, in from_config
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     generator = CudaRobotGenerator(config)
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/cuda_robot_model/cuda_robot_generator.py", line 260, in __init__
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:     self.initialize_tensors()
+2026-03-02T07:36:27Z [160,655ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/contextlib.py", line 81, in inner
+2026-03-02T07:36:27Z [160,701ms] [Error] [omni.kit.app._impl] [py stderr]:     return func(*args, **kwds)
+2026-03-02T07:36:27Z [160,701ms] [Error] [omni.kit.app._impl] [py stderr]:            ^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,701ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/cuda_robot_model/cuda_robot_generator.py", line 346, in initialize_tensors
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:     self.cspace.inplace_reindex(self.joint_names)
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/cuda_robot_model/types.py", line 258, in inplace_reindex
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:     new_index = [self.joint_names.index(j) for j in joint_names]
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/isaac/repo/curobo/src/curobo/cuda_robot_model/types.py", line 258, in <listcomp>
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:     new_index = [self.joint_names.index(j) for j in joint_names]
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]:                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-02T07:36:27Z [160,702ms] [Error] [omni.kit.app._impl] [py stderr]: ValueError: 'right_arm_joint1' is not in list

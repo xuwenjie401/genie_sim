@@ -31,6 +31,8 @@ from omni.kit.viewport.utility.camera_state import ViewportCameraState
 from omni.physx.scripts import utils
 from pxr import Gf, PhysxSchema, Sdf, Usd, UsdGeom, UsdPhysics, UsdShade
 
+from isaacsim.core.utils.types import ArticulationAction
+
 from common.base_utils.logger import logger
 from common.base_utils.ros_nodes.server_node import ServerNode
 from common.base_utils.transform_utils import mat2quat_wxyz, quat2mat_wxyz
@@ -134,6 +136,10 @@ class CommandController:
         self.camera_info_list = {}
         self.fps = 60
         self.cur_runtime_checker = None
+
+        self.hold_gripper = False
+        self.last_controlled_gripper = None
+
         # Timing statistics related
         self.timing_stats = {}  # Store total time for each function {function_name: total_time}
         self.timing_lock = threading.Lock()  # For thread-safe timing statistics
@@ -234,8 +240,6 @@ class CommandController:
                 add_reference_to_stage(self.robot_usd_path, "/World")
             add_reference_to_stage(self.scene_usd_path, "/World")
             robot_prim = robot.robot_prim_path
-            if "galbot" in robot.robot_name.lower():
-                robot_prim = robot.robot_prim_path + "/base_link"
             self.usd_objects["robot"] = XFormPrim(
                 prim_path=robot_prim,
                 position=init_position,
@@ -284,10 +288,11 @@ class CommandController:
                 XFormPrim(prim_path="/World_{}".format(idx), position=[0, 2 * idx + 1, 0])
             camera_state = ViewportCameraState("/OmniverseKit_Persp")
             camera_state.set_position_world(
-                Gf.Vec3d(1.9634841037804776, 0.9488467163528935, 2.1182000480154555),
+                # Gf.Vec3d(1.9634841037804776, 0.9488467163528935, 2.1182000480154555),
+                Gf.Vec3d(2.65, 2.4, 1.74),
                 True,
             )
-            camera_state.set_target_world(Gf.Vec3d(init_position[0], init_position[1], init_position[2]), True)
+            camera_state.set_target_world(Gf.Vec3d(init_position[0]+0.5, init_position[1], init_position[2]+0.8), True)
             stage = omni.usd.get_context().get_stage()
             self.scene = UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
             self.scene.CreateGravityDirectionAttr().Set(Gf.Vec3f(0.0, 0.0, -1.0))
@@ -301,7 +306,8 @@ class CommandController:
             elif "agile" in robot.robot_name.lower():
                 viewport.set_active_camera("/aloha_description/body_Link/head_camera")
             elif "galbot" in robot.robot_name.lower():
-                viewport.set_active_camera("/galbot_one_golf/head_link2/head_front_left_color")
+                pass
+                # viewport.set_active_camera("/galbot_one_golf/head_link2/head_front_left_color")
             with robot_rep:
                 rep.modify.semantics([("class", "robot")])
             self.robot_cfg = robot
@@ -444,6 +450,11 @@ class CommandController:
                                     additional_action = self._get_gripper_action(state, is_right)
                     curobo_motion.on_physics_step(self.motion_run_ratio, additional_action)
 
+            # 如果需要保持夹爪 （对于galbot gripper这类脆弱的力控）
+            if self.hold_gripper:
+                isRightGripper = (self.last_controlled_gripper == "right")
+                self._hold_gripper_at_grasp(isRightGripper)
+
             self.on_command_step()
             with self._timing_context("on_physics_step:publish_ros"):
                 if self.publish_ros:
@@ -514,6 +525,7 @@ class CommandController:
         state_info["gripper_action_timing"] = (
             self.gripper_action_timing.copy() if self.gripper_action_timing is not None else None
         )
+        state_info["hold_gripper"] = self.hold_gripper
         state_info["ros_step"] = self.ros_step
         state_info["target_point"] = self.target_point.copy()
         return state_info
@@ -562,6 +574,7 @@ class CommandController:
             self.target_rotation = state_info["target_rotation"]
             self.gripper_state = state_info["gripper_state"]
             self._reset_stiffness()
+            self.hold_gripper = state_info["hold_gripper"]
             self._set_gripper_state(state_info["gripper_state_R"], True, 0.8)
             self._set_gripper_state(state_info["gripper_state_L"], False, 0.8)
             self.ros_step = state_info["ros_step"]
@@ -724,11 +737,24 @@ class CommandController:
         """Handle Command 8: GetJointPosition"""
         self.data_to_send = self._get_joint_positions()
 
+    def make_gripper_stop(self, isRight):
+        if isRight:
+            action = self.gripper_R.instant_stop()
+        else:
+            action = self.gripper_L.instant_stop()
+        self.robot.apply_action(action)
+
+
     def handle_set_gripper_state(self):
         """Handle Command 9: SetGripperState"""
         state = self.data["gripper_state"]
         isRight = self.data["is_gripper_right"]
         width = self.data["opened_width"]
+
+        self.last_controlled_gripper = "right" if isRight else "left"
+        if state == "open":
+            self.hold_gripper = False
+        
         if self.gripper_state != state:
             self._set_gripper_state(state=state, isRight=isRight, width=width)
             self.gripper_state = state
@@ -737,8 +763,13 @@ class CommandController:
         else:
             is_reached = self.gripper_L.is_reached
         if is_reached:
+            if "galbot" in self.robot_name and state == "close":
+                self.make_gripper_stop(isRight)
+                self.hold_gripper = True
+
             self.gripper_state = ""
             self.data_to_send = "gripper moving"
+
 
     def get_camera_prim_name(self, prim_path):
         prim_name = prim_path.split("/")[-1]
@@ -790,7 +821,9 @@ class CommandController:
                 self.fps = self.data["fps"]
                 current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 root_path = current_directory + "/recording_data/"
-                recording_path = root_path + self.task_name
+                task_name_safe = "".join(c if c.isalnum() or c=='_' else '_' for c in self.data["task_name"])
+                recording_path = root_path + task_name_safe
+                # recording_path = root_path + self.task_name
                 if os.path.isdir(recording_path):
                     folder_index = 1
                     while os.path.isdir(recording_path + str(folder_index)):
@@ -833,13 +866,21 @@ class CommandController:
                     tf_target.append(prim_path)
 
                 if self.publish_ros:
+                    # ros_cmd_distro = os.getenv("ROS_CMD_DISTRO", "humble")
+                    # exclude_args = "--exclude-regex" if ros_cmd_distro != "humble" else "--exclude"
+                    # command_str = f"""
+                    #     unset PYTHONPATH
+                    #     unset LD_LIBRARY_PATH
+                    #     source /opt/ros/{ros_cmd_distro}/setup.bash
+                    #     ros2 bag record -o {recording_path} {exclude_args} '.*_rgb(?!_)' -a
+                    #     """
                     ros_cmd_distro = os.getenv("ROS_CMD_DISTRO", "humble")
-                    exclude_args = "--exclude-regex" if ros_cmd_distro != "humble" else "--exclude"
+                    # 删除了 exclude_args 相关的变量定义和命令行参数
                     command_str = f"""
                         unset PYTHONPATH
                         unset LD_LIBRARY_PATH
                         source /opt/ros/{ros_cmd_distro}/setup.bash
-                        ros2 bag record -o {recording_path} {exclude_args} '.*_rgb(?!_)' -a
+                        ros2 bag record -o {recording_path} -a
                         """
                     logger.info("publish_ros command: " + command_str)
                     process = subprocess.Popen(
@@ -925,13 +966,13 @@ class CommandController:
                             elif self.data["render_semantic"]:
                                 camera_param["publish"] = [
                                     "rgb:/" + camera.split("/")[-1] + "_rgb",
-                                    "depth:/" + camera.split("/")[-1],
-                                    "semantic:/" + camera.split("/")[-1] + "_semantic",
+                                    # "depth:/" + camera.split("/")[-1],
+                                    # "semantic:/" + camera.split("/")[-1] + "_semantic",
                                 ]
                             else:
                                 camera_param["publish"] = [
                                     "rgb:/" + camera.split("/")[-1] + "_rgb",
-                                    "depth:/" + camera.split("/")[-1],
+                                    # "depth:/" + camera.split("/")[-1],
                                 ]
                             if camera in noised_camera_prim_list:
                                 camera_param["noised"] = np.random.uniform() < noised_probability
@@ -951,26 +992,28 @@ class CommandController:
                         )
                         self.ros_publishers.append(articulation_action_node)
 
-                    for camera in self.data["camera_prim_list"]:
-                        logger.info(f"republish camera{camera}")
-                        topic_name = "/" + camera.split("/")[-1] + "_rgb"
-                        compressed_name = topic_name + "_compressed"
-                        ros_cmd_distro = os.getenv("ROS_CMD_DISTRO", "humble")
-                        extra_args = "--remap _out_transport:=compressed" if ros_cmd_distro != "humble" else ""
-                        command_str = f"""
-                        unset PYTHONPATH
-                        unset LD_LIBRARY_PATH
-                        source /opt/ros/{ros_cmd_distro}/setup.bash
-                        ros2 run image_transport republish raw compressed {extra_args} --ros-args --remap /in:={topic_name} --remap /out:={compressed_name}
-                        """
-                        logger.info(command_str)
-                        subpro = subprocess.Popen(
-                            command_str,
-                            shell=True,
-                            executable="/bin/bash",
-                            preexec_fn=os.setsid,
-                        )
-                        self.process.append(subpro)
+                    # XU: 不再使用compressed
+                    
+                    # for camera in self.data["camera_prim_list"]:
+                    #     logger.info(f"republish camera{camera}")
+                    #     topic_name = "/" + camera.split("/")[-1] + "_rgb"
+                    #     compressed_name = topic_name + "_compressed"
+                    #     ros_cmd_distro = os.getenv("ROS_CMD_DISTRO", "humble")
+                    #     extra_args = "--remap _out_transport:=compressed" if ros_cmd_distro != "humble" else ""
+                    #     command_str = f"""
+                    #     unset PYTHONPATH
+                    #     unset LD_LIBRARY_PATH
+                    #     source /opt/ros/{ros_cmd_distro}/setup.bash
+                    #     ros2 run image_transport republish raw compressed {extra_args} --ros-args --remap /in:={topic_name} --remap /out:={compressed_name}
+                    #     """
+                    #     logger.info(command_str)
+                    #     subpro = subprocess.Popen(
+                    #         command_str,
+                    #         shell=True,
+                    #         executable="/bin/bash",
+                    #         preexec_fn=os.setsid,
+                    #     )
+                    #     self.process.append(subpro)
                     if not self.ros_node_initialized:
                         self.server_ros_node = ServerNode(robot_name=self.robot_name)
                         self.ros_node_initialized = True
@@ -1367,7 +1410,7 @@ class CommandController:
 
     def _get_observation(self):
         for camera in self.cameras:
-            self._capture_camera(prim_path=camera, isRGB=True, isDepth=True, isSemantic=True, isGN=False)
+            self._capture_camera(prim_path=camera, isRGB=True, isDepth=False, isSemantic=False, isGN=False)
 
     def _on_reset(self):
         self._reset_stiffness()
@@ -1461,7 +1504,7 @@ class CommandController:
         camera = Camera(prim_path=camera_prim, resolution=[width, height])
         camera.initialize()
         self._get_observation()
-        self._capture_camera(prim_path=camera_prim, isRGB=True, isDepth=True, isSemantic=True, isGN=False)
+        self._capture_camera(prim_path=camera_prim, isRGB=True, isDepth=False, isSemantic=False, isGN=False)
         if is_local:
             camera.set_local_pose(
                 translation=camera_position,
@@ -1774,9 +1817,43 @@ class CommandController:
             return action
 
     def _set_gripper_state(self, state: str, isRight: bool, width):
-        self.robot = self._init_grippers()
+        # TODO: XU
+        # self.robot = self._init_grippers()
+
+        if state == "close" and self.hold_gripper:
+            return
+
+        if self.gripper_L is None or self.gripper_R is None:
+            self.robot = self._init_grippers()
+        else:
+            self.robot = self._initialize_articulation()
+
         action = self._get_gripper_action(state, isRight)
-        self.robot.apply_action(action)
+        self.robot.apply_action(action)      
+
+    def _hold_gripper_at_grasp(self, isRight: bool):
+        gripper = self.gripper_L
+        if isRight:
+            gripper = self.gripper_R
+        robot = self._initialize_articulation()
+        if gripper is None or robot is None:
+            return
+        stage = omni.usd.get_context().get_stage()
+        prim = stage.GetPrimAtPath(gripper._joint_control_prim)
+        if prim:
+            drive = UsdPhysics.DriveAPI.Get(prim, gripper.gripper_type)
+            if drive:
+                drive.GetStiffnessAttr().Set(10000)
+                drive.GetMaxForceAttr().Set(10.0)
+        ctrl_dof = int(gripper._joint_dof_indicies[1])
+        mirror_dof = int(gripper._joint_dof_indicies[0])
+        current = robot.get_joint_positions(joint_indices=[ctrl_dof, mirror_dof])
+        if current is None or len(current) < 2:
+            return
+        target_positions = [None] * gripper._articulation_num_dofs
+        target_positions[ctrl_dof] = float(current[0])
+        target_positions[mirror_dof] = float(current[1])
+        robot.apply_action(ArticulationAction(joint_positions=target_positions))
 
     # Get pose of any object, Input: prim_path
     def _get_object_pose(self, object_prim_path: str) -> Tuple[np.ndarray, np.ndarray]:

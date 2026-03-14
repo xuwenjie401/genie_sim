@@ -289,6 +289,8 @@ def reorder_joint_state(msg, robot_name):
         target_joint_name = config["G2"]["joint_state_order"]
     elif "G1" in robot_name:
         target_joint_name = config["G1"]["joint_state_order"]
+    elif "galbot" in robot_name.lower():
+        target_joint_name = config["galbot"]["joint_state_order"]
     else:
         target_joint_name = config["AgileX"]["joint_state_order"]
     now_joint_name = msg.name

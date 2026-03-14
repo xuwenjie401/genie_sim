@@ -142,25 +142,26 @@ class ParallelGripper(Gripper):
 
         # make sure that all gripper dof names were resolved
         if self._joint_dof_indicies[0] is None or self._joint_dof_indicies[1] is None:
-            if "galbot" in self.robot_name:
-                logger.info("It's a galbot! it does only have 1 dof for a gripper.")
-            else:
-                raise Exception("Not all gripper dof names were resolved to dof handles and dof indices.")
+            # if "galbot" in self.robot_name:
+            #     # logger.info("It's a galbot! it does only have 1 dof for a gripper.")
+            #     pass
+            # else:
+            raise Exception("Not all gripper dof names were resolved to dof handles and dof indices.")
         self._articulation_apply_action_func = articulation_apply_action_func
         current_joint_positions = get_joint_positions_func()
         if self._default_state is None:
-            if "galbot" in self.robot_name:
-                self._default_state = np.array(
-                    [
-                        current_joint_positions[self._joint_dof_indicies[0]],
-                    ]
-                )
-            else:
-                self._default_state = np.array(
-                    [
-                        current_joint_positions[self._joint_dof_indicies[0]],
-                        current_joint_positions[self._joint_dof_indicies[1]],
-                    ]
+            # if "galbot" in self.robot_name:
+            #     self._default_state = np.array(
+            #         [
+            #             current_joint_positions[self._joint_dof_indicies[0]],
+            #         ]
+            #     )
+            # else:
+            self._default_state = np.array(
+                [
+                    current_joint_positions[self._joint_dof_indicies[0]],
+                    current_joint_positions[self._joint_dof_indicies[1]],
+                ]
             )
             if len(self._joint_prim_names) > 2:
                 self._default_state = np.array(
@@ -177,8 +178,8 @@ class ParallelGripper(Gripper):
     def apply_default_action(self):
         target_joint_positions = [None] * self._articulation_num_dofs
         target_joint_positions[self._joint_dof_indicies[0]] = self._joint_opened_positions[0]
-        if "galbot" not in self.robot_name:
-            target_joint_positions[self._joint_dof_indicies[1]] = self._joint_opened_positions[1]
+        # if "galbot" not in self.robot_name:
+        target_joint_positions[self._joint_dof_indicies[1]] = self._joint_opened_positions[1]
 
         if len(self._joint_prim_names) > 2:
             target_joint_positions[self._joint_dof_indicies[2]] = self._joint_opened_positions[2]
@@ -231,12 +232,12 @@ class ParallelGripper(Gripper):
 
     def post_reset(self):
         Gripper.post_reset(self)
-        if "galbot" in self.robot_name:
-            self._set_joint_positions_func(
-                positions=self._default_state,
-                joint_indices=[self._joint_dof_indicies[0]],
-            )
-            return
+        # if "galbot" in self.robot_name:
+        #     self._set_joint_positions_func(
+        #         positions=self._default_state,
+        #         joint_indices=[self._joint_dof_indicies[0]],
+        #     )
+        #     return
         self._set_joint_positions_func(
             positions=self._default_state,
             joint_indices=[self._joint_dof_indicies[0], self._joint_dof_indicies[1]],
@@ -248,12 +249,12 @@ class ParallelGripper(Gripper):
         Args:
             positions (np.ndarray): joint positions of the left finger joint and the right finger joint respectively.
         """
-        if "galbot" in self.robot_name:
-            self._set_joint_positions_func(
-                positions=positions,
-                joint_indices=[self._joint_dof_indicies[0]],
-            )
-            return
+        # if "galbot" in self.robot_name:
+        #     self._set_joint_positions_func(
+        #         positions=positions,
+        #         joint_indices=[self._joint_dof_indicies[0]],
+        #     )
+        #     return
         self._set_joint_positions_func(
             positions=positions,
             joint_indices=[self._joint_dof_indicies[0], self._joint_dof_indicies[1]],
@@ -265,8 +266,8 @@ class ParallelGripper(Gripper):
         Returns:
             np.ndarray: joint positions of the left finger joint and the right finger joint respectively.
         """
-        if "galbot" in self.robot_name:
-            return self._get_joint_positions_func(joint_indices=[self._joint_dof_indicies[0]])
+        # if "galbot" in self.robot_name:
+        #     return self._get_joint_positions_func(joint_indices=[self._joint_dof_indicies[0]])
         return self._get_joint_positions_func(joint_indices=[self._joint_dof_indicies[0], self._joint_dof_indicies[1]])
 
     def reset_stiffness(self):
@@ -280,7 +281,7 @@ class ParallelGripper(Gripper):
             elif "G1" in self.robot_name:
                 drive.GetStiffnessAttr().Set(500000)
             else:  # TODO agx
-                drive.GetStiffnessAttr().Set(500000)
+                drive.GetStiffnessAttr().Set(5000)
 
     def forward(self, action: str) -> ArticulationAction:
         """calculates the ArticulationAction for all of the articulation joints that corresponds to "open"
@@ -309,12 +310,12 @@ class ParallelGripper(Gripper):
             if prim:
                 drive.GetMaxForceAttr().Set(max_force)
             target_joint_positions[self._joint_dof_indicies[0]] = self._joint_opened_positions[0]
-            if "galbot" not in self.robot_name:
-                target_joint_positions[self._joint_dof_indicies[1]] = self._joint_opened_positions[1]
+            # if "galbot" not in self.robot_name:
+            target_joint_positions[self._joint_dof_indicies[1]] = self._joint_opened_positions[1]
             target_joint_velocities = [None] * self._articulation_num_dofs
             target_joint_velocities[self._joint_dof_indicies[0]] = 40
-            if "galbot" not in self.robot_name:
-                target_joint_velocities[self._joint_dof_indicies[1]] = 40
+            # if "galbot" not in self.robot_name:
+            target_joint_velocities[self._joint_dof_indicies[1]] = 40
             if "agile" in self.robot_name.lower():
                 target_joint_velocities[self._joint_dof_indicies[0]] = -80
                 target_joint_velocities[self._joint_dof_indicies[1]] = 80
@@ -326,7 +327,8 @@ class ParallelGripper(Gripper):
             self.is_reached = False
             current_joint_positions = self._get_joint_positions_func()
             current_drive_finger_position = current_joint_positions[self._joint_dof_indicies[0]]
-            target_force = self.gripper_max_force + 2 * np.abs(current_drive_finger_position)
+            # target_force = self.gripper_max_force + 2 * np.abs(current_drive_finger_position)
+            target_force = 0.2
             if prim:
                 drive.GetStiffnessAttr().Set(0)
                 drive.GetMaxForceAttr().Set(target_force)
@@ -335,8 +337,8 @@ class ParallelGripper(Gripper):
 
             target_joint_velocities = [None] * self._articulation_num_dofs
             target_joint_velocities[self._joint_dof_indicies[0]] = self._joint_closed_velocities[0]
-            if "galbot" not in self.robot_name:
-                target_joint_velocities[self._joint_dof_indicies[1]] = self._joint_closed_velocities[1]
+            # if "galbot" not in self.robot_name:
+            target_joint_velocities[self._joint_dof_indicies[1]] = self._joint_closed_velocities[1]
             target_action = ArticulationAction(joint_velocities=target_joint_velocities)
 
         else:
@@ -360,6 +362,14 @@ class ParallelGripper(Gripper):
 
         asyncio.ensure_future(check_gripper_state())
         return target_action
+    
+    def instant_stop(self):
+        target_joint_velocities = [None] * self._articulation_num_dofs
+        target_joint_velocities[self._joint_dof_indicies[0]] = 0.0
+        # if "galbot" not in self.robot_name:
+        target_joint_velocities[self._joint_dof_indicies[1]] = 0.0
+        target_action = ArticulationAction(joint_velocities=target_joint_velocities)
+        return target_action
 
     def apply_action(self, control_actions: ArticulationAction) -> None:
         """Applies actions to all the joints of an articulation that corresponds to the ArticulationAction of the finger joints only.
@@ -371,20 +381,20 @@ class ParallelGripper(Gripper):
         if control_actions.joint_positions is not None:
             joint_actions.joint_positions = [None] * self._articulation_num_dofs
             joint_actions.joint_positions[self._joint_dof_indicies[0]] = control_actions.joint_positions[0]
-            if "galbot" not in self.robot_name:
-                joint_actions.joint_positions[self._joint_dof_indicies[1]] = control_actions.joint_positions[1]
+            # if "galbot" not in self.robot_name:
+            joint_actions.joint_positions[self._joint_dof_indicies[1]] = control_actions.joint_positions[1]
             if len(self._joint_prim_names) > 2:
                 joint_actions.joint_positions[self._joint_dof_indicies[2]] = control_actions.joint_positions[2]
                 joint_actions.joint_positions[self._joint_dof_indicies[3]] = control_actions.joint_positions[3]
         if control_actions.joint_velocities is not None:
             joint_actions.joint_velocities = [None] * self._articulation_num_dofs
             joint_actions.joint_velocities[self._joint_dof_indicies[0]] = control_actions.joint_velocities[0]
-            if "galbot" not in self.robot_name:
-                joint_actions.joint_velocities[self._joint_dof_indicies[1]] = control_actions.joint_velocities[1]
+            # if "galbot" not in self.robot_name:
+            joint_actions.joint_velocities[self._joint_dof_indicies[1]] = control_actions.joint_velocities[1]
         if control_actions.joint_efforts is not None:
             joint_actions.joint_efforts = [None] * self._articulation_num_dofs
             joint_actions.joint_efforts[self._joint_dof_indicies[0]] = control_actions.joint_efforts[0]
-            if "galbot" not in self.robot_name:
-                joint_actions.joint_efforts[self._joint_dof_indicies[1]] = control_actions.joint_efforts[1]
+            # if "galbot" not in self.robot_name:
+            joint_actions.joint_efforts[self._joint_dof_indicies[1]] = control_actions.joint_efforts[1]
         self._articulation_apply_action_func(control_actions=joint_actions)
         return

@@ -36,6 +36,7 @@ def find_near_point_grasp_pose(
                 new_target_gripper_poses,
                 ee_type="gripper",
                 type="AvoidObs",
+                # type="Simple",
                 arm=arm,
                 output_link_pose=True,
             )
@@ -137,6 +138,7 @@ class PlaceStage(Stage):
                 target_gripper_poses,
                 ee_type="gripper",
                 type="AvoidObs",
+                # type="Simple",
                 arm=arm,
                 output_link_pose=True,
             )
@@ -245,6 +247,7 @@ class PlaceStage(Stage):
                     pre_insert_gripper_pose,
                     ee_type="gripper",
                     type="AvoidObs",
+                    # type="Simple",
                     arm=arm,
                     output_link_pose=False,
                 )
@@ -273,6 +276,7 @@ class PlaceStage(Stage):
                             pre_insert_gripper_pose,
                             ee_type="gripper",
                             type="AvoidObs",
+                            # type="Simple",
                             arm=arm,
                             output_link_pose=False,
                         )
@@ -335,6 +339,7 @@ class PlaceStage(Stage):
         palce_transform_up = np.eye(4)
         palce_transform_up[:3, 3] = self.place_transform_up
         action_sequence.add_action(Action(target_pose_canonical, None, palce_transform_up, "AvoidObs"))
+        # action_sequence.add_action(Action(target_pose_canonical, None, palce_transform_up, "Normal"))
         if post_place_action is not None:
             for post_action in post_place_action:
                 post_place_gripper_cmd = post_action.get("gripper_cmd", None)

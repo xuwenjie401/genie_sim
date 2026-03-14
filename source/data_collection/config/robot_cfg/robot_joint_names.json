@@ -299,7 +299,9 @@
             "right_arm_joint5",
             "right_arm_joint6",
             "right_arm_joint7",
+            "left_gripper_l_knuckle_joint",
             "left_gripper_r_knuckle_joint",
+            "right_gripper_l_knuckle_joint",
             "right_gripper_r_knuckle_joint"
         ],
         "arm_joint_names": [
@@ -337,7 +339,9 @@
             "right_arm_joint5",
             "right_arm_joint6",
             "right_arm_joint7",
+            "left_gripper_l_knuckle_joint",
             "left_gripper_r_knuckle_joint",
+            "right_gripper_l_knuckle_joint",
             "right_gripper_r_knuckle_joint"
         ]
     }

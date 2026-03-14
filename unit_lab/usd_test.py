@@ -140,6 +140,7 @@ from curobo.wrap.reacher.motion_gen import (
 
 
 ROBOT_USD_FILE = "/home/agxi/Documents/assets/robots/urdf_ws/src/galbot_one_golf_description/sim_ready/galbot_one_golf/usdv2/galbot_fixed.usda"
+# ROBOT_USD_FILE = "/home/agxi/Documents/assets/robots/urdf_ws/src/galbot_one_golf_description/sim_ready/galbot_one_golf/usdv2/galbot_root.usda"
 # ROBOT_USD_FILE = "/home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets/robot/G2_omnipicker/robot_fix.usda"
 
 SCENE_USD_FILE = "/home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets/background/home_b/home_b_00.usda"
@@ -162,8 +163,8 @@ class BasicRunner:
         # 地面
         # self.world.scene.add_default_ground_plane()
 
-        robot_prim_path = "/galbot_one_golf/base_link"
-        init_position = [2.2936797431537275, 0.7757971635415469, 0.0]
+        robot_prim_path = "/galbot_one_golf"
+        init_position = [2.15, 0.7757971635415469, 0.0]
         init_rotation = [1, 0, 0, 0]
 
         add_reference_to_stage(ROBOT_USD_FILE, robot_prim_path)

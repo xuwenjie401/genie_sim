@@ -1,0 +1,235 @@
+2026-02-24T08:29:28Z [80,065ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-02-24T08:29:28Z [80,278ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-02-24T08:29:28Z [80,081ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-24T08:29:29Z [81,589ms] [Warning] [server.motion_generator.motion_gen_reacher] plan got an exception: shape mismatch: value tensor of shape [2] cannot be broadcast to indexing result of shape [2, 1]
+2026-02-24T08:29:29Z [81,589ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.5239677429199219
+2026-02-24T08:29:30Z [81,861ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [81,867ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [81,867ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:30Z [81,867ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:30Z [81,876ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [81,882ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [81,887ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [81,892ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,117ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,130ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,131ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:30Z [82,131ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:30Z [82,140ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,150ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,162ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,171ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:30Z [82,172ms] INFO     [command_controller.py:1271] playback finish
+2026-02-24T08:29:32Z [84,199ms] INFO     [command_controller.py:1320] Sent SIGINT to process group 5161
+[INFO] [1771921772.388866318] [rclcpp]: signal_handler(signum=2)
+2026-02-24T08:29:32Z [84,199ms] INFO     [command_controller.py:1320] Sent SIGINT to process group 5203
+2026-02-24T08:29:32Z [84,199ms] INFO     [command_controller.py:1320] Sent SIGINT to process group 5245
+[INFO] [1771921772.388922080] [rclcpp]: signal_handler(signum=2)
+2026-02-24T08:29:32Z [84,199ms] INFO     [command_controller.py:1320] Sent SIGINT to process group 5303
+[INFO] [1771921772.388963686] [rclcpp]: signal_handler(signum=2)
+[INFO] [1771921772.481386810] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1771921772.483799018] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1771921772.483911401] [rosbag2_recorder]: Recording stopped
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault
+[ros2run]: Segmentation fault
+2026-02-24T08:29:36Z [88,742ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:36Z [88,747ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:36Z [88,747ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:36Z [88,747ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:38Z [89,966ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+2026-02-24T08:29:38Z [90,165ms] INFO     [command_controller.py:704]  add rigid body to  /World/Objects/geniesim_2025_building_blocks_072
+2026-02-24T08:29:38Z [90,174ms] INFO     [command_controller.py:1645] Adding obstacles under prim path /World/Objects/geniesim_2025_building_blocks_072...
+2026-02-24T08:29:38Z [90,179ms] INFO     [motion_gen_reacher.py:255] Processing mesh 1/1: /World/Objects/geniesim_2025_building_blocks_072/body/visual
+2026-02-24T08:29:38Z [90,179ms] INFO     [motion_gen_reacher.py:255] Original face count: 492
+2026-02-24T08:29:38Z [90,179ms] INFO     [motion_gen_reacher.py:255] Face count is within reasonable range, no simplification needed
+2026-02-24T08:29:38Z [90,179ms] INFO     [command_controller.py:1645] Simplified geometry time: 0.0001 seconds
+2026-02-24T08:29:38Z [90,179ms] INFO     [command_controller.py:1645] New obstacle: /World/Objects/geniesim_2025_building_blocks_072/body/visual (type: mesh)
+2026-02-24T08:29:38Z [90,179ms] INFO     [command_controller.py:1645] Successfully added 1 new obstacles to cache
+2026-02-24T08:29:38Z [90,179ms] INFO     [command_controller.py:1645] Current total cache count: 13
+2026-02-24T08:29:38Z [90,583ms] INFO     [command_controller.py:704]  add rigid body to  /World/Objects/geniesim_2025_cup_043
+2026-02-24T08:29:38Z [90,594ms] INFO     [command_controller.py:1645] Adding obstacles under prim path /World/Objects/geniesim_2025_cup_043...
+2026-02-24T08:29:39Z [90,892ms] INFO     [motion_gen_reacher.py:255] Processing mesh 1/1: /World/Objects/geniesim_2025_cup_043/Aligned/body
+2026-02-24T08:29:39Z [90,892ms] INFO     [motion_gen_reacher.py:255] Original face count: 54618
+2026-02-24T08:29:39Z [90,892ms] INFO     [motion_gen_reacher.py:255] Starting mesh simplification
+2026-02-24T08:29:39Z [91,735ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-24T08:29:39Z [91,735ms] INFO     [motion_gen_reacher.py:255] Simplification time: 0.8433554172515869 seconds
+2026-02-24T08:29:39Z [91,735ms] INFO     [motion_gen_reacher.py:255] Simplification successful: 1000 faces
+2026-02-24T08:29:39Z [91,736ms] INFO     [command_controller.py:1645] Simplified geometry time: 0.8449 seconds
+2026-02-24T08:29:39Z [91,737ms] INFO     [command_controller.py:1645] New obstacle: /World/Objects/geniesim_2025_cup_043/Aligned/body (type: mesh)
+2026-02-24T08:29:39Z [91,737ms] INFO     [command_controller.py:1645] Successfully added 1 new obstacles to cache
+2026-02-24T08:29:39Z [91,737ms] INFO     [command_controller.py:1645] Current total cache count: 14
+2026-02-24T08:29:40Z [92,139ms] INFO     [command_controller.py:704]  add rigid body to  /World/Objects/geniesim_2025_beverage_bottle_008
+2026-02-24T08:29:40Z [92,150ms] INFO     [command_controller.py:1645] Adding obstacles under prim path /World/Objects/geniesim_2025_beverage_bottle_008...
+2026-02-24T08:29:40Z [92,478ms] INFO     [motion_gen_reacher.py:255] Processing mesh 1/1: /World/Objects/geniesim_2025_beverage_bottle_008/body
+2026-02-24T08:29:40Z [92,478ms] INFO     [motion_gen_reacher.py:255] Original face count: 87496
+2026-02-24T08:29:40Z [92,478ms] INFO     [motion_gen_reacher.py:255] Starting mesh simplification
+2026-02-24T08:29:41Z [93,393ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-02-24T08:29:41Z [93,393ms] INFO     [motion_gen_reacher.py:255] Simplification time: 0.9146304130554199 seconds
+2026-02-24T08:29:41Z [93,393ms] INFO     [motion_gen_reacher.py:255] Simplification successful: 1000 faces
+2026-02-24T08:29:41Z [93,395ms] INFO     [command_controller.py:1645] Simplified geometry time: 0.9168 seconds
+2026-02-24T08:29:41Z [93,395ms] INFO     [command_controller.py:1645] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_008/body (type: mesh)
+2026-02-24T08:29:41Z [93,395ms] INFO     [command_controller.py:1645] Successfully added 1 new obstacles to cache
+2026-02-24T08:29:41Z [93,395ms] INFO     [command_controller.py:1645] Current total cache count: 15
+2026-02-24T08:29:44Z [96,403ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:44Z [96,408ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:44Z [96,633ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:44Z [96,639ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:45Z [96,869ms] INFO     [motion_gen_reacher.py:971] Fast obstacle update completed, time: 0.0268s, needs update: True
+2026-02-24T08:29:45Z [96,870ms] INFO     [command_controller.py:1031] Detach!!!!!
+2026-02-24T08:29:45Z [96,878ms] INFO     [motion_gen_reacher.py:971] Fast obstacle update completed, time: 0.0081s, needs update: False
+2026-02-24T08:29:45Z [96,878ms] INFO     [command_controller.py:1031] Detach!!!!!
+2026-02-24T08:29:47Z [99,176ms] INFO     [command_controller.py:1320] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_galbot_3] --exclude '.*_rgb(?!_)' -a
+                        
+I0000 00:00:1771921787.365915    3438 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-24T08:29:47Z [99,260ms] INFO     [command_controller.py:1320] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-02-24T08:29:47Z [99,261ms] INFO     [command_controller.py:1320] noised_probability0.1
+2026-02-24T08:29:47Z [99,261ms] INFO     [command_controller.py:1320] noised_camera_indices[0 1 2]
+2026-02-24T08:29:47Z [99,261ms] INFO     [command_controller.py:1320] noised_camera_prim_list['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color']
+2026-02-24T08:29:47Z [99,261ms] INFO     [command_controller.py:869] ROS domain ID: 4
+2026-02-24T08:29:47Z [99,261ms] INFO     [command_controller.py:1320] tf_target['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_building_blocks_072', '/World/Objects/geniesim_2025_cup_043', '/World/Objects/geniesim_2025_beverage_bottle_008', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/galbot_one_golf/left_gripper_tcp_link', '/galbot_one_golf/right_gripper_tcp_link', '/galbot_one_golf']
+2026-02-24T08:29:47Z [99,281ms] INFO     [command_controller.py:1320] republish camera/galbot_one_golf/head_link2/head_front_left_color
+2026-02-24T08:29:47Z [99,281ms] INFO     [command_controller.py:1320] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/head_front_left_color_rgb --remap /out:=/head_front_left_color_rgb_compressed
+                        
+I0000 00:00:1771921787.471221    3438 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-02-24T08:29:47Z [99,366ms] INFO     [command_controller.py:1320] republish camera/galbot_one_golf/left_arm_link7/left_arm_color
+2026-02-24T08:29:47Z [99,366ms] INFO     [command_controller.py:1320] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/left_arm_color_rgb --remap /out:=/left_arm_color_rgb_compressed
+                        
+I0000 00:00:1771921787.587452    3438 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[INFO] [1771921787.629585328] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1771921787.630154966] [rosbag2_storage]: Opened database '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/[place_object_into_box_of_specific_color_blue_galbot_3]/[place_object_into_box_of_specific_color_blue_galbot_3]_0.db3' for READ_WRITE.
+[INFO] [1771921787.630321552] [rosbag2_recorder]: Listening for topics...
+[INFO] [1771921787.630332293] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1771921787.630694207] [rosbag2_recorder]: Subscribed to topic '/rosout'
+[INFO] [1771921787.630861380] [rosbag2_recorder]: Subscribed to topic '/events/write_split'
+[INFO] [1771921787.630891101] [rosbag2_recorder]: Recording...
+[INFO] [1771921787.631590772] [rosbag2_recorder]: Subscribed to topic '/articulation_action'
+[INFO] [1771921787.631773773] [rosbag2_recorder]: Subscribed to topic '/left_arm_color_depth'
+[INFO] [1771921787.631967824] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1771921787.632279545] [rosbag2_recorder]: Subscribed to topic '/soft_code'
+[INFO] [1771921787.632447252] [rosbag2_recorder]: Subscribed to topic '/head_front_left_color_depth'
+[INFO] [1771921787.632693430] [rosbag2_recorder]: Subscribed to topic '/parameter_events'
+[INFO] [1771921787.632841203] [rosbag2_recorder]: Subscribed to topic '/right_arm_color_depth'
+[INFO] [1771921787.632991242] [rosbag2_recorder]: Subscribed to topic '/soft_state'
+2026-02-24T08:29:47Z [99,482ms] INFO     [command_controller.py:1320] republish camera/galbot_one_golf/right_arm_link7/right_arm_color
+2026-02-24T08:29:47Z [99,483ms] INFO     [command_controller.py:1320] 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        ros2 run image_transport republish raw compressed  --ros-args --remap /in:=/right_arm_color_rgb --remap /out:=/right_arm_color_rgb_compressed
+                        
+I0000 00:00:1771921787.672775    3438 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+[INFO] [1771921787.833920375] [rosbag2_recorder]: Subscribed to topic '/tf'
+[INFO] [1771921787.834140228] [rosbag2_recorder]: Subscribed to topic '/joint_states'
+[INFO] [1771921787.834312809] [rosbag2_recorder]: Subscribed to topic '/out/compressed'
+2026-02-24T08:29:48Z [100,729ms] INFO     [command_controller.py:1153] ik lula time cost0.06553149223327637
+2026-02-24T08:29:49Z [100,973ms] INFO     [command_controller.py:1153] ik lula time cost0.2056138515472412
+2026-02-24T08:29:49Z [101,007ms] INFO     [command_controller.py:1153] ik lula time cost0.004272937774658203
+2026-02-24T08:29:49Z [101,333ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:49Z [101,333ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:49Z [101,208ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.04649090766906738
+2026-02-24T08:29:49Z [101,406ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-02-24T08:29:49Z [101,209ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-24T08:29:50Z [102,365ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-02-24T08:29:50Z [102,365ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.1570510864257812
+2026-02-24T08:29:50Z [102,607ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:50Z [102,612ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:50Z [102,613ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:50Z [102,613ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:50Z [102,617ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:50Z [102,622ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:50Z [102,627ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:50Z [102,632ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,855ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,860ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,860ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:51Z [102,861ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:51Z [102,865ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,870ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,875ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,880ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:51Z [102,881ms] INFO     [command_controller.py:1271] playback finish
+2026-02-24T08:29:51Z [103,424ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:51Z [103,436ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:51Z [103,333ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.044542551040649414
+2026-02-24T08:29:51Z [103,532ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-02-24T08:29:51Z [103,334ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-24T08:29:52Z [104,432ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-02-24T08:29:52Z [104,432ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.0985255241394043
+2026-02-24T08:29:52Z [104,678ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:52Z [104,683ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:52Z [104,683ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:52Z [104,683ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:52Z [104,688ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:52Z [104,693ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:52Z [104,698ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:52Z [104,702ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,887ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,893ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,893ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:53Z [104,893ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:53Z [104,897ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,902ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,907ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,912ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:53Z [104,913ms] INFO     [command_controller.py:1271] playback finish
+2026-02-24T08:29:53Z [105,268ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:53Z [105,268ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:53Z [105,097ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-02-24T08:29:53Z [105,309ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-02-24T08:29:53Z [105,112ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-24T08:29:54Z [106,240ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-02-24T08:29:54Z [106,240ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.1424684524536133
+2026-02-24T08:29:54Z [106,507ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:54Z [106,513ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:54Z [106,513ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:54Z [106,513ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:54Z [106,518ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:54Z [106,523ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:54Z [106,528ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:54Z [106,533ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,823ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,828ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,828ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:55Z [106,828ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:55Z [106,833ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,838ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,843ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,847ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:55Z [106,848ms] INFO     [command_controller.py:1271] playback finish
+2026-02-24T08:29:55Z [107,178ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:55Z [107,184ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-02-24T08:29:55Z [107,019ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-02-24T08:29:55Z [107,233ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-02-24T08:29:55Z [107,035ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-02-24T08:29:56Z [108,122ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-02-24T08:29:56Z [108,122ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.1030194759368896
+2026-02-24T08:29:56Z [108,375ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,380ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,380ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:56Z [108,380ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:56Z [108,385ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,390ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,395ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,400ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,592ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,597ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,597ms] INFO     [command_controller.py:1431] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-02-24T08:29:56Z [108,597ms] INFO     [command_controller.py:1432] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-02-24T08:29:56Z [108,602ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,607ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,612ms] INFO     [command_controller.py:1739] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,619ms] INFO     [command_controller.py:1756] It's a galbot! it does only have 1 dof for a gripper.
+2026-02-24T08:29:56Z [108,619ms] INFO     [command_controller.py:1271] playback finish

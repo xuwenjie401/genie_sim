@@ -1,0 +1,21 @@
+total time is 0.6890830993652344
+lock joints is the same, no need to update
+2026-02-28T12:12:55Z [63,975ms] [Warning] [__main__] no valid path constraint provided
+2026-02-28T12:12:55Z [63,976ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+end_time is0.7547473907470703
+2026-02-28T12:12:56Z [64,730ms] [Warning] [__main__] plan got an exception: Weights must be of shape (D,) where D is the dimensionality of each waypoint.
+
+
+2026-02-28T12:15:16Z [35,140ms] [Warning] [curobo] Partial orientation between start and goal is not equaltensor([[0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553],
+        [0.0553]], device='cuda:0')
+2026-02-28T12:15:16Z [35,140ms] [Warning] [__main__] update pose cost metric failed
+lock joints is the same, no need to update
+

@@ -72,6 +72,7 @@ class IsaacSimRpcRobot(Robot):
             self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, -1.0, 0.0]])
         elif "galbot" in robot_cfg.lower():
             self.robot_gripper_2_grasp_gripper = np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+            # self.robot_gripper_2_grasp_gripper = np.array([[1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, -1.0]])
         else:
             self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]])
         self.robot_init_arm_pose = robot_init_arm_pose

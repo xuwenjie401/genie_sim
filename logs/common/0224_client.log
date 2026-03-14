@@ -1,0 +1,53 @@
+2026-02-24T08:29:36Z [69,968ms] INFO     [omniagent.py:851] Start Tasksaved_task/place_object_into_box_of_specific_color_blue_galbot/place_object_into_box_of_specific_color_blue_galbot_3.json
+2026-02-24T08:29:47Z [80,191ms] INFO     [omniagent.py:851] Reset pose{'right': array([[ 0.98811663, -0.14461233, -0.05208459,  2.69978089],
+       [ 0.1439434 ,  0.98945013, -0.01639303,  0.50032609],
+       [ 0.05390574,  0.00870099,  0.99850812,  0.87723288],
+       [ 0.        ,  0.        ,  0.        ,  1.        ]]), 'left': array([[ 0.98091631,  0.18720498,  0.05251186,  2.6958168 ],
+       [-0.1850883 ,  0.98179501, -0.04267184,  0.89744123],
+       [-0.05954426,  0.03213817,  0.99770818,  0.82943105],
+       [ 0.        ,  0.        ,  0.        ,  1.        ]])}
+2026-02-24T08:29:47Z [80,191ms] INFO     [omniagent.py:71] Grasp num after NMS: 103/165
+2026-02-24T08:29:47Z [80,411ms] INFO     [omniagent.py:851] Auto select arm: left
+2026-02-24T08:29:47Z [80,411ms] INFO     [omniagent.py:614] Starting ActionScript initialization
+2026-02-24T08:29:47Z [80,411ms] INFO     [action_script.py:60] ActionScript has been reset
+2026-02-24T08:29:47Z [80,411ms] WARNING  [action_script.py:65] Unknown action type: reset, using base Stage class
+2026-02-24T08:29:47Z [80,411ms] INFO     [omniagent.py:614] ActionScript initialization complete, 3 stages total
+2026-02-24T08:29:48Z [81,896ms] INFO     [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_galbot/place_object_into_box_of_specific_color_blue_galbot_3.json loaded
+2026-02-24T08:29:48Z [81,896ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 action_text: 左臂拿起桌面上的{物体}
+2026-02-24T08:29:48Z [81,896ms] INFO     [run_data_collection.py:84] RUNNING TASK: Stage 0 english_action_text: Left arm picks up the {object} on the table
+2026-02-24T08:29:48Z [81,897ms] INFO     [stage.py:354] pick, geniesim_2025_target_grasp_object, Filtered upside-down grasp_poses: 50
+2026-02-24T08:29:49Z [82,324ms] INFO     [run_data_collection.py:84] Store state stage_0
+2026-02-24T08:29:49Z [82,324ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 1 Step 0: pick
+2026-02-24T08:29:49Z [82,592ms] INFO     [omni_robot.py:228] robot: armleft
+2026-02-24T08:29:49Z [82,593ms] INFO     [omni_robot.py:228] target_position is[0.60734324 0.04518652 0.76338087]
+2026-02-24T08:29:49Z [82,593ms] INFO     [omni_robot.py:228] target_rotation is[ 0.09378736  0.76096705 -0.55892316  0.3158132 ]
+2026-02-24T08:29:50Z [83,826ms] INFO     [omni_robot.py:228] move! (array([2.78385114, 0.74606632, 0.76338087]), array([ 0.09378736,  0.76096705, -0.55892316,  0.3158132 ]), False)
+2026-02-24T08:29:50Z [83,826ms] INFO     [omni_robot.py:228] Yaw: -73.29287130182058, Pitch: -52.317065938367726, Roll: 125.80440384844634
+2026-02-24T08:29:50Z [83,826ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-02-24T08:29:51Z [84,144ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-02-24T08:29:51Z [84,144ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 2 Step 0: pick
+2026-02-24T08:29:51Z [84,680ms] INFO     [omni_robot.py:228] robot: armleft
+2026-02-24T08:29:51Z [84,681ms] INFO     [omni_robot.py:228] target_position is[0.60632829 0.05570708 0.80834209]
+2026-02-24T08:29:51Z [84,681ms] INFO     [omni_robot.py:228] target_rotation is[ 0.91133621  0.05188584 -0.40039733  0.08035019]
+2026-02-24T08:29:52Z [85,893ms] INFO     [omni_robot.py:228] move! (array([2.7828362 , 0.75658688, 0.80834209]), array([ 0.91133621,  0.05188584, -0.40039733,  0.08035019]), False)
+2026-02-24T08:29:52Z [85,893ms] INFO     [omni_robot.py:228] Yaw: -47.921421413165916, Pitch: 6.021530821372268, Roll: 9.19508793233421
+2026-02-24T08:29:52Z [85,893ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-02-24T08:29:53Z [86,176ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-02-24T08:29:53Z [86,176ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 3 Step 0: pick
+2026-02-24T08:29:53Z [86,523ms] INFO     [omni_robot.py:228] robot: armleft
+2026-02-24T08:29:53Z [86,524ms] INFO     [omni_robot.py:228] target_position is[0.61422011 0.0569892  0.77696447]
+2026-02-24T08:29:53Z [86,524ms] INFO     [omni_robot.py:228] target_rotation is[-0.04977464  0.88388016 -0.38857319  0.25551754]
+2026-02-24T08:29:54Z [87,701ms] INFO     [omni_robot.py:228] move! (array([2.79072801, 0.757869  , 0.77696447]), array([-0.04977464,  0.88388016, -0.38857319,  0.25551754]), False)
+2026-02-24T08:29:54Z [87,701ms] INFO     [omni_robot.py:228] Yaw: -36.04886651627195, Pitch: -45.42569498590848, Roll: 170.93437164593917
+2026-02-24T08:29:54Z [87,701ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-02-24T08:29:55Z [88,111ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-02-24T08:29:55Z [88,111ms] INFO     [omniagent.py:923] ==> [RUN] Stage 0 Substage 4 Step 0: pick
+2026-02-24T08:29:55Z [88,431ms] INFO     [omni_robot.py:228] robot: armleft
+2026-02-24T08:29:55Z [88,432ms] INFO     [omni_robot.py:228] target_position is[0.60619715 0.04496392 0.76919789]
+2026-02-24T08:29:55Z [88,432ms] INFO     [omni_robot.py:228] target_rotation is[ 0.93813773  0.08506739 -0.30818998  0.13296645]
+2026-02-24T08:29:56Z [89,583ms] INFO     [omni_robot.py:228] move! (array([2.78270506, 0.74584373, 0.76919789]), array([ 0.93813773,  0.08506739, -0.30818998,  0.13296645]), False)
+2026-02-24T08:29:56Z [89,583ms] INFO     [omni_robot.py:228] Yaw: -37.798608758038924, Pitch: 11.364378087989653, Roll: 14.264503184667035
+2026-02-24T08:29:56Z [89,583ms] WARNING  [run_data_collection.py:84] Stage 0 pick fail at first step, try next sequence
+2026-02-24T08:29:56Z [89,882ms] INFO     [run_data_collection.py:84] Playback state stage_0
+2026-02-24T08:29:56Z [89,882ms] WARNING  [run_data_collection.py:84] Stage 0 pick failed
+2026-02-24T08:29:56Z [89,882ms] WARNING  [run_data_collection.py:84] Task saved_task/place_object_into_box_of_specific_color_blue_galbot/place_object_into_box_of_specific_color_blue_galbot_3.json failed

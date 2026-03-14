@@ -675,6 +675,10 @@ class DataCollectionAgent(BaseAgent):
                 if action_type == "pick":
                     remove_obstacles = True
 
+        # TODO: XU
+        # if action_type == "place":
+        #     remove_obstacles = True
+
         self.robot.client.set_frame_state(
             action_type,
             step_index,

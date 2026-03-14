@@ -1,0 +1,232 @@
+2026-03-05T01:50:45Z [52,680ms] INFO     [command_controller.py:1164] ik lula time cost0.11449217796325684
+2026-03-05T01:50:46Z [53,810ms] INFO     [command_controller.py:1164] ik lula time cost1.0115110874176025
+2026-03-05T01:50:46Z [53,853ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.07788348197937012
+2026-03-05T01:50:46Z [53,853ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 37
+2026-03-05T01:50:46Z [53,854ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 1.6689300537109375e-06
+2026-03-05T01:50:46Z [53,958ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.10375142097473145
+2026-03-05T01:50:46Z [54,057ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.003197193145751953
+2026-03-05T01:50:46Z [54,111ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 0.1131143569946289
+2026-03-05T01:50:46Z [54,175ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030829906463623047
+2026-03-05T01:50:46Z [54,210ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 2 time is 0.0936729907989502
+2026-03-05T01:50:46Z [54,274ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.003044605255126953
+2026-03-05T01:50:47Z [54,309ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 3 time is 0.09314680099487305
+2026-03-05T01:50:47Z [54,373ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030319690704345703
+2026-03-05T01:50:47Z [54,314ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.46080613136291504
+2026-03-05T01:50:47Z [54,375ms] INFO     [command_controller.py:1164] ik curobo time cost0.5399379730224609
+2026-03-05T01:50:47Z [54,580ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:50:47Z [54,584ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:50:47Z [54,530ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-05T01:50:47Z [54,598ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:50:47Z [54,537ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:50:48Z [55,300ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.7634468078613281
+2026-03-05T01:50:48Z [55,364ms] INFO     [ui_builder.py:188] 180
+2026-03-05T01:50:48Z [55,303ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:50:48Z [55,303ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.7723991870880127
+2026-03-05T01:50:50Z [58,062ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:50:59Z [67,234ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_building_blocks_072/body/visual
+2026-03-05T01:50:59Z [67,180ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-05T01:50:59Z [67,181ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:50:59Z [67,181ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:50:59Z [67,242ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0073s, needs update: True
+2026-03-05T01:50:59Z [67,242ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:50:59Z [67,244ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:51:00Z [67,650ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:00Z [67,657ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:00Z [67,679ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.04801535606384277
+2026-03-05T01:51:00Z [67,741ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:00Z [67,680ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:00Z [67,765ms] [Warning] [curobo] Start or End state in collision
+2026-03-05T01:51:00Z [67,765ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: Invalid Problem
+2026-03-05T01:51:00Z [67,765ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.08637452125549316
+2026-03-05T01:51:00Z [67,855ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:00Z [67,855ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:00Z [68,020ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:00Z [68,020ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:00Z [68,042ms] INFO     [command_controller.py:1282] playback finish
+2026-03-05T01:51:00Z [68,263ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:00Z [68,263ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:00Z [68,253ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.036742448806762695
+2026-03-05T01:51:00Z [68,316ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:00Z [68,255ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:01Z [69,181ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.9272160530090332
+2026-03-05T01:51:01Z [69,244ms] INFO     [ui_builder.py:188] 175
+2026-03-05T01:51:01Z [69,183ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:51:01Z [69,183ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.929781436920166
+2026-03-05T01:51:04Z [71,832ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:51:12Z [80,103ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_building_blocks_072/body/visual
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:51:12Z [80,053ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:51:12Z [80,115ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0092s, needs update: True
+2026-03-05T01:51:12Z [80,115ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:51:12Z [80,116ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:51:13Z [80,579ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:13Z [80,579ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:13Z [80,613ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05741739273071289
+2026-03-05T01:51:13Z [80,676ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:13Z [80,615ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:13Z [81,148ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-03-05T01:51:13Z [81,148ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.5355029106140137
+2026-03-05T01:51:13Z [81,239ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:13Z [81,239ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:14Z [81,397ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:14Z [81,397ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:14Z [81,421ms] INFO     [command_controller.py:1282] playback finish
+2026-03-05T01:51:14Z [81,652ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:14Z [81,660ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:14Z [81,694ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05523800849914551
+2026-03-05T01:51:14Z [81,757ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:14Z [81,696ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:15Z [82,587ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.8913452625274658
+2026-03-05T01:51:15Z [82,649ms] INFO     [ui_builder.py:188] 185
+2026-03-05T01:51:15Z [82,588ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:51:15Z [82,588ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.8941948413848877
+2026-03-05T01:51:18Z [85,406ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:51:25Z [92,589ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:51:25Z [92,536ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:51:25Z [92,536ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:51:25Z [92,536ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:51:25Z [92,536ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:51:25Z [92,536ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_building_blocks_072/body/visual
+2026-03-05T01:51:25Z [92,537ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-05T01:51:25Z [92,537ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:51:25Z [92,537ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:51:25Z [92,599ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0088s, needs update: True
+2026-03-05T01:51:25Z [92,599ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:51:25Z [92,600ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:51:25Z [93,117ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:25Z [93,125ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:25Z [93,170ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05918145179748535
+2026-03-05T01:51:25Z [93,233ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:25Z [93,172ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:26Z [93,613ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-03-05T01:51:26Z [93,613ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.44304370880126953
+2026-03-05T01:51:26Z [93,699ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:26Z [93,700ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:26Z [93,856ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:51:26Z [93,856ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:51:26Z [93,878ms] INFO     [command_controller.py:1282] playback finish
+2026-03-05T01:51:26Z [94,101ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:26Z [94,108ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:26Z [94,152ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05595660209655762
+2026-03-05T01:51:26Z [94,215ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:26Z [94,154ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:27Z [95,161ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.0075788497924805
+2026-03-05T01:51:27Z [95,223ms] INFO     [ui_builder.py:188] 183
+2026-03-05T01:51:27Z [95,162ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:51:27Z [95,162ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.0104420185089111
+2026-03-05T01:51:30Z [97,962ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:51:38Z [106,124ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_building_blocks_072/body/visual
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:51:38Z [106,073ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:51:38Z [106,135ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0101s, needs update: True
+2026-03-05T01:51:38Z [106,135ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:51:38Z [106,136ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:51:39Z [106,588ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:39Z [106,596ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:39Z [106,621ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.057326316833496094
+2026-03-05T01:51:39Z [106,683ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:39Z [106,623ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:39Z [107,160ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-03-05T01:51:39Z [107,160ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.5391266345977783
+
+
+2026-03-05T01:51:56Z [124,187ms] INFO     [command_controller.py:1164] ik lula time cost0.1178140640258789
+2026-03-05T01:51:57Z [125,138ms] INFO     [command_controller.py:1164] ik lula time cost0.922900915145874
+2026-03-05T01:51:57Z [125,189ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.0787200927734375
+2026-03-05T01:51:57Z [125,189ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 46
+2026-03-05T01:51:57Z [125,251ms] INFO     [motion_gen_reacher.py:700] update kinematics lock joints
+2026-03-05T01:51:57Z [125,249ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.058925628662109375
+2026-03-05T01:51:58Z [125,373ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.12384366989135742
+2026-03-05T01:51:58Z [125,437ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030083656311035156
+2026-03-05T01:51:58Z [125,498ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 1 time is 0.11977767944335938
+2026-03-05T01:51:58Z [125,562ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030481815338134766
+2026-03-05T01:51:58Z [125,624ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 2 time is 0.12073326110839844
+2026-03-05T01:51:58Z [125,689ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030083656311035156
+2026-03-05T01:51:58Z [125,732ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 3 time is 0.10202217102050781
+2026-03-05T01:51:58Z [125,796ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.003019094467163086
+2026-03-05T01:51:58Z [125,851ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 4 time is 0.11349034309387207
+2026-03-05T01:51:58Z [125,915ms] INFO     [motion_gen_reacher.py:726] kinematic forward time0.0030221939086914062
+2026-03-05T01:51:58Z [125,856ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.6664655208587646
+2026-03-05T01:51:58Z [125,917ms] INFO     [command_controller.py:1164] ik curobo time cost0.7464778423309326
+2026-03-05T01:51:58Z [126,105ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:58Z [126,105ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:51:58Z [126,088ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-05T01:51:58Z [126,166ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:51:58Z [126,106ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:51:59Z [126,916ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.8215866088867188
+2026-03-05T01:51:59Z [126,979ms] INFO     [ui_builder.py:188] 163
+2026-03-05T01:51:59Z [126,918ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:51:59Z [126,918ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.830399751663208
+2026-03-05T01:52:02Z [129,695ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:52:10Z [138,167ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_pen_006/body
+2026-03-05T01:52:10Z [138,135ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_001/body/body
+2026-03-05T01:52:10Z [138,197ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0270s, needs update: True
+2026-03-05T01:52:10Z [138,197ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:52:10Z [138,198ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:52:11Z [138,624ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:11Z [138,632ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:11Z [138,665ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05780172348022461
+2026-03-05T01:52:11Z [138,728ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:52:11Z [138,667ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:52:11Z [139,161ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: MotionGenStatus.IK_FAIL
+2026-03-05T01:52:11Z [139,161ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.4962170124053955
+2026-03-05T01:52:11Z [139,261ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:52:11Z [139,262ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:52:12Z [139,457ms] INFO     [command_controller.py:1442] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-05T01:52:12Z [139,457ms] INFO     [command_controller.py:1443] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-05T01:52:12Z [139,480ms] INFO     [command_controller.py:1282] playback finish
+2026-03-05T01:52:12Z [139,672ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:12Z [139,679ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:12Z [139,708ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05689406394958496
+2026-03-05T01:52:12Z [139,771ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:52:12Z [139,710ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:52:13Z [140,596ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is0.8874814510345459
+2026-03-05T01:52:13Z [140,659ms] INFO     [ui_builder.py:188] 159
+2026-03-05T01:52:13Z [140,598ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-05T01:52:13Z [140,598ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.8903014659881592
+2026-03-05T01:52:15Z [143,034ms] INFO     [command_controller.py:445] ReachedTrue
+2026-03-05T01:52:24Z [151,728ms] INFO     [command_controller.py:1035] Attach!!!!
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/part_00
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/body
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Table/table/collider
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/body
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_pen_006/body
+2026-03-05T01:52:24Z [151,679ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_beverage_bottle_001/body/body
+2026-03-05T01:52:24Z [151,741ms] INFO     [motion_gen_reacher.py:993] Fast obstacle update completed, time: 0.0114s, needs update: True
+2026-03-05T01:52:24Z [151,741ms] INFO     [ui_builder.py:428] object_names=['/World/Objects/geniesim_2025_target_grasp_object/body']
+2026-03-05T01:52:24Z [151,742ms] INFO     [ui_builder.py:428] attach_result=False
+2026-03-05T01:52:24Z [152,200ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:24Z [152,208ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-05T01:52:24Z [152,237ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.05713367462158203
+2026-03-05T01:52:24Z [152,299ms] INFO     [ui_builder.py:188] no valid path constraint provided
+2026-03-05T01:52:24Z [152,238ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-05T01:52:25Z [152,305ms] [Warning] [curobo] Start or End state in collision
+2026-03-05T01:52:25Z [152,306ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: Invalid Problem
+2026-03-05T01:52:25Z [152,306ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.06888723373413086
+

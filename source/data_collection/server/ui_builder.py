@@ -79,9 +79,6 @@ class UIBuilder:
         self.enable_curobo = enable_curobo
         self.robot_name = robot.robot_name
         self.robot_prim_path = robot.robot_prim_path
-        self.robot_articulation_path = self.robot_prim_path
-        if "galbot" in self.robot_name:
-            self.robot_articulation_path = "/galbot_one_golf/base_link"
         self.dof_nums = robot.dof_nums
         self.lock_joints = robot.lock_joints
         self.joint_delta_time = robot.joint_delta_time
@@ -363,14 +360,14 @@ class UIBuilder:
         if scene._scene_registry.name_exists(self.robot_name):
             self.articulation = scene.get_object(self.robot_name)
         else:
-            self.articulation = Articulation(prim_path=self.robot_articulation_path, name=self.robot_name)
+            self.articulation = Articulation(prim_path=self.robot_prim_path, name=self.robot_name)
             scene.add(self.articulation)
         self.articulation.initialize()
         self.ruckig_controller = RuckigController(self.dof_nums, self.joint_delta_time)
         robot_list = []
         for idx in range(batch_num):
             articulation = Articulation(
-                prim_path=self.robot_articulation_path + "_{}".format(idx),
+                prim_path=self.robot_prim_path + "_{}".format(idx),
                 name=self.robot_name + "_{}".format(idx),
             )
             articulation.initialize()
@@ -390,7 +387,6 @@ class UIBuilder:
                             if effector_key == "left":
                                 current_position, rotation_matrix = self._get_ee_pose(False, is_local=True)
                             else:
-
                                 current_position, rotation_matrix = self._get_ee_pose(True, is_local=True)
                             self.curoboMotion.get(key).init_ee_pose[value] = {
                                 "position": current_position,
@@ -406,7 +402,7 @@ class UIBuilder:
                 self.articulation,
                 self.my_world,
                 curobo_config,
-                self.robot_articulation_path,
+                self.robot_prim_path,
                 self.art_controllers,
                 step=32,
                 debug=self.debug,
@@ -490,7 +486,7 @@ class UIBuilder:
         articulations = self._find_all_objects_of_type("articulation")
         for art in articulations:
             _prim = get_prim_at_path(art)
-            if art not in self.robot_articulation_path:
+            if art not in self.robot_prim_path:
                 _prim.GetAttribute("physxArticulation:articulationEnabled").Set(state)
 
     def remove_objects(self):
