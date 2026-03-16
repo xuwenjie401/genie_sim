@@ -46,6 +46,23 @@ class AsyncJSONWriter:
         self.total_written = 0
         # Use global logger instance
 
+    def _json_safe(self, data: Any) -> Any:
+        if isinstance(data, dict):
+            return {key: self._json_safe(value) for key, value in data.items()}
+        if isinstance(data, (list, tuple)):
+            return [self._json_safe(value) for value in data]
+        if hasattr(data, "tolist"):
+            try:
+                return self._json_safe(data.tolist())
+            except Exception:
+                pass
+        if hasattr(data, "item"):
+            try:
+                return data.item()
+            except Exception:
+                pass
+        return data
+
     async def start(self):
         """Start writer"""
         if self._is_running:
@@ -132,7 +149,7 @@ class AsyncJSONWriter:
             # Async write to file
             async with aiofiles.open(file_path, "a", encoding="utf-8") as f:
                 json_str = json.dumps(
-                    data,
+                    self._json_safe(data),
                     ensure_ascii=False,
                     separators=(",", ":"),
                     check_circular=False,

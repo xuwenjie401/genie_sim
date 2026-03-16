@@ -108,6 +108,7 @@ class CommandController:
         self.rendering_step = rendering_step
         self.process = []
         self.extract_process = []
+        self.recording_ready_for_extraction = False
         self.target_point = None
         self.debug_view = {}
         self.timeline = omni.timeline.get_timeline_interface()
@@ -209,6 +210,156 @@ class CommandController:
         """Reset timing statistics"""
         with self.timing_lock:
             self.timing_stats.clear()
+
+    def _recording_has_bag_payload(self, recording_path: str) -> bool:
+        if not recording_path or not os.path.isdir(recording_path):
+            return False
+        for _, _, file_names in os.walk(recording_path):
+            if any(file_name.endswith((".db3", ".mcap")) for file_name in file_names):
+                return True
+        return False
+
+    def _json_safe_value(self, value):
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+        if isinstance(value, np.generic):
+            return value.item()
+        if isinstance(value, dict):
+            return {key: self._json_safe_value(inner_value) for key, inner_value in value.items()}
+        if isinstance(value, (list, tuple)):
+            return [self._json_safe_value(inner_value) for inner_value in value]
+        if value is None or isinstance(value, (str, int, float, bool)):
+            return value
+        if hasattr(value, "tolist"):
+            try:
+                return self._json_safe_value(value.tolist())
+            except Exception:
+                pass
+        try:
+            return [self._json_safe_value(inner_value) for inner_value in list(value)]
+        except TypeError:
+            return str(value)
+
+    def _coerce_optional_float(self, value):
+        value = self._json_safe_value(value)
+        if value in (None, "", "None"):
+            return None
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _normalize_camera_intrinsic_info(self, primary_info, fallback_info=None):
+        primary_info = self._json_safe_value(primary_info or {})
+        fallback_info = self._json_safe_value(fallback_info or {})
+
+        fx = self._coerce_optional_float(primary_info.get("fx"))
+        if fx is None:
+            fx = self._coerce_optional_float(fallback_info.get("fx"))
+
+        fy = self._coerce_optional_float(primary_info.get("fy"))
+        if fy is None:
+            fy = self._coerce_optional_float(fallback_info.get("fy"))
+
+        cx = self._coerce_optional_float(primary_info.get("cx"))
+        if cx is None:
+            cx = self._coerce_optional_float(primary_info.get("ppx"))
+        if cx is None:
+            cx = self._coerce_optional_float(fallback_info.get("cx"))
+        if cx is None:
+            cx = self._coerce_optional_float(fallback_info.get("ppx"))
+
+        cy = self._coerce_optional_float(primary_info.get("cy"))
+        if cy is None:
+            cy = self._coerce_optional_float(primary_info.get("ppy"))
+        if cy is None:
+            cy = self._coerce_optional_float(fallback_info.get("cy"))
+        if cy is None:
+            cy = self._coerce_optional_float(fallback_info.get("ppy"))
+
+        image_size = primary_info.get("imageSize")
+        if image_size in (None, "", "None"):
+            width = self._json_safe_value(fallback_info.get("width"))
+            height = self._json_safe_value(fallback_info.get("height"))
+            if width is not None and height is not None:
+                image_size = [width, height]
+            else:
+                image_size = None
+
+        normalized_info = {
+            "model": primary_info.get("model") or fallback_info.get("model"),
+            "imageSize": image_size,
+            "width": self._json_safe_value(fallback_info.get("width")),
+            "height": self._json_safe_value(fallback_info.get("height")),
+            "fx": fx,
+            "fy": fy,
+            "cx": cx,
+            "cy": cy,
+            "ppx": cx,
+            "ppy": cy,
+        }
+        for coeff in ["k1", "k2", "k3", "p1", "p2"]:
+            normalized_info[coeff] = self._coerce_optional_float(primary_info.get(coeff))
+            if normalized_info[coeff] is None:
+                normalized_info[coeff] = 0.0
+
+        if normalized_info["fx"] is None or normalized_info["fy"] is None:
+            logger.warning(
+                f"Camera intrinsic info is incomplete after normalization: {normalized_info}"
+            )
+
+        return normalized_info
+
+    def _unpack_extract_process_entry(self, entry):
+        if len(entry) == 3:
+            return entry
+        process, log_file = entry
+        return process, log_file, "<unknown>"
+
+    def _wait_for_recording_metadata(
+        self,
+        recording_path: str,
+        timeout_seconds: float = 0.0,
+        poll_interval: float = 0.5,
+    ) -> bool:
+        if not recording_path or not os.path.isdir(recording_path):
+            logger.error(f"Recording path is not available: {recording_path}")
+            return False
+
+        metadata_path = os.path.join(recording_path, "metadata.yaml")
+        deadline = time.monotonic() + max(timeout_seconds, 0.0)
+        while True:
+            if os.path.isfile(metadata_path):
+                return True
+            if time.monotonic() >= deadline:
+                break
+            time.sleep(poll_interval)
+
+        if self._recording_has_bag_payload(recording_path):
+            logger.error(
+                f"Recording metadata was not finalized for {recording_path}; "
+                f"metadata.yaml is still missing after {max(timeout_seconds, 0.0):.1f}s"
+            )
+        else:
+            logger.error(
+                f"Recording payload is missing for {recording_path}; no .db3/.mcap files were found"
+            )
+        return False
+
+    def _reap_extract_processes(self):
+        active_processes = []
+        for entry in self.extract_process:
+            process, log_file, output_dir = self._unpack_extract_process_entry(entry)
+            return_code = process.poll()
+            if return_code is None:
+                active_processes.append((process, log_file, output_dir))
+                continue
+            log_file.close()
+            if return_code != 0:
+                logger.error(
+                    f"Extract process {process.pid} for {output_dir} exited with code {return_code}"
+                )
+        self.extract_process = active_processes
 
     def _init_robot_cfg(
         self,
@@ -482,7 +633,7 @@ class CommandController:
         for info in camera_info:
             value = camera_prim.GetAttribute(info).Get()
             info = info.split(":")[-1]
-            camera_intrinsic_info[info] = str(value)
+            camera_intrinsic_info[info] = self._json_safe_value(value)
         return camera_intrinsic_info
 
     def store_current_state(self):
@@ -830,6 +981,7 @@ class CommandController:
                         folder_index += 1
                     recording_path = recording_path + str(folder_index)
                 self.path_to_save = recording_path
+                self.recording_ready_for_extraction = False
                 self.camera_info_list = {}
                 tf_target = []
                 for prim_path in self.data["camera_prim_list"]:
@@ -844,7 +996,11 @@ class CommandController:
                         camera_info = self.get_camera_intrinsic_info(prim_path)
                     except Exception as e:
                         logger.error(f"Failed to get camera intrinsic info: {e}")
-                        camera_info = image["camera_info"]
+                        camera_info = {}
+                    camera_info = self._normalize_camera_intrinsic_info(
+                        camera_info,
+                        image.get("camera_info", {}),
+                    )
                     prim_name = self.get_camera_prim_name(prim_path)
                     self.camera_info_list[prim_name] = {
                         "intrinsic": camera_info,
@@ -880,7 +1036,7 @@ class CommandController:
                         unset PYTHONPATH
                         unset LD_LIBRARY_PATH
                         source /opt/ros/{ros_cmd_distro}/setup.bash
-                        ros2 bag record -o {recording_path} -a
+                        exec ros2 bag record -o {recording_path} -a
                         """
                     logger.info("publish_ros command: " + command_str)
                     process = subprocess.Popen(
@@ -1022,6 +1178,7 @@ class CommandController:
                     raise ValueError("publish ros is not enabled")
         elif self.data["stopRecording"]:
             with self._timing_context("stop_recording"):
+                recording_ready = True
                 if self.publish_ros:
                     for process in self.process:
                         try:
@@ -1035,14 +1192,49 @@ class CommandController:
                     for process in self.process:
                         try:
                             if process.poll() is None:
-                                os.killpg(os.getpgid(process.pid), signal.SIGINT)
-                                process.wait(timeout=5)  # Wait for rosbag to exit completely
+                                process.wait(timeout=30)  # Wait for rosbag to exit completely
+                        except subprocess.TimeoutExpired:
+                            recording_ready = self._wait_for_recording_metadata(
+                                self.path_to_save,
+                                timeout_seconds=5.0,
+                            )
+                            if recording_ready:
+                                logger.warning(
+                                    f"Recorder process {process.pid} did not exit after SIGINT, "
+                                    f"but metadata is finalized; forcing SIGKILL and continuing"
+                                )
+                            else:
+                                logger.error(
+                                    f"Recorder process {process.pid} did not exit after SIGINT; forcing SIGKILL"
+                                )
+                            try:
+                                os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+                                process.wait(timeout=5)
+                            except Exception as kill_error:
+                                logger.error(
+                                    f"Failed to force terminate process {process.pid}: {kill_error}"
+                                )
                         except Exception as e:
-                            logger.info(f"Failed to force terminate process {process.pid}: {e}")
-                            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+                            recording_ready = False
+                            logger.error(
+                                f"Failed while waiting for recorder process {process.pid}: {e}"
+                            )
                     self.ui_builder.remove_graph(self.graph_path)
 
                     self.process = []
+                if recording_ready and self.path_to_save:
+                    recording_ready = self._wait_for_recording_metadata(
+                        self.path_to_save,
+                        timeout_seconds=10.0,
+                    )
+                elif self.path_to_save is None:
+                    recording_ready = False
+                    logger.error("StopRecording finished without an active recording path")
+                self.recording_ready_for_extraction = recording_ready
+                if not recording_ready:
+                    logger.error(
+                        f"Recording at {self.path_to_save} is incomplete; extraction will be skipped"
+                    )
                 self.data_to_send = "Stopped"
         else:
             raise ValueError("Invalid command: GetObservation is not supported")
@@ -1083,6 +1275,18 @@ class CommandController:
         config = self.task_metric
         if self.task_name is not None:
             if isSuccess is True:
+                recording_ready = self.recording_ready_for_extraction and self._wait_for_recording_metadata(
+                    self.path_to_save,
+                    timeout_seconds=2.0,
+                )
+                self.recording_ready_for_extraction = recording_ready
+                if not recording_ready:
+                    logger.error(
+                        f"Skipping extraction for incomplete recording directory: {self.path_to_save}"
+                    )
+                    self.object_asset_dict = {}
+                    self.data_to_send = str(isSuccess)
+                    return
                 task_info = {
                     "bag_file": self.path_to_save,
                     "output_dir": self.path_to_save,
@@ -1123,24 +1327,22 @@ class CommandController:
                 with open(metric_config_path, "w") as f:
                     json.dump(config, f, indent=4)
 
-                total_time = 0
-                clean_once = True
-                while len(self.extract_process) > MAX_EXTRACT_PROCESS_NUM or clean_once:
-                    new_process = []
-                    clean_once = False
-                    for p, log_file in self.extract_process:
-                        if p.poll():
-                            new_process.append((p, log_file))
-                        else:
-                            log_file.close()
-                    self.extract_process = new_process
+                total_time = 0.0
+                while True:
+                    self._reap_extract_processes()
+                    if len(self.extract_process) < MAX_EXTRACT_PROCESS_NUM:
+                        break
                     time.sleep(0.1)
                     total_time += 0.1
-                    if total_time > 120:
-                        process, log_file = self.extract_process[0]
+                    if total_time > 120 and self.extract_process:
+                        process, log_file, output_dir = self._unpack_extract_process_entry(
+                            self.extract_process[0]
+                        )
                         os.killpg(os.getpgid(process.pid), signal.SIGINT)
                         log_file.close()
-                        logger.info("Extract process waiting timeout 120s, kill it")
+                        logger.info(f"Extract process waiting timeout 120s, kill it: {output_dir}")
+                        self.extract_process = self.extract_process[1:]
+                        break
 
                 log_file = open(self.path_to_save + "/extract.log", "w")
                 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -1160,7 +1362,7 @@ class CommandController:
                     preexec_fn=os.setsid,
                 )
                 logger.info("Extract process started")
-                self.extract_process.append((extract_sub_process, log_file))
+                self.extract_process.append((extract_sub_process, log_file, self.path_to_save))
             else:
                 # remove folder if exist
                 if os.path.exists(self.path_to_save):
@@ -1172,13 +1374,14 @@ class CommandController:
     def handle_exit(self):
         """Handle Command 17: Exit"""
         # wait for extract process to finish
-        for process, log_file in self.extract_process:
+        for entry in self.extract_process:
+            process, log_file, output_dir = self._unpack_extract_process_entry(entry)
             try:
                 if process.poll() is None:
                     process.wait(timeout=300)
                 log_file.close()
             except subprocess.TimeoutExpired:
-                logger.info("Exit:Extract process waiting timeout 300s, kill it")
+                logger.info(f"Exit:Extract process waiting timeout 300s, kill it: {output_dir}")
                 os.killpg(os.getpgid(process.pid), signal.SIGINT)
         self.exit = self.data["exit"]
         self.data_to_send = "exit"

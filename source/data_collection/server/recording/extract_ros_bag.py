@@ -62,6 +62,18 @@ except ImportError:
 count = 0
 
 
+def make_json_safe(data):
+    if isinstance(data, np.ndarray):
+        return data.tolist()
+    if isinstance(data, np.generic):
+        return data.item()
+    if isinstance(data, dict):
+        return {key: make_json_safe(value) for key, value in data.items()}
+    if isinstance(data, (list, tuple)):
+        return [make_json_safe(value) for value in data]
+    return data
+
+
 def merge_camera(root):
     """
     Move folders 0, 1, 2... from camera_0, camera_1, camera_2 ...
@@ -1143,15 +1155,13 @@ class RosExtrater:
                         logger.warning(f"Skip frame at {ts}")
                         continue
                     single_frame_state["time_stamp"] = ts
-                    frame_idx = -1
                     if len(self.frame_status) > 0:
-                        if joint_timestamp < self.frame_status[0]["time_stamp"]:
-                            value = self.frame_status[0]["frame_state"]
-                        else:
-                            while joint_timestamp < self.frame_status[frame_idx]["time_stamp"]:
-                                frame_idx -= 1
-                                value = self.frame_status[frame_idx]["frame_state"]
-                        single_frame_state["frame_state"] = value
+                        value = self.frame_status[0]["frame_state"]
+                        for frame_status in self.frame_status:
+                            if joint_timestamp < frame_status["time_stamp"]:
+                                break
+                            value = frame_status["frame_state"]
+                        single_frame_state["frame_state"] = make_json_safe(value)
                     single_frame_state["robot"]["joints"] = single_joint_state_info
                     single_frame_state["robot"]["joints_action"] = single_joint_action_info
                     single_ee_info_r = {
@@ -1462,7 +1472,7 @@ class RosExtrater:
 
                 state_out_dir = self.output_dir + f"/state_{chunk_index}.json"
                 with open(state_out_dir, "w", encoding="utf-8") as f:
-                    json.dump(result, f, indent=4)
+                    json.dump(make_json_safe(result), f, indent=4)
                 logger.info(f"State file saved to {state_out_dir}")
 
             await self.json_writer.stop()

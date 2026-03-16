@@ -14,6 +14,8 @@ import pytz
 import yaml
 from scipy.spatial.transform import Rotation as R
 
+from common.base_utils.logger import logger
+
 
 def sim2real(sim_vec):
     """sim_vec: Any 6-dimensional vector between 0-1"""
@@ -89,6 +91,15 @@ def process_camera_parameter_file_name(camera_name):
     elif "hand_right" in camera_name.lower():
         camera_name = "hand_right_rgbd"
     return camera_name
+
+
+def safe_float(value, default=0.0):
+    if value in (None, "", "None"):
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
 
 
 class SimDataConverter:
@@ -391,25 +402,38 @@ class SimDataConverter:
         # intrinsics
         for cam in self._state["cameras"]:
             camera = self._state["cameras"][cam]
+            intrinsic = camera.get("intrinsic", {})
             cam_int_params = {}
             if "fisheye" in cam:
-                cam_int_params["fu"] = camera["intrinsic"]["fx"]
-                cam_int_params["fv"] = camera["intrinsic"]["fy"]
-                cam_int_params["pu"] = camera["intrinsic"]["ppx"]
-                cam_int_params["pv"] = camera["intrinsic"]["ppy"]
+                cam_int_params["fu"] = safe_float(intrinsic.get("fx"))
+                cam_int_params["fv"] = safe_float(intrinsic.get("fy"))
+                cam_int_params["pu"] = safe_float(
+                    intrinsic.get("ppx", intrinsic.get("cx"))
+                )
+                cam_int_params["pv"] = safe_float(
+                    intrinsic.get("ppy", intrinsic.get("cy"))
+                )
                 cam_int_params["distortion_model"] = "fisheyePolynomial"
                 cam = "head_center_fisheye"
             else:
-                cam_int_params["Fx"] = float(camera["intrinsic"]["fx"])
-                cam_int_params["Fy"] = float(camera["intrinsic"]["fy"])
-                cam_int_params["Cx"] = float(camera["intrinsic"]["cx"])
-                cam_int_params["Cy"] = float(camera["intrinsic"]["cy"])
-                cam_int_params["k1"] = float(camera["intrinsic"]["k1"])
-                cam_int_params["k2"] = float(camera["intrinsic"]["k2"])
-                cam_int_params["p1"] = float(camera["intrinsic"]["p1"])
-                cam_int_params["p2"] = float(camera["intrinsic"]["p2"])
-                cam_int_params["k3"] = float(camera["intrinsic"]["k3"])
+                cam_int_params["Fx"] = safe_float(intrinsic.get("fx"))
+                cam_int_params["Fy"] = safe_float(intrinsic.get("fy"))
+                cam_int_params["Cx"] = safe_float(
+                    intrinsic.get("cx", intrinsic.get("ppx"))
+                )
+                cam_int_params["Cy"] = safe_float(
+                    intrinsic.get("cy", intrinsic.get("ppy"))
+                )
+                cam_int_params["k1"] = safe_float(intrinsic.get("k1"))
+                cam_int_params["k2"] = safe_float(intrinsic.get("k2"))
+                cam_int_params["p1"] = safe_float(intrinsic.get("p1"))
+                cam_int_params["p2"] = safe_float(intrinsic.get("p2"))
+                cam_int_params["k3"] = safe_float(intrinsic.get("k3"))
                 cam_int_params["SN"] = "CPBC853000CC"
+                if cam_int_params["Fx"] == 0.0 or cam_int_params["Fy"] == 0.0:
+                    logger.warning(
+                        f"Camera {cam} is missing focal intrinsics; using fallback defaults: {intrinsic}"
+                    )
             cam = process_camera_parameter_file_name(cam)
             if "rgbd" in cam:
                 with open(
