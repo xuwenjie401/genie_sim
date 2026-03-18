@@ -166,7 +166,6 @@ def obj2world(obj_info):
         # ensure orthogonalization not necessary here; keep as direction vector
         obj_info_world["constraint"] = constraint_world / np.linalg.norm(constraint_world)
     return obj_info_world
-    return obj_info_world
 
 
 def get_aligned_fix_pose(active_obj, passive_obj, distance=0.01, N=1):

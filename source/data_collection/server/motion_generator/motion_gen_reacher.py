@@ -802,6 +802,105 @@ class CuroboMotion:
             self.visualize_robot_spheres()
             self.visualize_obstacles()
 
+    #NOTE: codex build a reusable active-joint state for both ee-pose planning and exact joint
+    # goal planning during reset.
+    def _get_active_joint_state(self):
+        sim_js = self.robot.get_joints_state()
+        js_names = self.robot.dof_names
+        sim_js_names = []
+        lock_idx = []
+        for idx, name in enumerate(js_names):
+            if name not in self.lock_js_names:
+                sim_js_names.append(name)
+            else:
+                lock_idx.append(idx)
+
+        sim_js_positions = []
+        for idx, position in enumerate(sim_js.positions):
+            if idx not in lock_idx:
+                sim_js_positions.append(position)
+
+        sim_js_positions = np.array(sim_js_positions, dtype=np.float32)[np.newaxis, :]
+        zero_state = np.zeros_like(sim_js_positions)
+        cu_js = JointState(
+            position=self.tensor_args.to_device(sim_js_positions),
+            velocity=self.tensor_args.to_device(zero_state),
+            acceleration=self.tensor_args.to_device(zero_state),
+            jerk=self.tensor_args.to_device(zero_state),
+            joint_names=sim_js_names,
+        )
+        cu_js = cu_js.get_ordered_joint_state(self.motion_gen.kinematics.joint_names)
+        return cu_js, sim_js_names
+
+    #NOTE: codex use curobo's native joint-goal planner for reset so the arm returns to the exact
+    # stored home configuration rather than only matching an end-effector pose.
+    def plan_joint_goal(self, goal_joint_state: dict[str, float]):
+        self.reached = False
+        self.success = False
+        self.cmd_plan = None
+
+        if not goal_joint_state:
+            self.reached = True
+            carb.log_warn("joint goal is empty")
+            return False
+
+        try:
+            cu_js, sim_js_names = self._get_active_joint_state()
+            ordered_joint_names = list(cu_js.joint_names)
+            goal_positions = cu_js.position.clone()
+            update_count = 0
+            for joint_name, joint_position in goal_joint_state.items():
+                if joint_name not in ordered_joint_names:
+                    continue
+                joint_idx = ordered_joint_names.index(joint_name)
+                goal_positions[0, joint_idx] = float(joint_position)
+                update_count += 1
+
+            if update_count == 0:
+                self.reached = True
+                carb.log_warn("joint goal does not overlap with curobo joint names")
+                return False
+
+            zero_state = torch.zeros_like(goal_positions)
+            goal_js = JointState(
+                position=goal_positions,
+                velocity=zero_state.clone(),
+                acceleration=zero_state.clone(),
+                jerk=zero_state.clone(),
+                joint_names=ordered_joint_names,
+            )
+
+            result = self.motion_gen.plan_single_js(cu_js, goal_js, self.plan_config.clone())
+            if result.success is not None and result.success.any():
+                self.cmd_plan = result.get_interpolated_plan()
+                if self.cmd_plan is None:
+                    self.cmd_plan = result.optimized_plan
+                if self.cmd_plan is None:
+                    self.reached = True
+                    carb.log_warn("joint goal planning returned no trajectory")
+                    return False
+
+                self.cmd_plan = self.motion_gen.get_full_js(self.cmd_plan)
+                self.idx_list = []
+                common_js_names = []
+                for joint_name in sim_js_names:
+                    if joint_name in self.cmd_plan.joint_names:
+                        self.idx_list.append(self.robot.get_dof_index(joint_name))
+                        common_js_names.append(joint_name)
+                self.cmd_plan = self.cmd_plan.get_ordered_joint_state(common_js_names)
+                self.cmd_idx = 0
+                self.success = True
+                return True
+
+            self.reached = True
+            carb.log_warn("joint goal plan did not converge: {}".format(str(result.status)))
+            return False
+        except Exception as e:
+            self.reached = True
+            self.success = False
+            carb.log_warn("joint goal plan got an exception: {}".format(str(e)))
+            return False
+
     def caculate_ik_goal(
         self,
         goal_offset=[0, 0, 0, 1, 0, 0, 0],
@@ -841,33 +940,17 @@ class CuroboMotion:
             self.target_orientation = cube_orientation
         if self.past_orientation is None:
             self.past_orientation = cube_orientation
-        sim_js = self.robot.get_joints_state()
-        js_names = self.robot.dof_names
-        sim_js_names = []
-        lock_idx = []
-        sim_js_positions = []
-        sim_js_velocities = []
-        for idx, name in enumerate(js_names):
-            if name not in self.lock_js_names:
-                sim_js_names.append(name)
-            else:
-                lock_idx.append(idx)
-        for idx, position in enumerate(sim_js.positions):
-            if idx not in lock_idx:
-                sim_js_positions.append(position)
-        for idx, velocity in enumerate(sim_js.velocities):
-            if idx not in lock_idx:
-                sim_js_velocities.append(velocity)
-        sim_js_positions = np.array(sim_js_positions)[np.newaxis, :]
-        sim_js_velocities = np.array(sim_js_velocities)[np.newaxis, :]
+        cu_js_single, sim_js_names = self._get_active_joint_state()
+        ordered_joint_names = list(cu_js_single.joint_names)
         cu_js = JointState(
-            position=self.tensor_args.to_device(np.tile(sim_js_positions, (CUROBO_BATCH_SIZE, 1))),
-            velocity=self.tensor_args.to_device(np.tile(sim_js_positions, (CUROBO_BATCH_SIZE, 1))) * 0.0,
-            acceleration=self.tensor_args.to_device(np.tile(sim_js_velocities, (CUROBO_BATCH_SIZE, 1))) * 0.0,
-            jerk=self.tensor_args.to_device(np.tile(sim_js_velocities, (CUROBO_BATCH_SIZE, 1))) * 0.0,
-            joint_names=sim_js_names,
+            position=self.tensor_args.to_device(np.tile(cu_js_single.position.cpu().numpy(), (CUROBO_BATCH_SIZE, 1))),
+            velocity=self.tensor_args.to_device(np.tile(cu_js_single.velocity.cpu().numpy(), (CUROBO_BATCH_SIZE, 1))),
+            acceleration=self.tensor_args.to_device(
+                np.tile(cu_js_single.acceleration.cpu().numpy(), (CUROBO_BATCH_SIZE, 1))
+            ),
+            jerk=self.tensor_args.to_device(np.tile(cu_js_single.jerk.cpu().numpy(), (CUROBO_BATCH_SIZE, 1))),
+            joint_names=ordered_joint_names,
         )
-        cu_js = cu_js.get_ordered_joint_state(self.motion_gen.kinematics.joint_names)
         start_time = time.time()
         if from_current_pose:
             start_pose = self.motion_gen.compute_kinematics(cu_js).ee_pose.clone()

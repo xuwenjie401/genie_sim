@@ -2,6 +2,11 @@
     "robot": {
         "robot_name": "galbot_fixed",
         "base_prim_path": "/galbot_one_golf",
+        "arm_base_prim_path": "/galbot_one_golf/torso_base_link",
+        "arm_base_prim_paths": {
+            "left": "/galbot_one_golf/left_arm_base_link",
+            "right": "/galbot_one_golf/right_arm_base_link"
+        },
         "arm": "dual",
         "urdf_name": "/galbot/galbot_fixed_dual.urdf",
         "robot_description": {

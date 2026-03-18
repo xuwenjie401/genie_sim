@@ -189,6 +189,39 @@ def load_joint_data(recording_dir: Path) -> tuple[list[str], np.ndarray]:
     return joint_names, np.asarray(joint_values, dtype=np.float32)
 
 
+def load_task_description(recording_dir: Path, recording_info: dict[str, Any]) -> dict[str, str]:
+    task_description = {
+        "task_name": str(recording_info.get("task_name", "") or ""),
+        "english_task_name": "",
+        "init_scene_text": "",
+    }
+
+    frame_state_path = recording_dir / "frame_state.json"
+    if not frame_state_path.is_file():
+        return task_description
+
+    try:
+        frame_states = load_json(frame_state_path)
+    except json.JSONDecodeError:
+        return task_description
+
+    if not isinstance(frame_states, list):
+        return task_description
+
+    for frame_state in frame_states:
+        candidate = frame_state.get("task_description")
+        if not isinstance(candidate, dict):
+            continue
+        for key in ("task_name", "english_task_name", "init_scene_text"):
+            value = candidate.get(key)
+            if value:
+                task_description[key] = str(value)
+        if any(task_description.get(key) for key in ("task_name", "english_task_name", "init_scene_text")):
+            break
+
+    return task_description
+
+
 def format_xyz_quat_wxyz(pose_4x4: list[list[float]]) -> str:
     x = pose_4x4[0][3]
     y = pose_4x4[1][3]
@@ -317,6 +350,7 @@ class RecordingViewer:
         mp4_counts: dict[str, str],
         joint_names: list[str],
         joint_values: np.ndarray,
+        task_description: dict[str, str],
         font_family_override: str | None,
     ):
         self.recording_dir = recording_dir
@@ -328,6 +362,7 @@ class RecordingViewer:
         self.mp4_counts = mp4_counts
         self.joint_names = joint_names
         self.joint_values = joint_values
+        self.task_description = task_description
         self.frame_count = len(frame_data)
         self.pose_plot_limits = self._compute_pose_plot_limits()
         self.frame_idx = 0
@@ -344,6 +379,7 @@ class RecordingViewer:
         width = min(1800, max(screen_w - 80, 1200))
         height = min(1080, max(screen_h - 120, 800))
         self.root.geometry(f"{width}x{height}")
+        self.pose_image_size = max(170, min(240, int(height * 0.19)))
 
         self.root.configure(bg="#f5f1e8")
         self.ui_font_family = self._pick_ui_font_family(font_family_override)
@@ -446,13 +482,29 @@ class RecordingViewer:
             bg="#f5f1e8",
             fg="#4a4036",
         ).pack(anchor="w", pady=(8, 0))
+        task_instruction = self._format_task_instruction()
+        if task_instruction:
+            tk.Label(
+                header,
+                text=task_instruction,
+                justify=tk.LEFT,
+                font=self._font_small,
+                bg="#f5f1e8",
+                fg="#3b342d",
+            ).pack(anchor="w", pady=(8, 0))
 
         robot_info_frame = tk.Frame(self.root, bg="#f5f1e8", padx=8, pady=2)
         robot_info_frame.pack(side=tk.TOP, fill=tk.X)
-        for idx, key in enumerate(("world_base_link", "world_arm_base")):
+        # NOTE: codex arm_base
+        robot_pose_panels = (
+            ("world_base_link", "T_world_base_link"),
+            ("world_arm_base", "T_world_arm_base(shared)"),
+            ("world_left_arm_base", "T_world_left_arm_base"),
+            ("world_right_arm_base", "T_world_right_arm_base"),
+        )
+        for idx, (key, title) in enumerate(robot_pose_panels):
             panel = tk.Frame(robot_info_frame, bg="#f5f1e8", padx=6, pady=4)
             panel.grid(row=0, column=idx, sticky="nsew")
-            title = "T_world_base_link" if key == "world_base_link" else "T_world_arm_base"
             tk.Label(
                 panel,
                 text=title,
@@ -477,6 +529,8 @@ class RecordingViewer:
             self.robot_pose_labels[key] = label
         robot_info_frame.grid_columnconfigure(0, weight=1)
         robot_info_frame.grid_columnconfigure(1, weight=1)
+        robot_info_frame.grid_columnconfigure(2, weight=1)
+        robot_info_frame.grid_columnconfigure(3, weight=1)
 
         image_frame = tk.Frame(self.root, bg="#f5f1e8", padx=8, pady=8)
         image_frame.pack(side=tk.TOP, fill=tk.X)
@@ -673,8 +727,19 @@ class RecordingViewer:
         self._render_pose_image("right_eef_pose", frame["ee"]["right"]["pose"])
         self.pose_numeric_labels["left_eef_pose"].configure(text=left_pose_text)
         self.pose_numeric_labels["right_eef_pose"].configure(text=right_pose_text)
-        self.robot_pose_labels["world_base_link"].configure(text=format_xyz_quat_wxyz(frame["robot"]["pose"]))
-        self.robot_pose_labels["world_arm_base"].configure(text=format_xyz_quat_wxyz(frame["robot"]["arm_base_pose"]))
+        # NOTE: codex arm_base
+        self.robot_pose_labels["world_base_link"].configure(
+            text=self._format_robot_pose_label(frame, "pose")
+        )
+        self.robot_pose_labels["world_arm_base"].configure(
+            text=self._format_robot_pose_label(frame, "arm_base_pose", "pose")
+        )
+        self.robot_pose_labels["world_left_arm_base"].configure(
+            text=self._format_robot_pose_label(frame, "left_arm_base_pose", "arm_base_pose")
+        )
+        self.robot_pose_labels["world_right_arm_base"].configure(
+            text=self._format_robot_pose_label(frame, "right_arm_base_pose", "arm_base_pose")
+        )
         self._set_text("left_joints", self._format_joint_block(left_joints))
         self._set_text("right_joints", self._format_joint_block(right_joints))
 
@@ -709,7 +774,8 @@ class RecordingViewer:
         self._image_refs.append(photo)
 
     def _create_pose_overlay(self, pose_4x4: list[list[float]]) -> Image.Image:
-        fig = plt.figure(figsize=(3.4, 3.4), dpi=100)
+        fig_size_inches = self.pose_image_size / 100.0
+        fig = plt.figure(figsize=(fig_size_inches, fig_size_inches), dpi=100)
         ax = fig.add_subplot(111, projection="3d")
         ax.set_facecolor("#ffffff")
         fig.patch.set_facecolor("#ffffff")
@@ -769,6 +835,35 @@ class RecordingViewer:
         if not joint_pairs:
             return "No joint values found."
         return "\n".join(f"{name:<18} {value: .5f}" for name, value in joint_pairs)
+
+    def _format_task_instruction(self) -> str:
+        task_name = self.task_description.get("task_name", "").strip()
+        english_task_name = self.task_description.get("english_task_name", "").strip()
+        init_scene_text = self.task_description.get("init_scene_text", "").strip()
+
+        lines: list[str] = []
+        if task_name:
+            lines.append(f"task(zh): {task_name}")
+        if english_task_name:
+            lines.append(f"task(en): {english_task_name}")
+        if init_scene_text:
+            lines.append(f"scene(zh): {init_scene_text}")
+        return "\n".join(lines)
+
+    def _format_robot_pose_label(
+        self,
+        frame: dict[str, Any],
+        primary_key: str,
+        fallback_key: str | None = None,
+    ) -> str:
+        # NOTE: codex arm_base
+        robot_frame = frame.get("robot", {})
+        pose = robot_frame.get(primary_key)
+        if pose is None and fallback_key is not None:
+            pose = robot_frame.get(fallback_key)
+        if pose is None:
+            return "missing pose"
+        return format_xyz_quat_wxyz(pose)
 
     def _compute_pose_plot_limits(self) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]]:
         points: list[np.ndarray] = []
@@ -859,6 +954,7 @@ def main() -> int:
     recording_info_path = recording_dir / "recording_info.json"
     recording_info = load_json(recording_info_path) if recording_info_path.is_file() else {}
     playback_fps = float(args.fps or recording_info.get("fps", 30))
+    task_description = load_task_description(recording_dir, recording_info)
 
     mp4_counts = collect_video_counts(recording_dir)
     joint_names, joint_values = load_joint_data(recording_dir)
@@ -888,6 +984,7 @@ def main() -> int:
         mp4_counts=mp4_counts,
         joint_names=joint_names,
         joint_values=joint_values,
+        task_description=task_description,
         font_family_override=args.font_family,
     )
     viewer.run()

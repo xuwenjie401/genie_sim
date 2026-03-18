@@ -8,10 +8,35 @@ import numpy as np
 
 from client.planner.action.stage import Action, ActionSequence, Stage
 from client.planner.common import get_aligned_fix_pose, get_aligned_pose
-from client.planner.func.common import random_downsample, sorted_by_joint_pos_dist
+from client.planner.func.common import sorted_by_joint_pos_dist
 from client.planner.func.sort_pose.sort_pose import sorted_by_position_humanlike
 from common.base_utils.logger import logger
 from common.base_utils.transform_utils import add_random_noise_to_pose
+
+
+def sort_place_pose_indices_by_center(target_obj_poses, passive_obj_pose, base_idx_sorted=None, center_weight=0.5):
+    # NOTE: codex place-sort
+    if len(target_obj_poses) == 0:
+        return np.array([], dtype=int)
+
+    passive_center = passive_obj_pose[:3, 3]
+    center_dist = np.linalg.norm(target_obj_poses[:, :3, 3] - passive_center[np.newaxis, :], axis=1)
+
+    if base_idx_sorted is None:
+        return np.argsort(center_dist)
+
+    base_rank = np.empty(len(base_idx_sorted), dtype=float)
+    base_rank[base_idx_sorted] = np.arange(len(base_idx_sorted), dtype=float)
+    if len(base_idx_sorted) > 1:
+        base_rank /= len(base_idx_sorted) - 1
+
+    dist_span = center_dist.max() - center_dist.min()
+    if dist_span > 1e-8:
+        center_score = (center_dist - center_dist.min()) / dist_span
+    else:
+        center_score = np.zeros_like(center_dist)
+
+    return np.argsort(base_rank + center_weight * center_score)
 
 
 # When the grasp point of the current target cannot be reached, find points near the target point
@@ -63,7 +88,7 @@ def find_near_point_grasp_pose(
 class PlaceStage(Stage):
     def __init__(self, stage_config, objects):
         super().__init__(stage_config, objects)
-        self.place_transform_up = np.array([0, 0, 0.01])
+        self.place_transform_up = np.array([0, 0, 0.05])
         self.use_pre_place = self.extra_params.get("use_pre_place", False)
         self.pre_place_offset = self.extra_params.get("pre_place_offset", 0.12)
 
@@ -119,10 +144,13 @@ class PlaceStage(Stage):
                 logger.warning(f"{self.action_type}: No target_gripper_poses can pass upright filter")
                 continue
 
-            # downsample target_gripper_poses
-            target_gripper_poses, _ = random_downsample(
-                transforms=target_gripper_poses, downsample_num=100, replace=False
-            )
+            center_sort_num = self.extra_params.get("center_sort_num", 100)
+            target_obj_poses = target_gripper_poses @ np.linalg.inv(gripper2obj)[np.newaxis, ...]
+            center_idx_sorted = sort_place_pose_indices_by_center(target_obj_poses, anchor_pose)
+            target_gripper_poses = target_gripper_poses[center_idx_sorted]
+            if target_gripper_poses.shape[0] > center_sort_num:
+                target_gripper_poses = target_gripper_poses[:center_sort_num]
+
             ik_success, _ = robot.solve_ik(
                 target_gripper_poses,
                 ee_type="gripper",
@@ -306,9 +334,17 @@ class PlaceStage(Stage):
             else:
                 idx_sorted = sorted_by_joint_pos_dist(robot, arm, ik_joint_positions, ik_joint_names, ik_jacobian_score)
 
-            target_obj_pose_sorted = (
-                target_gripper_poses_pass_ik[idx_sorted] @ np.linalg.inv(gripper2obj)[np.newaxis, ...]
+            target_obj_pose_pass_ik = (
+                target_gripper_poses_pass_ik @ np.linalg.inv(gripper2obj)[np.newaxis, ...]
             )
+            center_weight = self.extra_params.get("place_center_weight", 0.5)
+            idx_sorted = sort_place_pose_indices_by_center(
+                target_obj_pose_pass_ik,
+                anchor_pose,
+                base_idx_sorted=idx_sorted,
+                center_weight=center_weight,
+            )
+            target_obj_pose_sorted = target_obj_pose_pass_ik[idx_sorted]
             target_obj_pose_canonical_sorted = np.linalg.inv(anchor_pose)[np.newaxis, ...] @ target_obj_pose_sorted
             if pre_insert_pose_canonical is not None:
                 pre_insert_pose_canonical = pre_insert_pose_canonical[idx_sorted]

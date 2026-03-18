@@ -564,10 +564,22 @@ class SimDataConverter:
         prefix = "action"
         joint_position = f_in[f"{prefix}/joint/position"][index]
         joint_position_state = f_in["state/joint/position"][index]
+        end_source_group = f_in[f"{prefix}/end"]
         # end data
         end_group = action_group.create_group("end")
-        end_group.create_dataset("orientation", data=f_in[f"{prefix}/end/orientation"][index])
-        end_group.create_dataset("position", data=f_in[f"{prefix}/end/position"][index])
+        end_group.create_dataset("orientation", data=end_source_group["orientation"][index])
+        end_group.create_dataset("position", data=end_source_group["position"][index])
+        # NOTE: codex arm_base
+        for dataset_name in [
+            "arm_orientation",
+            "arm_position",
+            "left_arm_orientation",
+            "left_arm_position",
+            "right_arm_orientation",
+            "right_arm_position",
+        ]:
+            if dataset_name in end_source_group:
+                end_group.create_dataset(dataset_name, data=end_source_group[dataset_name][index])
         # head data
         head_index = [
             self.config["joint_state_order"].index(name) for name in self.config["head_joint_names"]
@@ -614,18 +626,26 @@ class SimDataConverter:
         joint_position = f_in[f"{prefix}/joint/position"][index]
         joint_effort = f_in[f"{prefix}/joint/effort"][index]
         joint_velocity = f_in[f"{prefix}/joint/velocity"][index]
+        end_source_group = f_in[f"{prefix}/end"]
         # end data
         end_group = state_group.create_group("end")
-        end_group.create_dataset("orientation", data=f_in[f"{prefix}/end/orientation"][index])
-        end_group.create_dataset("position", data=f_in[f"{prefix}/end/position"][index])
-        end_group.create_dataset(
-            "arm_orientation", data=f_in[f"{prefix}/end/arm_orientation"][index]
-        )
-        end_group.create_dataset("arm_position", data=f_in[f"{prefix}/end/arm_position"][index])
-        left_position = np.array(f_in[f"{prefix}/end/arm_position"][index][0])
-        right_position = np.array(f_in[f"{prefix}/end/arm_position"][index][1])
-        left_orientation = np.array(f_in[f"{prefix}/end/arm_orientation"][index][0])
-        right_orientation = np.array(f_in[f"{prefix}/end/arm_orientation"][index][1])
+        end_group.create_dataset("orientation", data=end_source_group["orientation"][index])
+        end_group.create_dataset("position", data=end_source_group["position"][index])
+        end_group.create_dataset("arm_orientation", data=end_source_group["arm_orientation"][index])
+        end_group.create_dataset("arm_position", data=end_source_group["arm_position"][index])
+        # NOTE: codex arm_base
+        for dataset_name in [
+            "left_arm_orientation",
+            "left_arm_position",
+            "right_arm_orientation",
+            "right_arm_position",
+        ]:
+            if dataset_name in end_source_group:
+                end_group.create_dataset(dataset_name, data=end_source_group[dataset_name][index])
+        left_position = np.array(end_source_group["arm_position"][index][0])
+        right_position = np.array(end_source_group["arm_position"][index][1])
+        left_orientation = np.array(end_source_group["arm_orientation"][index][0])
+        right_orientation = np.array(end_source_group["arm_orientation"][index][1])
         end_pose = np.concatenate(
             [left_position, left_orientation, right_position, right_orientation], axis=-1
         )

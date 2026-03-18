@@ -101,6 +101,8 @@ class CommandController:
         self.trajectory_index = 0
         self.trajectory_reached = False
         self.target_joints_pose = []
+        self.target_joint_names = []
+        self.arm_base_prim_paths = {}
         self.graph_path = []
         self.camera_graph_path = []
         self.loop_count = 0
@@ -253,6 +255,15 @@ class CommandController:
         primary_info = self._json_safe_value(primary_info or {})
         fallback_info = self._json_safe_value(fallback_info or {})
 
+        target_width = self._coerce_optional_float(fallback_info.get("width"))
+        target_height = self._coerce_optional_float(fallback_info.get("height"))
+        image_size = self._json_safe_value(primary_info.get("imageSize"))
+        source_width = None
+        source_height = None
+        if isinstance(image_size, (list, tuple)) and len(image_size) >= 2:
+            source_width = self._coerce_optional_float(image_size[0])
+            source_height = self._coerce_optional_float(image_size[1])
+
         fx = self._coerce_optional_float(primary_info.get("fx"))
         if fx is None:
             fx = self._coerce_optional_float(fallback_info.get("fx"))
@@ -277,8 +288,26 @@ class CommandController:
         if cy is None:
             cy = self._coerce_optional_float(fallback_info.get("ppy"))
 
-        image_size = primary_info.get("imageSize")
-        if image_size in (None, "", "None"):
+        # NOTE: codex cameras
+        scale_x = 1.0
+        scale_y = 1.0
+        if target_width not in (None, 0) and source_width not in (None, 0):
+            scale_x = target_width / source_width
+        if target_height not in (None, 0) and source_height not in (None, 0):
+            scale_y = target_height / source_height
+
+        if scale_x != 1.0 and fx is not None:
+            fx *= scale_x
+        if scale_y != 1.0 and fy is not None:
+            fy *= scale_y
+        if scale_x != 1.0 and cx is not None:
+            cx *= scale_x
+        if scale_y != 1.0 and cy is not None:
+            cy *= scale_y
+
+        if target_width is not None and target_height is not None:
+            image_size = [int(round(target_width)), int(round(target_height))]
+        elif image_size in (None, "", "None"):
             width = self._json_safe_value(fallback_info.get("width"))
             height = self._json_safe_value(fallback_info.get("height"))
             if width is not None and height is not None:
@@ -309,6 +338,17 @@ class CommandController:
             )
 
         return normalized_info
+
+    def _iter_arm_base_prim_paths(self):
+        # NOTE: codex arm_base
+        arm_base_paths = []
+        if isinstance(self.arm_base_prim_path, str) and self.arm_base_prim_path:
+            arm_base_paths.append(self.arm_base_prim_path)
+        if isinstance(self.arm_base_prim_paths, dict):
+            for arm_base_path in self.arm_base_prim_paths.values():
+                if isinstance(arm_base_path, str) and arm_base_path and arm_base_path not in arm_base_paths:
+                    arm_base_paths.append(arm_base_path)
+        return arm_base_paths
 
     def _unpack_extract_process_entry(self, entry):
         if len(entry) == 3:
@@ -569,6 +609,8 @@ class CommandController:
             self.end_effector_prim_path = robot.end_effector_prim_path
             self.end_effector_center_prim_path = robot.end_effector_center_prim_path
             self.arm_base_prim_path = robot.arm_base_prim_path
+            # NOTE: codex arm_base
+            self.arm_base_prim_paths = getattr(robot, "arm_base_prim_paths", {})
             self.end_effector_name = robot.end_effector_name
             self.finger_names = robot.finger_names
             self.gripper_names = [robot.left_gripper_name, robot.right_gripper_name]
@@ -832,20 +874,65 @@ class CommandController:
         articulation = self._initialize_articulation()
         target_joint_indices = [articulation.get_dof_index(name) for name in target_joint_names]
         is_trajectory = self.data["is_trajectory"]
+
+        if is_trajectory:
+            arm = self._infer_arm_from_joint_names(target_joint_names)
+            curobo_motion = None
+            if arm is not None and self.enable_curobo:
+                curobo_motion = self.ui_builder.get_curobo_motion(arm == "right")
+
+            target_changed = self.target_joint_names != target_joint_names
+            if not target_changed:
+                if len(self.target_joints_pose) != len(target_joints_pose):
+                    target_changed = True
+                elif len(target_joints_pose) > 0:
+                    target_changed = (
+                        np.linalg.norm(np.array(self.target_joints_pose) - np.array(target_joints_pose)) != 0
+                    )
+
+            if target_changed or (curobo_motion is not None and curobo_motion.success is False):
+                self.target_joints_pose = target_joints_pose
+                self.target_joint_names = target_joint_names
+                if curobo_motion is not None:
+                    #NOTE: codex route joint trajectory requests through curobo joint-goal
+                    # planning so reset can return to an exact stored posture with collision checks.
+                    if not self._joint_moveto_curobo(target_joints_pose, target_joint_names, arm):
+                        self.data_to_send = "fail"
+                        self.target_joints_pose = []
+                        self.target_joint_names = []
+                        return
+                else:
+                    self._joint_moveto(target_joints_pose, target_joint_indices, is_trajectory=is_trajectory)
+
+            if curobo_motion is not None:
+                if curobo_motion.reached:
+                    self.data_to_send = "move_joints" if curobo_motion.success else "fail"
+                    self.target_joints_pose = []
+                    self.target_joint_names = []
+            else:
+                if self.ui_builder.reached:
+                    self.data_to_send = "move_joints"
+                    self.target_joints_pose = []
+                    self.target_joint_names = []
+            return
+
         if not len(self.target_joints_pose):
             for idx, value in enumerate(list(self._get_joint_positions().values())):
                 if idx in target_joint_indices:
                     self.target_joints_pose.append(value)
         if np.linalg.norm(np.array(self.target_joints_pose) - np.array(target_joints_pose)) != 0:
             self.target_joints_pose = target_joints_pose
+            self.target_joint_names = target_joint_names
             self._joint_moveto(target_joints_pose, target_joint_indices, is_trajectory=is_trajectory)
         if not is_trajectory:
             self.data_to_send = "move joints"
             self.target_joints_pose = []
+            self.target_joint_names = []
         else:
             if self.ui_builder.reached:
                 self.data_to_send = "move_joints"
                 self.target_joints_pose = []
+                self.target_joint_names = []
 
     def handle_get_object_pose(self):
         """Handle Command 5: GetObjectPose"""
@@ -1076,8 +1163,10 @@ class CommandController:
                         if prim not in tf_target:
                             tf_target.append(prim)
                     tf_target.append(self.robot_prim_path)
-                    if self.arm_base_prim_path not in tf_target:
-                        tf_target.append(self.arm_base_prim_path)
+                    # NOTE: codex arm_base
+                    for arm_base_prim_path in self._iter_arm_base_prim_paths():
+                        if arm_base_prim_path not in tf_target:
+                            tf_target.append(arm_base_prim_path)
                     delta_time = 1 / (2 * self.rendering_step)
                     logger.info(f"tf_target{tf_target}")
                     self.sensor_base.publish_tf(
@@ -1310,6 +1399,8 @@ class CommandController:
                     "end_effector_prim_path": self.end_effector_prim_path,
                     "end_effector_center_prim_path": self.end_effector_center_prim_path,
                     "arm_base_prim_path": self.arm_base_prim_path,
+                    # NOTE: codex arm_base
+                    "arm_base_prim_paths": self.arm_base_prim_paths,
                     "task_name": self.task_name,
                     "fail_stage_step": self.data["failStep"],
                     "object_asset_dict": self.object_asset_dict,
@@ -1673,6 +1764,50 @@ class CommandController:
             disable_collision_links=disable_collision_links,
             from_current_pose=from_current_pose,
         )
+
+    def _infer_arm_from_joint_names(self, target_joint_names):
+        if not target_joint_names:
+            return None
+
+        active_arm_joints = getattr(self.ui_builder, "active_arm_joints", None)
+        if isinstance(active_arm_joints, dict):
+            target_joint_set = set(target_joint_names)
+            for arm_name, arm_joint_names in active_arm_joints.items():
+                if target_joint_set.issubset(set(arm_joint_names)):
+                    return arm_name
+
+        arm_type = getattr(self.ui_builder, "arm_type", None)
+        if arm_type in ["left", "right"]:
+            return arm_type
+
+        lower_joint_names = [joint_name.lower() for joint_name in target_joint_names]
+        if all(("arm_l" in joint_name) or ("left" in joint_name) for joint_name in lower_joint_names):
+            return "left"
+        if all(("arm_r" in joint_name) or ("right" in joint_name) for joint_name in lower_joint_names):
+            return "right"
+        return None
+
+    def _joint_moveto_curobo(self, target_joint_position, target_joint_names, arm):
+        if arm not in ["left", "right"]:
+            logger.error(f"Cannot infer arm for joint-space planning: {target_joint_names}")
+            return False
+
+        self._initialize_articulation()
+        self.ui_builder.set_locked_joint_positions(arm == "right")
+        curobo_motion = self.ui_builder.get_curobo_motion(arm == "right")
+        if curobo_motion is None:
+            logger.error(f"Curobo motion for arm {arm} is not initialized")
+            return False
+
+        joint_goal = {target_joint_names[idx]: target_joint_position[idx] for idx in range(len(target_joint_names))}
+        plan_success = curobo_motion.plan_joint_goal(joint_goal)
+        if not plan_success:
+            return False
+
+        active_arm_joints = getattr(self.ui_builder, "active_arm_joints", None)
+        if isinstance(active_arm_joints, dict):
+            curobo_motion.exclude_js(active_arm_joints.get(arm, target_joint_names))
+        return True
 
     def _reset_stiffness(self):
         self._init_grippers()

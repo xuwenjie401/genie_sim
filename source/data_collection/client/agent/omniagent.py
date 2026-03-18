@@ -30,6 +30,10 @@ from common.base_utils.transform_utils import (
 MAX_ATTEMPTIONS = 4
 
 
+def contains_cjk(text):
+    return bool(re.search(r"[\u4e00-\u9fff]", text or ""))
+
+
 def load_task_solution(task_info):
     stages = task_info["stages"]
 
@@ -376,11 +380,24 @@ class DataCollectionAgent(BaseAgent):
         self.robot.client.detach_obj()
         time.sleep(2.0)
 
+        # NOTE: codex capture both reset ee pose and exact arm joints so reset can return to the
+        # runtime initial posture instead of only matching an ee pose.
+        joint_state_response = self.robot.client.get_joint_positions()
+        joint_state_map = {state.name: state.position for state in joint_state_response.states}
         self.robot.reset_pose = {
             "right": self.robot.get_ee_pose(ee_type="gripper", id="right"),
             "left": self.robot.get_ee_pose(ee_type="gripper", id="left"),
         }
+        self.robot.reset_joint_state = {
+            arm: {
+                joint_name: joint_state_map[joint_name]
+                for joint_name in self.robot.joint_names.get(arm, [])
+                if joint_name in joint_state_map
+            }
+            for arm in ["right", "left"]
+        }
         logger.info(f"Reset pose{self.robot.reset_pose}")
+        logger.info(f"Reset joint state{self.robot.reset_joint_state}")
 
         task_info = json.load(open(task_file, "rb"))
 
@@ -485,24 +502,34 @@ class DataCollectionAgent(BaseAgent):
                         object_name = match.group(0).replace("{object:", "").replace("}", "")
                         for obj in task_info["objects"]:
                             if obj["object_id"] == object_name:
-                                if "chinese_semantic_name" in obj:
-                                    stage["action_description"]["action_text"] = stage["action_description"][
-                                        "action_text"
-                                    ].replace(match.group(0), obj["chinese_semantic_name"])
-                                else:
-                                    raise ValueError(f"Object {object_name} has no chinese_semantic_name")
+                                semantic_name = obj.get(
+                                    "chinese_semantic_name",
+                                    obj.get("english_semantic_name", obj.get("semantic_name", object_name)),
+                                )
+                                if "chinese_semantic_name" not in obj:
+                                    logger.warning(
+                                        f"Object {object_name} has no chinese_semantic_name, fallback to {semantic_name}"
+                                    )
+                                stage["action_description"]["action_text"] = stage["action_description"][
+                                    "action_text"
+                                ].replace(match.group(0), semantic_name)
                                 break
                     match = re.search(r"\{position:.*\}", stage["action_description"]["action_text"])
                     if match:
                         object_name = match.group(0).replace("{position:", "").replace("}", "")
                         for obj in task_info["objects"]:
                             if obj["object_id"] == object_name:
-                                if "chinese_position_semantic" in obj:
-                                    stage["action_description"]["action_text"] = stage["action_description"][
-                                        "action_text"
-                                    ].replace(match.group(0), obj["chinese_position_semantic"])
-                                else:
-                                    raise ValueError(f"Object {object_name} has no chinese_position_semantic")
+                                position_name = obj.get(
+                                    "chinese_position_semantic",
+                                    obj.get("english_position_semantic", object_name),
+                                )
+                                if "chinese_position_semantic" not in obj:
+                                    logger.warning(
+                                        f"Object {object_name} has no chinese_position_semantic, fallback to {position_name}"
+                                    )
+                                stage["action_description"]["action_text"] = stage["action_description"][
+                                    "action_text"
+                                ].replace(match.group(0), position_name)
                                 break
                 if "english_action_text" in stage["action_description"]:
                     match = re.search(
@@ -513,24 +540,28 @@ class DataCollectionAgent(BaseAgent):
                         object_name = match.group(0).replace("{object:", "").replace("}", "")
                         for obj in task_info["objects"]:
                             if obj["object_id"] == object_name:
-                                if "english_semantic_name" in obj:
-                                    stage["action_description"]["english_action_text"] = stage["action_description"][
-                                        "english_action_text"
-                                    ].replace(match.group(0), obj["english_semantic_name"])
-                                else:
-                                    raise ValueError(f"Object {object_name} has no english_semantic_name")
+                                semantic_name = obj.get("english_semantic_name", obj.get("semantic_name", object_name))
+                                if "english_semantic_name" not in obj:
+                                    logger.warning(
+                                        f"Object {object_name} has no english_semantic_name, fallback to {semantic_name}"
+                                    )
+                                stage["action_description"]["english_action_text"] = stage["action_description"][
+                                    "english_action_text"
+                                ].replace(match.group(0), semantic_name)
                                 break
                     match = re.search(r"\{position:.*\}", stage["action_description"]["english_action_text"])
                     if match:
                         object_name = match.group(0).replace("{position:", "").replace("}", "")
                         for obj in task_info["objects"]:
                             if obj["object_id"] == object_name:
-                                if "english_position_semantic" in obj:
-                                    stage["action_description"]["english_action_text"] = stage["action_description"][
-                                        "english_action_text"
-                                    ].replace(match.group(0), obj["english_position_semantic"])
-                                else:
-                                    raise ValueError(f"Object {object_name} has no english_position_semantic")
+                                position_name = obj.get("english_position_semantic", object_name)
+                                if "english_position_semantic" not in obj:
+                                    logger.warning(
+                                        f"Object {object_name} has no english_position_semantic, fallback to {position_name}"
+                                    )
+                                stage["action_description"]["english_action_text"] = stage["action_description"][
+                                    "english_action_text"
+                                ].replace(match.group(0), position_name)
                                 break
         # Modify english_task_name, task_name, init_scene_text in task_description
         if "task_description" in task_info:
@@ -541,24 +572,28 @@ class DataCollectionAgent(BaseAgent):
                     object_name = match.group(0).replace("{object:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "english_semantic_name" in obj:
-                                task_description["english_task_name"] = task_description["english_task_name"].replace(
-                                    match.group(0), obj["english_semantic_name"]
+                            semantic_name = obj.get("english_semantic_name", obj.get("semantic_name", object_name))
+                            if "english_semantic_name" not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no english_semantic_name, fallback to {semantic_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no english_semantic_name")
+                            task_description["english_task_name"] = task_description["english_task_name"].replace(
+                                match.group(0), semantic_name
+                            )
                             break
                 match = re.search(r"\{position:.*\}", task_description["english_task_name"])
                 if match:
                     object_name = match.group(0).replace("{position:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "english_position_semantic" in obj:
-                                task_description["english_task_name"] = task_description["english_task_name"].replace(
-                                    match.group(0), obj["english_position_semantic"]
+                            position_name = obj.get("english_position_semantic", object_name)
+                            if "english_position_semantic" not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no english_position_semantic, fallback to {position_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no english_position_semantic")
+                            task_description["english_task_name"] = task_description["english_task_name"].replace(
+                                match.group(0), position_name
+                            )
                             break
             if "task_name" in task_description:
                 match = re.search(r"\{object:.*\}", task_description["task_name"])
@@ -566,49 +601,75 @@ class DataCollectionAgent(BaseAgent):
                     object_name = match.group(0).replace("{object:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "chinese_semantic_name" in obj:
-                                task_description["task_name"] = task_description["task_name"].replace(
-                                    match.group(0), obj["chinese_semantic_name"]
+                            semantic_name = obj.get(
+                                "chinese_semantic_name",
+                                obj.get("english_semantic_name", obj.get("semantic_name", object_name)),
+                            )
+                            if "chinese_semantic_name" not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no chinese_semantic_name, fallback to {semantic_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no chinese_semantic_name")
+                            task_description["task_name"] = task_description["task_name"].replace(
+                                match.group(0), semantic_name
+                            )
                             break
                 match = re.search(r"\{position:.*\}", task_description["task_name"])
                 if match:
                     object_name = match.group(0).replace("{position:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "chinese_position_semantic" in obj:
-                                task_description["task_name"] = task_description["task_name"].replace(
-                                    match.group(0), obj["chinese_position_semantic"]
+                            position_name = obj.get(
+                                "chinese_position_semantic",
+                                obj.get("english_position_semantic", object_name),
+                            )
+                            if "chinese_position_semantic" not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no chinese_position_semantic, fallback to {position_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no chinese_position_semantic")
+                            task_description["task_name"] = task_description["task_name"].replace(
+                                match.group(0), position_name
+                            )
                             break
             if "init_scene_text" in task_description:
+                use_chinese_semantic = contains_cjk(task_description["init_scene_text"])
                 match = re.search(r"\{object:.*\}", task_description["init_scene_text"])
                 if match:
                     object_name = match.group(0).replace("{object:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "english_semantic_name" in obj:
-                                task_description["init_scene_text"] = task_description["init_scene_text"].replace(
-                                    match.group(0), obj["english_semantic_name"]
+                            semantic_key = (
+                                "chinese_semantic_name" if use_chinese_semantic else "english_semantic_name"
+                            )
+                            semantic_name = obj.get(
+                                semantic_key,
+                                obj.get("english_semantic_name", obj.get("semantic_name", object_name)),
+                            )
+                            if semantic_key not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no {semantic_key}, fallback to {semantic_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no english_semantic_name")
+                            task_description["init_scene_text"] = task_description["init_scene_text"].replace(
+                                match.group(0), semantic_name
+                            )
                             break
                 match = re.search(r"\{position:.*\}", task_description["init_scene_text"])
                 if match:
                     object_name = match.group(0).replace("{position:", "").replace("}", "")
                     for obj in task_info["objects"]:
                         if obj["object_id"] == object_name:
-                            if "english_position_semantic" in obj:
-                                task_description["init_scene_text"] = task_description["init_scene_text"].replace(
-                                    match.group(0), obj["english_position_semantic"]
+                            position_key = (
+                                "chinese_position_semantic"
+                                if use_chinese_semantic
+                                else "english_position_semantic"
+                            )
+                            position_name = obj.get(position_key, obj.get("english_position_semantic", object_name))
+                            if position_key not in obj:
+                                logger.warning(
+                                    f"Object {object_name} has no {position_key}, fallback to {position_name}"
                                 )
-                            else:
-                                raise ValueError(f"Object {object_name} has no english_position_semantic")
+                            task_description["init_scene_text"] = task_description["init_scene_text"].replace(
+                                match.group(0), position_name
+                            )
                             break
 
         self.action_script.initialize(task_info, objects)
@@ -697,6 +758,8 @@ class DataCollectionAgent(BaseAgent):
         from_current_pose = extra_params.get("from_current_pose", False)
         offset_and_constraint_in_goal_frame = extra_params.get("offset_and_constraint_in_goal_frame", True)
         disable_collision_links = extra_params.get("disable_collision_links", [])
+        if action_type == "reset":
+            disable_collision_links = []
         if remove_obstacles:
             self.robot.client.remove_objs_from_obstacle([objects[stage.passive_obj_id].prim_path])
 
@@ -882,24 +945,43 @@ class DataCollectionAgent(BaseAgent):
                     extra_params = stage.extra_params
                     arm = extra_params.get("arm", "right")
                     plan_type = extra_params.get("plan_type", "AvoidObs")
-                    init_pose = self.robot.reset_pose[arm]
-                    curr_pose = self.robot.get_ee_pose(ee_type="gripper", id=arm)
-                    interp_pose = init_pose.copy()
-                    interp_pose[:3, 3] = curr_pose[:3, 3] + (init_pose[:3, 3] - curr_pose[:3, 3]) * 0.25
-                    task_success = self.robot.move_pose(
-                        self.robot.reset_pose[arm],
-                        type=plan_type,
-                        arm=arm,
-                        block=True,
-                    )
-                    if not task_success and plan_type == "AvoidObs":
-                        logger.error(f"Stage {stage_id} reset move to reset pose with AvoidObs failed, try Simple")
+                    reset_mode = extra_params.get("reset_mode", "joint")
+                    task_success = False
+
+                    reset_joint_state = getattr(self.robot, "reset_joint_state", {}).get(arm, {})
+                    if reset_mode == "joint" and reset_joint_state:
+                        #NOTE: codex prefer curobo joint-goal reset so the arm returns to the exact
+                        # initial posture instead of drifting in null-space.
+                        joint_names = list(reset_joint_state.keys())
+                        joint_positions = [reset_joint_state[joint_name] for joint_name in joint_names]
+                        reset_response = self.robot.client.set_joint_positions(
+                            joint_positions,
+                            target_joint_names=joint_names,
+                            is_trajectory=True,
+                        )
+                        task_success = reset_response.errmsg != "fail"
+                        if not task_success:
+                            logger.error(
+                                f"Stage {stage_id} reset move to initial joint state failed, fallback to ee pose reset"
+                            )
+
+                    if not task_success:
                         task_success = self.robot.move_pose(
                             self.robot.reset_pose[arm],
-                            type="Simple",
+                            type=plan_type,
                             arm=arm,
                             block=True,
                         )
+                        if not task_success and plan_type == "AvoidObs":
+                            logger.error(
+                                f"Stage {stage_id} reset move to reset pose with AvoidObs failed, try Simple"
+                            )
+                            task_success = self.robot.move_pose(
+                                self.robot.reset_pose[arm],
+                                type="Simple",
+                                arm=arm,
+                                block=True,
+                            )
                     continue
                 # Initialize action sequence
                 if not stage.initialize_action_sequence_buffer(objects, self.robot):

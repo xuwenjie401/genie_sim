@@ -119,6 +119,63 @@ class UIBuilder:
         for curoboMotion in self.curoboMotion.values():
             curoboMotion.on_physics_step()
 
+    def _get_authored_opencv_camera_info(self, prim_path, width, height):
+        prim = get_prim_at_path(prim_path)
+        if not prim or not prim.IsValid():
+            return None
+
+        # NOTE: codex cameras
+        def _get_optional_float(attr_name):
+            attr = prim.GetAttribute(attr_name)
+            if not attr.IsValid():
+                return None
+            value = attr.Get()
+            if value in (None, "", "None"):
+                return None
+            try:
+                return float(value)
+            except (TypeError, ValueError):
+                return None
+
+        image_size = prim.GetAttribute("omni:lensdistortion:opencvPinhole:imageSize").Get()
+        image_width = None
+        image_height = None
+        if image_size is not None:
+            try:
+                if len(image_size) >= 2:
+                    image_width = float(image_size[0])
+                    image_height = float(image_size[1])
+            except (TypeError, ValueError):
+                image_width = None
+                image_height = None
+
+        fx = _get_optional_float("omni:lensdistortion:opencvPinhole:fx")
+        fy = _get_optional_float("omni:lensdistortion:opencvPinhole:fy")
+        cx = _get_optional_float("omni:lensdistortion:opencvPinhole:cx")
+        cy = _get_optional_float("omni:lensdistortion:opencvPinhole:cy")
+        if None in (fx, fy, cx, cy):
+            return None
+
+        scale_x = 1.0
+        scale_y = 1.0
+        if image_width not in (None, 0):
+            scale_x = float(width) / image_width
+        if image_height not in (None, 0):
+            scale_y = float(height) / image_height
+
+        return {
+            "model": "opencvPinhole",
+            "imageSize": [width, height],
+            "width": width,
+            "height": height,
+            "fx": fx * scale_x,
+            "fy": fy * scale_y,
+            "cx": cx * scale_x,
+            "cy": cy * scale_y,
+            "ppx": cx * scale_x,
+            "ppy": cy * scale_y,
+        }
+
     def _on_capture_cam(self, isRGB, isDepth, isSemantic):
         if self._currentCamera:
             resolution = [640, 480]
@@ -128,22 +185,29 @@ class UIBuilder:
             _Camera.initialize()
             self.camera_list.append(_Camera)
             self.camera_prim_list.append(self._currentCamera)
-            focal_length = _Camera.get_focal_length()
-            horizontal_aperture = _Camera.get_horizontal_aperture()
-            vertical_aperture = _Camera.get_vertical_aperture()
             width, height = _Camera.get_resolution()
-            fx = width * focal_length / horizontal_aperture
-            fy = height * focal_length / vertical_aperture
-            ppx = width * 0.5
-            ppy = height * 0.5
-            self.currentCamInfo = {
-                "width": width,
-                "height": height,
-                "fx": fx,
-                "fy": fy,
-                "ppx": ppx,
-                "ppy": ppy,
-            }
+            self.currentCamInfo = self._get_authored_opencv_camera_info(self._currentCamera, width, height)
+            if self.currentCamInfo is None:
+                focal_length = _Camera.get_focal_length()
+                horizontal_aperture = _Camera.get_horizontal_aperture()
+                vertical_aperture = _Camera.get_vertical_aperture()
+                fx = width * focal_length / horizontal_aperture
+                fy = height * focal_length / vertical_aperture
+                ppx = width * 0.5
+                ppy = height * 0.5
+                # NOTE: codex cameras
+                self.currentCamInfo = {
+                    "model": "pinhole",
+                    "imageSize": [width, height],
+                    "width": width,
+                    "height": height,
+                    "fx": fx,
+                    "fy": fy,
+                    "cx": ppx,
+                    "cy": ppy,
+                    "ppx": ppx,
+                    "ppy": ppy,
+                }
             self.currentImg = {}
             self.currentImg["camera_info"] = self.currentCamInfo
             self.currentImg["rgb"] = []

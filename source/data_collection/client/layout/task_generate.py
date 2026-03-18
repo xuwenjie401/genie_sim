@@ -2,11 +2,14 @@
 # Author: Genie Sim Team
 # License: Mozilla Public License Version 2.0
 
+import ast
 import copy
 import json
 import os
 import random
+import re
 import sys
+from functools import lru_cache
 
 import numpy as np
 
@@ -25,6 +28,66 @@ def list_to_dict(data: list):
     for i in range(len(data)):
         tmp[str(i)] = data[i]
     return tmp
+
+
+def _normalize_english_label(label):
+    if isinstance(label, list):
+        label = next((item for item in label if isinstance(item, str) and item.strip()), None)
+    if not isinstance(label, str):
+        return None
+    normalized_label = re.sub(r"\s+", " ", label.replace("_", " ").strip())
+    return normalized_label or None
+
+
+def _fallback_english_label_from_path(obj_dir):
+    normalized_dir = os.path.normpath(obj_dir)
+    candidate_names = [
+        os.path.basename(os.path.dirname(normalized_dir)),
+        os.path.basename(normalized_dir),
+    ]
+    for candidate_name in candidate_names:
+        if candidate_name in {"", "objects", "benchmark"}:
+            continue
+        candidate_name = re.sub(r"^(benchmark_|omni6DPose_)", "", candidate_name)
+        candidate_name = re.sub(r"_\d+$", "", candidate_name)
+        normalized_label = _normalize_english_label(candidate_name)
+        if normalized_label:
+            return normalized_label
+    return None
+
+
+@lru_cache(maxsize=1024)
+def _load_asset_english_semantic_name(obj_dir):
+    description_file = os.path.join(obj_dir, "description.py")
+    if os.path.exists(description_file):
+        try:
+            with open(description_file, "r") as file:
+                description_info = ast.literal_eval(file.read())
+            normalized_label = _normalize_english_label(description_info.get("english_name"))
+            if normalized_label:
+                return normalized_label
+            normalized_label = _normalize_english_label(description_info.get("semantic_name"))
+            if normalized_label:
+                return normalized_label
+        except Exception as exc:
+            logger.warning(f"Failed to parse semantic name from {description_file}: {exc}")
+
+    object_parameters_file = os.path.join(obj_dir, "object_parameters.json")
+    if os.path.exists(object_parameters_file):
+        try:
+            with open(object_parameters_file, "r") as file:
+                object_parameters = json.load(file)
+            llm_descriptions = object_parameters.get("llm_descriptions", {})
+            normalized_label = _normalize_english_label(llm_descriptions.get("semantic_name"))
+            if normalized_label:
+                return normalized_label
+            normalized_label = _normalize_english_label(object_parameters.get("semantic_name"))
+            if normalized_label:
+                return normalized_label
+        except Exception as exc:
+            logger.warning(f"Failed to parse semantic name from {object_parameters_file}: {exc}")
+
+    return _fallback_english_label_from_path(obj_dir)
 
 
 class TaskGenerator:
@@ -181,6 +244,9 @@ class TaskGenerator:
                     info["add_particle"] = obj["add_particle"]
                 if "extent" in obj:
                     info["extent"] = obj["extent"]
+                asset_english_semantic_name = _load_asset_english_semantic_name(obj_dir)
+                if asset_english_semantic_name:
+                    info.setdefault("english_semantic_name", asset_english_semantic_name)
                 if "english_semantic_name" in obj and "chinese_semantic_name" in obj:
                     if not isinstance(obj["english_semantic_name"], list):
                         obj["english_semantic_name"] = [obj["english_semantic_name"]]

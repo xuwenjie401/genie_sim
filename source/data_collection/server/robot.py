@@ -62,6 +62,9 @@ class RobotCfg(Robot):
             self.arm_base_prim_path = robot_cfg["robot"]["arm_base_prim_path"]
         else:
             self.arm_base_prim_path = self.robot_prim_path
+        # NOTE: codex arm_base
+        arm_base_prim_paths = robot_cfg["robot"].get("arm_base_prim_paths", {})
+        self.arm_base_prim_paths = arm_base_prim_paths if isinstance(arm_base_prim_paths, dict) else {}
         self.finger_names = robot_cfg["gripper"]["finger_names"]
         self.gripper_controll_joint = robot_cfg["gripper"]["gripper_controll_joint"]
         self.opened_positions = robot_cfg["gripper"]["opened_positions"]

@@ -188,7 +188,7 @@ class JointService(joint_channel_pb2_grpc.JointControlService):
             target_joint_position.append(v)
             # target_joint_indices.append(idc)
             target_joint_names.append(name)
-        self.server_function.blocking_start_server(
+        result = self.server_function.blocking_start_server(
             data={
                 "target_joints_position": target_joint_position,
                 "is_trajectory": is_trajectory,
@@ -197,7 +197,7 @@ class JointService(joint_channel_pb2_grpc.JointControlService):
             },
             Command=Command.SET_JOINT_POSITION,
         )
-        rsp.errmsg = "Move Joint"
+        rsp.errmsg = str(result)
         return rsp
 
     def get_ee_pose(self, req, rsp):

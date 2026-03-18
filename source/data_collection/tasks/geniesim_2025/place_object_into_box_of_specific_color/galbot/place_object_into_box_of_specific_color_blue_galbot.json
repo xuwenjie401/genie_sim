@@ -297,8 +297,8 @@
         {
             "action": "pick",
             "action_description": {
-                "action_text": "{左/右}臂拿起桌面上的{物体}",
-                "english_action_text": "{Left/Right} arm picks up the {object} on the table"
+                "action_text": "{左/右}臂拿起桌面上的{object:geniesim_2025_target_grasp_object}",
+                "english_action_text": "{Left/Right} arm picks up the {object:geniesim_2025_target_grasp_object} on the table"
             },
             "active": {
                 "object_id": "gripper",
@@ -319,7 +319,7 @@
                 "arm": "auto",
                 "disable_upside_down": true,
                 "flip_grasp": false,
-                "grasp_offset": -0.02,
+                "grasp_offset": 0.0,
                 "pick_up_distance": 0.16,
                 "pick_up_type": "Simple"
             },
@@ -331,8 +331,8 @@
         {
             "action": "place",
             "action_description": {
-                "action_text": "将{物体}放入蓝色收纳盒中",
-                "english_action_text": "Place the {object} into the blue storage box"
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入蓝色收纳盒中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the blue storage box"
             },
             "active": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -391,9 +391,9 @@
     ],
     "task": "place_object_into_box_of_specific_color_blue_galbot",
     "task_description": {
-        "english_task_name": "place the {object} into the blue storage box",
-        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{物体}和一个蓝色的收纳盒",
-        "task_name": "将{物体}放入蓝色的收纳盒中"
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the blue storage box",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个蓝色的收纳盒",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入蓝色的收纳盒中"
     },
     "task_metric": {
         "filter_rules": [

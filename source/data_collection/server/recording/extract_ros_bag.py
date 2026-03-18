@@ -361,7 +361,39 @@ class RosExtrater:
         )[-1]
         self.left_gripper_prim_name = task_info["end_effector_prim_path"]["left"].split("/")[-1]
         self.right_gripper_prim_name = task_info["end_effector_prim_path"]["right"].split("/")[-1]
-        self.arm_base_prim_path = task_info["arm_base_prim_path"]
+        # NOTE: codex arm_base
+        self.arm_base_prim_paths = self._normalize_arm_base_prim_paths(task_info)
+        self.arm_base_prim_path = self.arm_base_prim_paths["shared"]
+
+    def _normalize_arm_base_prim_paths(self, task_info):
+        # NOTE: codex arm_base
+        arm_base_prim_paths = task_info.get("arm_base_prim_paths", {})
+        if not isinstance(arm_base_prim_paths, dict):
+            arm_base_prim_paths = {}
+        shared_path = task_info.get("arm_base_prim_path", "")
+        if not shared_path:
+            shared_path = (
+                arm_base_prim_paths.get("shared")
+                or arm_base_prim_paths.get("left")
+                or arm_base_prim_paths.get("right")
+                or ""
+            )
+        return {
+            "shared": shared_path,
+            "left": arm_base_prim_paths.get("left", shared_path),
+            "right": arm_base_prim_paths.get("right", shared_path),
+        }
+
+    def _matches_prim_path(self, child_frame_id, prim_path):
+        # NOTE: codex arm_base
+        if not prim_path:
+            return False
+        prim_name = prim_path.split("/")[-1]
+        return (
+            child_frame_id == prim_name
+            or child_frame_id.endswith("/" + prim_name)
+            or prim_path in child_frame_id
+        )
 
     def post_process_camera_name(self, camera_name, extra_name="", remove_name=False):
         if "G1" in self.robot_name or "G1" in self.robot_name:
@@ -972,6 +1004,11 @@ class RosExtrater:
                         "orientation": [],
                         "arm_position": [],
                         "arm_orientation": [],
+                        # NOTE: codex arm_base
+                        "left_arm_position": [],
+                        "left_arm_orientation": [],
+                        "right_arm_position": [],
+                        "right_arm_orientation": [],
                         "wrench": [],
                     },
                     "effector": {"force": [], "position": [], "index": []},
@@ -1283,8 +1320,25 @@ class RosExtrater:
                                     single_frame_state["robot"]["pose"] = pose2mat(
                                         (position, quat_wxyz_to_xyzw(rotation))
                                     ).tolist()
-                                elif self.arm_base_prim_path in transform.child_frame_id:
+                                elif self._matches_prim_path(
+                                    transform.child_frame_id,
+                                    self.arm_base_prim_paths["shared"],
+                                ):
                                     single_frame_state["robot"]["arm_base_pose"] = pose2mat(
+                                        (position, quat_wxyz_to_xyzw(rotation))
+                                    ).tolist()
+                                elif self._matches_prim_path(
+                                    transform.child_frame_id,
+                                    self.arm_base_prim_paths["left"],
+                                ):
+                                    single_frame_state["robot"]["left_arm_base_pose"] = pose2mat(
+                                        (position, quat_wxyz_to_xyzw(rotation))
+                                    ).tolist()
+                                elif self._matches_prim_path(
+                                    transform.child_frame_id,
+                                    self.arm_base_prim_paths["right"],
+                                ):
+                                    single_frame_state["robot"]["right_arm_base_pose"] = pose2mat(
                                         (position, quat_wxyz_to_xyzw(rotation))
                                     ).tolist()
                     if "robot" in single_frame_state and "pose" not in single_frame_state["robot"]:
@@ -1298,6 +1352,21 @@ class RosExtrater:
                         single_frame_state["robot"]["arm_base_pose"] = pose2mat(
                             (self.robot_init_position, quat_wxyz_to_xyzw(self.robot_init_rotation))
                         ).tolist()
+                    # NOTE: codex arm_base
+                    if (
+                        "robot" in single_frame_state
+                        and "left_arm_base_pose" not in single_frame_state["robot"]
+                    ):
+                        single_frame_state["robot"]["left_arm_base_pose"] = single_frame_state["robot"][
+                            "arm_base_pose"
+                        ]
+                    if (
+                        "robot" in single_frame_state
+                        and "right_arm_base_pose" not in single_frame_state["robot"]
+                    ):
+                        single_frame_state["robot"]["right_arm_base_pose"] = single_frame_state["robot"][
+                            "arm_base_pose"
+                        ]
                     for camera_key in point_cloud_cameras:
                         future = executor.submit(
                             generate_pointcloud,
@@ -1376,6 +1445,22 @@ class RosExtrater:
                     r_ee_arm_base_quaternion = mat2quat(r_ee_arm_base_pose[:3, :3])
                     episode_state["end"]["arm_orientation"].append(
                         [l_ee_arm_base_quaternion, r_ee_arm_base_quaternion]
+                    )
+                    # NOTE: codex arm_base
+                    left_arm_base_pose = np.array(single_frame_state["robot"]["left_arm_base_pose"])
+                    world_to_left_arm_base = np.linalg.inv(left_arm_base_pose)
+                    l_ee_left_arm_base_pose = world_to_left_arm_base @ l_ee_world_pose
+                    episode_state["end"]["left_arm_position"].append(l_ee_left_arm_base_pose[:3, 3])
+                    episode_state["end"]["left_arm_orientation"].append(
+                        mat2quat(l_ee_left_arm_base_pose[:3, :3])
+                    )
+
+                    right_arm_base_pose = np.array(single_frame_state["robot"]["right_arm_base_pose"])
+                    world_to_right_arm_base = np.linalg.inv(right_arm_base_pose)
+                    r_ee_right_arm_base_pose = world_to_right_arm_base @ r_ee_world_pose
+                    episode_state["end"]["right_arm_position"].append(r_ee_right_arm_base_pose[:3, 3])
+                    episode_state["end"]["right_arm_orientation"].append(
+                        mat2quat(r_ee_right_arm_base_pose[:3, :3])
                     )
 
                     episode_state["effector"]["index"].append(idx)
