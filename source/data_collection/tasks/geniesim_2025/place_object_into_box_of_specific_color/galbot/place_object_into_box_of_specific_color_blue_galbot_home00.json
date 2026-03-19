@@ -1,0 +1,459 @@
+{
+    "objects": {
+        "constraints": null,
+        "fix_objects": [],
+        "scene_objects": [
+            {
+                "sample": {
+                    "min_num": 2,
+                    "max_num": 4,
+                    "max_repeat": 1
+                },
+                "workspace_id": "work_table",
+                "available_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+                        "object_id": "geniesim_2025_beverage_bottle_001",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_002/",
+                        "object_id": "geniesim_2025_beverage_bottle_002",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_003/",
+                        "object_id": "geniesim_2025_beverage_bottle_003",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
+                        "object_id": "geniesim_2025_beverage_bottle_008",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/toy_car/benchmark_toy_car_018/",
+                        "object_id": "geniesim_2025_toy_car_018",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_072/",
+                        "object_id": "geniesim_2025_building_blocks_072",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/bowl/benchmark_bowl_025/",
+                        "object_id": "geniesim_2025_bowl_025",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/cup/benchmark_cup_043/",
+                        "object_id": "geniesim_2025_cup_043",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/cup/benchmark_cup_105/",
+                        "object_id": "geniesim_2025_cup_105",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/toiletries/benchmark_toiletries_009/",
+                        "object_id": "geniesim_2025_toiletries_009",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/pen/benchmark_pen_006/",
+                        "object_id": "geniesim_2025_pen_006",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/mouse/benchmark_mouse_000/",
+                        "object_id": "geniesim_2025_mouse_000",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/bottle/benchmark_bottle_017/",
+                        "object_id": "geniesim_2025_snack_000",
+                        "mass": 0.05
+                    }
+                ]
+            }
+        ],
+        "task_related_objects": [
+            {
+                "candidate_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_006/",
+                        "object_id": "geniesim_2025_storage_box_006_green"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_008/",
+                        "object_id": "geniesim_2025_storage_box_008_white"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_009/",
+                        "object_id": "geniesim_2025_storage_box_009_red"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_010/",
+                        "object_id": "geniesim_2025_storage_box_010_grey"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_011/",
+                        "object_id": "geniesim_2025_storage_box_011_black"
+                    }
+                ],
+                "mass": 1000,
+                "object_id": "geniesim_2025_storage_box_2",
+                "workspace_id": "box_poses",
+                "workspace_relative_position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "workspace_relative_orientation": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            {
+                "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_007/",
+                "mass": 1000,
+                "object_id": "geniesim_2025_target_storage_box",
+                "workspace_id": "box_poses",
+                "workspace_relative_position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "workspace_relative_orientation": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            {
+                "candidate_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+                        "object_id": "geniesim_2025_beverage_bottle_001"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_002/",
+                        "object_id": "geniesim_2025_beverage_bottle_002"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_003/",
+                        "object_id": "geniesim_2025_beverage_bottle_003"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
+                        "object_id": "geniesim_2025_beverage_bottle_008"
+                    }
+                ],
+                "mass": 0.05,
+                "object_id": "geniesim_2025_target_grasp_object",
+                "workspace_id": "work_table"
+            }
+        ]
+    },
+    "recording_setting": {
+        "camera_list": [
+            "/galbot_one_golf/head_link2/head_front_left_color",
+            "/galbot_one_golf/left_arm_link7/left_arm_color",
+            "/galbot_one_golf/right_arm_link7/right_arm_color"
+        ],
+        "fps": 30,
+        "num_of_episode": 8,
+        "noised_probability": 0.1
+    },
+    "robot": {
+        "arm": "dual",
+        "init_arm_pose_noise": {
+            ".*_arm_.*": {
+                "noise_type": "uniform",
+                "low": -0.02,
+                "high": 0.02
+            }
+        },
+        "init_arm_pose": {
+            "left_arm_joint1": 1.932,
+            "left_arm_joint2": -1.365,
+            "left_arm_joint3": -0.6109,
+            "left_arm_joint4": -2.4784,
+            "left_arm_joint5": -0.173,
+            "left_arm_joint6": -0.039,
+            "left_arm_joint7": 0.0,
+            "left_gripper_r_knuckle_joint": 0.0,
+            "right_arm_joint1": -1.932,
+            "right_arm_joint2": 1.365,
+            "right_arm_joint3": 0.6109,
+            "right_arm_joint4": 2.4784,
+            "right_arm_joint5": 0.173,
+            "right_arm_joint6": 0.039,
+            "right_arm_joint7": 0.0,
+            "right_gripper_r_knuckle_joint": 0.0
+        },
+        "robot_cfg": "galbot_fixed_dual.json",
+        "robot_id": "galbot",
+        "robot_init_pose": {
+            "position": [
+                -0.9,
+                0.0,
+                0.0
+            ],
+            "quaternion": [
+                1,
+                0,
+                0,
+                0
+            ],
+            "random": {
+                "delta_position": [
+                    0.06,
+                    0.06,
+                    0
+                ]
+            }
+        }
+    },
+    "scene": {
+        "function_space_objects": {
+            "work_table": {
+                "material_obj_prim": {},
+                "position": [
+                    -0.1300000000000036,
+                    0.010000000000000009,
+                    0.75
+                ],
+                "quaternion": [
+                    1,
+                    0,
+                    0,
+                    0
+                ],
+                "size": [
+                    0.16,
+                    0.8,
+                    0.05
+                ]
+            },
+            "box_poses": {
+                "material_obj_prim": {},
+                "poses": [
+                    {
+                        "position": [
+                            0.065,
+                            0.08999999999999997,
+                            0.9
+                        ],
+                        "quaternion": [
+                            1,
+                            0,
+                            0,
+                            0
+                        ],
+                        "random": {
+                            "delta_position": [
+                                0.03,
+                                0.0,
+                                0
+                            ]
+                        }
+                    },
+                    {
+                        "position": [
+                            0.065,
+                            -0.09999999999999998,
+                            0.9
+                        ],
+                        "quaternion": [
+                            1,
+                            0,
+                            0,
+                            0
+                        ],
+                        "random": {
+                            "delta_position": [
+                                0.03,
+                                0.0,
+                                0
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "scene_id": "background/home_00/",
+        "scene_info_dir": "background/home_00/",
+        "scene_usd": [
+            "background/home_00/background.usda"
+        ]
+    },
+    "stages": [
+        {
+            "action": "pick",
+            "action_description": {
+                "action_text": "{左/右}臂拿起桌面上的{object:geniesim_2025_target_grasp_object}",
+                "english_action_text": "{Left/Right} arm picks up the {object:geniesim_2025_target_grasp_object} on the table"
+            },
+            "active": {
+                "object_id": "gripper",
+                "primitive": null
+            },
+            "checker": [
+                {
+                    "checker_name": "distance_to_target",
+                    "params": {
+                        "object_id": "geniesim_2025_target_grasp_object",
+                        "rule": "lessThan",
+                        "target_id": "gripper",
+                        "value": 0.1
+                    }
+                }
+            ],
+            "extra_params": {
+                "arm": "auto",
+                "disable_upside_down": true,
+                "flip_grasp": false,
+                "grasp_offset": 0.0,
+                "pick_up_distance": 0.16,
+                "pick_up_type": "Simple"
+            },
+            "passive": {
+                "object_id": "geniesim_2025_target_grasp_object",
+                "primitive": null
+            }
+        },
+        {
+            "action": "place",
+            "action_description": {
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入蓝色收纳盒中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the blue storage box"
+            },
+            "active": {
+                "object_id": "geniesim_2025_target_grasp_object",
+                "primitive": null
+            },
+            "checker": [
+                {
+                    "checker_name": "distance_to_target",
+                    "params": {
+                        "object_id": "geniesim_2025_target_grasp_object",
+                        "rule": "lessThan",
+                        "target_id": "geniesim_2025_target_storage_box",
+                        "target_offset": {
+                            "frame": "world",
+                            "position": [
+                                0,
+                                0,
+                                -0.06
+                            ]
+                        },
+                        "value": 0.12
+                    }
+                }
+            ],
+            "extra_params": {
+                "arm": "auto",
+                "place_with_origin_orientation": true,
+                "disable_collision_links": [
+                    "left_gripper.*",
+                    "right_gripper.*"
+                ]
+            },
+            "passive": {
+                "object_id": "geniesim_2025_target_storage_box",
+                "primitive": null
+            }
+        },
+        {
+            "action": "reset",
+            "action_description": {
+                "action_text": "{左/右}臂复位",
+                "english_action_text": "{Left/Right} arm resets"
+            },
+            "active": {
+                "object_id": "gripper",
+                "primitive": null
+            },
+            "extra_params": {
+                "arm": "auto"
+            },
+            "passive": {
+                "object_id": "gripper",
+                "primitive": null
+            }
+        }
+    ],
+    "task": "place_object_into_box_of_specific_color_blue_galbot",
+    "task_description": {
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the blue storage box",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个蓝色的收纳盒",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入蓝色的收纳盒中"
+    },
+    "task_metric": {
+        "filter_rules": [
+            {
+                "params": {
+                    "camera": "head",
+                    "downsample_ratio": 0.2,
+                    "gripper": "right",
+                    "out_view_allow_time": 0.2
+                },
+                "result_code": 4,
+                "rule_name": "is_gripper_in_view"
+            },
+            {
+                "params": {
+                    "camera": "head",
+                    "downsample_ratio": 0.2,
+                    "gripper": "left",
+                    "out_view_allow_time": 0.1
+                },
+                "result_code": 4,
+                "rule_name": "is_gripper_in_view"
+            },
+            {
+                "params": {
+                    "objects": [
+                        "geniesim_2025_target_grasp_object"
+                    ],
+                    "relative_position_range": [
+                        [
+                            -0.06,
+                            0.06
+                        ],
+                        [
+                            -0.05,
+                            0.05
+                        ],
+                        [
+                            -0.12,
+                            0.12
+                        ]
+                    ],
+                    "target": "geniesim_2025_target_storage_box"
+                },
+                "result_code": 1,
+                "rule_name": "is_object_relative_position_in_target"
+            }
+        ]
+    },
+    "origin": {
+        "position": [
+            2.91,
+            0.76,
+            0.0
+        ],
+        "quaternion": [
+            1,
+            0,
+            0,
+            0
+        ]
+    }
+}

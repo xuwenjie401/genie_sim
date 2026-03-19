@@ -298,8 +298,6 @@ class RobotUsdHelper(UsdHelper):
 class CuroboMotion:
     world_coll_checker = None
     cached_obstacle_info = {}
-    curobo_kinematics = None
-    curobo_kinematics_robot_cfg = {}
 
     def reset(self):
         self.motion_gen.clear_world_cache()
@@ -315,19 +313,18 @@ class CuroboMotion:
             )
 
     def _get_curobo_kinematics(self):
-        if CuroboMotion.curobo_kinematics is None and hasattr(self, "robot_cfg") and self.robot_cfg is not None:
-            CuroboMotion.curobo_kinematics_robot_cfg = robot_cfg = copy.deepcopy(self.robot_cfg)
-            if robot_cfg["kinematics"].get("link_names", None) is None:
-                robot_cfg["kinematics"]["link_names"] = []
-            for link_name in robot_cfg["kinematics"]["collision_link_names"]:
-                # TODO
+        if getattr(self, "curobo_kinematics", None) is None and hasattr(self, "robot_cfg") and self.robot_cfg is not None:
+            self.curobo_kinematics_robot_cfg = copy.deepcopy(self.robot_cfg)
+            if self.curobo_kinematics_robot_cfg["kinematics"].get("link_names", None) is None:
+                self.curobo_kinematics_robot_cfg["kinematics"]["link_names"] = []
+            for link_name in self.curobo_kinematics_robot_cfg["kinematics"]["collision_link_names"]:
                 if "arm" in link_name:
-                    robot_cfg["kinematics"]["link_names"] = []
+                    self.curobo_kinematics_robot_cfg["kinematics"]["link_names"].append(link_name)
             cuda_robot_model_config = CudaRobotModelConfig.from_data_dict(
-                data_dict=robot_cfg, tensor_args=self.tensor_args
+                data_dict=self.curobo_kinematics_robot_cfg, tensor_args=self.tensor_args
             )
-            CuroboMotion.curobo_kinematics = CudaRobotModel(cuda_robot_model_config)
-        return CuroboMotion.curobo_kinematics
+            self.curobo_kinematics = CudaRobotModel(cuda_robot_model_config)
+        return getattr(self, "curobo_kinematics", None)
 
     def _extract_cached_obstacles(self, need_reset_cache=True):
         print(f"Extracting and caching obstacle geometries...")
@@ -862,12 +859,13 @@ class CuroboMotion:
 
     def update_curobo_kinematics_lock_joints(self, locked_joints):
         before = time.time()
-        if CuroboMotion.curobo_kinematics is not None and locked_joints is not None:
-            if CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] != locked_joints:
+        kinematics = self._get_curobo_kinematics()
+        if kinematics is not None and locked_joints is not None:
+            if self.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] != locked_joints:
                 print("update kinematics lock joints")
-                CuroboMotion.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] = locked_joints
-                robot_cfg = RobotConfig.from_dict(CuroboMotion.curobo_kinematics_robot_cfg, self.tensor_args)
-                CuroboMotion.curobo_kinematics.update_kinematics_config(robot_cfg.kinematics.kinematics_config)
+                self.curobo_kinematics_robot_cfg["kinematics"]["lock_joints"] = locked_joints
+                robot_cfg = RobotConfig.from_dict(self.curobo_kinematics_robot_cfg, self.tensor_args)
+                kinematics.update_kinematics_config(robot_cfg.kinematics.kinematics_config)
         after = time.time()
         carb.log_warn("update curobo kinematics lock joints time is {}".format(after - before))
 
@@ -1635,18 +1633,10 @@ class UIBuilder:
         articulation.dof_names
         curoboMotion = self.get_curobo_motion(is_right)
         ids = {}
-        # NOTE: Option A (Z-compensation). CuRobo's locked leg joints are kept at DEFAULT
-        # values always. The IK goal Z is compensated in manual_set_command instead.
-        # This avoids relying on motion_gen.update_locked_joints() which may not work
-        # after the CUDA graph is compiled (curobo limitation).
-        leg_defaults = getattr(self, 'leg_joint_defaults', None)
         for idx in range(len(articulation.dof_names)):
             name = articulation.dof_names[idx]
             if name in curoboMotion.lock_js_names:
-                if leg_defaults and name in leg_defaults:
-                    ids[name] = float(leg_defaults[name])  # always default for leg joints
-                else:
-                    ids[name] = float(joint_positions[idx])
+                ids[name] = float(joint_positions[idx])
         curoboMotion.update_lock_joints(ids)
         try:
             curoboMotion.update_curobo_kinematics_lock_joints(ids)
@@ -1825,7 +1815,6 @@ class CommandController:
             "right_arm_joint4", "right_arm_joint5", "right_arm_joint6", "right_arm_joint7",
         ]
         self._right_arm_diag_indices = None  # cached DOF indices (computed once on first use)
-        self._zcomp_logged = False  # throttle Z-comp print to once per follow_cube session
 
 
     def _init_robot_cfg(
@@ -2139,28 +2128,6 @@ class CommandController:
         from_current_pose = self.data.get("from_current_pose", False)
         is_Right = False
 
-        # NOTE: Option A (Z-compensation) — applied HERE using the ACTUAL post-trajectory
-        # torso height (not predicted), which is more accurate than computing it in
-        # manual_set_command before the trajectory runs.
-        #
-        # CuRobo always uses DEFAULT locked leg joints (see set_locked_joint_positions).
-        # Its FK gives EE positions as if torso were at default height. If the torso is
-        # physically lower by dz, curobo needs to aim for goal_z + dz so that the arm
-        # (after executing in the physical world with lower torso) lands at goal_z.
-        if self.default_torso_z is not None:
-            actual_torso_z = self._get_torso_world_z()
-            if actual_torso_z is not None:
-                dz = max(0.0, self.default_torso_z - actual_torso_z)
-                if dz > 0.001:
-                    target_position = target_position.copy()
-                    target_position[2] += dz
-                    if not self._zcomp_logged:
-                        print(f"[Vertical] handle_linear_move Z-comp: torso={actual_torso_z:.4f} "
-                              f"(default={self.default_torso_z:.4f}), dz={dz:.4f}, "
-                              f"curobo_goal_z={target_position[2]:.4f}")
-                        self._zcomp_logged = True
-
-
         # spawn_target_as_usd(target_position, target_rotation, axes_container_name="LinerMoveTarget")
 
         if self.data["isArmRight"]:
@@ -2333,11 +2300,6 @@ class CommandController:
         except Exception as e:
             print(f"[Vertical] Failed to read leg joints: {e}, using fallback config values")
             self.default_leg_joints = dict(GALBOT_LEG_DEFAULT)
-
-        # NOTE: Option A. Push defaults into UIBuilder so set_locked_joint_positions always
-        # passes these values to curobo (never the physically-lowered leg values).
-        self.ui_builder.leg_joint_defaults = dict(self.default_leg_joints)
-        print(f"[Vertical] UIBuilder leg_joint_defaults set: {self.ui_builder.leg_joint_defaults}")
 
         # Also capture the default torso height as a stable reference for sphere-radius check.
         # Fix: always use THIS value (not current torso_z) to avoid oscillation between cycles.
@@ -2574,7 +2536,6 @@ class CommandController:
             return isSuccess
 
         elif manual_command == "follow_cube":
-            self._zcomp_logged = False  # reset per follow_cube session
             cube_position, cube_orientation = self.cube_target.get_world_pose()
             robot_position, robot_orientation = self.ui_builder.articulation.get_world_pose()
 

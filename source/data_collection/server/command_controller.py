@@ -478,12 +478,23 @@ class CommandController:
                 add_reference_to_stage(self.scene_usd_path, "/World_{}".format(idx))
                 XFormPrim(prim_path="/World_{}".format(idx), position=[0, 2 * idx + 1, 0])
             camera_state = ViewportCameraState("/OmniverseKit_Persp")
+            ## home_b
+            # view_position = [1.9634841037804776, 0.9488467163528935, 2.1182000480154555]
+            # view_position = [2.65, 2.4, 1.74]
+            # view_target_offset = [0.5, 0.0, 0.8]
+            ## kitchen
+            # view_position = [1.0, 1.3, 1.6]
+            # view_target_offset = [0.7, -0.0, 0.8]
+            ## study room
+            view_position = [-0.3, 0.85, 1.8]
+            view_target_offset = [0.4, -0.35, 0.8]
+
+
             camera_state.set_position_world(
-                # Gf.Vec3d(1.9634841037804776, 0.9488467163528935, 2.1182000480154555),
-                Gf.Vec3d(2.65, 2.4, 1.74),
+                Gf.Vec3d(view_position[0], view_position[1], view_position[2]),
                 True,
             )
-            camera_state.set_target_world(Gf.Vec3d(init_position[0]+0.5, init_position[1], init_position[2]+0.8), True)
+            camera_state.set_target_world(Gf.Vec3d(init_position[0]+view_target_offset[0], init_position[1]+view_target_offset[1], init_position[2]+view_target_offset[2]), True)
             stage = omni.usd.get_context().get_stage()
             self.scene = UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
             self.scene.CreateGravityDirectionAttr().Set(Gf.Vec3f(0.0, 0.0, -1.0))
