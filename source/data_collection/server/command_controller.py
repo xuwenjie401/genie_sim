@@ -480,21 +480,24 @@ class CommandController:
             camera_state = ViewportCameraState("/OmniverseKit_Persp")
             ## home_b
             # view_position = [1.9634841037804776, 0.9488467163528935, 2.1182000480154555]
-            # view_position = [2.65, 2.4, 1.74]
-            # view_target_offset = [0.5, 0.0, 0.8]
+            view_position = [2.65, 2.4, 1.74]
+            view_target_offset = [2.5, 0.0, 0.5]
             ## kitchen
             # view_position = [1.0, 1.3, 1.6]
             # view_target_offset = [0.7, -0.0, 0.8]
             ## study room
-            view_position = [-0.3, 0.85, 1.8]
-            view_target_offset = [0.4, -0.35, 0.8]
+            # view_position = [-0.3, 0.85, 1.8]
+            # view_target_offset = [0.4, -0.35, 0.8]
+            ## restaurant 
+            # view_position = [-1.0, -5.0, 2.0]
+            # view_target_offset = [-4.0, 0.0, 0.0]
 
 
             camera_state.set_position_world(
                 Gf.Vec3d(view_position[0], view_position[1], view_position[2]),
                 True,
             )
-            camera_state.set_target_world(Gf.Vec3d(init_position[0]+view_target_offset[0], init_position[1]+view_target_offset[1], init_position[2]+view_target_offset[2]), True)
+            camera_state.set_target_world(Gf.Vec3d(view_target_offset[0], view_target_offset[1], view_target_offset[2]), True)
             stage = omni.usd.get_context().get_stage()
             self.scene = UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
             self.scene.CreateGravityDirectionAttr().Set(Gf.Vec3f(0.0, 0.0, -1.0))
@@ -1358,9 +1361,15 @@ class CommandController:
                     prim = get_prim_at_path(path)
                     if prim.IsA(UsdGeom.Mesh):
                         items.append(path)
-        self.ui_builder.attach_objs(items, is_right)
-        attach_states = {item: is_right for item in items}
-        self.attach_states.update(attach_states)
+        attach_result = self.ui_builder.attach_objs(items, is_right)
+        if attach_result:
+            attach_states = {item: is_right for item in items}
+            self.attach_states.update(attach_states)
+        else:
+            logger.warning(
+                f"AttachObj failed, attach_states not updated. "
+                f"requested_obj_prims={obj_prims}, mesh_items={items}, is_right={is_right}"
+            )
         self.data_to_send = "attaching"
 
     def handle_detach_obj(self):

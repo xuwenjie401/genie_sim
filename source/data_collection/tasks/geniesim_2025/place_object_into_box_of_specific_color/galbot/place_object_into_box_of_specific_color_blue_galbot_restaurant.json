@@ -152,42 +152,6 @@
                     {
                         "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
                         "object_id": "geniesim_2025_beverage_bottle_008"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/toy_car/benchmark_toy_car_018/",
-                        "object_id": "geniesim_2025_toy_car_018"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_072/",
-                        "object_id": "geniesim_2025_building_blocks_072"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/bowl/benchmark_bowl_025/",
-                        "object_id": "geniesim_2025_bowl_025"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/cup/benchmark_cup_043/",
-                        "object_id": "geniesim_2025_cup_043"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/cup/benchmark_cup_105/",
-                        "object_id": "geniesim_2025_cup_105"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/toiletries/benchmark_toiletries_009/",
-                        "object_id": "geniesim_2025_toiletries_009"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/pen/benchmark_pen_006/",
-                        "object_id": "geniesim_2025_pen_006"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/mouse/benchmark_mouse_000/",
-                        "object_id": "geniesim_2025_mouse_000"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/bottle/benchmark_bottle_017/",
-                        "object_id": "geniesim_2025_snack_000"
                     }
                 ],
                 "mass": 0.05,
@@ -198,65 +162,47 @@
     },
     "recording_setting": {
         "camera_list": [
-            "/G1/head_link2/Head_Camera",
-            "/G1/gripper_r_base_link/Right_Camera",
-            "/G1/gripper_l_base_link/Left_Camera"
+            "/galbot_one_golf/head_link2/head_front_left_color",
+            "/galbot_one_golf/left_arm_link7/left_arm_color",
+            "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 5,
-        "noised_probability": 0.2
+        "num_of_episode": 8,
+        "noised_probability": 0.1
     },
     "robot": {
         "arm": "dual",
         "init_arm_pose_noise": {
             ".*_arm_.*": {
-                "high": 0.01,
-                "low": -0.01,
-                "noise_type": "uniform"
+                "noise_type": "uniform",
+                "low": -0.02,
+                "high": 0.02
             }
         },
         "init_arm_pose": {
-            "idx01_body_joint1": 0.42,
-            "idx02_body_joint2": 0.8726646991494927,
-            "idx11_head_joint1": 0,
-            "idx12_head_joint2": 0.4363296423945109,
-            "idx21_arm_l_joint1": -1.0743441581726074,
-            "idx61_arm_r_joint1": 1.0743441581726074,
-            "idx22_arm_l_joint2": 0.6110641360282898,
-            "idx62_arm_r_joint2": -0.6110466122627258,
-            "idx23_arm_l_joint3": 0.2795839011669159,
-            "idx63_arm_r_joint3": -0.2795839011669159,
-            "idx24_arm_l_joint4": -1.2839884757995603,
-            "idx64_arm_r_joint4": 1.283866286277771,
-            "idx25_arm_l_joint5": 0.7304918766021729,
-            "idx65_arm_r_joint5": -0.7303872108459473,
-            "idx26_arm_l_joint6": 1.4953428506851196,
-            "idx66_arm_r_joint6": -1.4952731132507324,
-            "idx27_arm_l_joint7": -0.18755260109901428,
-            "idx67_arm_r_joint7": 0.18760496377944944,
-            "idx31_gripper_l_inner_joint1": null,
-            "idx41_gripper_l_outer_joint1": 1,
-            "idx71_gripper_r_inner_joint1": null,
-            "idx81_gripper_r_outer_joint1": 1,
-            "idx32_gripper_l_inner_joint3": null,
-            "idx42_gripper_l_outer_joint3": null,
-            "idx72_gripper_r_inner_joint3": null,
-            "idx82_gripper_r_outer_joint3": null,
-            "idx33_gripper_l_inner_joint4": null,
-            "idx43_gripper_l_outer_joint4": null,
-            "idx73_gripper_r_inner_joint4": null,
-            "idx83_gripper_r_outer_joint4": null,
-            "idx39_gripper_l_inner_joint0": null,
-            "idx49_gripper_l_outer_joint0": null,
-            "idx79_gripper_r_inner_joint0": null,
-            "idx89_gripper_r_outer_joint0": null
+            "left_arm_joint1": 1.932,
+            "left_arm_joint2": -1.365,
+            "left_arm_joint3": -0.6109,
+            "left_arm_joint4": -2.4784,
+            "left_arm_joint5": -0.173,
+            "left_arm_joint6": -0.039,
+            "left_arm_joint7": 0.0,
+            "left_gripper_r_knuckle_joint": 0.0,
+            "right_arm_joint1": -1.932,
+            "right_arm_joint2": 1.365,
+            "right_arm_joint3": 0.6109,
+            "right_arm_joint4": 2.4784,
+            "right_arm_joint5": 0.173,
+            "right_arm_joint6": 0.039,
+            "right_arm_joint7": 0.0,
+            "right_gripper_r_knuckle_joint": 0.0
         },
-        "robot_cfg": "G1_omnipicker_fixed_dual.json",
-        "robot_id": "G1",
+        "robot_cfg": "galbot_fixed_dual.json",
+        "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.7600000000000002,
-                0.00039999999999995595,
+                -0.9,
+                0.0,
                 0.0
             ],
             "quaternion": [
@@ -279,20 +225,20 @@
             "work_table": {
                 "material_obj_prim": {},
                 "position": [
-                    -0.15000000000000036,
-                    0.010000000000000009,
-                    0.9
+                    -0.17499999701976776,
+                    0.0,
+                    0.8500000238418579
                 ],
                 "quaternion": [
-                    1,
-                    0,
-                    0,
-                    0
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "size": [
-                    0.24,
+                    0.16,
                     0.8,
-                    0.2
+                    0.05
                 ]
             },
             "box_poses": {
@@ -300,59 +246,59 @@
                 "poses": [
                     {
                         "position": [
-                            0.10999999999999988,
+                            0.065,
                             0.08999999999999997,
                             0.9
                         ],
                         "quaternion": [
-                            1,
-                            0,
-                            0,
-                            0
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
                         ],
                         "random": {
                             "delta_position": [
                                 0.03,
                                 0.0,
-                                0
+                                0.0
                             ]
                         }
                     },
                     {
                         "position": [
-                            0.10999999999999988,
+                            0.065,
                             -0.09999999999999998,
                             0.9
                         ],
                         "quaternion": [
-                            1,
-                            0,
-                            0,
-                            0
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
                         ],
                         "random": {
                             "delta_position": [
                                 0.03,
                                 0.0,
-                                0
+                                0.0
                             ]
                         }
                     }
                 ]
             }
         },
-        "scene_id": "background/home_b/",
-        "scene_info_dir": "background/home_b/",
+        "scene_id": "background/restaurant_00/",
+        "scene_info_dir": "background/restaurant_00/",
         "scene_usd": [
-            "background/home_b/home_b_00.usda"
+            "background/restaurant_00/background.usda"
         ]
     },
     "stages": [
         {
             "action": "pick",
             "action_description": {
-                "action_text": "{左/右}臂拿起桌面上的{物体}",
-                "english_action_text": "{Left/Right} arm picks up the {object} on the table"
+                "action_text": "{左/右}臂拿起桌面上的{object:geniesim_2025_target_grasp_object}",
+                "english_action_text": "{Left/Right} arm picks up the {object:geniesim_2025_target_grasp_object} on the table"
             },
             "active": {
                 "object_id": "gripper",
@@ -365,17 +311,17 @@
                         "object_id": "geniesim_2025_target_grasp_object",
                         "rule": "lessThan",
                         "target_id": "gripper",
-                        "value": 0.08
+                        "value": 0.1
                     }
                 }
             ],
             "extra_params": {
                 "arm": "auto",
                 "disable_upside_down": true,
-                "flip_grasp": true,
+                "flip_grasp": false,
                 "grasp_offset": 0.0,
-                "pick_up_distance": 0.1,
-                "pick_up_type": "AvoidObs"
+                "pick_up_distance": 0.16,
+                "pick_up_type": "Simple"
             },
             "passive": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -385,8 +331,8 @@
         {
             "action": "place",
             "action_description": {
-                "action_text": "将{物体}放入蓝色收纳盒中",
-                "english_action_text": "Place the {object} into the blue storage box"
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入蓝色收纳盒中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the blue storage box"
             },
             "active": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -413,7 +359,11 @@
             ],
             "extra_params": {
                 "arm": "auto",
-                "place_with_origin_orientation": true
+                "place_with_origin_orientation": true,
+                "disable_collision_links": [
+                    "left_gripper.*",
+                    "right_gripper.*"
+                ]
             },
             "passive": {
                 "object_id": "geniesim_2025_target_storage_box",
@@ -439,11 +389,11 @@
             }
         }
     ],
-    "task": "place_object_into_box_of_specific_color_blue_g1",
+    "task": "place_object_into_box_of_specific_color_blue_galbot",
     "task_description": {
-        "english_task_name": "place the {object} into the blue storage box",
-        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{物体}和一个蓝色的收纳盒",
-        "task_name": "将{物体}放入蓝色的收纳盒中"
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the blue storage box",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个蓝色的收纳盒",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入蓝色的收纳盒中"
     },
     "task_metric": {
         "filter_rules": [
@@ -490,86 +440,20 @@
                 },
                 "result_code": 1,
                 "rule_name": "is_object_relative_position_in_target"
-            },
-            {
-                "params": {
-                    "objects": [
-                        [
-                            "object",
-                            "geniesim_2025_beverage_bottle_001"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_beverage_bottle_002"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_beverage_bottle_003"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_beverage_bottle_008"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_toy_car_018"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_building_blocks_072"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_bowl_025"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_cup_043"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_cup_105"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_toiletries_009"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_pen_006"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_mouse_000"
-                        ],
-                        [
-                            "object",
-                            "geniesim_2025_snack_000"
-                        ]
-                    ],
-                    "pos_threshold": [
-                        0.05,
-                        0.05,
-                        0.05
-                    ],
-                    "check_exist": false
-                },
-                "result_code": 1,
-                "rule_name": "is_object_pose_similar2start"
             }
         ]
     },
     "origin": {
         "position": [
-            2.91,
-            0.76,
+            -2.0,
+            -3.0,
             0.0
         ],
         "quaternion": [
-            1,
-            0,
-            0,
-            0
+            0.7071067811865476,
+            0.0,
+            0.0,
+            0.7071067811865476
         ]
     }
 }

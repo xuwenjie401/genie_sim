@@ -778,9 +778,10 @@ class ObservationService(sim_observation_service_pb2_grpc.SimObservationService)
 class GrpcServer:
     def __init__(self, server_function):
         self.server_function = server_function
+        self._server = None
 
     def start(self):
-        server_thread = threading.Thread(target=self.server)
+        server_thread = threading.Thread(target=self.server, daemon=True)
         server_thread.start()
 
     def server(self):

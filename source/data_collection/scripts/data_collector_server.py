@@ -5,6 +5,7 @@
 import argparse
 import os
 import sys
+import termios
 
 root_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(root_directory)
@@ -94,27 +95,33 @@ server_function = CommandController(
 rpc_server = GrpcServer(server_function=server_function)
 rpc_server.start()
 
+_saved_term = termios.tcgetattr(sys.stdin.fileno())
+
 step = 0
 last_physics_time = 0
 last_render_time = 0
-while simulation_app.is_running():
-    with rpc_server.server_function._timing_context("ui_builder.my_world.step"):
-        ui_builder.my_world.step(render=False)
-        current_time = ui_builder.my_world.current_time
-        need_render = False
-        if last_render_time == 0 or current_time - last_render_time >= rendering_dt:
-            need_render = True
-            last_render_time = current_time
-        if need_render:
-            ui_builder.my_world.render()
-    if rpc_server:
-        rpc_server.server_function.on_physics_step()
-        if rpc_server.server_function.exit:
-            break
-    if not ui_builder.my_world.is_playing():
-        if step % 100 == 0:
-            logger.info("**** simulation paused ****")
-        step += 1
-        continue
-rpc_server.server_function.print_timing_stats()
-simulation_app.close()
+try:
+    while simulation_app.is_running():
+        with rpc_server.server_function._timing_context("ui_builder.my_world.step"):
+            ui_builder.my_world.step(render=False)
+            current_time = ui_builder.my_world.current_time
+            need_render = False
+            if last_render_time == 0 or current_time - last_render_time >= rendering_dt:
+                need_render = True
+                last_render_time = current_time
+            if need_render:
+                ui_builder.my_world.render()
+        if rpc_server:
+            rpc_server.server_function.on_physics_step()
+            if rpc_server.server_function.exit:
+                break
+        if not ui_builder.my_world.is_playing():
+            if step % 100 == 0:
+                logger.info("**** simulation paused ****")
+            step += 1
+            continue
+finally:
+    termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, _saved_term)
+    rpc_server.server_function.print_timing_stats()
+    rpc_server.stop()
+    simulation_app.close()

@@ -64,7 +64,7 @@ import omni.ui as ui
 import omni.usd
 import numpy as np
 from isaacsim.core.utils.viewports import set_camera_view
-from omni.isaac.core.utils.prims import create_prim
+from isaacsim.core.utils.prims import create_prim
 from pxr import Gf, Sdf, UsdGeom, UsdLux
 
 
@@ -520,28 +520,49 @@ class InteractionPoseBrowser:
             translate_op.Set(Gf.Vec3d(1.0, 1.4, 1.8))
 
     def _build_ui_window(self) -> None:
-        self._window = ui.Window(UI_TITLE, width=430, height=330)
+        self._window = ui.Window(
+            UI_TITLE,
+            width=430,
+            height=330,
+            visible=True,
+            dockPreference=ui.DockPreference.LEFT_BOTTOM,
+        )
+        self._window.visible = True
+        frame = self._window.frame
+        if hasattr(frame, "set_build_fn"):
+            frame.set_build_fn(self._build_ui_contents)
         self._rebuild_ui()
 
     def _rebuild_ui(self) -> None:
+        if self._window is None:
+            return
+        frame = self._window.frame
+        if hasattr(frame, "set_build_fn"):
+            frame.set_build_fn(self._build_ui_contents)
+        if hasattr(frame, "rebuild"):
+            frame.rebuild()
+        else:
+            with frame:
+                self._build_ui_contents()
+        self._ui_dirty = False
+
+    def _build_ui_contents(self) -> None:
         state = self.snapshot_state()
         entry = self.catalog.get_entry(state.object_id)
-        with self._window.frame:
-            with ui.VStack(spacing=8, height=0):
-                ui.Label(UI_TITLE, height=24)
-                ui.Label(self._current_summary(state), word_wrap=True, height=36)
-                ui.Separator(height=6)
-                self._build_cycle_row("Object", state.object_id, self._cycle_object, -1, 1)
-                self._build_cycle_row("Role", filter_label(state.role_filter), self._cycle_role, -1, 1)
-                self._build_cycle_row("Type", filter_label(state.pose_type_filter), self._cycle_pose_type, -1, 1)
-                self._build_cycle_row("Label", filter_label(state.primitive_filter), self._cycle_primitive, -1, 1)
-                with ui.HStack(height=32, spacing=8):
-                    ui.Button("Show All", clicked_fn=self._show_all_for_object)
-                    ui.Button("Refresh", clicked_fn=self._force_refresh)
-                ui.Separator(height=6)
-                ui.Label(f"Object category: {entry.category}", height=22)
-                ui.Label("Controls: Isaac panel only", word_wrap=True, height=22)
-        self._ui_dirty = False
+        with ui.VStack(spacing=8, height=0):
+            ui.Label(UI_TITLE, height=24)
+            ui.Label(self._current_summary(state), word_wrap=True, height=36)
+            ui.Separator(height=6)
+            self._build_cycle_row("Object", state.object_id, self._cycle_object, -1, 1)
+            self._build_cycle_row("Role", filter_label(state.role_filter), self._cycle_role, -1, 1)
+            self._build_cycle_row("Type", filter_label(state.pose_type_filter), self._cycle_pose_type, -1, 1)
+            self._build_cycle_row("Label", filter_label(state.primitive_filter), self._cycle_primitive, -1, 1)
+            with ui.HStack(height=32, spacing=8):
+                ui.Button("Show All", clicked_fn=self._show_all_for_object)
+                ui.Button("Refresh", clicked_fn=self._force_refresh)
+            ui.Separator(height=6)
+            ui.Label(f"Object category: {entry.category}", height=22)
+            ui.Label("Controls: Isaac panel only", word_wrap=True, height=22)
 
     def _build_cycle_row(self, title: str, value: str, callback, left_delta: int, right_delta: int) -> None:
         with ui.HStack(height=28, spacing=6):

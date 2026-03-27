@@ -1,0 +1,448 @@
+2026-03-19T07:50:32Z [405,647ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:50:32Z [405,647ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.8553359508514404
+2026-03-19T07:50:48Z [421,819ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:50:54Z [427,303ms] INFO     [command_controller.py:1361] Attach!!!!
+2026-03-19T07:50:54Z [427,350ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=33, skip_attached=0, skip_invalid_prim=0, skip_distance=8
+2026-03-19T07:50:54Z [427,350ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:50:54Z [427,350ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (20336.366m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (2793.074m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (19361.713m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (19361.713m)', '/World/Objects/geniesim_2025_toiletries_009/body (1657.347m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (4841.351m)', '/World/Objects/geniesim_2025_beverage_bottle_008/body (2244.848m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (1659.791m)']
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/part_03/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_ceiling_light_004/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_012/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_001/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/iros_pen_cup_000/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_mouse_000/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_table_017/body/collider_body
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_01/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_01_03/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_05/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_02/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_06/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_07/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_03/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_03/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_04/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/body/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_01/visual
+2026-03-19T07:50:54Z [427,305ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_00/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_01
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_02
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/part_00/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned_01/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-19T07:50:54Z [427,306ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-19T07:50:54Z [427,352ms] INFO     [motion_gen_reacher.py:1290] Fast obstacle update completed, time: 0.0278s, needs update: True
+2026-03-19T07:50:54Z [427,352ms] INFO     [ui_builder.py:492] object_names=['/World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005']
+2026-03-19T07:50:54Z [427,353ms] INFO     [ui_builder.py:492] attach_result=False
+2026-03-19T07:50:54Z [428,120ms] INFO     [command_controller.py:1503] ik lula time cost0.0005536079406738281
+2026-03-19T07:50:55Z [428,133ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:50:55Z [428,134ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:02Z [435,987ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:51:02Z [435,987ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:51:03Z [436,397ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:51:03Z [436,397ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:51:03Z [436,397ms] INFO     [command_controller.py:1621] playback finish
+2026-03-19T07:51:03Z [436,749ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:03Z [436,750ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:03Z [436,750ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-19T07:51:03Z [436,812ms] INFO     [ui_builder.py:252] no valid path constraint provided
+2026-03-19T07:51:03Z [436,767ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-19T07:51:05Z [438,214ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.4497437477111816
+2026-03-19T07:51:05Z [438,261ms] INFO     [ui_builder.py:252] 236
+2026-03-19T07:51:05Z [438,215ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:51:05Z [438,216ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.465486764907837
+2026-03-19T07:51:20Z [453,623ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:51:25Z [459,011ms] INFO     [command_controller.py:1361] Attach!!!!
+2026-03-19T07:51:25Z [459,058ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=33, skip_attached=0, skip_invalid_prim=0, skip_distance=8
+2026-03-19T07:51:25Z [459,058ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:51:25Z [459,058ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (20265.368m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (2722.204m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (19290.715m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (19290.715m)', '/World/Objects/geniesim_2025_toiletries_009/body (1586.649m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (4718.907m)', '/World/Objects/geniesim_2025_beverage_bottle_008/body (2174.024m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (1589.088m)']
+2026-03-19T07:51:25Z [459,012ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/part_03/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_ceiling_light_004/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_012/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_001/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/iros_pen_cup_000/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_mouse_000/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_table_017/body/collider_body
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_01/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_01_03/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_05/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_02/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_06/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_07/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_03/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_03/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_04/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_01/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_00/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_01
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_02
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/part_00/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned_01/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-19T07:51:25Z [459,013ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-19T07:51:25Z [459,059ms] INFO     [motion_gen_reacher.py:1290] Fast obstacle update completed, time: 0.0451s, needs update: True
+2026-03-19T07:51:25Z [459,060ms] INFO     [ui_builder.py:492] object_names=['/World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005']
+2026-03-19T07:51:25Z [459,061ms] INFO     [ui_builder.py:492] attach_result=False
+2026-03-19T07:51:26Z [459,876ms] INFO     [command_controller.py:1503] ik lula time cost0.0005702972412109375
+2026-03-19T07:51:26Z [459,888ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:26Z [459,888ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:34Z [467,519ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:51:34Z [467,520ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:51:34Z [467,945ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:51:34Z [467,945ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:51:34Z [467,945ms] INFO     [command_controller.py:1621] playback finish
+2026-03-19T07:51:35Z [468,318ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:35Z [468,318ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:51:35Z [468,348ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-19T07:51:35Z [468,406ms] INFO     [ui_builder.py:252] no valid path constraint provided
+2026-03-19T07:51:35Z [468,361ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-19T07:51:37Z [470,465ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is2.10463285446167
+2026-03-19T07:51:37Z [470,512ms] INFO     [ui_builder.py:252] 272
+2026-03-19T07:51:37Z [470,467ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:51:37Z [470,467ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 2.1184589862823486
+2026-03-19T07:51:55Z [488,333ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:52:00Z [493,880ms] INFO     [command_controller.py:1361] Attach!!!!
+2026-03-19T07:52:00Z [493,925ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=33, skip_attached=0, skip_invalid_prim=0, skip_distance=8
+2026-03-19T07:52:00Z [493,925ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:52:00Z [493,925ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (20501.737m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (2958.269m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (19527.084m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (19527.084m)', '/World/Objects/geniesim_2025_toiletries_009/body (1822.221m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (5122.596m)', '/World/Objects/geniesim_2025_beverage_bottle_008/body (2409.951m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (1824.672m)']
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/part_03/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_ceiling_light_004/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_012/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_001/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/iros_pen_cup_000/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_mouse_000/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_table_017/body/collider_body
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_01/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_01_03/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_05/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_02/body/visual
+2026-03-19T07:52:00Z [493,880ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_06/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_07/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_03/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_03/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_04/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_01/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_00/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_01
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_02
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/part_00/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned_01/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-19T07:52:00Z [493,881ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-19T07:52:00Z [493,927ms] INFO     [motion_gen_reacher.py:1290] Fast obstacle update completed, time: 0.0448s, needs update: True
+2026-03-19T07:52:00Z [493,927ms] INFO     [ui_builder.py:492] object_names=['/World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005']
+2026-03-19T07:52:00Z [493,928ms] INFO     [ui_builder.py:492] attach_result=False
+2026-03-19T07:52:01Z [494,730ms] INFO     [command_controller.py:1503] ik lula time cost0.0007467269897460938
+2026-03-19T07:52:01Z [494,746ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:01Z [494,746ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:09Z [502,484ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:52:09Z [502,484ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:52:09Z [502,915ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:52:09Z [502,915ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:52:09Z [502,916ms] INFO     [command_controller.py:1621] playback finish
+2026-03-19T07:52:10Z [503,279ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:10Z [503,279ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:10Z [503,278ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-19T07:52:10Z [503,341ms] INFO     [ui_builder.py:252] no valid path constraint provided
+2026-03-19T07:52:10Z [503,296ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-19T07:52:11Z [504,689ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.3968281745910645
+2026-03-19T07:52:11Z [504,736ms] INFO     [ui_builder.py:252] 245
+2026-03-19T07:52:11Z [504,691ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:52:11Z [504,691ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.4125375747680664
+2026-03-19T07:52:27Z [520,972ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:52:33Z [526,350ms] INFO     [command_controller.py:1361] Attach!!!!
+2026-03-19T07:52:33Z [526,397ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=33, skip_attached=0, skip_invalid_prim=0, skip_distance=8
+2026-03-19T07:52:33Z [526,397ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:52:33Z [526,397ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (20294.742m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (2751.541m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (19320.089m)', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (19320.089m)', '/World/Objects/geniesim_2025_toiletries_009/body (1615.914m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (4769.734m)', '/World/Objects/geniesim_2025_beverage_bottle_008/body (2203.341m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (1618.355m)']
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/home_03/part_03/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_ceiling_light_004/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_012/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_desk_decoration_001/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/iros_pen_cup_000/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_mouse_000/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_table_017/body/collider_body
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_01/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_01_03/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_05/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_02/body/visual
+2026-03-19T07:52:33Z [526,352ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_06/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_00_07/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_03_03/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_03/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04_04/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_01/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/Aligned/part_00/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Background/benchmark_book_04/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_01
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/collider_02
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Pen013/part_00/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Aligned_01/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_storage_box_2/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_target_storage_box/body/visual
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005
+2026-03-19T07:52:33Z [526,353ms] [Warning] [curobo] Object already in warp cache, using existing instance for: /World/Objects/geniesim_2025_cup_105/Aligned/body
+2026-03-19T07:52:33Z [526,399ms] INFO     [motion_gen_reacher.py:1290] Fast obstacle update completed, time: 0.0288s, needs update: True
+2026-03-19T07:52:33Z [526,399ms] INFO     [ui_builder.py:492] object_names=['/World/Objects/geniesim_2025_target_grasp_object/Aligned/Scan_Scan_005']
+2026-03-19T07:52:33Z [526,400ms] INFO     [ui_builder.py:492] attach_result=False
+2026-03-19T07:52:34Z [527,236ms] INFO     [command_controller.py:1503] ik lula time cost0.0005495548248291016
+2026-03-19T07:52:34Z [527,253ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:34Z [527,253ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:38Z [531,515ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:52:38Z [531,515ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:52:38Z [531,906ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:52:38Z [531,907ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:52:38Z [531,907ms] INFO     [command_controller.py:1621] playback finish
+2026-03-19T07:52:40Z [533,921ms] INFO     [command_controller.py:1670] Sent SIGINT to process group 37898
+[INFO] [1773906760.800214781] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1773906760.801475614] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1773906760.801519793] [rosbag2_recorder]: Recording stopped
+2026-03-19T07:52:42Z [535,273ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:52:42Z [535,273ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:52:47Z [540,597ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=34, skip_attached=0, skip_invalid_prim=0, skip_distance=7
+2026-03-19T07:52:47Z [540,597ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:52:47Z [540,597ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (19420.796m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (1879.213m)', '/World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005 (170.403m)', '/World/Objects/geniesim_2025_toiletries_009/body (748.893m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (3136.551m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (751.221m)', '/World/Objects/geniesim_2025_cup_105/Aligned/body (172.607m)']
+2026-03-19T07:52:47Z [540,611ms] INFO     [motion_gen_reacher.py:1271] Fast obstacle update completed, time: 0.0514s, needs update: True
+2026-03-19T07:52:47Z [540,611ms] INFO     [command_controller.py:1368] Detach!!!!!
+2026-03-19T07:52:47Z [540,634ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated=34, skip_attached=0, skip_invalid_prim=0, skip_distance=7
+2026-03-19T07:52:47Z [540,634ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_03/body/visual', '/World/Background/home_03/part_03/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_desk_decoration_012/body/visual', '/World/Background/benchmark_desk_decoration_001/body/visual', '/World/Background/iros_pen_cup_000/body/visual', '/World/Background/benchmark_mouse_000/body/visual', '/World/Background/benchmark_table_017/body/collider_body', '/World/Background/benchmark_book_03/body/visual', '/World/Background/benchmark_book_03_01/body/visual', '/World/Background/benchmark_book_01_03/body/visual', '/World/Background/benchmark_book_00_05/body/visual', '/World/Background/benchmark_book_03_02/body/visual', '/World/Background/benchmark_book_00_06/body/visual', '/World/Background/benchmark_book_00_07/body/visual', '/World/Background/benchmark_book_03_03/body/visual', '/World/Background/benchmark_book_04_03/body/visual', '/World/Background/benchmark_book_04_04/body/visual', '/World/Background/Aligned/body/visual', '/World/Background/Aligned/part_01/visual']
+2026-03-19T07:52:47Z [540,634ms] INFO     [motion_gen_reacher.py:640] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_beverage_bottle_001/body/body (19420.796m)', '/World/Objects/geniesim_2025_cup_043/Aligned/body (1879.213m)', '/World/Objects/geniesim_2025_snack_000/Aligned/Sharp_fusion_1_Sharp_fusion_1_005 (170.403m)', '/World/Objects/geniesim_2025_toiletries_009/body (748.893m)', '/World/Objects/geniesim_2025_building_blocks_072/body/visual (3136.551m)', '/World/Objects/geniesim_2025_toy_car_018/Aligned/kache (751.221m)', '/World/Objects/geniesim_2025_cup_105/Aligned/body (172.607m)']
+2026-03-19T07:52:47Z [540,634ms] INFO     [motion_gen_reacher.py:1271] Fast obstacle update completed, time: 0.0229s, needs update: False
+2026-03-19T07:52:47Z [540,634ms] INFO     [command_controller.py:1368] Detach!!!!!
+2026-03-19T07:52:50Z [543,160ms] INFO     [command_controller.py:1670] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        exec ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_0_1 -a
+                        
+I0000 00:00:1773906770.033872   35490 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-03-19T07:52:50Z [543,257ms] INFO     [command_controller.py:1670] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-03-19T07:52:50Z [543,257ms] INFO     [command_controller.py:1670] noised_probability0.1
+2026-03-19T07:52:50Z [543,257ms] INFO     [command_controller.py:1670] noised_camera_indices[0 1 2]
+2026-03-19T07:52:50Z [543,257ms] INFO     [command_controller.py:1670] noised_camera_prim_list['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color']
+2026-03-19T07:52:50Z [543,258ms] INFO     [command_controller.py:1166] ROS domain ID: 9
+2026-03-19T07:52:50Z [543,258ms] INFO     [command_controller.py:1670] tf_target['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_beverage_bottle_002', '/World/Objects/geniesim_2025_beverage_bottle_008', '/World/Objects/geniesim_2025_storage_box_2', '/World/Objects/geniesim_2025_target_storage_box', '/galbot_one_golf/left_gripper_tcp_link', '/galbot_one_golf/right_gripper_tcp_link', '/galbot_one_golf', '/galbot_one_golf/torso_base_link', '/galbot_one_golf/left_arm_base_link', '/galbot_one_golf/right_arm_base_link']
+[INFO] [1773906770.336629358] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1773906770.337360936] [rosbag2_storage]: Opened database '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/_place_object_into_box_of_specific_color_blue_galbot_0_1/_place_object_into_box_of_specific_color_blue_galbot_0_1_0.db3' for READ_WRITE.
+[INFO] [1773906770.337612003] [rosbag2_recorder]: Listening for topics...
+[INFO] [1773906770.337616972] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1773906770.338378883] [rosbag2_recorder]: Subscribed to topic '/soft_state'
+[INFO] [1773906770.338981444] [rosbag2_recorder]: Subscribed to topic '/rosout'
+[INFO] [1773906770.339296794] [rosbag2_recorder]: Subscribed to topic '/parameter_events'
+[INFO] [1773906770.339669405] [rosbag2_recorder]: Subscribed to topic '/left_arm_color_rgb'
+[INFO] [1773906770.339890431] [rosbag2_recorder]: Subscribed to topic '/soft_code'
+[INFO] [1773906770.340091821] [rosbag2_recorder]: Subscribed to topic '/right_arm_color_rgb'
+[INFO] [1773906770.340381280] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1773906770.340613734] [rosbag2_recorder]: Subscribed to topic '/head_front_left_color_rgb'
+[INFO] [1773906770.340889955] [rosbag2_recorder]: Subscribed to topic '/events/write_split'
+[INFO] [1773906770.341133881] [rosbag2_recorder]: Subscribed to topic '/articulation_action'
+[INFO] [1773906770.341182603] [rosbag2_recorder]: Recording...
+[INFO] [1773906770.442245385] [rosbag2_recorder]: Subscribed to topic '/tf'
+[INFO] [1773906770.442595296] [rosbag2_recorder]: Subscribed to topic '/joint_states'
+2026-03-19T07:52:51Z [544,671ms] INFO     [command_controller.py:1503] ik lula time cost0.27845239639282227
+2026-03-19T07:52:51Z [544,867ms] INFO     [command_controller.py:1503] ik lula time cost0.12531042098999023
+2026-03-19T07:52:51Z [544,954ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.08748388290405273
+2026-03-19T07:52:51Z [544,954ms] [Warning] [server.motion_generator.motion_gen_reacher] len positions is 8
+2026-03-19T07:52:51Z [545,001ms] INFO     [motion_gen_reacher.py:897] update kinematics lock joints
+2026-03-19T07:52:51Z [545,022ms] [Warning] [server.motion_generator.motion_gen_reacher] update curobo kinematics lock joints time is 0.0664517879486084
+2026-03-19T07:52:52Z [545,155ms] [Warning] [server.motion_generator.motion_gen_reacher] ik batch 0 time is 0.13309955596923828
+2026-03-19T07:52:52Z [545,204ms] INFO     [motion_gen_reacher.py:923] kinematic forward time0.0030841827392578125
+2026-03-19T07:52:52Z [545,161ms] [Warning] [server.motion_generator.motion_gen_reacher] ik time is 0.20630335807800293
+2026-03-19T07:52:52Z [545,206ms] INFO     [command_controller.py:1503] ik curobo time cost0.2949399948120117
+2026-03-19T07:52:52Z [545,636ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:52Z [545,636ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:52:52Z [545,642ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-19T07:52:52Z [545,699ms] INFO     [ui_builder.py:252] no valid path constraint provided
+2026-03-19T07:52:52Z [545,654ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-19T07:52:52Z [545,785ms] [Warning] [curobo] Bias node is not valid, not using bias node
+2026-03-19T07:52:54Z [547,614ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.9612319469451904
+2026-03-19T07:52:54Z [547,660ms] INFO     [ui_builder.py:252] 294
+2026-03-19T07:52:54Z [547,615ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:52:54Z [547,615ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.9733612537384033
+2026-03-19T07:53:14Z [567,793ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:53:17Z [571,097ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:53:17Z [571,097ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:53:18Z [571,529ms] INFO     [command_controller.py:1825] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-03-19T07:53:18Z [571,529ms] INFO     [command_controller.py:1826] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-03-19T07:53:18Z [571,530ms] INFO     [command_controller.py:1621] playback finish
+2026-03-19T07:53:18Z [571,908ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:53:18Z [571,908ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-03-19T07:53:18Z [571,908ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-03-19T07:53:18Z [571,972ms] INFO     [ui_builder.py:252] no valid path constraint provided
+2026-03-19T07:53:18Z [571,927ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-03-19T07:53:20Z [573,525ms] [Warning] [server.motion_generator.motion_gen_reacher] end_time is1.598813772201538
+2026-03-19T07:53:20Z [573,572ms] INFO     [ui_builder.py:252] 281
+2026-03-19T07:53:20Z [573,527ms] [Warning] [server.motion_generator.motion_gen_reacher] success
+2026-03-19T07:53:20Z [573,527ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 1.6181957721710205
+2026-03-19T07:53:39Z [592,777ms] INFO     [command_controller.py:655] ReachedTrue
+2026-03-19T07:53:44Z [597,797ms] INFO     [command_controller.py:1670] Sent SIGINT to process group 38238
+[INFO] [1773906824.699727339] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1773906824.700775439] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1773906824.700820096] [rosbag2_recorder]: Recording stopped
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] Timing Statistics Report
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] ui_builder.my_world.step:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 389.6384 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 19529
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 0.0200 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] on_physics_step:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 198.6699 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 19529
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 0.0102 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] on_command_step:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 112.2071 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 19529
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 0.0057 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] on_physics_step:ui_builder:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 82.1623 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 19529
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 0.0042 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_OBSERVATION, START_RECORDING, STOP_RECORDING:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 41.9395 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 16
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 2.6212 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] stop_recording:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 34.7558 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 4.3445 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] rpc_server.step_command_LINEAR_MOVE:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 23.1346 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 4616
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 0.0050 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119] rpc_server.step_command_INIT_ROBOT:
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Total time: 17.9050 seconds
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-19T07:53:45Z [598,867ms] INFO     [data_collector_server.py:119]   Average time: 17.9050 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] _init_robot_cfg:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 17.9050 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 17.9050 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] _init_robot:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 14.8993 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 14.8993 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_IK_STATUS:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 13.9136 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 35
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.3975 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_ADD_OBJECT:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 7.2149 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 80
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0902 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] start_recording:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 7.1832 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.8979 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_TASK_STATUS:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 4.5563 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.5695 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] on_physics_step:publish_ros:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 2.7575 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 19529
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0001 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_OBJECT_POSE:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.9831 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 420
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0023 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_DETACH_OBJ:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.7250 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 9
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0806 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_PLAYBACK:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.4715 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 150
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0031 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_ATTACH_OBJ:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.4343 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 9
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0483 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_JOINT_POSITION:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.4228 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 205
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0021 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_RESET:
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Total time: 0.2700 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Call count: 9
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119]   Average time: 0.0300 seconds
+2026-03-19T07:53:45Z [598,868ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_EE_POSE:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0553 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 142
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0004 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_OBJECT_POSE:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0356 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 40
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0009 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_GRIPPER_STATE:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0266 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 920
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_CHECKER_STATUS:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0144 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 5
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0029 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_FRAME_STATE:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0058 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 119
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_STORE_CURRENT_STATE:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0050 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0006 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_GET_JOINT_POSITION:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0015 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 16
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0001 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_TASK_METRIC:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0005 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0001 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_EXIT:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0002 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 1
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0002 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] rpc_server.step_command_SET_TARGET_POINT:
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Total time: 0.0001 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Call count: 8
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119]   Average time: 0.0000 seconds
+2026-03-19T07:53:45Z [598,869ms] INFO     [data_collector_server.py:119] ================================================================================
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 19549/30
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 19549/30, returning current sim time
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 19549/30
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 19549/30, returning current sim time
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 19549/30
+2026-03-19T07:53:46Z [599,186ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 19549/30, returning current sim time
+[600.478s] Simulation App Shutting Down
+(issac) agxi@agxi:~/RealityLab/genie_sim/source/data_collection$ 
+

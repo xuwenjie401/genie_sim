@@ -422,6 +422,9 @@ class RpcClient:
                 J = pinocchio.computeJointJacobian(model, data, joint_positions, 24)
             elif "G2" in self.robot_urdf:
                 J = pinocchio.computeJointJacobian(model, data, joint_positions, 45)
+            elif "galbot" in self.robot_urdf:
+                # right_arm_joint7=27, left_arm_joint7=14
+                J = pinocchio.computeJointJacobian(model, data, joint_positions, 27)
             else:
                 J = pinocchio.computeJointJacobian(model, data, joint_positions, 7)
             manip = np.sqrt(np.linalg.det(np.dot(J, J.T)))

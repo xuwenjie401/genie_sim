@@ -3,6 +3,7 @@
 # License: Mozilla Public License Version 2.0
 
 import copy
+import os
 import re
 import time
 from typing import Optional
@@ -46,6 +47,92 @@ except ImportError:
 # CUROBO_BATCH_SIZE = 20
 CUROBO_BATCH_SIZE = 10
 MAX_MESH_FACES = 1000  # Maximum face count limit
+BACKGROUND_OBSTACLE_PREFIXES = ["/World/background", "/World/Background"]
+ATTACHED_COLLISION_LINK_SPECS = {
+    "attached_object": [
+        "right_arm_link7",
+        "right_gripper_flange_link",
+        "right_gripper_base_link",
+        "right_gripper_l_inner_knuckle_link",
+        "right_gripper_l_knuckle_link",
+        "right_gripper_l_finger_link",
+        "right_gripper_r_inner_knuckle_link",
+        "right_gripper_r_knuckle_link",
+        "right_gripper_r_finger_link",
+    ],
+    "left_attached_object": [
+        "left_arm_link7",
+        "left_gripper_flange_link",
+        "left_gripper_base_link",
+        "left_gripper_l_inner_knuckle_link",
+        "left_gripper_l_knuckle_link",
+        "left_gripper_l_finger_link",
+        "left_gripper_r_inner_knuckle_link",
+        "left_gripper_r_knuckle_link",
+        "left_gripper_r_finger_link",
+    ],
+}
+
+
+def _env_flag(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_int(name: str, default: int) -> int:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    try:
+        return int(value)
+    except ValueError:
+        logger.warning(f"Invalid integer for {name}: {value}, fallback to {default}")
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except ValueError:
+        logger.warning(f"Invalid float for {name}: {value}, fallback to {default}")
+        return default
+
+
+def _append_unique(items, value):
+    if value not in items:
+        items.append(value)
+
+
+def _ensure_attached_collision_config(robot_cfg):
+    kinematics_cfg = robot_cfg.setdefault("kinematics", {})
+    extra_links = kinematics_cfg.get("extra_links") or {}
+    collision_link_names = kinematics_cfg.setdefault("collision_link_names", [])
+    extra_collision_spheres = kinematics_cfg.setdefault("extra_collision_spheres", {})
+    self_collision_ignore = kinematics_cfg.setdefault("self_collision_ignore", {})
+    self_collision_buffer = kinematics_cfg.setdefault("self_collision_buffer", {})
+
+    configured_links = []
+    for attached_link, ignore_links in ATTACHED_COLLISION_LINK_SPECS.items():
+        if attached_link not in extra_links and attached_link not in collision_link_names:
+            continue
+        _append_unique(collision_link_names, attached_link)
+        extra_collision_spheres.setdefault(attached_link, 30)
+        configured_links.append(attached_link)
+
+        if isinstance(self_collision_buffer, dict):
+            self_collision_buffer.setdefault(attached_link, 0.0)
+        if isinstance(self_collision_ignore, dict):
+            self_collision_ignore.setdefault(attached_link, [])
+            for ignore_link in ignore_links:
+                self_collision_ignore.setdefault(ignore_link, [])
+                _append_unique(self_collision_ignore[attached_link], ignore_link)
+                _append_unique(self_collision_ignore[ignore_link], attached_link)
+    return configured_links
 
 
 class AgibotUsdHelper(UsdHelper):
@@ -66,6 +153,11 @@ class AgibotUsdHelper(UsdHelper):
         reference_prim_path: Optional[str] = None,
         timecode: float = 0,
     ) -> WorldConfig:
+        diagnostic_enabled = getattr(self, "obstacle_diagnostic_enabled", False)
+        diagnostic_limit = max(1, int(getattr(self, "obstacle_diagnostic_limit", 20)))
+        diagnostic_label = getattr(self, "obstacle_diagnostic_label", "stage")
+        background_collision_only = getattr(self, "background_collision_only", False)
+        background_prefixes = getattr(self, "background_obstacle_prefixes", BACKGROUND_OBSTACLE_PREFIXES)
         obstacles = {
             "cuboid": None,
             "sphere": None,
@@ -73,6 +165,41 @@ class AgibotUsdHelper(UsdHelper):
             "cylinder": None,
             "capsule": None,
         }
+        diagnostic_counts = {
+            "loaded_mesh": 0,
+            "skip_only_paths": 0,
+            "skip_ignore_paths": 0,
+            "skip_only_substring": 0,
+            "skip_ignore_substring": 0,
+            "skip_collision_disabled": 0,
+            "skip_background_no_collision": 0,
+            "skip_non_mesh": 0,
+            "skip_mesh_extract_none": 0,
+            "extract_error": 0,
+        }
+        diagnostic_samples = {
+            "loaded_mesh": [],
+            "skip_only_paths": [],
+            "skip_ignore_paths": [],
+            "skip_only_substring": [],
+            "skip_ignore_substring": [],
+            "skip_collision_disabled": [],
+            "skip_background_no_collision": [],
+            "skip_non_mesh": [],
+            "skip_mesh_extract_none": [],
+            "extract_error": [],
+        }
+
+        def record_diag(key, prim_path, extra_info=""):
+            if not diagnostic_enabled:
+                return
+            diagnostic_counts[key] += 1
+            if len(diagnostic_samples[key]) >= diagnostic_limit:
+                return
+            if extra_info:
+                diagnostic_samples[key].append(f"{prim_path} ({extra_info})")
+            else:
+                diagnostic_samples[key].append(prim_path)
 
         r_T_w = None
         # use the instance xform cache
@@ -97,35 +224,82 @@ class AgibotUsdHelper(UsdHelper):
 
             # only/ignore path filters
             if only_paths is not None and not any([prim_path.startswith(k) for k in only_paths]):
+                record_diag("skip_only_paths", prim_path)
                 continue
             if ignore_paths is not None and any([prim_path.startswith(k) for k in ignore_paths]):
+                record_diag("skip_ignore_paths", prim_path)
                 continue
             if only_substring is not None and not any([k in prim_path for k in only_substring]):
+                record_diag("skip_only_substring", prim_path)
                 continue
             if ignore_substring is not None and any([k in prim_path for k in ignore_substring]):
+                record_diag("skip_ignore_substring", prim_path)
                 continue
 
+            if not prim.IsA(UsdGeom.Mesh):
+                record_diag("skip_non_mesh", prim_path)
+                continue
+
+            applied_schemas = []
+            try:
+                applied_schemas = list(prim.GetAppliedSchemas())
+            except Exception:
+                applied_schemas = []
+            has_collision_schema = any("CollisionAPI" in schema for schema in applied_schemas)
+            collision_enabled = None
             # Optionally check for collision enabled attribute
             try:
                 collisionAPI = UsdPhysics.CollisionAPI.Get(self.stage, prim_path)
-                if collisionAPI and not collisionAPI.GetCollisionEnabledAttr().Get():
+                if collisionAPI:
+                    collision_enabled = collisionAPI.GetCollisionEnabledAttr().Get()
+                if collision_enabled is False:
                     # skip prims that explicitly disable collision
+                    record_diag("skip_collision_disabled", prim_path)
                     continue
             except Exception:
                 # if we can't query collision API, proceed normally
                 pass
 
+            if background_collision_only and any(prim_path.startswith(prefix) for prefix in background_prefixes):
+                if not has_collision_schema and collision_enabled is not True:
+                    record_diag("skip_background_no_collision", prim_path)
+                    continue
+
             try:
-                if prim.IsA(UsdGeom.Mesh):
-                    if obstacles["mesh"] is None:
-                        obstacles["mesh"] = []
-                    # use the local get_mesh_attrs (triangulating wrapper)
-                    m_data = get_mesh_attrs(prim, cache=self._xform_cache, transform=r_T_w)
-                    if m_data is not None:
-                        obstacles["mesh"].append(m_data)
+                if obstacles["mesh"] is None:
+                    obstacles["mesh"] = []
+                # use the local get_mesh_attrs (triangulating wrapper)
+                m_data = get_mesh_attrs(prim, cache=self._xform_cache, transform=r_T_w)
+                if m_data is not None:
+                    obstacles["mesh"].append(m_data)
+                    record_diag("loaded_mesh", prim_path)
+                else:
+                    record_diag("skip_mesh_extract_none", prim_path)
             except Exception as e:
+                record_diag("extract_error", prim_path, str(e))
                 logger.error(f"Error extracting prim {prim_path}: {e}")
                 continue
+
+        if diagnostic_enabled:
+            logger.info(
+                f"[ObstacleDiag:{diagnostic_label}] "
+                f"loaded_mesh={diagnostic_counts['loaded_mesh']}, "
+                f"skip_ignore_substring={diagnostic_counts['skip_ignore_substring']}, "
+                f"skip_collision_disabled={diagnostic_counts['skip_collision_disabled']}, "
+                f"skip_background_no_collision={diagnostic_counts['skip_background_no_collision']}, "
+                f"skip_mesh_extract_none={diagnostic_counts['skip_mesh_extract_none']}, "
+                f"extract_error={diagnostic_counts['extract_error']}"
+            )
+            for key in [
+                "loaded_mesh",
+                "skip_ignore_substring",
+                "skip_collision_disabled",
+                "skip_background_no_collision",
+                "skip_mesh_extract_none",
+                "extract_error",
+            ]:
+                if diagnostic_samples[key]:
+                    logger.info(f"[ObstacleDiag:{diagnostic_label}] {key}: {diagnostic_samples[key]}")
 
         world_model = WorldConfig(**obstacles)
         return world_model
@@ -203,10 +377,15 @@ class CuroboMotion:
             "/World/Objects/part",
             "/base_cube",
             "virtual_fixed_joint",
-            "/World/background",
-            "/World/Background",
         ]
+        if not self.include_background_obstacles:
+            self.ignore_substring_list.extend(BACKGROUND_OBSTACLE_PREFIXES)
         if need_reset_cache:
+            self.usd_help.obstacle_diagnostic_enabled = self.obstacle_diagnostic_enabled
+            self.usd_help.obstacle_diagnostic_limit = self.obstacle_diagnostic_limit
+            self.usd_help.obstacle_diagnostic_label = "initial_cache"
+            self.usd_help.background_collision_only = self.background_collision_only
+            self.usd_help.background_obstacle_prefixes = BACKGROUND_OBSTACLE_PREFIXES
             # Get initial obstacle configuration (without pose transformation)
             initial_obstacles = self.usd_help.get_obstacles_from_stage(
                 only_paths=None,
@@ -260,6 +439,11 @@ class CuroboMotion:
         """
         try:
             logger.info(f"Adding obstacles under prim path {prim_path}...")
+            self.usd_help.obstacle_diagnostic_enabled = self.obstacle_diagnostic_enabled
+            self.usd_help.obstacle_diagnostic_limit = self.obstacle_diagnostic_limit
+            self.usd_help.obstacle_diagnostic_label = f"dynamic_add:{prim_path}"
+            self.usd_help.background_collision_only = self.background_collision_only
+            self.usd_help.background_obstacle_prefixes = BACKGROUND_OBSTACLE_PREFIXES
 
             # Use only_paths parameter to extract only obstacles under specified path
             new_obstacles = self.usd_help.get_obstacles_from_stage(
@@ -373,16 +557,19 @@ class CuroboMotion:
         self.robot_list = robot_list
         tensor_args = TensorDeviceType()
         self.robot_prim_path = robot_prim_path
+        self.include_background_obstacles = _env_flag("GENIESIM_CUROBO_INCLUDE_BACKGROUND_OBSTACLES", True)
+        self.background_collision_only = _env_flag("GENIESIM_CUROBO_BACKGROUND_COLLISION_ONLY", True)
+        self.obstacle_diagnostic_enabled = _env_flag("GENIESIM_CUROBO_OBSTACLE_DIAGNOSTICS", True)
+        self.obstacle_diagnostic_limit = _env_int("GENIESIM_CUROBO_OBSTACLE_DIAGNOSTIC_LIMIT", 20)
+        self.max_obstacle_distance = _env_float("GENIESIM_CUROBO_MAX_OBSTACLE_DISTANCE", 10.0)
         n_obstacle_cuboids = 30
         self.init_ee_pose = {}
-        n_obstacle_mesh = 30
+        n_obstacle_mesh = _env_int("GENIESIM_CUROBO_MESH_CACHE_SIZE", 100)
+        collision_activation_distance = _env_float("GENIESIM_CUROBO_COLLISION_ACTIVATION_DISTANCE", 0.02)
 
         robot_cfg_path = get_robot_configs_path()
         self.robot_cfg = load_yaml(join_path(robot_cfg_path, robot_cfg))["robot_cfg"]
-        self.robot_cfg["kinematics"]["extra_collision_spheres"] = {
-            "attached_object": 30,
-            "left_attached_object": 30,
-        }
+        configured_attached_links = _ensure_attached_collision_config(self.robot_cfg)
         self.lock_joints = self.robot_cfg["kinematics"]["lock_joints"]
         self.lock_js_names = []
         if self.lock_joints:
@@ -411,7 +598,7 @@ class CuroboMotion:
             trajopt_tsteps=step,
             num_trajopt_noisy_seeds=1,
             num_batch_trajopt_seeds=1,
-            collision_activation_distance=0.01,
+            collision_activation_distance=collision_activation_distance,
             world_coll_checker=CuroboMotion.world_coll_checker,
         )
 
@@ -421,6 +608,13 @@ class CuroboMotion:
             CuroboMotion.world_coll_checker = self.motion_gen.world_coll_checker
         self.motion_gen.warmup(parallel_finetune=True, batch=CUROBO_BATCH_SIZE)
         self.world_model = self.motion_gen.world_collision
+        attached_sphere_counts = {}
+        kin_cfg = self.motion_gen.robot_cfg.kinematics.kinematics_config
+        for attached_link in ATTACHED_COLLISION_LINK_SPECS:
+            if attached_link in kin_cfg.link_name_to_idx_map:
+                attached_sphere_counts[attached_link] = kin_cfg.get_number_of_spheres(attached_link)
+            else:
+                attached_sphere_counts[attached_link] = "missing_link"
         self.plan_config = MotionGenPlanConfig(
             enable_graph=True,
             enable_opt=True,
@@ -464,6 +658,21 @@ class CuroboMotion:
 
         # Maintain list of objects attached to robot
         self.attached_objects = []
+
+        logger.info(
+            "Curobo obstacle config: "
+            f"include_background={self.include_background_obstacles}, "
+            f"background_collision_only={self.background_collision_only}, "
+            f"mesh_cache={n_obstacle_mesh}, "
+            f"collision_activation_distance={collision_activation_distance}, "
+            f"max_obstacle_distance={self.max_obstacle_distance}, "
+            f"diagnostics={self.obstacle_diagnostic_enabled}"
+        )
+        logger.info(
+            "Attached collision config: "
+            f"configured_links={configured_attached_links}, "
+            f"sphere_counts={attached_sphere_counts}"
+        )
 
         # First extract and cache obstacle geometry information
         self._extract_cached_obstacles(need_reset_cache=CuroboMotion.cached_obstacle_info == {})
@@ -539,6 +748,16 @@ class CuroboMotion:
             "cylinder": [],
             "capsule": [],
         }
+        diagnostic_counts = {
+            "skip_attached": 0,
+            "skip_invalid_prim": 0,
+            "skip_distance": 0,
+            "updated": 0,
+        }
+        diagnostic_samples = {
+            "skip_distance": [],
+            "updated": [],
+        }
 
         has_update = False
         # Iterate through cached obstacle information, update each pose
@@ -551,10 +770,12 @@ class CuroboMotion:
                         is_attached = True
                         break
                 if is_attached:
+                    diagnostic_counts["skip_attached"] += 1
                     continue
                 # Get current prim
                 prim = self.usd_help.stage.GetPrimAtPath(prim_path)
                 if not prim.IsValid():
+                    diagnostic_counts["skip_invalid_prim"] += 1
                     continue
 
                 # Get current world pose
@@ -573,7 +794,12 @@ class CuroboMotion:
                 distance_to_robot = np.linalg.norm(object_position)
 
                 # Skip obstacle if distance is greater than 10 meters
-                if distance_to_robot > 10.0:
+                if distance_to_robot > self.max_obstacle_distance:
+                    diagnostic_counts["skip_distance"] += 1
+                    if len(diagnostic_samples["skip_distance"]) < self.obstacle_diagnostic_limit:
+                        diagnostic_samples["skip_distance"].append(
+                            f"{prim_path} ({distance_to_robot:.3f}m)"
+                        )
                     continue
 
                 # Create updated obstacle copy
@@ -585,10 +811,27 @@ class CuroboMotion:
                 # Add to corresponding type list
                 obstacle_type = obstacle_info["type"]
                 updated_obstacles[obstacle_type].append(geometry)
+                diagnostic_counts["updated"] += 1
+                if len(diagnostic_samples["updated"]) < self.obstacle_diagnostic_limit:
+                    diagnostic_samples["updated"].append(prim_path)
 
             except Exception as e:
                 logger.info(f"Error updating obstacle {prim_path} pose: {e}")
                 continue
+        if self.obstacle_diagnostic_enabled:
+            logger.info(
+                "[ObstacleDiag:update_pose] "
+                f"updated={diagnostic_counts['updated']}, "
+                f"skip_attached={diagnostic_counts['skip_attached']}, "
+                f"skip_invalid_prim={diagnostic_counts['skip_invalid_prim']}, "
+                f"skip_distance={diagnostic_counts['skip_distance']}"
+            )
+            if diagnostic_samples["updated"]:
+                logger.info(f"[ObstacleDiag:update_pose] updated samples: {diagnostic_samples['updated']}")
+            if diagnostic_samples["skip_distance"]:
+                logger.info(
+                    f"[ObstacleDiag:update_pose] skip_distance samples: {diagnostic_samples['skip_distance']}"
+                )
         return updated_obstacles, has_update
 
     def visualize_spheres(
@@ -629,8 +872,8 @@ class CuroboMotion:
         sph_list = []
         for obs in self.world_cfg.objects:
             sph = obs.get_bounding_spheres(
-                300,
-                surface_sphere_radius=0.001,
+                200,
+                surface_sphere_radius=0.005,
                 pre_transform_pose=None,
                 tensor_args=self.tensor_args,
             )
@@ -1100,6 +1343,46 @@ class CuroboMotion:
             self.motion_gen.world_coll_checker.enable_obstacle(enable=False, name=x)
             self.motion_gen.world_model.remove_obstacle(x)
 
+    def _get_attach_lookup_worlds(self):
+        worlds = []
+        seen_ids = set()
+        candidate_worlds = [
+            ("self.world_cfg", getattr(self, "world_cfg", None)),
+            ("motion_gen.world_model", getattr(self.motion_gen, "world_model", None)),
+            (
+                "world_coll_checker.world_model",
+                getattr(getattr(self.motion_gen, "world_coll_checker", None), "world_model", None),
+            ),
+        ]
+        for label, world in candidate_worlds:
+            if world is None:
+                continue
+            world_id = id(world)
+            if world_id in seen_ids:
+                continue
+            seen_ids.add(world_id)
+            worlds.append((label, world))
+        return worlds
+
+    def _get_attach_name_candidates(self, object_name, limit=8):
+        requested_parent = object_name.rsplit("/", 1)[0]
+        requested_leaf = object_name.rsplit("/", 1)[-1]
+        matches = []
+        for source_name, world in self._get_attach_lookup_worlds():
+            for obstacle in getattr(world, "objects", []):
+                obstacle_name = getattr(obstacle, "name", "")
+                if not obstacle_name:
+                    continue
+                if (
+                    obstacle_name == object_name
+                    or obstacle_name.startswith(requested_parent)
+                    or obstacle_name.endswith("/" + requested_leaf)
+                ):
+                    matches.append(f"{source_name}:{obstacle_name}")
+                    if len(matches) >= limit:
+                        return matches
+        return matches
+
     def attach_obj(
         self,
         prim_paths,
@@ -1107,10 +1390,12 @@ class CuroboMotion:
         ee_position=[0, 0, 0],
         ee_rotation=[1, 0, 0, 0],
     ):
-        self.motion_gen.detach_object_from_robot()
+        self.motion_gen.detach_object_from_robot("left_attached_object")
+        self.motion_gen.detach_object_from_robot("attached_object")
         attach_result = False
+        self.attached_objects.clear()
         self.set_obstacles()
-        logger.info(f"object_names={prim_paths}")
+        logger.info(f"Attach request: link_name={link_name}, object_names={prim_paths}")
         ee_pose = Pose(
             position=self.tensor_args.to_device(ee_position),
             quaternion=self.tensor_args.to_device(ee_rotation),
@@ -1144,16 +1429,47 @@ class CuroboMotion:
         ee_pose = ee_pose.inverse()  # ee_T_w to multiply all objects later
         max_spheres = self.motion_gen.robot_cfg.kinematics.kinematics_config.get_number_of_spheres(link_name)
         if len(object_names) == 0:
-            return
+            logger.warning(f"Attach failed: empty object_names for link_name={link_name}")
+            return False
         n_spheres = int(max_spheres / len(object_names))
         sphere_tensor = torch.zeros((max_spheres, 4))
         sphere_tensor[:, 3] = -10.0
         sph_list = []
         if n_spheres == 0:
+            logger.warning(
+                f"Attach failed: max_spheres={max_spheres}, "
+                f"object_count={len(object_names)}, link_name={link_name}"
+            )
             return False
+        lookup_worlds = self._get_attach_lookup_worlds()
+        if lookup_worlds:
+            logger.info(
+                "Attach lookup worlds: "
+                + ", ".join(
+                    [f"{source_name}={len(getattr(world, 'objects', []))}" for source_name, world in lookup_worlds]
+                )
+            )
+        logger.info(
+            f"Attach sphere config: link_name={link_name}, max_spheres={max_spheres}, "
+            f"object_count={len(object_names)}, n_spheres_per_object={n_spheres}"
+        )
+        missing_objects = []
+        per_object_spheres = []
         for i, object_name in enumerate(object_names):
-            obs = self.motion_gen.world_model.get_obstacle(object_name)
+            obs = None
+            source_name = None
+            for lookup_source, lookup_world in lookup_worlds:
+                obs = lookup_world.get_obstacle(object_name)
+                if obs is not None:
+                    source_name = lookup_source
+                    break
             if not obs:
+                missing_objects.append(
+                    {
+                        "object_name": object_name,
+                        "candidates": self._get_attach_name_candidates(object_name),
+                    }
+                )
                 continue
             sph = obs.get_bounding_spheres(
                 n_spheres,
@@ -1163,22 +1479,39 @@ class CuroboMotion:
                 fit_type=sphere_fit_type,
                 voxelize_method=voxelize_method,
             )
+            per_object_spheres.append(
+                f"{object_name}<{source_name}>:{len(sph)}"
+            )
             sph_list += [s.position + [s.radius] for s in sph]
             self.motion_gen.world_coll_checker.enable_obstacle(enable=False, name=object_name)
             if remove_obstacles_from_world_config:
                 self.motion_gen.world_model.remove_obstacle(object_name)
                 if object_name not in self.attached_objects:
                     self.attached_objects.append(object_name)
-        spheres = self.tensor_args.to_device(torch.as_tensor(sph_list))
-        if not spheres.shape[0]:
-            carb.log_warn("No spheres found for the given objects.")
+        if missing_objects:
+            logger.warning(f"Attach missing objects: {missing_objects}")
+        logger.info(f"Attach per-object spheres: {per_object_spheres}")
+        if len(sph_list) == 0:
+            logger.warning(
+                f"Attach failed: no spheres generated for link_name={link_name}, "
+                f"object_names={object_names}"
+            )
             return False
+        spheres = self.tensor_args.to_device(torch.as_tensor(sph_list))
 
         if spheres.shape[0] > max_spheres:
-            spheres = spheres[: spheres.shape[0]]
+            logger.warning(
+                f"Attach generated more spheres than budget, truncating from "
+                f"{spheres.shape[0]} to {max_spheres} for link_name={link_name}"
+            )
+            spheres = spheres[:max_spheres]
         sphere_tensor[: spheres.shape[0], :] = spheres.contiguous()
 
         self.motion_gen.attach_spheres_to_robot(sphere_tensor=sphere_tensor, link_name=link_name)
+        logger.info(
+            f"Attach success: link_name={link_name}, attached_objects={self.attached_objects}, "
+            f"attached_sphere_count={spheres.shape[0]}"
+        )
 
         return True
 

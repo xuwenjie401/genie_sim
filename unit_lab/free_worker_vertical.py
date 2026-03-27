@@ -1797,10 +1797,12 @@ class CommandController:
         # NOTE: Vertical adjustment state.
         # pending_leg_adjustment: leg joint targets to apply on next LINEAR_MOVE command.
         # default_leg_joints: captured after robot init; used as the reference/max-height state.
-        # default_torso_z: stable torso Z at init — used as reference for sphere-radius check
-        #   (always use this, NOT current torso_z, to avoid oscillation between cycles).
+        # default_torso_pose/default_torso_z: stable torso pose at init — used as the
+        # reference for the workspace check so restore decisions are based on the
+        # default-height configuration, not the currently lowered one.
         self.pending_leg_adjustment = None
         self.default_leg_joints = {}
+        self.default_torso_pose = None
         self.default_torso_z = None
         # Leg trajectory state for gradual movement (Fix 2: no sudden joint jumps).
         self.leg_trajectory = None      # np.ndarray of shape (n_steps, 3)
@@ -2301,11 +2303,13 @@ class CommandController:
             print(f"[Vertical] Failed to read leg joints: {e}, using fallback config values")
             self.default_leg_joints = dict(GALBOT_LEG_DEFAULT)
 
-        # Also capture the default torso height as a stable reference for sphere-radius check.
-        # Fix: always use THIS value (not current torso_z) to avoid oscillation between cycles.
-        torso_z = self._get_torso_world_z()
-        if torso_z is not None:
-            self.default_torso_z = torso_z
+        # Also capture the default torso pose as the stable workspace reference.
+        # Fix: always use THIS pose (not the current torso pose) to avoid oscillation and
+        # to allow restoring after the torso has shifted in x/y while squatting.
+        torso_pose = self._get_torso_world_pose()
+        if torso_pose is not None:
+            self.default_torso_pose = np.asarray(torso_pose, dtype=np.float64)
+            self.default_torso_z = float(self.default_torso_pose[2])
             print(f"[Vertical] Default torso_z captured: {self.default_torso_z:.4f} m")
 
     def _get_torso_world_pose(self):
@@ -2333,14 +2337,16 @@ class CommandController:
         Only lower the torso when the target is within the usable horizontal reach
         but below the minimum reachable Z for that XY distance.
 
-        Fix (oscillation): always uses self.default_torso_z as the stable reference,
-        NOT the current torso_z. Using current torso_z caused the robot to oscillate:
+        Fix (oscillation / restore): always uses self.default_torso_pose as the stable
+        reference, NOT the current lowered torso pose. Using the current torso pose
+        caused the robot to oscillate and also blocked restore decisions after the
+        torso had shifted while squatting:
           cycle 1: target low → lower torso → torso_z drops
           cycle 2: current torso_z is lower → sphere check says target now reachable
                    → no adjustment → legs go back to default → repeat
 
-        With default_torso_z as reference the computation gives identical results
-        every cycle for the same target position, so the leg targets converge.
+        With the default torso pose as reference the computation gives identical
+        results every cycle for the same target position, so the leg targets converge.
 
         If the target is reachable from the default height and legs have been lowered,
         returns the default joint values to restore the torso (no oscillation since
@@ -2361,27 +2367,30 @@ class CommandController:
         target_world_position = np.asarray(target_world_position, dtype=np.float64)
         ref = self.default_leg_joints if self.default_leg_joints else dict(GALBOT_LEG_DEFAULT)
 
-        # Use stable default torso_z as reference (never current value).
-        torso_z_ref = self.default_torso_z
-        if torso_z_ref is None:
+        # Use the stable default torso pose as reference (never the current lowered pose).
+        torso_pose_ref = self.default_torso_pose
+        if torso_pose_ref is None:
             # Fallback: read current on first call before init is done
-            torso_z_ref = self._get_torso_world_z()
-        if torso_z_ref is None:
-            print("[Vertical] Cannot compute torso Z reference, skipping adjustment")
-            return None
-
-        torso_pos = self._get_torso_world_pose()
-        if torso_pos is None:
+            torso_pose_ref = self._get_torso_world_pose()
+        if torso_pose_ref is None:
             print("[Vertical] Cannot compute torso pose reference, skipping adjustment")
             return None
+        torso_pose_ref = np.asarray(torso_pose_ref, dtype=np.float64)
+        torso_z_ref = float(torso_pose_ref[2])
 
         target_world_z = float(target_world_position[2])
-        horizontal_distance = float(np.linalg.norm(target_world_position[:2] - torso_pos[:2]))
+        horizontal_distance = float(np.linalg.norm(target_world_position[:2] - torso_pose_ref[:2]))
+        current_torso_z = self._get_torso_world_z()
+        torso_is_lowered = current_torso_z is not None and (torso_z_ref - current_torso_z) > 0.01
 
         # Approximate shoulder height + minimum reachable Z for this XY distance.
         usable_radius = max(0.0, GALBOT_ARM_REACH_RADIUS - GALBOT_REACH_SAFETY_MARGIN)
         shoulder_z = torso_z_ref + GALBOT_SHOULDER_Z_ABOVE_TORSO
         if horizontal_distance >= usable_radius:
+            if torso_is_lowered:
+                print(f"[Vertical] target_xy_dist={horizontal_distance:.3f} exceeds usable reach radius "
+                      f"{usable_radius:.3f}; restoring legs to default because lowering is not helping.")
+                return dict(ref)
             print(f"[Vertical] target_xy_dist={horizontal_distance:.3f} exceeds usable reach radius "
                   f"{usable_radius:.3f}; skip torso lowering because it is not a height-only case.")
             return None
@@ -2391,8 +2400,7 @@ class CommandController:
         if target_world_z >= min_reach_z:
             # Target is reachable from the default height.
             # If legs are currently lowered, schedule a restore to default.
-            current_torso_z = self._get_torso_world_z()
-            if current_torso_z is not None and (torso_z_ref - current_torso_z) > 0.01:
+            if torso_is_lowered:
                 print(f"[Vertical] target_z={target_world_z:.3f} >= min_reach_z={min_reach_z:.3f} "
                       f"at xy_dist={horizontal_distance:.3f}. "
                       f"Restoring legs to default (torso at {current_torso_z:.3f}, "

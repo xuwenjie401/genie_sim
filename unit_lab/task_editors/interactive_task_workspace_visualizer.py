@@ -282,6 +282,91 @@ def create_colored_cube(path: str, color: np.ndarray, opacity: float = 1.0):
     return prim
 
 
+def create_bounding_box(root_path: str, color: np.ndarray, opacity: float = 1.0) -> None:
+    create_prim(root_path, prim_type="Xform")
+    for axis_name in ("x", "y", "z"):
+        for edge_index in range(4):
+            edge = create_colored_cube(f"{root_path}/edge_{axis_name}_{edge_index:02d}", color, opacity=opacity)
+            set_local_matrix(edge, np.diag([1.0, 1.0, 1.0, 1.0]))
+
+
+def scale_translate_matrix(scale: list[float] | np.ndarray, translation: list[float] | np.ndarray) -> np.ndarray:
+    sx, sy, sz = (float(value) for value in scale)
+    tx, ty, tz = (float(value) for value in translation)
+    return np.array(
+        [
+            [sx, 0.0, 0.0, tx],
+            [0.0, sy, 0.0, ty],
+            [0.0, 0.0, sz, tz],
+            [0.0, 0.0, 0.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
+
+
+def workspace_outline_thickness(size: list[float] | np.ndarray) -> float:
+    size_values = np.asarray([float(value) for value in list(size)[:3]], dtype=np.float64)
+    if size_values.size < 3:
+        size_values = np.pad(size_values, (0, 3 - size_values.size), constant_values=0.1)
+    min_dim = max(float(np.min(size_values)), 0.001)
+    return min(max(min_dim * 0.08, 0.004), 0.02)
+
+
+def set_bounding_box_geometry(stage, root_path: str, size: list[float] | np.ndarray, thickness: float) -> None:
+    size_values = [float(value) for value in list(size)[:3]]
+    if len(size_values) < 3:
+        size_values.extend([0.001] * (3 - len(size_values)))
+    x_size, y_size, z_size = (max(value, 0.001) for value in size_values)
+    thickness = max(0.001, min(float(thickness), x_size, y_size, z_size))
+
+    edge_specs: list[tuple[str, int, tuple[float, float, float], tuple[float, float, float]]] = []
+    for edge_index, (y_sign, z_sign) in enumerate(((-1.0, -1.0), (-1.0, 1.0), (1.0, -1.0), (1.0, 1.0))):
+        edge_specs.append(
+            (
+                "x",
+                edge_index,
+                (0.0, y_sign * y_size / 2.0, z_sign * z_size / 2.0),
+                (x_size, thickness, thickness),
+            )
+        )
+    for edge_index, (x_sign, z_sign) in enumerate(((-1.0, -1.0), (-1.0, 1.0), (1.0, -1.0), (1.0, 1.0))):
+        edge_specs.append(
+            (
+                "y",
+                edge_index,
+                (x_sign * x_size / 2.0, 0.0, z_sign * z_size / 2.0),
+                (thickness, y_size, thickness),
+            )
+        )
+    for edge_index, (x_sign, y_sign) in enumerate(((-1.0, -1.0), (-1.0, 1.0), (1.0, -1.0), (1.0, 1.0))):
+        edge_specs.append(
+            (
+                "z",
+                edge_index,
+                (x_sign * x_size / 2.0, y_sign * y_size / 2.0, 0.0),
+                (thickness, thickness, z_size),
+            )
+        )
+
+    for axis_name, edge_index, translation, scale in edge_specs:
+        prim = stage.GetPrimAtPath(f"{root_path}/edge_{axis_name}_{edge_index:02d}")
+        if prim and prim.IsValid():
+            set_local_matrix(prim, scale_translate_matrix(scale, translation))
+
+
+def normalize_blocked_zone(value: Any) -> list[list[float]] | None:
+    if not isinstance(value, list) or len(value) != 2:
+        return None
+
+    blocked_zone: list[list[float]] = []
+    for axis_range in value:
+        if not isinstance(axis_range, list):
+            return None
+        low, high = ensure_vector(axis_range, 2, 0.0)
+        blocked_zone.append([min(float(low), float(high)), max(float(low), float(high))])
+    return blocked_zone
+
+
 def ensure_prim_path(stage, prim_path: str, leaf_type: str = "Xform"):
     prim_path = str(prim_path).strip()
     sdf_path = Sdf.Path(prim_path)
@@ -528,6 +613,9 @@ class TaskWorkspaceEditor:
                 workspace["position"] = ensure_vector(workspace.get("position"), 3, 0.0)
                 workspace["quaternion"] = normalize_quaternion_wxyz(workspace.get("quaternion"))
                 workspace["size"] = ensure_vector(workspace.get("size"), 3, 0.1)
+                blocked_zone = normalize_blocked_zone(workspace.get("blocked_zone"))
+                if blocked_zone is not None:
+                    workspace["blocked_zone"] = blocked_zone
 
     def _resolve_workspace_entries(self) -> dict[str, dict[str, Any]]:
         workspaces = self.task_data.get("scene", {}).get("function_space_objects", {})
@@ -879,8 +967,9 @@ class TaskWorkspaceEditor:
         build_axes_marker(f"{prim_path}/axes", axis_len=0.14, axis_thickness=0.008)
         center_cube = create_colored_cube(f"{prim_path}/center", COLOR_WORKSPACE, opacity=0.95)
         set_local_matrix(center_cube, np.diag([0.025, 0.025, 0.025, 1.0]))
-        volume_cube = create_colored_cube(f"{prim_path}/volume", COLOR_WORKSPACE, opacity=0.18)
-        set_local_matrix(volume_cube, np.diag([1.0, 1.0, 1.0, 1.0]))
+        create_bounding_box(f"{prim_path}/volume_bbox", COLOR_WORKSPACE, opacity=0.95)
+        blocked_zone_cube = create_colored_cube(f"{prim_path}/blocked_zone", COLOR_BLOCKED, opacity=0.0)
+        set_local_matrix(blocked_zone_cube, np.diag([0.001, 0.001, 0.001, 1.0]))
         self.handle_records[self._workspace_handle_key(workspace_id)] = HandleRecord(
             key=self._workspace_handle_key(workspace_id),
             kind="workspace",
@@ -953,20 +1042,36 @@ class TaskWorkspaceEditor:
         prim = self.stage.GetPrimAtPath(handle.prim_path)
         set_local_matrix(prim, self._workspace_world_matrix(workspace_id))
 
-        volume_prim = self.stage.GetPrimAtPath(f"{handle.prim_path}/volume")
         size = ensure_vector(workspace.get("size"), 3, 0.1)
-        set_local_matrix(
-            volume_prim,
-            np.array(
-                [
-                    [size[0], 0.0, 0.0, 0.0],
-                    [0.0, size[1], 0.0, 0.0],
-                    [0.0, 0.0, size[2], 0.0],
-                    [0.0, 0.0, 0.0, 1.0],
-                ],
-                dtype=np.float64,
-            ),
+        set_bounding_box_geometry(
+            self.stage,
+            f"{handle.prim_path}/volume_bbox",
+            size,
+            thickness=workspace_outline_thickness(size),
         )
+
+        blocked_zone_prim = self.stage.GetPrimAtPath(f"{handle.prim_path}/blocked_zone")
+        blocked_zone = normalize_blocked_zone(workspace.get("blocked_zone"))
+        if not blocked_zone_prim or not blocked_zone_prim.IsValid():
+            return
+        if blocked_zone is None:
+            set_display_color(blocked_zone_prim, COLOR_BLOCKED, opacity=0.0)
+            set_local_matrix(blocked_zone_prim, np.diag([0.001, 0.001, 0.001, 1.0]))
+            return
+
+        x_range, y_range = blocked_zone
+        blocked_zone_size = [
+            max(x_range[1] - x_range[0], 0.001),
+            max(y_range[1] - y_range[0], 0.001),
+            max(float(size[2]), 0.001),
+        ]
+        blocked_zone_center = [
+            (x_range[0] + x_range[1]) / 2.0,
+            (y_range[0] + y_range[1]) / 2.0,
+            0.0,
+        ]
+        set_display_color(blocked_zone_prim, COLOR_BLOCKED, opacity=0.28)
+        set_local_matrix(blocked_zone_prim, scale_translate_matrix(blocked_zone_size, blocked_zone_center))
 
     def _apply_sample_workspace_state(self, workspace_id: str, workspace: dict[str, Any]) -> None:
         for pose_index, pose_entry in enumerate(workspace.get("poses", [])):

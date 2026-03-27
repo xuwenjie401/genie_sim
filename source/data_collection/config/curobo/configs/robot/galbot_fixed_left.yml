@@ -255,8 +255,8 @@ robot_cfg:
 
     extra_links: {
       "attached_object":{
-          # "parent_link_name": "right_arm_link7",
-          "parent_link_name": "right_gripper_base_link",
+          "parent_link_name": "right_gripper_tcp_link",
+          # "parent_link_name": "right_gripper_base_link",
           "link_name": "attached_object",
           # "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
           "fixed_transform": [0,0,0,1,0,0,0],
@@ -264,8 +264,8 @@ robot_cfg:
           "joint_name": "attach_joint"
         },
         "left_attached_object": {
-          # "parent_link_name": "left_arm_link7",
-          "parent_link_name": "left_gripper_base_link",
+          "parent_link_name": "left_gripper_tcp_link",
+          # "parent_link_name": "left_gripper_base_link",
           "link_name": "left_attached_object",
           # "fixed_transform": [0,0,0.14,0.707,0.0,0.0,-0.707],
           "fixed_transform": [0,0,0,1,0,0,0],
@@ -275,34 +275,34 @@ robot_cfg:
     }
     lock_joints: {
       "leg_joint1": 0.5236, "leg_joint2": 1.0821, "leg_joint3": 0.6109, "leg_joint4": 0.0, "leg_joint5": 0.0,
-      # "head_joint1": 0.0, "head_joint2": 0.0,
-      "right_arm_joint1": -1.932, "right_arm_joint2": 1.365, "right_arm_joint3": 0.6109, "right_arm_joint4": 2.4784, "right_arm_joint5": 0.173, "right_arm_joint6": 0.039, "right_arm_joint7": 0.0,
-      # "left_arm_joint1": 1.932, "left_arm_joint2": -1.365, "left_arm_joint3": -0.6109, "left_arm_joint4": -2.4784, "left_arm_joint5": -0.173, "left_arm_joint6": -0.039, "left_arm_joint7": 0.0,
+      "head_joint1": 0.0, "head_joint2": 0.3,
+      "right_arm_joint1": -1.90, "right_arm_joint2": 1.43, "right_arm_joint3": 0.69, "right_arm_joint4": 2.42, "right_arm_joint5": 0.27, "right_arm_joint6": -0.498, "right_arm_joint7": 0.03,
+      # "left_arm_joint1": 1.90, "left_arm_joint2": -1.43, "left_arm_joint3": -0.69, "left_arm_joint4": -2.42, "left_arm_joint5": -0.27, "left_arm_joint6": 0.498, "left_arm_joint7": 0.03,
       "left_gripper_r_knuckle_joint": 0.0, "right_gripper_r_knuckle_joint": 0.0
     }
 
     cspace:
       joint_names: [
         "leg_joint1", "leg_joint2", "leg_joint3", "leg_joint4", "leg_joint5", 
-        "head_joint1", "head_joint2",
+        # "head_joint1", "head_joint2",
         "left_arm_joint1", "left_arm_joint2", "left_arm_joint3", "left_arm_joint4", "left_arm_joint5", "left_arm_joint6", "left_arm_joint7",
         # "right_arm_joint1", "right_arm_joint2", "right_arm_joint3", "right_arm_joint4", "right_arm_joint5", "right_arm_joint6", "right_arm_joint7"
       ]
       retract_config: [
         0.5236, 1.0821, 0.6109, 0.0, 0.0,
-        0.0, 0.0,
-        1.932, -1.365, -0.6109, -2.4784, -0.173, -0.039, 0.0,
-        # -1.932, 1.365, 0.6109, 2.4784, 0.173, 0.039, 0.0
+        # 0.0, 0.0,
+        1.90, -1.43, -0.69, -2.42, -0.27, 0.498, 0.03,
+        # -1.90, 1.43, 0.69, 2.42, 0.27, -0.498, 0.03
       ]
       null_space_weight: [
         1.0, 1.0, 1.0, 1.0, 1.0,
-        1.0, 1.0,
+        # 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
         # 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,        
       ]
       cspace_distance_weight: [
         1.0, 1.0, 1.0, 1.0, 1.0,
-        1.0, 1.0,
+        # 1.0, 1.0,
         1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
         # 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
       ]
