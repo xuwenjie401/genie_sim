@@ -13,7 +13,7 @@ robot_cfg:
     ee_link: "right_gripper_tcp_link"
 
     collision_link_names: [
-      "torso_base_link", 
+      "torso_base_link", "head_link1", "head_link2",
       "left_arm_link1", "left_arm_link2", "left_arm_link3", "left_arm_link4", "left_arm_link5", "left_arm_link6", "left_arm_link7", 
       "left_gripper_flange_link", "left_gripper_base_link", 
       "left_gripper_l_inner_knuckle_link", "left_gripper_l_knuckle_link", "left_gripper_l_finger_link", "left_gripper_r_inner_knuckle_link", "left_gripper_r_knuckle_link", "left_gripper_r_finger_link", 
@@ -23,6 +23,12 @@ robot_cfg:
     ]
 
     collision_spheres:
+      head_link1:
+        - "center": [0.03, 0.0, 0.05]
+          "radius": 0.1
+      head_link2:
+        - "center": [0.0, 0.0, 0.0]
+          "radius": 0.001
       torso_base_link:
         - "center": [0.0, 0.14, 0.0]
           "radius": 0.14
@@ -185,7 +191,9 @@ robot_cfg:
 
     self_collision_ignore:
       {
-        "torso_base_link": ['left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
+        "head_link1": ["head_link2", "torso_base_link"],
+        "head_link2": ["head_link1", "torso_base_link"],
+        "torso_base_link": ['head_link1', 'head_link2', 'left_arm_link1', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
         "left_arm_link1": ['torso_base_link', 'left_arm_link2', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
         "left_arm_link2": ['torso_base_link', 'left_arm_link1', 'left_arm_link3', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
         "left_arm_link3": ['torso_base_link', 'left_arm_link1', 'left_arm_link2', 'left_arm_link4', 'left_arm_link5', 'left_arm_link6', 'left_arm_link7', 'left_gripper_flange_link', 'left_gripper_base_link', 'left_gripper_l_inner_knuckle_link', 'left_gripper_l_knuckle_link', 'left_gripper_l_finger_link', 'left_gripper_r_inner_knuckle_link', 'left_gripper_r_knuckle_link', 'left_gripper_r_finger_link', 'right_arm_link1', 'right_arm_link2', 'right_arm_link3', 'right_arm_link4', 'right_arm_link5', 'right_arm_link6', 'right_arm_link7', 'right_gripper_flange_link', 'right_gripper_base_link', 'right_gripper_l_inner_knuckle_link', 'right_gripper_l_knuckle_link', 'right_gripper_l_finger_link', 'right_gripper_r_inner_knuckle_link', 'right_gripper_r_knuckle_link', 'right_gripper_r_finger_link'],
@@ -274,10 +282,10 @@ robot_cfg:
         }
     }
     lock_joints: {
-      "leg_joint1": 0.5236, "leg_joint2": 1.0821, "leg_joint3": 0.6109, "leg_joint4": 0.0, "leg_joint5": 0.0,
+      "leg_joint1": 0.61, "leg_joint2": 1.16, "leg_joint3": 0.537, "leg_joint4": 0.0, "leg_joint5": 0.0,
       "head_joint1": 0.0, "head_joint2": 0.3,
-      # "right_arm_joint1": -1.90, "right_arm_joint2": 1.43, "right_arm_joint3": 0.69, "right_arm_joint4": 2.42, "right_arm_joint5": 0.27, "right_arm_joint6": -0.498, "right_arm_joint7": 0.03,
-      "left_arm_joint1": 1.90, "left_arm_joint2": -1.43, "left_arm_joint3": -0.69, "left_arm_joint4": -2.42, "left_arm_joint5": -0.27, "left_arm_joint6": 0.498, "left_arm_joint7": 0.03,
+      # "right_arm_joint1": -1.90, "right_arm_joint2": 1.43, "right_arm_joint3": 0.69, "right_arm_joint4": 2.42, "right_arm_joint5": 0.27, "right_arm_joint6": -0.498, "right_arm_joint7": 0.0,
+      "left_arm_joint1": 1.90, "left_arm_joint2": -1.43, "left_arm_joint3": -0.69, "left_arm_joint4": -2.42, "left_arm_joint5": -0.27, "left_arm_joint6": 0.498, "left_arm_joint7": 0.0,
       "left_gripper_r_knuckle_joint": 0.0, "right_gripper_r_knuckle_joint": 0.0
     }
 
@@ -289,10 +297,10 @@ robot_cfg:
         "right_arm_joint1", "right_arm_joint2", "right_arm_joint3", "right_arm_joint4", "right_arm_joint5", "right_arm_joint6", "right_arm_joint7"
       ]
       retract_config: [
-        0.5236, 1.0821, 0.6109, 0.0, 0.0,
+        0.61, 1.16, 0.537, 0.0, 0.0,
         # 0.0, 0.0,
-        # 1.90, -1.43, -0.69, -2.42, -0.27, 0.498, 0.03,
-        -1.90, 1.43, 0.69, 2.42, 0.27, -0.498, 0.03
+        # 1.90, -1.43, -0.69, -2.42, -0.27, 0.498, 0.0,
+        -1.90, 1.43, 0.69, 2.42, 0.27, -0.498, 0.0
       ]
       null_space_weight: [
         1.0, 1.0, 1.0, 1.0, 1.0,

@@ -7,11 +7,13 @@ Usage:
 
 Dependencies:
     - tkinter (usually available with Python)
-    - Pillow (`pip install Pillow`) for JPEG loading in the viewer
+    - Pillow (`pip install Pillow`) for image rendering in the viewer
+    - ffmpeg/ffprobe in PATH when using MP4-backed playback
 
 This viewer uses `state.json` as the frame source for joints and end-effector
-poses, and the extracted `camera/<frame_id>/...jpg` files for image playback.
-It also prints MP4 frame counts via `ffprobe` when videos exist.
+poses. For image playback it prefers extracted `camera/<frame_id>/...jpg`
+frames, and falls back to `observations/videos/*.mp4` when raw frame folders
+are absent. It also prints MP4 frame counts via `ffprobe` when videos exist.
 """
 
 from __future__ import annotations
@@ -49,6 +51,25 @@ IMAGE_CANDIDATES = {
     "head": ["head_color.jpg", "head_front_left_color.jpg", "head_front_color.jpg"],
     "left": ["hand_left_color.jpg", "left_arm_color.jpg"],
     "right": ["hand_right_color.jpg", "right_arm_color.jpg"],
+}
+
+VIDEO_CANDIDATES = {
+    "head": [
+        "head_color.mp4",
+        "head_front_color.mp4",
+        "head_front_left_color.mp4",
+        "head_front_left_color_color.mp4",
+    ],
+    "left": [
+        "hand_left_color.mp4",
+        "left_arm_color.mp4",
+        "left_arm_color_color.mp4",
+    ],
+    "right": [
+        "hand_right_color.mp4",
+        "right_arm_color.mp4",
+        "right_arm_color_color.mp4",
+    ],
 }
 
 # Fonts ordered by preference; X11-native names come first because modern
@@ -340,6 +361,150 @@ def find_image_for_frame(camera_dir: Path, logical_name: str) -> Path | None:
     return None
 
 
+def find_video_for_logical_name(videos_dir: Path, logical_name: str) -> Path | None:
+    for candidate in VIDEO_CANDIDATES[logical_name]:
+        candidate_path = videos_dir / candidate
+        if candidate_path.is_file():
+            return candidate_path
+    return None
+
+
+def probe_video_size(video_path: Path) -> tuple[int, int] | None:
+    cmd = [
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height",
+        "-of",
+        "json",
+        str(video_path),
+    ]
+    try:
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        payload = json.loads(result.stdout or "{}")
+    except (FileNotFoundError, subprocess.CalledProcessError, json.JSONDecodeError):
+        return None
+
+    streams = payload.get("streams") or []
+    if not streams:
+        return None
+    width = int(streams[0].get("width") or 0)
+    height = int(streams[0].get("height") or 0)
+    if width <= 0 or height <= 0:
+        return None
+    return width, height
+
+
+class FFmpegVideoReader:
+    def __init__(self, video_path: Path):
+        self.video_path = video_path
+        self.size = probe_video_size(video_path)
+        self.width = self.size[0] if self.size else 0
+        self.height = self.size[1] if self.size else 0
+        self.frame_bytes = self.width * self.height * 3
+        self.process: subprocess.Popen[bytes] | None = None
+        self.next_frame_idx = 0
+        self.cache: dict[int, Image.Image] = {}
+        self.cache_order: list[int] = []
+        self.cache_limit = 8
+
+    def close(self) -> None:
+        if self.process is None:
+            return
+        if self.process.stdout is not None:
+            self.process.stdout.close()
+        try:
+            self.process.terminate()
+            self.process.wait(timeout=1.0)
+        except subprocess.TimeoutExpired:
+            self.process.kill()
+            self.process.wait(timeout=1.0)
+        finally:
+            self.process = None
+
+    def read_frame(self, frame_idx: int) -> Image.Image | None:
+        if frame_idx < 0 or self.frame_bytes <= 0:
+            return None
+        cached = self.cache.get(frame_idx)
+        if cached is not None:
+            return cached.copy()
+        if self.process is None or frame_idx < self.next_frame_idx:
+            if not self._start():
+                return None
+        while self.next_frame_idx <= frame_idx:
+            frame = self._read_one_frame()
+            if frame is None:
+                return None
+            current_idx = self.next_frame_idx
+            self.next_frame_idx += 1
+            self._cache_frame(current_idx, frame)
+            if current_idx == frame_idx:
+                return frame
+        return None
+
+    def _start(self) -> bool:
+        self.close()
+        if self.frame_bytes <= 0:
+            return False
+        cmd = [
+            "ffmpeg",
+            "-loglevel",
+            "error",
+            "-i",
+            str(self.video_path),
+            "-f",
+            "rawvideo",
+            "-pix_fmt",
+            "rgb24",
+            "-vsync",
+            "0",
+            "-",
+        ]
+        try:
+            self.process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+            )
+        except FileNotFoundError:
+            self.process = None
+            return False
+        self.next_frame_idx = 0
+        return True
+
+    def _read_one_frame(self) -> Image.Image | None:
+        if self.process is None or self.process.stdout is None:
+            return None
+        payload = self._read_exact(self.frame_bytes)
+        if payload is None:
+            self.close()
+            return None
+        return Image.frombytes("RGB", (self.width, self.height), payload)
+
+    def _read_exact(self, size: int) -> bytes | None:
+        if self.process is None or self.process.stdout is None:
+            return None
+        chunks: list[bytes] = []
+        remaining = size
+        while remaining > 0:
+            chunk = self.process.stdout.read(remaining)
+            if not chunk:
+                return None
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        return b"".join(chunks)
+
+    def _cache_frame(self, frame_idx: int, image: Image.Image) -> None:
+        self.cache[frame_idx] = image.copy()
+        self.cache_order.append(frame_idx)
+        while len(self.cache_order) > self.cache_limit:
+            stale_idx = self.cache_order.pop(0)
+            self.cache.pop(stale_idx, None)
+
+
 class RecordingViewer:
     def __init__(
         self,
@@ -384,6 +549,15 @@ class RecordingViewer:
         self.root.configure(bg="#f5f1e8")
         self.ui_font_family = self._pick_ui_font_family(font_family_override)
         self.mono_font_family = self._pick_mono_font_family()
+        self.videos_dir = self.recording_dir / "observations" / "videos"
+        self.video_paths = {
+            logical_name: find_video_for_logical_name(self.videos_dir, logical_name)
+            for logical_name in ("head", "left", "right")
+        }
+        self.video_readers = {
+            logical_name: (FFmpegVideoReader(video_path) if video_path is not None else None)
+            for logical_name, video_path in self.video_paths.items()
+        }
         self.image_labels: dict[str, tk.Label] = {}
         self.pose_image_labels: dict[str, tk.Label] = {}
         self.text_widgets: dict[str, tk.Text] = {}
@@ -413,6 +587,7 @@ class RecordingViewer:
         counts = (
             f"state/joints/eef frames: {self.frame_count} | "
             f"camera frame dirs: {self._count_camera_dirs()} | "
+            f"mp4 panes: {self._count_available_videos()}/3 | "
             f"mono: {self.mono_font_family}"
         )
         if self.mp4_counts:
@@ -683,6 +858,9 @@ class RecordingViewer:
         if self.after_id is not None:
             self.root.after_cancel(self.after_id)
             self.after_id = None
+        for reader in self.video_readers.values():
+            if reader is not None:
+                reader.close()
         self.root.destroy()
 
     def schedule_next(self) -> None:
@@ -710,12 +888,11 @@ class RecordingViewer:
 
     def render_frame(self) -> None:
         frame = self.frame_data[self.frame_idx]
-        camera_dir = self.recording_dir / "camera" / str(self.frame_idx)
         self._image_refs = []
 
         for logical_name in ("head", "left", "right"):
-            image_path = find_image_for_frame(camera_dir, logical_name)
-            self._render_image(logical_name, image_path)
+            image = self._load_frame_image(logical_name, self.frame_idx)
+            self._render_image(logical_name, image)
 
         joint_names = self.joint_names
         joint_values = self._get_joint_values_for_frame(self.frame_idx)
@@ -750,15 +927,24 @@ class RecordingViewer:
             "keys: Space play/pause, Left/Right step, Up/+/= faster, Down/- slower, Esc quit"
         )
 
-    def _render_image(self, logical_name: str, image_path: Path | None) -> None:
+    def _load_frame_image(self, logical_name: str, frame_idx: int) -> Image.Image | None:
+        camera_dir = self.recording_dir / "camera" / str(frame_idx)
+        image_path = find_image_for_frame(camera_dir, logical_name)
+        if image_path is not None and image_path.is_file():
+            return Image.open(image_path).convert("RGB")
+        reader = self.video_readers.get(logical_name)
+        if reader is None:
+            return None
+        return reader.read_frame(frame_idx)
+
+    def _render_image(self, logical_name: str, image: Image.Image | None) -> None:
         label = self.image_labels[logical_name]
-        if image_path is None or not image_path.is_file():
+        if image is None:
             if hasattr(label, "_base_pil_image"):
                 delattr(label, "_base_pil_image")
             label.configure(text="missing image", image="")
             return
 
-        image = Image.open(image_path).convert("RGB")
         scale = self.image_width / max(image.width, 1)
         image = image.resize((self.image_width, max(int(image.height * scale), 1)))
         label._base_pil_image = image
@@ -899,6 +1085,9 @@ class RecordingViewer:
             return 0
         return sum(1 for p in camera_dir.iterdir() if p.is_dir() and p.name.isdigit())
 
+    def _count_available_videos(self) -> int:
+        return sum(1 for path in self.video_paths.values() if path is not None)
+
     def _pick_mono_font_family(self) -> str:
         available = set(tkfont.families(self.root))
         normalized = {family.lower(): family for family in available}
@@ -974,7 +1163,7 @@ def main() -> int:
         extracted_camera_frames = sum(1 for p in camera_dir.iterdir() if p.is_dir() and p.name.isdigit())
         print(f"camera folder frame count: {extracted_camera_frames}")
     else:
-        print("camera folder frame count: missing camera directory")
+        print("camera folder frame count: missing camera directory; viewer will use MP4 fallback")
 
     viewer = RecordingViewer(
         recording_dir=recording_dir,

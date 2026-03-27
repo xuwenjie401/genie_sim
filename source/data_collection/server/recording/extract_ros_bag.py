@@ -104,6 +104,15 @@ def merge_camera(root):
     logger.info("Camera merged and original files deleted.")
 
 
+def delete_camera(root):
+    camera_dir = Path(root) / "camera"
+    if not camera_dir.exists():
+        logger.info("camera directory does not exist, skipping cleanup")
+        return
+    shutil.rmtree(camera_dir)
+    logger.info(f"Deleted temporary camera directory: {camera_dir}")
+
+
 def check_camera(root: str):
     REQUIRED = [
         "hand_left_color.jpg",
@@ -346,13 +355,21 @@ class RosExtrater:
             self.articulated_object_names.append(name)
         self.frame_status = task_info["frame_status"]
         self.fps = task_info["fps"]
-        self.with_img = True
-        self.with_video = True
+        self.with_img = bool(task_info.get("keep_camera_frames", task_info.get("with_img", False)))
+        self.with_video = bool(task_info.get("with_video", True))
         self.with_senmatic = is_senmatic
+        self.needs_camera_frames = self.with_img or self.with_video or self.with_senmatic
         self.light_config = task_info["light_config"]
         self.gripper_names = task_info["gripper_names"]
         self.playback_timerange = task_info["playback_timerange"]
         self.imag_file_name = []
+        if not self.with_img:
+            for camera_cfg in self.camera_info.values():
+                output_cfg = camera_cfg.get("output")
+                if not isinstance(output_cfg, dict):
+                    continue
+                video_output = output_cfg.get("video")
+                camera_cfg["output"] = {"video": video_output} if video_output else {}
         self.left_gripper_center_name = task_info["end_effector_center_prim_path"]["left"].split(
             "/"
         )[-1]
@@ -973,7 +990,7 @@ class RosExtrater:
                     "fps": self.fps,
                 }
 
-                if self.with_img:
+                if self.needs_camera_frames:
                     img_frames = 1 if img_frames == 0 else img_frames
                     result["replay_factor"] = round(physics_message_step / img_frames) * 3
 
@@ -1036,7 +1053,7 @@ class RosExtrater:
                 pic_idx = -1
 
                 for idx, ts in enumerate(chunk):
-                    if self.with_img:
+                    if self.needs_camera_frames:
                         if in_playback_time(ts, self.playback_timerange):
                             continue
                         pic_idx += 1
@@ -1593,11 +1610,13 @@ class RosExtrater:
 
             delete_db3_files(self.output_dir)
             delete_mcap_files(self.output_dir)
-            merge_camera(self.output_dir)
-            check_camera(self.output_dir)
+            if self.needs_camera_frames:
+                merge_camera(self.output_dir)
+                check_camera(self.output_dir)
             merge_state_json(self.output_dir)
             merge_h5(self.output_dir)
 
+            video_generation_ok = True
             if self.with_video:
                 try:
                     logger.info(self.output_dir)
@@ -1623,6 +1642,7 @@ class RosExtrater:
                                     "30",
                                     f"{self.output_dir}/observations/videos/{image_file}.mp4",
                                 ],
+                                check=True,
                             )
                         else:
                             # Use compressed encoding for RGB videos
@@ -1649,13 +1669,19 @@ class RosExtrater:
                                     "+faststart",
                                     f"{self.output_dir}/observations/videos/{image_file}.mp4",
                                 ],
+                                check=True,
                             )
                     logger.info(f"Video file saved to {self.output_dir}")
                     subprocess.run(["rm", "-Rf", f"{self.output_dir}/{file_name}.db3"])
                     logger.info("Successfully transfer h264")
                 except subprocess.CalledProcessError as e:
-                    logger.error(f"Error removing file: {e}")
-                    sys.exit(1)
+                    video_generation_ok = False
+                    logger.error(f"Error generating camera videos: {e}")
+            if self.needs_camera_frames and not self.with_img:
+                if self.with_video and not video_generation_ok:
+                    logger.warning("Video generation failed; keeping raw camera frames for debugging")
+                else:
+                    delete_camera(self.output_dir)
 
 
 if __name__ == "__main__":

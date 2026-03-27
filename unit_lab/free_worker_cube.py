@@ -2268,7 +2268,7 @@ class TaskManager:
         init_settings["robot_cfg_file"] = self.cfg.robot_json
         init_settings["robot_usd_path"] = "robot/galbot/galbot_fixed.usda"
         init_settings["scene_usd_path"] = "background/home_b/home_b_00.usda"
-        init_settings["target_position"] = [2.15, 0.7757971635415469, 0.0]
+        init_settings["target_position"] = [1.9, 0.7757971635415469, 0.0]
         init_settings["target_rotation"] = [1, 0, 0, 0]
         init_settings["stand_type"] = "cylinder"
         init_settings["stand_size_x"] = 0.1
