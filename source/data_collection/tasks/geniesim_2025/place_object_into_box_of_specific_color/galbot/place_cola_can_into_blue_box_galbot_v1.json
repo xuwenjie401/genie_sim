@@ -32,11 +32,6 @@
                         "mass": 0.05
                     },
                     {
-                        "data_info_dir": "objects/benchmark/toy_car/benchmark_toy_car_018/",
-                        "object_id": "geniesim_2025_toy_car_018",
-                        "mass": 0.05
-                    },
-                    {
                         "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_072/",
                         "object_id": "geniesim_2025_building_blocks_072",
                         "mass": 0.05
@@ -44,11 +39,6 @@
                     {
                         "data_info_dir": "objects/benchmark/bowl/benchmark_bowl_025/",
                         "object_id": "geniesim_2025_bowl_025",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/cup/benchmark_cup_043/",
-                        "object_id": "geniesim_2025_cup_043",
                         "mass": 0.05
                     },
                     {
@@ -73,7 +63,22 @@
                     },
                     {
                         "data_info_dir": "objects/benchmark/bottle/benchmark_bottle_017/",
-                        "object_id": "geniesim_2025_snack_000",
+                        "object_id": "geniesim_2025_bottle_017",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+                        "object_id": "geniesim_2025_apple_000",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/green_apple/benchmark_green_apple_000/",
+                        "object_id": "geniesim_2025_green_apple_000",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/fruit/benchmark_fruit_021/",
+                        "object_id": "geniesim_2025_fruit_021",
                         "mass": 0.05
                     }
                 ]
@@ -84,7 +89,7 @@
                 "candidate_objects": [
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_006/",
-                        "object_id": "geniesim_2025_storage_box_006_green"
+                        "object_id": "geniesim_2025_storage_box_006_mint_green"
                     },
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_008/",
@@ -92,18 +97,18 @@
                     },
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_009/",
-                        "object_id": "geniesim_2025_storage_box_009_red"
+                        "object_id": "geniesim_2025_storage_box_009_pink"
                     },
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_010/",
-                        "object_id": "geniesim_2025_storage_box_010_grey"
+                        "object_id": "geniesim_2025_storage_box_010_gray"
                     },
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_011/",
                         "object_id": "geniesim_2025_storage_box_011_black"
                     }
                 ],
-                "mass": 1000,
+                "mass": 1000.0,
                 "object_id": "geniesim_2025_storage_box_2",
                 "workspace_id": "box_poses",
                 "workspace_relative_position": [
@@ -119,8 +124,7 @@
                 ]
             },
             {
-                "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_007/",
-                "mass": 1000,
+                "mass": 1000.0,
                 "object_id": "geniesim_2025_target_storage_box",
                 "workspace_id": "box_poses",
                 "workspace_relative_position": [
@@ -133,6 +137,12 @@
                     0.5,
                     0.5,
                     0.5
+                ],
+                "candidate_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_007/",
+                        "object_id": "geniesim_2025_storage_box_007_light_blue"
+                    }
                 ]
             },
             {
@@ -140,18 +150,6 @@
                     {
                         "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
                         "object_id": "geniesim_2025_beverage_bottle_001"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_002/",
-                        "object_id": "geniesim_2025_beverage_bottle_002"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_003/",
-                        "object_id": "geniesim_2025_beverage_bottle_003"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
-                        "object_id": "geniesim_2025_beverage_bottle_008"
                     }
                 ],
                 "mass": 0.05,
@@ -167,7 +165,7 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 8,
+        "num_of_episode": 10,
         "noised_probability": 0.1
     },
     "robot": {
@@ -201,7 +199,7 @@
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.9,
+                -0.95,
                 0.0,
                 0.0
             ],
@@ -389,7 +387,7 @@
             }
         }
     ],
-    "task": "place_object_into_box_of_specific_color_blue_galbot",
+    "task": "place_cola_can_into_blue_box_galbot_v1",
     "task_description": {
         "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the blue storage box",
         "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个蓝色的收纳盒",

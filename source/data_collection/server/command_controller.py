@@ -69,10 +69,12 @@ class CommandController:
         publish_ros=False,
         rendering_step=60,
         debug=False,
+        headless=False,
     ):
         self.sim_assets_root = os.environ.get("SIM_ASSETS")
         self.ui_builder = ui_builder
         self.debug = debug
+        self.headless = headless
         self.data = None
         self.Command = 0
         self.data_to_send = None
@@ -139,7 +141,6 @@ class CommandController:
         self.camera_info_list = {}
         self.fps = 60
         self.cur_runtime_checker = None
-
         self.hold_gripper = False
         self.last_controlled_gripper = None
 
@@ -149,6 +150,44 @@ class CommandController:
         # ros
         if publish_ros:
             rclpy.init()
+
+    def _configure_viewport_camera(self, robot_name: str) -> None:
+        if self.headless:
+            logger.info("Headless mode enabled; skipping viewport camera setup")
+            return
+
+        try:
+            camera_state = ViewportCameraState("/OmniverseKit_Persp")
+            view_position = [2.65, 2.4, 1.74]
+            view_target_offset = [2.5, 0.0, 0.5]
+            camera_state.set_position_world(
+                Gf.Vec3d(view_position[0], view_position[1], view_position[2]),
+                True,
+            )
+            camera_state.set_target_world(
+                Gf.Vec3d(
+                    view_target_offset[0],
+                    view_target_offset[1],
+                    view_target_offset[2],
+                ),
+                True,
+            )
+
+            viewport, _window = get_active_viewport_and_window()
+            if viewport is None:
+                logger.warning("No active viewport available; skipping viewport camera setup")
+                return
+
+            if "G1" in robot_name:
+                viewport.set_active_camera("/G1/head_link2/Head_Camera")
+            elif "G2" in robot_name:
+                viewport.set_active_camera("/G2/head_link3/head_front_Camera")
+            elif "agile" in robot_name.lower():
+                viewport.set_active_camera("/aloha_description/body_Link/head_camera")
+            elif "galbot" in robot_name.lower():
+                pass
+        except Exception as exc:
+            logger.warning(f"Failed to configure viewport camera: {exc}")
 
     def _timing_context(self, function_name: str):
         """Timing context manager for counting function execution time"""
@@ -477,42 +516,12 @@ class CommandController:
                     add_reference_to_stage(self.robot_usd_path, "/World_{}".format(idx))
                 add_reference_to_stage(self.scene_usd_path, "/World_{}".format(idx))
                 XFormPrim(prim_path="/World_{}".format(idx), position=[0, 2 * idx + 1, 0])
-            camera_state = ViewportCameraState("/OmniverseKit_Persp")
-            ## home_b
-            # view_position = [1.9634841037804776, 0.9488467163528935, 2.1182000480154555]
-            view_position = [2.65, 2.4, 1.74]
-            view_target_offset = [2.5, 0.0, 0.5]
-            ## kitchen
-            # view_position = [1.0, 1.3, 1.6]
-            # view_target_offset = [0.7, -0.0, 0.8]
-            ## study room
-            # view_position = [-0.3, 0.85, 1.8]
-            # view_target_offset = [0.4, -0.35, 0.8]
-            ## restaurant 
-            # view_position = [-1.0, -5.0, 2.0]
-            # view_target_offset = [-4.0, 0.0, 0.0]
-
-
-            camera_state.set_position_world(
-                Gf.Vec3d(view_position[0], view_position[1], view_position[2]),
-                True,
-            )
-            camera_state.set_target_world(Gf.Vec3d(view_target_offset[0], view_target_offset[1], view_target_offset[2]), True)
             stage = omni.usd.get_context().get_stage()
             self.scene = UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
             self.scene.CreateGravityDirectionAttr().Set(Gf.Vec3f(0.0, 0.0, -1.0))
             self.scene.CreateGravityMagnitudeAttr().Set(9.81)
             robot_rep = rep.get.prims(path_pattern=robot.robot_prim_path, prim_types=["Xform"])
-            viewport, window = get_active_viewport_and_window()
-            if "G1" in robot.robot_name:
-                viewport.set_active_camera("/G1/head_link2/Head_Camera")
-            elif "G2" in robot.robot_name:
-                viewport.set_active_camera("/G2/head_link3/head_front_Camera")
-            elif "agile" in robot.robot_name.lower():
-                viewport.set_active_camera("/aloha_description/body_Link/head_camera")
-            elif "galbot" in robot.robot_name.lower():
-                pass
-                # viewport.set_active_camera("/galbot_one_golf/head_link2/head_front_left_color")
+            self._configure_viewport_camera(robot.robot_name)
             with robot_rep:
                 rep.modify.semantics([("class", "robot")])
             self.robot_cfg = robot

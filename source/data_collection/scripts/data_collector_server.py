@@ -91,6 +91,7 @@ server_function = CommandController(
     publish_ros=args.publish_ros,
     rendering_step=int(1 / rendering_dt),
     debug=args.debug,
+    headless=args.headless,
 )
 rpc_server = GrpcServer(server_function=server_function)
 rpc_server.start()
