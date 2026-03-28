@@ -27,6 +27,11 @@ import time
 from pathlib import Path
 from typing import Any
 
+try:
+    import termios
+except ImportError:  # pragma: no cover - non-POSIX platforms
+    termios = None
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 DATA_COLLECTION_ROOT = SCRIPT_DIR.parent
 if str(DATA_COLLECTION_ROOT) not in sys.path:
@@ -112,6 +117,28 @@ MONO_FONT_CANDIDATES = [
 ]
 
 DEFAULT_UI_FONT_FAMILY = "Helvetica"
+
+
+def capture_terminal_state() -> list[Any] | None:
+    if termios is None:
+        return None
+    try:
+        if not sys.stdin.isatty():
+            return None
+        return termios.tcgetattr(sys.stdin.fileno())
+    except Exception:
+        return None
+
+
+def restore_terminal_state(saved_state: list[Any] | None) -> None:
+    if termios is None or saved_state is None:
+        return
+    try:
+        if not sys.stdin.isatty():
+            return
+        termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, saved_state)
+    except Exception:
+        pass
 
 
 def parse_args() -> argparse.Namespace:
@@ -503,6 +530,7 @@ class FFmpegVideoReader:
             "ffmpeg",
             "-loglevel",
             "error",
+            "-nostdin",
             "-i",
             str(self.video_path),
             "-f",
@@ -516,6 +544,7 @@ class FFmpegVideoReader:
         try:
             self.process = subprocess.Popen(
                 cmd,
+                stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
             )
@@ -1335,70 +1364,74 @@ class RecordingViewer:
 
 
 def main() -> int:
+    saved_terminal_state = capture_terminal_state()
     args = parse_args()
-    if args.list_fonts:
-        root = tk.Tk()
-        root.withdraw()
-        for family in sorted(tkfont.families(root)):
-            print(family)
-        root.destroy()
+    try:
+        if args.list_fonts:
+            root = tk.Tk()
+            root.withdraw()
+            for family in sorted(tkfont.families(root)):
+                print(family)
+            root.destroy()
+            return 0
+        if not args.recording_dir:
+            raise SystemExit("Missing required argument: --dir/--recording-dir")
+        recording_dir = Path(args.recording_dir).expanduser().resolve()
+
+        frames, state_source = load_state_frames(recording_dir)
+        if not frames:
+            raise SystemExit(f"No frames found in {state_source}")
+
+        recording_info_path = recording_dir / "recording_info.json"
+        recording_info = load_json(recording_info_path) if recording_info_path.is_file() else {}
+        playback_fps = float(args.fps or recording_info.get("fps", 30))
+        task_description = load_task_description(recording_dir, recording_info)
+
+        mp4_counts = collect_video_counts(recording_dir)
+        joint_names, joint_values = load_joint_data(recording_dir, frames)
+        gripper_action_values, gripper_action_source, gripper_recovery = load_gripper_action_data(
+            recording_dir,
+            frames,
+            joint_names,
+            joint_values,
+        )
+        print(f"recording_dir: {recording_dir}")
+        print(f"state source: {state_source}")
+        print(f"joints/eef/state frame count: {len(frames)}")
+        print(f"joint h5 frame count: {joint_values.shape[0] if joint_values.size else 0}")
+        print(f"GA source: {gripper_action_source}")
+        if mp4_counts:
+            print("mp4 frame counts:")
+            for name, count in mp4_counts.items():
+                print(f"  {name}: {count}")
+        else:
+            print("mp4 frame counts: no mp4 files found under observations/videos")
+
+        camera_dir = recording_dir / "camera"
+        if camera_dir.is_dir():
+            extracted_camera_frames = sum(1 for p in camera_dir.iterdir() if p.is_dir() and p.name.isdigit())
+            print(f"camera folder frame count: {extracted_camera_frames}")
+        else:
+            print("camera folder frame count: missing camera directory; viewer will use MP4 fallback")
+
+        viewer = RecordingViewer(
+            recording_dir=recording_dir,
+            frame_data=frames,
+            playback_fps=playback_fps,
+            image_width=args.image_width,
+            mp4_counts=mp4_counts,
+            joint_names=joint_names,
+            joint_values=joint_values,
+            gripper_action_values=gripper_action_values,
+            gripper_action_source=gripper_action_source,
+            gripper_recovery=gripper_recovery,
+            task_description=task_description,
+            font_family_override=args.font_family,
+        )
+        viewer.run()
         return 0
-    if not args.recording_dir:
-        raise SystemExit("Missing required argument: --dir/--recording-dir")
-    recording_dir = Path(args.recording_dir).expanduser().resolve()
-
-    frames, state_source = load_state_frames(recording_dir)
-    if not frames:
-        raise SystemExit(f"No frames found in {state_source}")
-
-    recording_info_path = recording_dir / "recording_info.json"
-    recording_info = load_json(recording_info_path) if recording_info_path.is_file() else {}
-    playback_fps = float(args.fps or recording_info.get("fps", 30))
-    task_description = load_task_description(recording_dir, recording_info)
-
-    mp4_counts = collect_video_counts(recording_dir)
-    joint_names, joint_values = load_joint_data(recording_dir, frames)
-    gripper_action_values, gripper_action_source, gripper_recovery = load_gripper_action_data(
-        recording_dir,
-        frames,
-        joint_names,
-        joint_values,
-    )
-    print(f"recording_dir: {recording_dir}")
-    print(f"state source: {state_source}")
-    print(f"joints/eef/state frame count: {len(frames)}")
-    print(f"joint h5 frame count: {joint_values.shape[0] if joint_values.size else 0}")
-    print(f"GA source: {gripper_action_source}")
-    if mp4_counts:
-        print("mp4 frame counts:")
-        for name, count in mp4_counts.items():
-            print(f"  {name}: {count}")
-    else:
-        print("mp4 frame counts: no mp4 files found under observations/videos")
-
-    camera_dir = recording_dir / "camera"
-    if camera_dir.is_dir():
-        extracted_camera_frames = sum(1 for p in camera_dir.iterdir() if p.is_dir() and p.name.isdigit())
-        print(f"camera folder frame count: {extracted_camera_frames}")
-    else:
-        print("camera folder frame count: missing camera directory; viewer will use MP4 fallback")
-
-    viewer = RecordingViewer(
-        recording_dir=recording_dir,
-        frame_data=frames,
-        playback_fps=playback_fps,
-        image_width=args.image_width,
-        mp4_counts=mp4_counts,
-        joint_names=joint_names,
-        joint_values=joint_values,
-        gripper_action_values=gripper_action_values,
-        gripper_action_source=gripper_action_source,
-        gripper_recovery=gripper_recovery,
-        task_description=task_description,
-        font_family_override=args.font_family,
-    )
-    viewer.run()
-    return 0
+    finally:
+        restore_terminal_state(saved_terminal_state)
 
 
 if __name__ == "__main__":
