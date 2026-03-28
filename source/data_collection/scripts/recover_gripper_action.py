@@ -30,6 +30,8 @@ if str(DATA_COLLECTION_ROOT) not in sys.path:
 from common.base_utils.gripper_action_utils import (  # noqa: E402
     GA_CLOSED,
     GA_OPEN,
+    LEFT_GRIPPER_ACTION_KEY,
+    RIGHT_GRIPPER_ACTION_KEY,
     build_gripper_action_frame_payload,
     build_gripper_action_matrix,
     build_gripper_action_summary,
@@ -109,7 +111,9 @@ def apply_gripper_action_to_frames(
     frames = state_payload.get("frames", [])
     for idx, frame in enumerate(frames):
         robot = frame.setdefault("robot", {})
-        robot["gripper_action"] = build_gripper_action_frame_payload(recovery, idx)
+        payload = build_gripper_action_frame_payload(recovery, idx)
+        robot.update(payload)
+        robot.pop("gripper_action", None)
 
 
 def patch_gripper_action_h5(
@@ -123,10 +127,20 @@ def patch_gripper_action_h5(
             if "gripper_action" in hdf[prefix]:
                 del hdf[f"{prefix}/gripper_action"]
             group = hdf[prefix].create_group("gripper_action")
-            group.attrs["name"] = np.asarray(["left", "right"], dtype=object)
+            group.attrs["name"] = np.asarray(
+                [LEFT_GRIPPER_ACTION_KEY, RIGHT_GRIPPER_ACTION_KEY],
+                dtype=object,
+            )
             group.attrs["category"] = np.asarray(["binary"], dtype=object)
             group.attrs["description"] = "1=open_or_opening, 0=close_or_holding"
-            group.create_dataset("value", data=ga_matrix.astype(np.uint8))
+            group.create_dataset(
+                LEFT_GRIPPER_ACTION_KEY,
+                data=ga_matrix[:, 0].astype(np.uint8),
+            )
+            group.create_dataset(
+                RIGHT_GRIPPER_ACTION_KEY,
+                data=ga_matrix[:, 1].astype(np.uint8),
+            )
 
 
 def write_recovery_plot(

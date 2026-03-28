@@ -24,6 +24,11 @@ project_root = os.path.abspath(os.path.join(current_dir, "../.."))
 sys.path.append(project_root)
 
 from common.base_utils.logger import logger
+from common.base_utils.gripper_action_utils import (
+    GA_OPEN,
+    LEFT_GRIPPER_ACTION_KEY,
+    RIGHT_GRIPPER_ACTION_KEY,
+)
 from common.base_utils.transform_utils import (
     calculate_y_axis_projection,
     mat2euler,
@@ -362,6 +367,9 @@ class RosExtrater:
         self.light_config = task_info["light_config"]
         self.gripper_names = task_info["gripper_names"]
         self.playback_timerange = task_info["playback_timerange"]
+        self.gripper_action_status = self._normalize_gripper_action_status(
+            task_info.get("gripper_action_status", [])
+        )
         self.imag_file_name = []
         if not self.with_img:
             for camera_cfg in self.camera_info.values():
@@ -400,6 +408,55 @@ class RosExtrater:
             "left": arm_base_prim_paths.get("left", shared_path),
             "right": arm_base_prim_paths.get("right", shared_path),
         }
+
+    def _default_gripper_action_payload(self):
+        return {
+            LEFT_GRIPPER_ACTION_KEY: GA_OPEN,
+            RIGHT_GRIPPER_ACTION_KEY: GA_OPEN,
+        }
+
+    def _normalize_gripper_action_status(self, raw_status):
+        normalized = []
+        current_payload = self._default_gripper_action_payload()
+        if not isinstance(raw_status, list):
+            return normalized
+
+        for item in raw_status:
+            if not isinstance(item, dict):
+                continue
+            time_stamp = item.get("time_stamp")
+            if time_stamp is None:
+                continue
+            payload = current_payload.copy()
+            if LEFT_GRIPPER_ACTION_KEY in item:
+                payload[LEFT_GRIPPER_ACTION_KEY] = int(item[LEFT_GRIPPER_ACTION_KEY])
+            if RIGHT_GRIPPER_ACTION_KEY in item:
+                payload[RIGHT_GRIPPER_ACTION_KEY] = int(item[RIGHT_GRIPPER_ACTION_KEY])
+            legacy_payload = item.get("gripper_action")
+            if isinstance(legacy_payload, dict):
+                if "left" in legacy_payload:
+                    payload[LEFT_GRIPPER_ACTION_KEY] = int(legacy_payload["left"])
+                if "right" in legacy_payload:
+                    payload[RIGHT_GRIPPER_ACTION_KEY] = int(legacy_payload["right"])
+            current_payload = payload
+            normalized.append(
+                {
+                    "time_stamp": float(time_stamp),
+                    LEFT_GRIPPER_ACTION_KEY: payload[LEFT_GRIPPER_ACTION_KEY],
+                    RIGHT_GRIPPER_ACTION_KEY: payload[RIGHT_GRIPPER_ACTION_KEY],
+                }
+            )
+        normalized.sort(key=lambda item: item["time_stamp"])
+        return normalized
+
+    def _get_gripper_action_for_timestamp(self, time_stamp):
+        payload = self._default_gripper_action_payload()
+        for item in self.gripper_action_status:
+            if float(item["time_stamp"]) > float(time_stamp):
+                break
+            payload[LEFT_GRIPPER_ACTION_KEY] = int(item[LEFT_GRIPPER_ACTION_KEY])
+            payload[RIGHT_GRIPPER_ACTION_KEY] = int(item[RIGHT_GRIPPER_ACTION_KEY])
+        return payload
 
     def _matches_prim_path(self, child_frame_id, prim_path):
         # NOTE: codex arm_base
@@ -1008,6 +1065,10 @@ class RosExtrater:
                         "velocity": [],
                         "current_value": [],
                     },
+                    "gripper_action": {
+                        LEFT_GRIPPER_ACTION_KEY: [],
+                        RIGHT_GRIPPER_ACTION_KEY: [],
+                    },
                     "joint_action": {
                         "effort": [],
                         "position": [],
@@ -1032,6 +1093,10 @@ class RosExtrater:
                 }
                 attr_names = {
                     "joint": [],
+                    "gripper_action": [
+                        LEFT_GRIPPER_ACTION_KEY,
+                        RIGHT_GRIPPER_ACTION_KEY,
+                    ],
                     "end": ["left", "right"],
                     "effector": [],
                     "robot": [self.robot_name],
@@ -1216,8 +1281,10 @@ class RosExtrater:
                                 break
                             value = frame_status["frame_state"]
                         single_frame_state["frame_state"] = make_json_safe(value)
+                    gripper_action_payload = self._get_gripper_action_for_timestamp(joint_timestamp)
                     single_frame_state["robot"]["joints"] = single_joint_state_info
                     single_frame_state["robot"]["joints_action"] = single_joint_action_info
+                    single_frame_state["robot"].update(gripper_action_payload)
                     single_ee_info_r = {
                         "time_stamp": 0,
                         "position": [0, 0, 0],
@@ -1424,6 +1491,12 @@ class RosExtrater:
                     episode_state["joint_action"]["effort"].append(
                         single_joint_action_info["joint_effort"]
                     )
+                    episode_state["gripper_action"][LEFT_GRIPPER_ACTION_KEY].append(
+                        int(gripper_action_payload[LEFT_GRIPPER_ACTION_KEY])
+                    )
+                    episode_state["gripper_action"][RIGHT_GRIPPER_ACTION_KEY].append(
+                        int(gripper_action_payload[RIGHT_GRIPPER_ACTION_KEY])
+                    )
                     if not attr_names["joint"]:
                         attr_names["joint"] = single_joint_state_info["joint_name"]
                     # collect ee pose in robot frame
@@ -1492,11 +1565,13 @@ class RosExtrater:
 
                 state_info["state"] = {
                     "joint": episode_state["joint"],
+                    "gripper_action": episode_state["gripper_action"],
                     "end": episode_state["end"],
                     "effector": episode_state["effector"],
                 }
                 state_info["action"] = {
                     "joint": episode_state["joint_action"],
+                    "gripper_action": episode_state["gripper_action"],
                     "end": episode_state["end"],
                     "effector": episode_state["effector"],
                 }
@@ -1523,6 +1598,9 @@ class RosExtrater:
                         group = state_group.create_group(state_key)
                         if state_key == "joint":
                             group.attrs["name"] = attr_names["joint"]
+                        elif state_key == "gripper_action":
+                            group.attrs["name"] = attr_names["gripper_action"]
+                            group.attrs["category"] = ["binary"]
                         elif state_key == "end":
                             group.attrs["name"] = attr_names["end"]
                         elif state_key == "effector":
@@ -1536,6 +1614,11 @@ class RosExtrater:
                             elif isinstance(value, str):
                                 dataset = group.create_dataset(inner_key, data=np.string_(value))
                             elif isinstance(value, list):
+                                if state_key == "gripper_action":
+                                    dataset = group.create_dataset(
+                                        inner_key, data=np.array(value, dtype="uint8")
+                                    )
+                                    continue
                                 dataset = group.create_dataset(
                                     inner_key, data=np.array(value, dtype="float32")
                                 )
@@ -1545,6 +1628,9 @@ class RosExtrater:
                         group = state_group_1.create_group(state_key)
                         if state_key == "joint":
                             group.attrs["name"] = attr_names["joint"]
+                        elif state_key == "gripper_action":
+                            group.attrs["name"] = attr_names["gripper_action"]
+                            group.attrs["category"] = ["binary"]
                         elif state_key == "end":
                             group.attrs["name"] = attr_names["end"]
                         elif state_key == "effector":
@@ -1558,6 +1644,11 @@ class RosExtrater:
                             elif isinstance(value, str):
                                 dataset = group.create_dataset(inner_key, data=np.string_(value))
                             elif isinstance(value, list):
+                                if state_key == "gripper_action":
+                                    dataset = group.create_dataset(
+                                        inner_key, data=np.array(value, dtype="uint8")
+                                    )
+                                    continue
                                 dataset = group.create_dataset(
                                     inner_key, data=np.array(value, dtype="float32")
                                 )

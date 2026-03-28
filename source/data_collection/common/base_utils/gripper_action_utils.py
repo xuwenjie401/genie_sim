@@ -8,6 +8,8 @@ import numpy as np
 
 GA_OPEN = 1
 GA_CLOSED = 0
+LEFT_GRIPPER_ACTION_KEY = "left_gripper_action"
+RIGHT_GRIPPER_ACTION_KEY = "right_gripper_action"
 GA_DESCRIPTION = {
     GA_OPEN: "open_or_opening",
     GA_CLOSED: "close_or_holding",
@@ -99,13 +101,16 @@ def build_gripper_action_frame_payload(
     frame_idx: int,
 ) -> dict[str, int]:
     payload: dict[str, int] = {}
-    for arm in ("left", "right"):
+    for arm, key in (
+        ("left", LEFT_GRIPPER_ACTION_KEY),
+        ("right", RIGHT_GRIPPER_ACTION_KEY),
+    ):
         binary = recovery[arm].binary_action
         if binary.size == 0:
-            payload[arm] = GA_OPEN
+            payload[key] = GA_OPEN
             continue
         safe_idx = min(frame_idx, binary.shape[0] - 1)
-        payload[arm] = int(binary[safe_idx])
+        payload[key] = int(binary[safe_idx])
     return payload
 
 
@@ -149,12 +154,21 @@ def build_gripper_action_summary(
 def load_gripper_action_matrix_from_frames(frames: list[dict[str, Any]]) -> np.ndarray | None:
     values: list[list[int]] = []
     for frame in frames:
-        payload = frame.get("robot", {}).get("gripper_action")
-        if not isinstance(payload, dict):
-            return None
-        if "left" not in payload or "right" not in payload:
-            return None
-        values.append([int(payload["left"]), int(payload["right"])])
+        robot = frame.get("robot", {})
+        if LEFT_GRIPPER_ACTION_KEY in robot and RIGHT_GRIPPER_ACTION_KEY in robot:
+            values.append(
+                [
+                    int(robot[LEFT_GRIPPER_ACTION_KEY]),
+                    int(robot[RIGHT_GRIPPER_ACTION_KEY]),
+                ]
+            )
+            continue
+
+        payload = robot.get("gripper_action")
+        if isinstance(payload, dict) and "left" in payload and "right" in payload:
+            values.append([int(payload["left"]), int(payload["right"])])
+            continue
+        return None
     if not values:
         return None
     return np.asarray(values, dtype=np.uint8)

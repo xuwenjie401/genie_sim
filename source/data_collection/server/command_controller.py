@@ -47,6 +47,10 @@ from server.utils import batch_matrices_to_quaternions_scipy_w_first
 from server.utils import spawn_axes_as_usd, clear_grasp_axes, spawn_target_as_usd
 
 MAX_EXTRACT_PROCESS_NUM = 2
+LEFT_GRIPPER_ACTION_KEY = "left_gripper_action"
+RIGHT_GRIPPER_ACTION_KEY = "right_gripper_action"
+GA_OPEN = 1
+GA_CLOSED = 0
 
 
 def find_joints(prim):
@@ -143,6 +147,8 @@ class CommandController:
         self.cur_runtime_checker = None
         self.hold_gripper = False
         self.last_controlled_gripper = None
+        self.gripper_action_state = self._default_gripper_action_state()
+        self.gripper_action_status = []
 
         # Timing statistics related
         self.timing_stats = {}  # Store total time for each function {function_name: total_time}
@@ -296,6 +302,54 @@ class CommandController:
             return [self._json_safe_value(inner_value) for inner_value in list(value)]
         except TypeError:
             return str(value)
+
+    def _default_gripper_action_state(self):
+        return {
+            LEFT_GRIPPER_ACTION_KEY: GA_OPEN,
+            RIGHT_GRIPPER_ACTION_KEY: GA_OPEN,
+        }
+
+    def _get_gripper_action_key(self, is_right: bool) -> str:
+        return RIGHT_GRIPPER_ACTION_KEY if is_right else LEFT_GRIPPER_ACTION_KEY
+
+    def _copy_gripper_action_state(self):
+        return {
+            LEFT_GRIPPER_ACTION_KEY: int(self.gripper_action_state[LEFT_GRIPPER_ACTION_KEY]),
+            RIGHT_GRIPPER_ACTION_KEY: int(self.gripper_action_state[RIGHT_GRIPPER_ACTION_KEY]),
+        }
+
+    def _reset_gripper_action_tracking(self, clear_history=True):
+        self.gripper_action_state = self._default_gripper_action_state()
+        self.last_controlled_gripper = None
+        if clear_history:
+            self.gripper_action_status = []
+
+    def _append_gripper_action_status(self, time_stamp=None, force=False):
+        if time_stamp is None:
+            time_stamp = self.ui_builder.my_world.current_time
+        payload = {
+            "time_stamp": float(time_stamp),
+            **self._copy_gripper_action_state(),
+        }
+        if not force and self.gripper_action_status:
+            last_payload = self.gripper_action_status[-1]
+            if (
+                int(last_payload.get(LEFT_GRIPPER_ACTION_KEY, GA_OPEN)) == payload[LEFT_GRIPPER_ACTION_KEY]
+                and int(last_payload.get(RIGHT_GRIPPER_ACTION_KEY, GA_OPEN)) == payload[RIGHT_GRIPPER_ACTION_KEY]
+            ):
+                return
+        self.gripper_action_status.append(payload)
+
+    def _update_gripper_action_from_command(self, state: str, is_right: bool, record_history=True):
+        if state not in ("open", "close"):
+            return
+        action_key = self._get_gripper_action_key(is_right)
+        next_value = GA_OPEN if state == "open" else GA_CLOSED
+        previous_value = int(self.gripper_action_state.get(action_key, GA_OPEN))
+        self.gripper_action_state[action_key] = next_value
+        self.last_controlled_gripper = "right" if is_right else "left"
+        if record_history and previous_value != next_value:
+            self._append_gripper_action_status()
 
     def _coerce_optional_float(self, value):
         value = self._json_safe_value(value)
@@ -679,7 +733,11 @@ class CommandController:
                         if is_right and key == "right" or (not is_right and key == "left"):
                             if state is not None and timing is not None:
                                 if curobo_motion.cmd_idx >= len(curobo_motion.cmd_plan.position) * timing:
-                                    additional_action = self._get_gripper_action(state, is_right)
+                                    additional_action = self._get_gripper_action(
+                                        state,
+                                        is_right,
+                                        record_gripper_action=True,
+                                    )
                     curobo_motion.on_physics_step(self.motion_run_ratio, additional_action)
 
             # 如果需要保持夹爪 （对于galbot gripper这类脆弱的力控）
@@ -758,6 +816,9 @@ class CommandController:
             self.gripper_action_timing.copy() if self.gripper_action_timing is not None else None
         )
         state_info["hold_gripper"] = self.hold_gripper
+        state_info["last_controlled_gripper"] = self.last_controlled_gripper
+        state_info["gripper_action_state"] = self._copy_gripper_action_state()
+        state_info["gripper_action_status_len"] = len(self.gripper_action_status)
         state_info["ros_step"] = self.ros_step
         state_info["target_point"] = self.target_point.copy()
         return state_info
@@ -807,8 +868,25 @@ class CommandController:
             self.gripper_state = state_info["gripper_state"]
             self._reset_stiffness()
             self.hold_gripper = state_info["hold_gripper"]
-            self._set_gripper_state(state_info["gripper_state_R"], True, 0.8)
-            self._set_gripper_state(state_info["gripper_state_L"], False, 0.8)
+            self.last_controlled_gripper = state_info.get("last_controlled_gripper")
+            self.gripper_action_state = state_info.get(
+                "gripper_action_state",
+                self._default_gripper_action_state(),
+            ).copy()
+            history_len = int(state_info.get("gripper_action_status_len", len(self.gripper_action_status)))
+            self.gripper_action_status = self.gripper_action_status[:history_len]
+            self._set_gripper_state(
+                state_info["gripper_state_R"],
+                True,
+                0.8,
+                record_gripper_action=False,
+            )
+            self._set_gripper_state(
+                state_info["gripper_state_L"],
+                False,
+                0.8,
+                record_gripper_action=False,
+            )
             self.ros_step = state_info["ros_step"]
             self.target_point = state_info["target_point"]
             # curobo related
@@ -1101,6 +1179,8 @@ class CommandController:
                 recording_path = self._build_recording_path(root_path, self.task_name)
                 self.path_to_save = recording_path
                 self.recording_ready_for_extraction = False
+                self.gripper_action_status = []
+                self._append_gripper_action_status(force=True)
                 self.camera_info_list = {}
                 tf_target = []
                 for prim_path in self.data["camera_prim_list"]:
@@ -1429,6 +1509,7 @@ class CommandController:
                     "fps": self.fps,
                     "robot_name": self.robot_name,
                     "frame_status": self.frame_status,
+                    "gripper_action_status": self.gripper_action_status,
                     "light_config": self.light_config,
                     "gripper_names": self.gripper_names,
                     "with_img": False,
@@ -1755,6 +1836,7 @@ class CommandController:
         self.playback_frames = {}
         self.playback_timerange = []
         self.playback_waited_frame_num = 0
+        self._reset_gripper_action_tracking(clear_history=True)
 
     def _on_blocking_thread(self, data, Command):
         self.data = data
@@ -2183,7 +2265,11 @@ class CommandController:
         )
         return robot
 
-    def _get_gripper_action(self, state: str, isRight: bool):
+    def _get_gripper_action(self, state: str, isRight: bool, record_gripper_action=True):
+        if state in (None, ""):
+            return None
+        if record_gripper_action:
+            self._update_gripper_action_from_command(state, isRight)
         if isRight:
             self.gripper_state_R = state
             action = self.gripper_R.forward(action=self.gripper_state_R)
@@ -2193,9 +2279,11 @@ class CommandController:
             action = self.gripper_L.forward(action=self.gripper_state_L)
             return action
 
-    def _set_gripper_state(self, state: str, isRight: bool, width):
+    def _set_gripper_state(self, state: str, isRight: bool, width, record_gripper_action=True):
         # TODO: XU
         # self.robot = self._init_grippers()
+        if state in (None, ""):
+            return
 
         if state == "close" and self.hold_gripper:
             return
@@ -2205,8 +2293,13 @@ class CommandController:
         else:
             self.robot = self._initialize_articulation()
 
-        action = self._get_gripper_action(state, isRight)
-        self.robot.apply_action(action)      
+        action = self._get_gripper_action(
+            state,
+            isRight,
+            record_gripper_action=record_gripper_action,
+        )
+        if action is not None:
+            self.robot.apply_action(action)
 
     def _hold_gripper_at_grasp(self, isRight: bool):
         gripper = self.gripper_L
