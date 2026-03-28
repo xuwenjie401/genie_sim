@@ -27,6 +27,11 @@ import time
 from pathlib import Path
 from typing import Any
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_COLLECTION_ROOT = SCRIPT_DIR.parent
+if str(DATA_COLLECTION_ROOT) not in sys.path:
+    sys.path.insert(0, str(DATA_COLLECTION_ROOT))
+
 import h5py
 import tkinter as tk
 import tkinter.font as tkfont
@@ -45,6 +50,15 @@ except ImportError as exc:  # pragma: no cover - runtime dependency guard
         "Missing dependency: Pillow\n"
         "Install it with: python -m pip install Pillow"
     ) from exc
+
+from common.base_utils.gripper_action_utils import (
+    GA_CLOSED,
+    GA_OPEN,
+    build_gripper_action_matrix,
+    frames_to_joint_matrix,
+    load_gripper_action_matrix_from_frames,
+    recover_binary_gripper_actions,
+)
 
 
 IMAGE_CANDIDATES = {
@@ -197,17 +211,53 @@ def decode_names(values: Any) -> list[str]:
     return names
 
 
-def load_joint_data(recording_dir: Path) -> tuple[list[str], np.ndarray]:
+def load_joint_data(
+    recording_dir: Path,
+    frame_data: list[dict[str, Any]] | None = None,
+) -> tuple[list[str], np.ndarray]:
     h5_path = recording_dir / "aligned_joints_all.h5"
     if not h5_path.is_file():
+        if frame_data is not None:
+            return frames_to_joint_matrix(frame_data)
         return [], np.zeros((0, 0), dtype=np.float32)
 
     with h5py.File(h5_path, "r") as f:
         if "state/joint/position" not in f:
+            if frame_data is not None:
+                return frames_to_joint_matrix(frame_data)
             return [], np.zeros((0, 0), dtype=np.float32)
         joint_names = decode_names(f["state/joint"].attrs.get("name", []))
         joint_values = f["state/joint/position"][:]
     return joint_names, np.asarray(joint_values, dtype=np.float32)
+
+
+def load_gripper_action_data(
+    recording_dir: Path,
+    frame_data: list[dict[str, Any]],
+    joint_names: list[str],
+    joint_values: np.ndarray,
+) -> tuple[np.ndarray, str, dict[str, Any]]:
+    stored_frame_actions = load_gripper_action_matrix_from_frames(frame_data)
+
+    stored_h5_actions: np.ndarray | None = None
+    h5_path = recording_dir / "aligned_joints_all.h5"
+    if h5_path.is_file():
+        with h5py.File(h5_path, "r") as f:
+            if "action/gripper_action/value" in f:
+                stored_h5_actions = np.asarray(f["action/gripper_action/value"][:], dtype=np.uint8)
+            elif "state/gripper_action/value" in f:
+                stored_h5_actions = np.asarray(f["state/gripper_action/value"][:], dtype=np.uint8)
+
+    recovery = recover_binary_gripper_actions(joint_names, joint_values)
+    inferred_actions = build_gripper_action_matrix(recovery)
+
+    if stored_frame_actions is not None:
+        return stored_frame_actions, "state.json", recovery
+    if stored_h5_actions is not None:
+        return stored_h5_actions, "aligned_joints_all.h5", recovery
+    if inferred_actions.size:
+        return inferred_actions, "inferred_from_joint_state", recovery
+    return np.zeros((0, 2), dtype=np.uint8), "missing", recovery
 
 
 def load_task_description(recording_dir: Path, recording_info: dict[str, Any]) -> dict[str, str]:
@@ -515,6 +565,9 @@ class RecordingViewer:
         mp4_counts: dict[str, str],
         joint_names: list[str],
         joint_values: np.ndarray,
+        gripper_action_values: np.ndarray,
+        gripper_action_source: str,
+        gripper_recovery: dict[str, Any],
         task_description: dict[str, str],
         font_family_override: str | None,
     ):
@@ -527,6 +580,9 @@ class RecordingViewer:
         self.mp4_counts = mp4_counts
         self.joint_names = joint_names
         self.joint_values = joint_values
+        self.gripper_action_values = gripper_action_values
+        self.gripper_action_source = gripper_action_source
+        self.gripper_recovery = gripper_recovery
         self.task_description = task_description
         self.frame_count = len(frame_data)
         self.pose_plot_limits = self._compute_pose_plot_limits()
@@ -563,6 +619,7 @@ class RecordingViewer:
         self.text_widgets: dict[str, tk.Text] = {}
         self.pose_numeric_labels: dict[str, tk.Label] = {}
         self.robot_pose_labels: dict[str, tk.Label] = {}
+        self.gripper_timeline_label: tk.Label | None = None
         self.status_var = tk.StringVar()
         self.counts_var = tk.StringVar()
 
@@ -596,7 +653,9 @@ class RecordingViewer:
             )
             counts = f"{counts}\nmp4 frames: {video_counts}"
         counts = (
-            f"{counts}\n{self._playback_summary()}"
+            f"{counts}\nGA source: {self.gripper_action_source} | "
+            f"{self._format_gripper_transition_summary()}"
+            f"\n{self._playback_summary()}"
             "\ncontrols: Space play/pause, Left/Right step, Up/+/= faster, Down/- slower, Esc quit"
         )
         self.counts_var.set(counts)
@@ -799,6 +858,27 @@ class RecordingViewer:
         joints_frame.grid_columnconfigure(0, weight=1)
         joints_frame.grid_columnconfigure(1, weight=1)
 
+        gripper_frame = tk.Frame(self.root, bg="#f5f1e8", padx=8, pady=6)
+        gripper_frame.pack(side=tk.TOP, fill=tk.X)
+        panel = tk.Frame(gripper_frame, bg="#f5f1e8", padx=6, pady=6)
+        panel.pack(fill=tk.X, expand=True)
+        tk.Label(
+            panel,
+            text="gripper_action_timeline",
+            font=self._font_heading,
+            bg="#f5f1e8",
+            fg="#1f1f1f",
+        ).pack(anchor="w")
+        tk.Label(
+            panel,
+            text="GA semantics: 1=open/opening, 0=close/holding",
+            font=self._font_tiny,
+            bg="#f5f1e8",
+            fg="#5a4f43",
+        ).pack(anchor="w", pady=(0, 4))
+        self.gripper_timeline_label = tk.Label(panel, bg="#ffffff", bd=1, relief=tk.SOLID)
+        self.gripper_timeline_label.pack(fill=tk.X, expand=True)
+
         status_bar = tk.Label(
             self.root,
             textvariable=self.status_var,
@@ -917,12 +997,17 @@ class RecordingViewer:
         self.robot_pose_labels["world_right_arm_base"].configure(
             text=self._format_robot_pose_label(frame, "right_arm_base_pose", "arm_base_pose")
         )
-        self._set_text("left_joints", self._format_joint_block(left_joints))
-        self._set_text("right_joints", self._format_joint_block(right_joints))
+        self._set_text("left_joints", self._format_joint_block("left", left_joints))
+        self._set_text("right_joints", self._format_joint_block("right", right_joints))
+        self._render_gripper_timeline()
+
+        left_ga = self._get_gripper_action_value("left", self.frame_idx)
+        right_ga = self._get_gripper_action_value("right", self.frame_idx)
 
         self.status_var.set(
             f"frame {self.frame_idx + 1}/{self.frame_count} | "
             f"time_stamp={frame.get('time_stamp', 'n/a'):.4f} | "
+            f"GA(left/right)={left_ga}/{right_ga} | "
             f"{self._playback_summary()} | "
             "keys: Space play/pause, Left/Right step, Up/+/= faster, Down/- slower, Esc quit"
         )
@@ -957,6 +1042,17 @@ class RecordingViewer:
         image = self._create_pose_overlay(pose_4x4)
         photo = ImageTk.PhotoImage(image=image)
         label.configure(image=photo, text="")
+        self._image_refs.append(photo)
+
+    def _render_gripper_timeline(self) -> None:
+        if self.gripper_timeline_label is None:
+            return
+        image = self._create_gripper_timeline_image()
+        if image is None:
+            self.gripper_timeline_label.configure(text="missing gripper traces", image="")
+            return
+        photo = ImageTk.PhotoImage(image=image)
+        self.gripper_timeline_label.configure(image=photo, text="")
         self._image_refs.append(photo)
 
     def _create_pose_overlay(self, pose_4x4: list[list[float]]) -> Image.Image:
@@ -1011,16 +1107,131 @@ class RecordingViewer:
         buffer.seek(0)
         return Image.open(buffer).convert("RGB")
 
+    def _create_gripper_timeline_image(self) -> Image.Image | None:
+        if self.frame_count <= 0:
+            return None
+
+        fig, axes = plt.subplots(2, 1, figsize=(11.6, 3.8), dpi=110, sharex=True)
+        fig.patch.set_facecolor("#ffffff")
+        frame_axis = np.arange(self.frame_count, dtype=np.int32)
+
+        for idx, arm in enumerate(("left", "right")):
+            ax = axes[idx]
+            ax.set_facecolor("#ffffff")
+            result = self.gripper_recovery.get(arm)
+            has_trace = result is not None and result.mean_position.size > 0
+            ga = None
+            if self.gripper_action_values.size:
+                ga = self.gripper_action_values[:, idx]
+            series_len = self.frame_count
+            if has_trace:
+                series_len = min(series_len, result.mean_position.shape[0])
+            if ga is not None and ga.size:
+                series_len = min(series_len, ga.shape[0])
+            if series_len <= 0:
+                ax.text(0.5, 0.5, f"{arm}: missing data", transform=ax.transAxes, ha="center")
+                continue
+
+            x_values = frame_axis[:series_len]
+            position = result.mean_position[:series_len] if has_trace else np.zeros((series_len,))
+            smoothed = result.smoothed_position[:series_len] if has_trace else position
+            ga_values = ga[:series_len] if ga is not None and ga.size else np.full(series_len, GA_OPEN)
+
+            ax.fill_between(
+                x_values,
+                0.0,
+                1.0,
+                where=ga_values.astype(bool),
+                color="#b7eb8f",
+                alpha=0.18,
+                transform=ax.get_xaxis_transform(),
+                step="post",
+            )
+            ax.fill_between(
+                x_values,
+                0.0,
+                1.0,
+                where=~ga_values.astype(bool),
+                color="#ffccc7",
+                alpha=0.18,
+                transform=ax.get_xaxis_transform(),
+                step="post",
+            )
+            ax.plot(x_values, position, color="#8c6d31", linewidth=0.9, label="mean joint")
+            ax.plot(x_values, smoothed, color="#1677ff", linewidth=1.2, label="smoothed")
+            ax.axvline(min(self.frame_idx, series_len - 1), color="#111111", linewidth=1.0)
+            if result is not None:
+                for transition in result.transitions:
+                    transition_frame = int(transition["frame"])
+                    if transition_frame >= series_len:
+                        continue
+                    color = "#1677ff" if int(transition["ga"]) == GA_OPEN else "#d4380d"
+                    ax.axvline(transition_frame, color=color, linestyle="--", linewidth=0.9)
+
+            current_ga = int(ga_values[min(self.frame_idx, series_len - 1)])
+            ax.set_title(f"{arm} | GA={current_ga}")
+            ax.set_ylabel("joint")
+            ax.grid(alpha=0.25)
+
+            value_min = float(np.min(position))
+            value_max = float(np.max(position))
+            pad = max((value_max - value_min) * 0.08, 0.03)
+            ax.set_ylim(value_min - pad, value_max + pad)
+
+        axes[-1].set_xlabel("frame")
+        axes[0].legend(loc="upper right")
+        fig.suptitle(f"gripper action timeline ({self.gripper_action_source})", fontsize=12)
+        fig.tight_layout(rect=(0.0, 0.0, 1.0, 0.95))
+        buffer = io.BytesIO()
+        fig.savefig(buffer, format="png", transparent=False, bbox_inches="tight", pad_inches=0.08)
+        plt.close(fig)
+        buffer.seek(0)
+        return Image.open(buffer).convert("RGB")
+
     def _get_joint_values_for_frame(self, frame_idx: int) -> list[float]:
         if self.joint_values.size == 0:
             return []
         safe_idx = min(frame_idx, self.joint_values.shape[0] - 1)
         return self.joint_values[safe_idx].tolist()
 
-    def _format_joint_block(self, joint_pairs: list[tuple[str, float]]) -> str:
+    def _get_gripper_action_value(self, arm: str, frame_idx: int) -> int:
+        if self.gripper_action_values.size == 0:
+            return GA_OPEN
+        safe_idx = min(frame_idx, self.gripper_action_values.shape[0] - 1)
+        arm_idx = 0 if arm == "left" else 1
+        return int(self.gripper_action_values[safe_idx, arm_idx])
+
+    def _get_gripper_mean_position(self, arm: str, frame_idx: int) -> float | None:
+        result = self.gripper_recovery.get(arm)
+        if result is None or result.mean_position.size == 0:
+            return None
+        safe_idx = min(frame_idx, result.mean_position.shape[0] - 1)
+        return float(result.mean_position[safe_idx])
+
+    def _format_gripper_transition_summary(self) -> str:
+        parts: list[str] = []
+        for arm in ("left", "right"):
+            result = self.gripper_recovery.get(arm)
+            if result is None or not result.transitions:
+                parts.append(f"{arm}: none")
+                continue
+            summary = ", ".join(
+                f"{item['event']}@{int(item['frame'])}" for item in result.transitions
+            )
+            parts.append(f"{arm}: {summary}")
+        return " | ".join(parts)
+
+    def _format_joint_block(self, arm: str, joint_pairs: list[tuple[str, float]]) -> str:
+        ga = self._get_gripper_action_value(arm, self.frame_idx)
+        lines = [f"GA(open=1 close/hold=0): {ga}"]
+        gripper_value = self._get_gripper_mean_position(arm, self.frame_idx)
+        if gripper_value is not None:
+            lines.append(f"gripper_mean_joint          {gripper_value: .5f}")
         if not joint_pairs:
-            return "No joint values found."
-        return "\n".join(f"{name:<18} {value: .5f}" for name, value in joint_pairs)
+            lines.append("No joint values found.")
+            return "\n".join(lines)
+        lines.extend(f"{name:<28} {value: .5f}" for name, value in joint_pairs)
+        return "\n".join(lines)
 
     def _format_task_instruction(self) -> str:
         task_name = self.task_description.get("task_name", "").strip()
@@ -1146,11 +1357,18 @@ def main() -> int:
     task_description = load_task_description(recording_dir, recording_info)
 
     mp4_counts = collect_video_counts(recording_dir)
-    joint_names, joint_values = load_joint_data(recording_dir)
+    joint_names, joint_values = load_joint_data(recording_dir, frames)
+    gripper_action_values, gripper_action_source, gripper_recovery = load_gripper_action_data(
+        recording_dir,
+        frames,
+        joint_names,
+        joint_values,
+    )
     print(f"recording_dir: {recording_dir}")
     print(f"state source: {state_source}")
     print(f"joints/eef/state frame count: {len(frames)}")
     print(f"joint h5 frame count: {joint_values.shape[0] if joint_values.size else 0}")
+    print(f"GA source: {gripper_action_source}")
     if mp4_counts:
         print("mp4 frame counts:")
         for name, count in mp4_counts.items():
@@ -1173,6 +1391,9 @@ def main() -> int:
         mp4_counts=mp4_counts,
         joint_names=joint_names,
         joint_values=joint_values,
+        gripper_action_values=gripper_action_values,
+        gripper_action_source=gripper_action_source,
+        gripper_recovery=gripper_recovery,
         task_description=task_description,
         font_family_override=args.font_family,
     )

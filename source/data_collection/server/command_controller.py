@@ -260,6 +260,22 @@ class CommandController:
                 return True
         return False
 
+    def _build_recording_path(self, root_path: str, task_name: str) -> str:
+        sanitized_name = re.sub(r"[^A-Za-z0-9_]+", "_", task_name or "")
+        sanitized_name = re.sub(r"_+", "_", sanitized_name).strip("_")
+        if not sanitized_name:
+            sanitized_name = "recording"
+
+        timestamp = datetime.now().strftime("%m%d_%H%M")
+        base_path = os.path.join(root_path, f"{sanitized_name}_{timestamp}")
+
+        folder_index = 1
+        recording_path = f"{base_path}_{folder_index}"
+        while os.path.isdir(recording_path):
+            folder_index += 1
+            recording_path = f"{base_path}_{folder_index}"
+        return recording_path
+
     def _json_safe_value(self, value):
         if isinstance(value, np.ndarray):
             return value.tolist()
@@ -1081,15 +1097,8 @@ class CommandController:
                 self.task_name = self.data["task_name"]
                 self.fps = self.data["fps"]
                 current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                root_path = current_directory + "/recording_data/"
-                task_name_safe = "".join(c if c.isalnum() or c=='_' else '_' for c in self.data["task_name"])
-                recording_path = root_path + task_name_safe
-                # recording_path = root_path + self.task_name
-                if os.path.isdir(recording_path):
-                    folder_index = 1
-                    while os.path.isdir(recording_path + str(folder_index)):
-                        folder_index += 1
-                    recording_path = recording_path + str(folder_index)
+                root_path = os.path.join(current_directory, "recording_data")
+                recording_path = self._build_recording_path(root_path, self.task_name)
                 self.path_to_save = recording_path
                 self.recording_ready_for_extraction = False
                 self.camera_info_list = {}

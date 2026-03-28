@@ -675,8 +675,10 @@ class DataCollectionAgent(BaseAgent):
         self.action_script.initialize(task_info, objects)
         if use_recording:
             recording_setting = origin_task_info.get("recording_setting", {})
+            recording_task_name = os.path.basename(os.path.normpath(task_file)).split(".")[0]
+            recording_task_name = re.sub(r"_\d+$", "", recording_task_name)
             self.start_recording(
-                task_name="[%s]" % (os.path.basename(os.path.normpath(task_file)).split(".")[0]),
+                task_name=recording_task_name,
                 camera_prim_list=camera_list,
                 fps=fps,
                 render_semantic=render_semantic,
@@ -758,7 +760,7 @@ class DataCollectionAgent(BaseAgent):
         from_current_pose = extra_params.get("from_current_pose", False)
         offset_and_constraint_in_goal_frame = extra_params.get("offset_and_constraint_in_goal_frame", True)
         disable_collision_links = extra_params.get("disable_collision_links", [])
-        if action_type == "reset":
+        if action_type == "reset" or action_type == "grasp":
             disable_collision_links = []
         if remove_obstacles:
             self.robot.client.remove_objs_from_obstacle([objects[stage.passive_obj_id].prim_path])

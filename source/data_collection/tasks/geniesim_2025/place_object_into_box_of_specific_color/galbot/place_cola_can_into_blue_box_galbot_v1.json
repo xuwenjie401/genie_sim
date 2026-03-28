@@ -165,7 +165,7 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 10,
+        "num_of_episode": 100,
         "noised_probability": 0.1
     },
     "robot": {
@@ -319,7 +319,8 @@
                 "flip_grasp": false,
                 "grasp_offset": 0.0,
                 "pick_up_distance": 0.16,
-                "pick_up_type": "Simple"
+                "pick_up_type": "Simple",
+                "grasp_upper_percentile": 75
             },
             "passive": {
                 "object_id": "geniesim_2025_target_grasp_object",

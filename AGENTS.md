@@ -1,20 +1,24 @@
 # Current Task
 ## Reference Files
-1. unit_lab/grasp_vis/interaction_pose_browser.py
-this is a pose visualizer for assets under /home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets/objects, the labeled operation-poses of assets(that do have labeled operation-poses) are under /home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets/interaction.
-so for those assets that don't have label now, we need to label them.
+1) data collection and recording pipeline:
+source/data_collection/server/command_controller.py   handle_observation, recording ... etc.
+2) already collected data
+dirs under source/data_collection/recording_data
+3) collected data checker and visualization
+source/data_collection/scripts/visualize_recording_data.py
+4) specific task-config
+source/data_collection/tasks/geniesim_2025/place_object_into_box_of_specific_color/galbot/place_cola_can_into_blue_box_galbot_v1.json
+and yes, we are only using galbot now
 
-2. GraspGen as grasp-pose label tool:
-/home/agxi/ManipLab/GraspGen/client-server/  ......
-/home/agxi/ManipLab/GraspGen/scripts/demo_object_mesh.py
-a specific example would be: 
-"python scripts/demo_object_mesh.py --mesh_file /home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets/objects/benchmark/bottle/benchmark_bottle_017/Aligned.usda --mesh_scale 1.0 --gripper_config /home/agxi/GraspGen/GraspGenModels/checkpoints/graspgen_robotiq_2f_140.yml --output_file ./box_grasps.yml --num_grasps 50"
+## Problem
+for every arm's gripper, we recorded the two revolute-joint values, but actually, we also need a binary value to express gripper-action, i.e. whether the gripper "is closing" or "is opening". we mark this value as "GA"
+for example, first we initialize and select a grasp pose (GA==1) --> arm moves (GA==1)--> gripper closing (GA==0) --> grasping object and hold to lift/ move to place pose (GA==0 all the time to hold) --> gripper opening(GA==1) --> arms reset and moves (GA==1).
 
+But now in our source/data_collection pipeline, we didn't record this value yet, just revolute-joints.
 
 ## Plan
-1) make a new interactable visualize-and-edit program under unit_lab/grasp_vis/
-2) use GraspGen to create grasp-poses by server--client pipeline
-3) first, we make grasp-labels for assets that already been labeled, so we can compare with existed labels with the ones GraspGen generated, to ensure they are axis-aligned and offset-proper
-4) for place poses, we set them manually by isaacsim-ui interaction
+1) we need to add a new entry in our source/data_collection pipeline to record binary Gripper Action;
+2) we need to visualize and check this, too;
+3) for the data we already collected, figure out a script to deal with them, calculate this binary-gripper-action from continuous joint-states. (Note that you should consider the whole trajector-gripper_joint-trends to mark frame-joint_action accurately) (tips: i observed that for some data, when arm arrived at place-pose, the gripper opened a little but not completely opened, and then arm moves to reset while gripper openning at the same time, for this situation, GA==1 start at the first "opened a littlel")
 
 
