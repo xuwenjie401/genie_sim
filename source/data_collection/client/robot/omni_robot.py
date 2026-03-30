@@ -164,8 +164,6 @@ class IsaacSimRpcRobot(Robot):
         self.set_init_pose(self.robot_init_arm_pose, self.robot_init_arm_pose_noise)
         time.sleep(0.5)
 
-        time.sleep(0.5)
-
     def setup(self):
         self.target_object = None
 
