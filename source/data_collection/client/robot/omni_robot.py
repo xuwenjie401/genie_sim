@@ -13,6 +13,7 @@ import json
 import math
 import os
 import time
+import copy
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -46,11 +47,7 @@ class IsaacSimRpcRobot(Robot):
     ):
         robot_urdf = robot_cfg.split(".")[0] + ".urdf"
         self.robot_cfg = robot_cfg
-        if isinstance(robot_init_arm_pose, list):
-            robot_joint_names = self._get_robot_joint_names()
-            if len(robot_joint_names) != len(robot_init_arm_pose):
-                raise ValueError("robot_init_arm_pose length does not match joint_names length")
-            robot_init_arm_pose = {robot_joint_names[i]: robot_init_arm_pose[i] for i in range(len(robot_joint_names))}
+        robot_init_arm_pose = self._normalize_robot_init_arm_pose(robot_init_arm_pose)
         self.client = RpcClient(client_host, robot_urdf)
         self.client.init_robot(
             robot_cfg=robot_cfg,
@@ -75,8 +72,12 @@ class IsaacSimRpcRobot(Robot):
             # self.robot_gripper_2_grasp_gripper = np.array([[1.0, 0.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, -1.0]])
         else:
             self.robot_gripper_2_grasp_gripper = np.array([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]])
-        self.robot_init_arm_pose = robot_init_arm_pose
-        self.robot_init_arm_pose_noise = robot_init_arm_pose_noise
+        self.default_init_position = list(position)
+        self.default_init_rotation = list(rotation)
+        self.default_robot_init_arm_pose = copy.deepcopy(robot_init_arm_pose)
+        self.default_robot_init_arm_pose_noise = copy.deepcopy(robot_init_arm_pose_noise)
+        self.robot_init_arm_pose = copy.deepcopy(robot_init_arm_pose)
+        self.robot_init_arm_pose_noise = copy.deepcopy(robot_init_arm_pose_noise)
 
         # Read joint names from configuration file
         # TODO agx
@@ -100,8 +101,8 @@ class IsaacSimRpcRobot(Robot):
             "right": arm_joint_names[num_joints_per_arm:],
         }
 
-        self.init_position = position
-        self.init_rotation = rotation
+        self.init_position = list(position)
+        self.init_rotation = list(rotation)
         self.setup()
 
     def _load_robot_config(self):
@@ -123,7 +124,7 @@ class IsaacSimRpcRobot(Robot):
 
     def _get_robot_joint_names(self):
         # TODO agx
-        robot_names_key = "G1" 
+        robot_names_key = "G1"
         if "G2" in self.robot_cfg:
             robot_names_key = "G2"
         elif "agile" in self.robot_cfg.lower():
@@ -134,10 +135,44 @@ class IsaacSimRpcRobot(Robot):
         robot_joint_names = config[robot_names_key]["dof_order"]
         return robot_joint_names
 
+    def _normalize_robot_init_arm_pose(self, robot_init_arm_pose):
+        if isinstance(robot_init_arm_pose, list):
+            robot_joint_names = self._get_robot_joint_names()
+            if len(robot_joint_names) != len(robot_init_arm_pose):
+                raise ValueError("robot_init_arm_pose length does not match joint_names length")
+            robot_init_arm_pose = {robot_joint_names[i]: robot_init_arm_pose[i] for i in range(len(robot_joint_names))}
+        return copy.deepcopy(robot_init_arm_pose)
+
+    def set_task_reset_config(self, robot_info=None):
+        robot_info = robot_info or {}
+        robot_init_pose = robot_info.get("robot_init_pose", {})
+        self.init_position = list(robot_init_pose.get("position", self.default_init_position))
+        self.init_rotation = list(robot_init_pose.get("quaternion", self.default_init_rotation))
+        self.robot_init_arm_pose = self._normalize_robot_init_arm_pose(
+            robot_info.get("init_arm_pose", self.default_robot_init_arm_pose)
+        )
+        self.robot_init_arm_pose_noise = copy.deepcopy(
+            robot_info.get("init_arm_pose_noise", self.default_robot_init_arm_pose_noise)
+        )
+
+    def set_robot_base_pose(self, position, rotation):
+        if position is None or rotation is None:
+            return
+        self.client.set_object_pose(
+            [
+                {
+                    "prim_path": "robot",
+                    "position": list(position),
+                    "rotation": list(rotation),
+                }
+            ],
+            [],
+        )
+
     def set_init_pose(self, init_pose: dict, init_pose_noise: dict = None):
         if not init_pose:
             return
-        if init_pose_noise is not None and init_pose_noise is not None:
+        if init_pose_noise is not None:
             init_pose = add_noise_with_regex(init_pose, init_pose_noise)
         if not init_pose:
             return
@@ -161,7 +196,9 @@ class IsaacSimRpcRobot(Robot):
     def reset(self):
         self.target_object = None
         self.client.reset()
+        self.set_robot_base_pose(self.init_position, self.init_rotation)
         self.set_init_pose(self.robot_init_arm_pose, self.robot_init_arm_pose_noise)
+        time.sleep(0.5)
         time.sleep(0.5)
 
     def setup(self):

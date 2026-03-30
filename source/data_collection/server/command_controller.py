@@ -2207,6 +2207,22 @@ class CommandController:
             if pose["prim_path"] in self.usd_objects:
                 object = self.usd_objects[pose["prim_path"]]
                 object.set_world_pose(pose["position"], pose["rotation"])
+                if pose["prim_path"] == "robot":
+                    self.robot_init_position = np.array(pose["position"])
+                    self.robot_init_rotation = np.array(pose["rotation"])
+                    stage = omni.usd.get_context().get_stage()
+                    if stage:
+                        base_cube = stage.GetPrimAtPath("/base_cube")
+                        if base_cube.IsValid():
+                            translate_attr = base_cube.GetAttribute("xformOp:translate")
+                            if translate_attr.IsValid():
+                                translate_type = type(translate_attr.Get())
+                                stand_position = [
+                                    pose["position"][0],
+                                    pose["position"][1],
+                                    pose["position"][2] / 2,
+                                ]
+                                translate_attr.Set(translate_type(*stand_position))
             else:
                 stage = omni.usd.get_context().get_stage()
                 if not stage:

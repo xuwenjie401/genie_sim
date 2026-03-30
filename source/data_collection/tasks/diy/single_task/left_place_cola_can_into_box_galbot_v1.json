@@ -127,7 +127,7 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 5,
+        "num_of_episode": 100,
         "noised_probability": 0.1
     },
     "robot": {
@@ -161,7 +161,7 @@
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.8600000143051147,
+                -0.8299999833106995,
                 0.0,
                 0.0
             ],
@@ -185,7 +185,7 @@
             "work_table": {
                 "material_obj_prim": {},
                 "position": [
-                    0.02500000037252903,
+                    0.03500000014901161,
                     0.20000000298023224,
                     0.7599999904632568
                 ],
@@ -216,8 +216,8 @@
                 "poses": [
                     {
                         "position": [
-                            0.065,
-                            0.3499999940395355,
+                            0.09000000357627869,
+                            0.38999998569488525,
                             0.7699999809265137
                         ],
                         "quaternion": [
@@ -229,7 +229,7 @@
                         "random": {
                             "delta_position": [
                                 0.03,
-                                0.0,
+                                0.019999999552965164,
                                 0.0
                             ]
                         }

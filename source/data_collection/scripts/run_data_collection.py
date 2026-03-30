@@ -4,6 +4,7 @@
 # License: Mozilla Public License Version 2.0
 
 import argparse
+import glob
 import json
 import os
 import sys
@@ -52,22 +53,29 @@ if __name__ == "__main__":
         task_num=task_info["recording_setting"]["num_of_episode"],
         task_name=task_info["task"],
     )
-    robot_position = task_generator.robot_init_pose["position"]
-    robot_rotation = task_generator.robot_init_pose["quaternion"]
+    generated_tasks = sorted(glob.glob(os.path.join(task_folder, "*.json")))
+    if not generated_tasks:
+        raise RuntimeError(f"No generated tasks found in {task_folder}")
+    with open(generated_tasks[0], "r") as file:
+        startup_task_info = json.load(file)
+    startup_robot_info = startup_task_info.get("robot", task_info.get("robot", {}))
+    startup_robot_pose = startup_robot_info.get("robot_init_pose", {})
+    robot_position = startup_robot_pose.get("position", [0, 0, 0])
+    robot_rotation = startup_robot_pose.get("quaternion", [1, 0, 0, 0])
     stand = {"stand_type": "cylinder", "stand_size_x": 0.1, "stand_size_y": 0.1}
     robot_init_arm_pose = None
     robot_init_arm_pose_noise = None
-    robot_cfg = task_info["robot"]["robot_cfg"]
-    if "stand" in task_info["robot"]:
-        stand = task_info["robot"]["stand"]
-    if "init_arm_pose" in task_info["robot"]:
-        robot_init_arm_pose = task_info["robot"]["init_arm_pose"]
-    if "init_arm_pose_noise" in task_info["robot"]:
-        robot_init_arm_pose_noise = task_info["robot"]["init_arm_pose_noise"]
+    robot_cfg = startup_robot_info.get("robot_cfg", task_info["robot"]["robot_cfg"])
+    if "stand" in startup_robot_info:
+        stand = startup_robot_info["stand"]
+    if "init_arm_pose" in startup_robot_info:
+        robot_init_arm_pose = startup_robot_info["init_arm_pose"]
+    if "init_arm_pose_noise" in startup_robot_info:
+        robot_init_arm_pose_noise = startup_robot_info["init_arm_pose_noise"]
 
     robot = IsaacSimRpcRobot(
         robot_cfg=robot_cfg,
-        scene_usd=task_info["scene"]["scene_usd"],
+        scene_usd=startup_task_info.get("scene_usd", task_info["scene"]["scene_usd"]),
         client_host=args.client_host,
         position=robot_position,
         rotation=robot_rotation,

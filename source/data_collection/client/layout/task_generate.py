@@ -20,6 +20,7 @@ from client.layout.layout_generate import LayoutGenerator
 from client.layout.object import OmniObject
 from client.layout.utils.layout_object import LayoutObject
 from common.base_utils.logger import logger
+from common.base_utils.noise_utils import add_noise_with_regex
 from common.base_utils.transform_utils import euler2quat_wxyz, mat2quat_wxyz, quat2mat_wxyz
 
 
@@ -158,38 +159,75 @@ class TaskGenerator:
             self.robot_id = self.origin_task_template["robot"]["robot_id"]
         ## Robot init pose ##
         # Retrieve scene information
+        self.robot_init_pose_template = None
         robot_init_workspace_id = scene_info["scene_id"].split("/")[-1]
         if "function_space_objects" in scene_info:
             self.workspaces = scene_info["function_space_objects"]
             if isinstance(self.workspaces, list):
                 self.workspaces = list_to_dict(self.workspaces)
             if robot_init_workspace_id not in self.origin_task_template["robot"]["robot_init_pose"]:
-                self.robot_init_pose = self.origin_task_template["robot"]["robot_init_pose"]
+                self.robot_init_pose_template = copy.deepcopy(self.origin_task_template["robot"]["robot_init_pose"])
             else:
-                self.robot_init_pose = self.origin_task_template["robot"]["robot_init_pose"][robot_init_workspace_id]
+                self.robot_init_pose_template = copy.deepcopy(
+                    self.origin_task_template["robot"]["robot_init_pose"][robot_init_workspace_id]
+                )
         else:
-            self.robot_init_pose = self.origin_task_template["robot"]["robot_init_pose"]
+            self.robot_init_pose_template = copy.deepcopy(self.origin_task_template["robot"]["robot_init_pose"])
 
-        # random robot init pose
-        if "random" in self.robot_init_pose:
-            random_range = self.robot_init_pose["random"]
+        self.robot_init_pose = self._resolve_robot_init_pose()
+
+    def _resolve_robot_init_pose(self):
+        if self.robot_init_pose_template is None:
+            return None
+
+        robot_init_pose = copy.deepcopy(self.robot_init_pose_template)
+
+        if "random" in robot_init_pose:
+            random_range = robot_init_pose["random"]
             delta_position = random_range.get("delta_position", [0, 0, 0])
-            self.robot_init_pose = {
+            robot_init_pose = {
                 "position": [
-                    self.robot_init_pose["position"][0] + np.random.uniform(-delta_position[0], delta_position[0]),
-                    self.robot_init_pose["position"][1] + np.random.uniform(-delta_position[1], delta_position[1]),
-                    self.robot_init_pose["position"][2] + np.random.uniform(-delta_position[2], delta_position[2]),
+                    robot_init_pose["position"][0] + np.random.uniform(-delta_position[0], delta_position[0]),
+                    robot_init_pose["position"][1] + np.random.uniform(-delta_position[1], delta_position[1]),
+                    robot_init_pose["position"][2] + np.random.uniform(-delta_position[2], delta_position[2]),
                 ],
-                "quaternion": self.robot_init_pose["quaternion"],
+                "quaternion": robot_init_pose["quaternion"],
             }
-            logger.info(f"Random robot init position{self.robot_init_pose}")
+            logger.info(f"Random robot init position{robot_init_pose}")
         robot_init_pose_mat = np.eye(4)
-        robot_init_pose_mat[:3, :3] = quat2mat_wxyz(np.array(self.robot_init_pose["quaternion"]))
-        robot_init_pose_mat[:3, 3] = np.array(self.robot_init_pose["position"])
+        robot_init_pose_mat[:3, :3] = quat2mat_wxyz(np.array(robot_init_pose["quaternion"]))
+        robot_init_pose_mat[:3, 3] = np.array(robot_init_pose["position"])
         robot_init_pose_mat = self.origin_pose @ robot_init_pose_mat
-        self.robot_init_pose["position"] = robot_init_pose_mat[:3, 3].tolist()
-        self.robot_init_pose["quaternion"] = mat2quat_wxyz(robot_init_pose_mat[:3, :3]).tolist()
-        logger.info(f"Robot init pose{self.robot_init_pose}")
+        robot_init_pose["position"] = robot_init_pose_mat[:3, 3].tolist()
+        robot_init_pose["quaternion"] = mat2quat_wxyz(robot_init_pose_mat[:3, :3]).tolist()
+        logger.info(f"Robot init pose{robot_init_pose}")
+        return robot_init_pose
+
+    def _resolve_init_arm_pose(self, init_arm_pose, init_arm_pose_noise=None):
+        if init_arm_pose is None:
+            return None
+        resolved_init_arm_pose = copy.deepcopy(init_arm_pose)
+        if isinstance(resolved_init_arm_pose, dict) and init_arm_pose_noise:
+            resolved_init_arm_pose = add_noise_with_regex(resolved_init_arm_pose, init_arm_pose_noise)
+        return resolved_init_arm_pose
+
+    def _resolve_robot_reset_config(self):
+        if "robot" not in self.origin_task_template:
+            return {}
+
+        robot_info = copy.deepcopy(self.origin_task_template["robot"])
+        if self.robot_init_pose_template is not None:
+            robot_info["robot_init_pose"] = self._resolve_robot_init_pose()
+            self.robot_init_pose = copy.deepcopy(robot_info["robot_init_pose"])
+
+        if "init_arm_pose" in robot_info:
+            robot_info["init_arm_pose"] = self._resolve_init_arm_pose(
+                robot_info["init_arm_pose"],
+                robot_info.get("init_arm_pose_noise"),
+            )
+            robot_info.pop("init_arm_pose_noise", None)
+
+        return robot_info
 
     def _build_objects_and_infos(self, all_objs, task_template, key_obj_ids):
         """Build object information and object instances.
@@ -452,6 +490,7 @@ class TaskGenerator:
         task_instance, layouts, all_obj_infos, attach_objs, fix_obj_infos = self._pre_process(
             copy.deepcopy(self.origin_task_template)
         )
+        task_instance["robot"] = self._resolve_robot_reset_config()
         task_instance["objects"] = []
         task_instance["objects"] += fix_obj_infos
 

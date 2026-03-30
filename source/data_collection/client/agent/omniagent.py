@@ -371,6 +371,8 @@ class DataCollectionAgent(BaseAgent):
         origin_task_info,
     ):
         logger.info(f"Start Task{task_file}")
+        task_info = json.load(open(task_file, "rb"))
+        self.robot.set_task_reset_config(task_info.get("robot", origin_task_info.get("robot", {})))
         self.reset()
         self.attached_obj_id = None
 
@@ -398,8 +400,6 @@ class DataCollectionAgent(BaseAgent):
         }
         logger.info(f"Reset pose{self.robot.reset_pose}")
         logger.info(f"Reset joint state{self.robot.reset_joint_state}")
-
-        task_info = json.load(open(task_file, "rb"))
 
         objects = load_task_solution(task_info)
         objects = self.update_objects(objects)
