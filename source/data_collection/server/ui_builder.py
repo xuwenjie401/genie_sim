@@ -8,7 +8,6 @@
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
 
-import asyncio
 import time
 from typing import Dict, Optional
 
@@ -311,6 +310,7 @@ class UIBuilder:
     def _safe_set_joint_positions(self, positions, joint_indices=None):
         positions = self._limit_joint_positions(positions, joint_indices)
         self.articulation.set_joint_positions(positions, joint_indices=joint_indices)
+        self.articulation.set_joint_velocities(np.zeros(len(positions)), joint_indices=joint_indices)
 
     def _move_to(self, target_positions, joint_indices=None, is_trajectory=False, is_action=False):
         if not self.articulation:
@@ -520,12 +520,9 @@ class UIBuilder:
         curoboMotion.update_lock_joints(ids)
 
     def _on_reset(self):
-        async def _on_rest_async():
-            await omni.kit.app.get_app().next_update_async()
-            self.initialize_articulation()
-            self.rmp_move = False
-
-        asyncio.ensure_future(_on_rest_async())
+        self.rmp_move = False
+        self.reached = False
+        self.cmd_list = None
         return
 
     def _find_all_objects_of_type(self, obj_type):

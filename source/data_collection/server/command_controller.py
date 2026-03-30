@@ -149,6 +149,7 @@ class CommandController:
         self.last_controlled_gripper = None
         self.gripper_action_state = self._default_gripper_action_state()
         self.gripper_action_status = []
+        self.articulation_refresh_pending = False
 
         # Timing statistics related
         self.timing_stats = {}  # Store total time for each function {function_name: total_time}
@@ -1875,7 +1876,11 @@ class CommandController:
     def _on_reset(self):
         self._reset_stiffness()
         self.ui_builder._on_reset()
-        self.target_position = [0, 0, 0]
+        self.articulation_refresh_pending = True
+        self.target_position = np.array([0, 0, 0])
+        self.target_rotation = np.array([0, 0, 0])
+        self.target_joints_pose = []
+        self.target_joint_names = []
         self._reset_scene_material()
         self._get_observation()
         self.frame_status = []
@@ -1883,6 +1888,7 @@ class CommandController:
         self.playback_timerange = []
         self.playback_waited_frame_num = 0
         self._reset_gripper_action_tracking(clear_history=True)
+        self._initialize_articulation(force_refresh=True)
 
     def _on_blocking_thread(self, data, Command):
         self.data = data
@@ -1986,7 +1992,20 @@ class CommandController:
         self.ui_builder._followingOrientation = rotation
         self.ui_builder._trajectory_list_follow_target(position, rotation, is_right, ee_interpolation, distance_frame)
 
-    def _initialize_articulation(self):
+    def _initialize_articulation(self, force_refresh=False):
+        need_refresh = force_refresh or self.articulation_refresh_pending or self.ui_builder.articulation is None
+        if need_refresh:
+            self.ui_builder.initialize_articulation(self.batch_num)
+            articulation = self.ui_builder.articulation
+            if articulation is not None:
+                try:
+                    articulation.set_joint_velocities(np.zeros(len(articulation.dof_names)))
+                except Exception as exc:
+                    logger.warning(f"Failed to zero articulation velocities during refresh: {exc}")
+                self.dof_names = articulation.dof_names
+            self.gripper_L = None
+            self.gripper_R = None
+            self.articulation_refresh_pending = False
         return self.ui_builder.articulation
 
     # 3. Move all joints to specified angles, Input: np.array([None])*28
