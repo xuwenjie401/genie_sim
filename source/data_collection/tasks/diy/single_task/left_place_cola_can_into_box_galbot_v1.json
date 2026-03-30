@@ -6,7 +6,7 @@
             {
                 "sample": {
                     "min_num": 2,
-                    "max_num": 4,
+                    "max_num": 3,
                     "max_repeat": 1
                 },
                 "workspace_id": "work_table",
@@ -86,44 +86,6 @@
         ],
         "task_related_objects": [
             {
-                "candidate_objects": [
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_006/",
-                        "object_id": "geniesim_2025_storage_box_006_mint_green"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_008/",
-                        "object_id": "geniesim_2025_storage_box_008_white"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_009/",
-                        "object_id": "geniesim_2025_storage_box_009_pink"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_010/",
-                        "object_id": "geniesim_2025_storage_box_010_gray"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_011/",
-                        "object_id": "geniesim_2025_storage_box_011_black"
-                    }
-                ],
-                "mass": 1000.0,
-                "object_id": "geniesim_2025_storage_box_2",
-                "workspace_id": "box_poses",
-                "workspace_relative_position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "workspace_relative_orientation": [
-                    0.5,
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            },
-            {
                 "mass": 1000.0,
                 "object_id": "geniesim_2025_target_storage_box",
                 "workspace_id": "box_poses",
@@ -165,16 +127,16 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 10,
+        "num_of_episode": 100,
         "noised_probability": 0.1
     },
     "robot": {
-        "arm": "left",
+        "arm": "dual",
         "init_arm_pose_noise": {
             ".*_arm_.*": {
                 "noise_type": "uniform",
-                "low": -0.02,
-                "high": 0.02
+                "low": -0.01,
+                "high": 0.01
             }
         },
         "init_arm_pose": {
@@ -195,25 +157,25 @@
             "right_arm_joint7": 0.0,
             "right_gripper_r_knuckle_joint": 0.0
         },
-        "robot_cfg": "galbot_fixed_left.json",
+        "robot_cfg": "galbot_fixed_dual.json",
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.8999999761581421,
+                -0.8600000143051147,
                 0.0,
                 0.0
             ],
             "quaternion": [
-                1,
-                0,
-                0,
-                0
+                1.0,
+                0.0,
+                0.0,
+                0.0
             ],
             "random": {
                 "delta_position": [
+                    0.07999999821186066,
                     0.06,
-                    0.06,
-                    0
+                    0.0
                 ]
             }
         }
@@ -223,9 +185,9 @@
             "work_table": {
                 "material_obj_prim": {},
                 "position": [
-                    -0.05000000074505806,
-                    0.18000000715255737,
-                    0.800000011920929
+                    0.02500000037252903,
+                    0.20000000298023224,
+                    0.7599999904632568
                 ],
                 "quaternion": [
                     1.0,
@@ -234,9 +196,19 @@
                     0.0
                 ],
                 "size": [
-                    0.4000000059604645,
+                    0.41999998688697815,
                     0.550000011920929,
                     0.05
+                ],
+                "blocked_zone": [
+                    [
+                        -0.10000000149011612,
+                        0.25
+                    ],
+                    [
+                        0.019999999552965164,
+                        0.30000001192092896
+                    ]
                 ]
             },
             "box_poses": {
@@ -245,8 +217,8 @@
                     {
                         "position": [
                             0.065,
-                            -0.25,
-                            0.9
+                            0.3499999940395355,
+                            0.7699999809265137
                         ],
                         "quaternion": [
                             1.0,
@@ -261,26 +233,6 @@
                                 0.0
                             ]
                         }
-                    },
-                    {
-                        "position": [
-                            0.065,
-                            0.3499999940395355,
-                            0.9
-                        ],
-                        "quaternion": [
-                            1.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "random": {
-                            "delta_position": [
-                                0.03,
-                                0.05000000074505806,
-                                0.0
-                            ]
-                        }
                     }
                 ]
             }
@@ -288,7 +240,7 @@
         "scene_id": "background/home_b/",
         "scene_info_dir": "background/home_b/",
         "scene_usd": [
-            "background/home_b/home_b_00.usda"
+            "background/home_b/home_b_galbot.usda"
         ]
     },
     "stages": [
@@ -314,11 +266,10 @@
                 }
             ],
             "extra_params": {
-                "arm": "auto",
+                "arm": "left",
                 "disable_upside_down": true,
                 "flip_grasp": false,
-                "grasp_offset": 0.0,
-                "pick_up_distance": 0.16,
+                "pick_up_distance": 0.1,
                 "pick_up_type": "Simple",
                 "grasp_upper_percentile": 75
             },
@@ -357,7 +308,7 @@
                 }
             ],
             "extra_params": {
-                "arm": "auto",
+                "arm": "left",
                 "place_with_origin_orientation": true,
                 "disable_collision_links": [
                     "left_gripper.*",
@@ -380,7 +331,7 @@
                 "primitive": null
             },
             "extra_params": {
-                "arm": "auto"
+                "arm": "left"
             },
             "passive": {
                 "object_id": "gripper",

@@ -131,9 +131,13 @@ COLOR_ROBOT = np.array([0.3, 1.0, 0.45], dtype=np.float32)
 COLOR_WORKSPACE = np.array([0.15, 0.8, 0.95], dtype=np.float32)
 COLOR_SAMPLE_POSE = np.array([1.0, 0.45, 0.15], dtype=np.float32)
 COLOR_RANDOM_BOX = np.array([1.0, 0.7, 0.25], dtype=np.float32)
+COLOR_ROBOT_RANDOM = np.array([0.45, 0.95, 0.55], dtype=np.float32)
+COLOR_EEF_RANDOM_LEFT = np.array([0.2, 0.75, 1.0], dtype=np.float32)
+COLOR_EEF_RANDOM_RIGHT = np.array([1.0, 0.6, 0.2], dtype=np.float32)
 COLOR_PREVIEW_PLACEHOLDER = np.array([0.7, 0.7, 0.7], dtype=np.float32)
 COLOR_BLOCKED = np.array([0.95, 0.25, 0.25], dtype=np.float32)
 COMMAND_CONTROLLER_CAMERA_POSITION = [2.65, 2.4, 1.74]
+ROBOT_RANDOM_BOX_HEIGHT = 0.7
 
 
 @dataclass
@@ -367,6 +371,13 @@ def normalize_blocked_zone(value: Any) -> list[list[float]] | None:
     return blocked_zone
 
 
+def workspace_full_blocked_zone(size: list[float] | np.ndarray) -> list[list[float]]:
+    size_values = ensure_vector(list(size), 3, 0.1)
+    half_x = max(float(size_values[0]) * 0.5, 0.0)
+    half_y = max(float(size_values[1]) * 0.5, 0.0)
+    return [[-half_x, half_x], [-half_y, half_y]]
+
+
 def ensure_prim_path(stage, prim_path: str, leaf_type: str = "Xform"):
     prim_path = str(prim_path).strip()
     sdf_path = Sdf.Path(prim_path)
@@ -458,6 +469,8 @@ class TaskWorkspaceEditor:
         self.handle_records: dict[str, HandleRecord] = {}
         self.preview_specs: list[PreviewSpec] = []
         self.preview_by_workspace: dict[str, list[PreviewSpec]] = {}
+        self.preview_spec_by_pose: dict[tuple[str, int], PreviewSpec] = {}
+        self.preview_assignment_messages: dict[str, str] = {}
         self.object_param_cache: dict[str, dict[str, Any]] = {}
 
         self.robot_cfg: RobotCfg | None = None
@@ -576,8 +589,10 @@ class TaskWorkspaceEditor:
 
         self.preview_specs = self._build_preview_specs()
         self.preview_by_workspace = {}
+        self.preview_spec_by_pose = {}
         for spec in self.preview_specs:
             self.preview_by_workspace.setdefault(spec.workspace_id, []).append(spec)
+            self.preview_spec_by_pose[(spec.workspace_id, spec.pose_index)] = spec
         self._reset_viewport_camera_state()
 
         self.dirty = False
@@ -586,6 +601,16 @@ class TaskWorkspaceEditor:
         origin = self.task_data["origin"]
         origin["position"] = ensure_vector(origin.get("position"), 3, 0.0)
         origin["quaternion"] = normalize_quaternion_wxyz(origin.get("quaternion"))
+
+        robot_entry = self.task_data.setdefault("robot", {})
+        robot_init_pose = robot_entry.get("robot_init_pose")
+        if isinstance(robot_init_pose, dict):
+            if "position" in robot_init_pose or "quaternion" in robot_init_pose or "random" in robot_init_pose:
+                self._normalize_robot_init_pose_entry(robot_init_pose)
+            else:
+                for entry in robot_init_pose.values():
+                    if isinstance(entry, dict):
+                        self._normalize_robot_init_pose_entry(entry)
 
         scene = self.task_data.setdefault("scene", {})
         function_spaces = scene.get("function_space_objects", {})
@@ -616,6 +641,12 @@ class TaskWorkspaceEditor:
                 blocked_zone = normalize_blocked_zone(workspace.get("blocked_zone"))
                 if blocked_zone is not None:
                     workspace["blocked_zone"] = blocked_zone
+
+    def _normalize_robot_init_pose_entry(self, entry: dict[str, Any]) -> None:
+        entry["position"] = ensure_vector(entry.get("position"), 3, 0.0)
+        entry["quaternion"] = normalize_quaternion_wxyz(entry.get("quaternion"))
+        if "random" in entry and isinstance(entry["random"], dict):
+            entry["random"]["delta_position"] = ensure_vector(entry["random"].get("delta_position"), 3, 0.0)
 
     def _resolve_workspace_entries(self) -> dict[str, dict[str, Any]]:
         workspaces = self.task_data.get("scene", {}).get("function_space_objects", {})
@@ -707,6 +738,33 @@ class TaskWorkspaceEditor:
         box_quaternion = origin["quaternion"]
         box_position = (self._get_origin_matrix() @ np.array([*pose_entry["position"], 1.0], dtype=np.float64))[:3]
         return pose_matrix(box_position.tolist(), box_quaternion)
+
+    def _robot_random_box_world_matrix(self) -> np.ndarray | None:
+        robot_pose = self._get_robot_init_pose_entry()
+        if robot_pose is None:
+            return None
+        origin = self._get_origin_entry()
+        box_quaternion = origin["quaternion"]
+        box_position = (self._get_origin_matrix() @ np.array([*robot_pose["position"], 1.0], dtype=np.float64))[:3]
+        return pose_matrix(box_position.tolist(), box_quaternion)
+
+    def _robot_eef_prim_paths(self) -> dict[str, str]:
+        if self.robot_cfg is None:
+            return {}
+        eef_prim_path = getattr(self.robot_cfg, "end_effector_prim_path", None)
+        if isinstance(eef_prim_path, dict):
+            return {str(key): str(value) for key, value in eef_prim_path.items() if value}
+        if eef_prim_path:
+            return {"eef": str(eef_prim_path)}
+        return {}
+
+    def _robot_eef_overlay_color(self, key: str) -> np.ndarray:
+        lowered = str(key).lower()
+        if lowered == "left":
+            return COLOR_EEF_RANDOM_LEFT
+        if lowered == "right":
+            return COLOR_EEF_RANDOM_RIGHT
+        return COLOR_ROBOT_RANDOM
 
     def _resolve_object_parameters(self, data_info_dir: str | None) -> dict[str, Any]:
         if not data_info_dir:
@@ -802,47 +860,66 @@ class TaskWorkspaceEditor:
             for workspace_id, workspace in self.workspace_entries.items()
             if isinstance(workspace, dict) and "poses" in workspace
         }
-        next_pose_index = {workspace_id: 0 for workspace_id in sample_pose_counts}
+        preview_candidates: dict[str, list[dict[str, Any]]] = {workspace_id: [] for workspace_id in sample_pose_counts}
 
         task_objects = self.task_data.get("objects", {}).get("task_related_objects", [])
         for obj_entry in task_objects:
             workspace_id = str(obj_entry.get("workspace_id", ""))
-            if workspace_id not in sample_pose_counts:
-                continue
+            if workspace_id in preview_candidates:
+                preview_candidates[workspace_id].append(obj_entry)
 
-            pose_index = next_pose_index[workspace_id]
-            if pose_index >= sample_pose_counts[workspace_id]:
+        self.preview_assignment_messages = {}
+        for workspace_id, pose_count in sample_pose_counts.items():
+            candidates = preview_candidates.get(workspace_id, [])
+            candidate_count = len(candidates)
+            if candidate_count == pose_count:
+                self.preview_assignment_messages[workspace_id] = (
+                    f"Preview assignment: {candidate_count} object(s) for {pose_count} pose(s)."
+                )
+            elif candidate_count < pose_count:
+                self.preview_assignment_messages[workspace_id] = (
+                    f"Preview assignment mismatch: {candidate_count} object(s) for {pose_count} pose(s). "
+                    "Some poses currently have no preview object."
+                )
                 carb.log_warn(
-                    f"Skipping preview for {obj_entry.get('object_id', 'unknown')} because workspace "
-                    f"{workspace_id} has fewer poses than assigned task objects."
+                    f"Workspace {workspace_id} has {pose_count} pose(s) but only {candidate_count} "
+                    "task-related object(s) assigned for preview."
                 )
-                continue
-            next_pose_index[workspace_id] += 1
-
-            resolved = self._resolve_preview_object_config(obj_entry)
-            rel_position = np.asarray(
-                ensure_vector(resolved.get("workspace_relative_position"), 3, 0.0),
-                dtype=np.float64,
-            )
-            rel_quaternion = self._resolve_preview_relative_quaternion(resolved)
-            asset_path = self._resolve_object_asset_path(resolved)
-
-            preview_specs.append(
-                PreviewSpec(
-                    object_id=str(resolved.get("object_id", f"preview_{workspace_id}_{pose_index}")),
-                    workspace_id=workspace_id,
-                    pose_index=pose_index,
-                    prim_path=(
-                        f"{PREVIEW_ROOT}/{sanitize_token(workspace_id)}/"
-                        f"preview_{pose_index:02d}_{sanitize_token(str(resolved.get('object_id', 'preview')))}"
-                    ),
-                    data_info_dir=resolved.get("data_info_dir"),
-                    relative_position=rel_position,
-                    relative_quaternion=rel_quaternion,
-                    preview_label=str(resolved.get("object_id", "preview")),
-                    asset_path=asset_path,
+            else:
+                self.preview_assignment_messages[workspace_id] = (
+                    f"Preview assignment mismatch: {candidate_count} object(s) for {pose_count} pose(s). "
+                    f"Only the first {pose_count} object(s) will be previewed."
                 )
-            )
+                carb.log_warn(
+                    f"Workspace {workspace_id} has {candidate_count} task-related object(s) but only {pose_count} "
+                    "pose(s); extra preview objects will be skipped."
+                )
+
+            for pose_index, obj_entry in enumerate(candidates[:pose_count]):
+                resolved = self._resolve_preview_object_config(obj_entry)
+                rel_position = np.asarray(
+                    ensure_vector(resolved.get("workspace_relative_position"), 3, 0.0),
+                    dtype=np.float64,
+                )
+                rel_quaternion = self._resolve_preview_relative_quaternion(resolved)
+                asset_path = self._resolve_object_asset_path(resolved)
+
+                preview_specs.append(
+                    PreviewSpec(
+                        object_id=str(resolved.get("object_id", f"preview_{workspace_id}_{pose_index}")),
+                        workspace_id=workspace_id,
+                        pose_index=pose_index,
+                        prim_path=(
+                            f"{PREVIEW_ROOT}/{sanitize_token(workspace_id)}/"
+                            f"preview_{pose_index:02d}_{sanitize_token(str(resolved.get('object_id', 'preview')))}"
+                        ),
+                        data_info_dir=resolved.get("data_info_dir"),
+                        relative_position=rel_position,
+                        relative_quaternion=rel_quaternion,
+                        preview_label=str(resolved.get("object_id", "preview")),
+                        asset_path=asset_path,
+                    )
+                )
         return preview_specs
 
     def _clear_stage_state(self) -> None:
@@ -948,6 +1025,15 @@ class TaskWorkspaceEditor:
             build_axes_marker(f"{robot_handle_path}/axes", axis_len=0.18, axis_thickness=0.009)
             robot_center = create_colored_cube(f"{robot_handle_path}/center", COLOR_ROBOT, opacity=0.95)
             set_local_matrix(robot_center, np.diag([0.035, 0.035, 0.035, 1.0]))
+            robot_random_box = create_colored_cube(f"{OVERLAY_ROOT}/robot_init_random_box", COLOR_ROBOT_RANDOM, opacity=0.0)
+            set_local_matrix(robot_random_box, np.diag([0.001, 0.001, 0.001, 1.0]))
+            for eef_key, _ in self._robot_eef_prim_paths().items():
+                eef_random_box = create_colored_cube(
+                    f"{OVERLAY_ROOT}/robot_init_random_eef_{sanitize_token(eef_key)}",
+                    self._robot_eef_overlay_color(eef_key),
+                    opacity=0.0,
+                )
+                set_local_matrix(eef_random_box, np.diag([0.001, 0.001, 0.001, 1.0]))
             self.handle_records[self._robot_handle_key()] = HandleRecord(
                 key=self._robot_handle_key(),
                 kind="robot",
@@ -1020,6 +1106,7 @@ class TaskWorkspaceEditor:
             set_local_matrix(origin_prim, self._get_origin_matrix())
 
             self._apply_robot_handle_transform()
+            self._apply_robot_random_state()
             for workspace_id in self.workspace_order:
                 workspace = self.workspace_entries[workspace_id]
                 if "poses" in workspace:
@@ -1028,6 +1115,7 @@ class TaskWorkspaceEditor:
                     self._apply_space_workspace_state(workspace_id, workspace)
 
             self._apply_robot_base_transform()
+            self._apply_robot_eef_random_state()
             self._apply_preview_transforms()
             self._snapshot_handle_matrices()
         finally:
@@ -1110,6 +1198,72 @@ class TaskWorkspaceEditor:
         if prim and prim.IsValid():
             set_local_matrix(prim, robot_world)
 
+    def _apply_robot_random_state(self) -> None:
+        random_box_prim = self.stage.GetPrimAtPath(f"{OVERLAY_ROOT}/robot_init_random_box")
+        if not random_box_prim or not random_box_prim.IsValid():
+            return
+
+        robot_pose = self._get_robot_init_pose_entry()
+        random_world = self._robot_random_box_world_matrix()
+        if robot_pose is None or random_world is None:
+            set_display_color(random_box_prim, COLOR_ROBOT_RANDOM, opacity=0.0)
+            set_local_matrix(random_box_prim, np.diag([0.001, 0.001, 0.001, 1.0]))
+            return
+
+        random_delta = ensure_vector(robot_pose.get("random", {}).get("delta_position"), 3, 0.0)
+        if max(abs(float(value)) for value in random_delta) <= 1e-8:
+            set_display_color(random_box_prim, COLOR_ROBOT_RANDOM, opacity=0.0)
+            set_local_matrix(random_box_prim, np.diag([0.001, 0.001, 0.001, 1.0]))
+            return
+
+        random_scale = [
+            max(2.0 * abs(float(random_delta[0])), 0.004),
+            max(2.0 * abs(float(random_delta[1])), 0.004),
+            ROBOT_RANDOM_BOX_HEIGHT,
+        ]
+        random_box_matrix = random_world.copy()
+        random_box_matrix[:3, 3] = (
+            random_world[:3, 3] + random_world[:3, :3] @ np.array([0.0, 0.0, ROBOT_RANDOM_BOX_HEIGHT * 0.5])
+        )
+        random_box_matrix[:3, :3] = random_box_matrix[:3, :3] @ np.diag(random_scale)
+        set_display_color(random_box_prim, COLOR_ROBOT_RANDOM, opacity=0.14)
+        set_local_matrix(random_box_prim, random_box_matrix)
+
+    def _apply_robot_eef_random_state(self) -> None:
+        robot_pose = self._get_robot_init_pose_entry()
+        random_delta = ensure_vector(robot_pose.get("random", {}).get("delta_position"), 3, 0.0) if robot_pose else [0.0, 0.0, 0.0]
+        has_random_xy = max(abs(float(random_delta[0])), abs(float(random_delta[1]))) > 1e-8
+        origin_quaternion = self._get_origin_entry()["quaternion"]
+        eef_random_height = max(2.0 * abs(float(random_delta[2])), 0.004)
+        eef_prim_paths = self._robot_eef_prim_paths()
+
+        for eef_key, eef_prim_path in eef_prim_paths.items():
+            overlay_path = f"{OVERLAY_ROOT}/robot_init_random_eef_{sanitize_token(eef_key)}"
+            overlay_prim = self.stage.GetPrimAtPath(overlay_path)
+            if not overlay_prim or not overlay_prim.IsValid():
+                continue
+
+            eef_prim = self.stage.GetPrimAtPath(eef_prim_path)
+            if not eef_prim or not eef_prim.IsValid() or not has_random_xy:
+                set_display_color(overlay_prim, self._robot_eef_overlay_color(eef_key), opacity=0.0)
+                set_local_matrix(overlay_prim, np.diag([0.001, 0.001, 0.001, 1.0]))
+                continue
+
+            eef_world = compute_world_matrix(eef_prim)
+            box_matrix = pose_matrix(eef_world[:3, 3].tolist(), origin_quaternion)
+            box_matrix[:3, 3] = (
+                eef_world[:3, 3] + box_matrix[:3, :3] @ np.array([0.0, 0.0, eef_random_height * 0.5])
+            )
+            box_matrix[:3, :3] = box_matrix[:3, :3] @ np.diag(
+                [
+                    max(2.0 * abs(float(random_delta[0])), 0.004),
+                    max(2.0 * abs(float(random_delta[1])), 0.004),
+                    eef_random_height,
+                ]
+            )
+            set_display_color(overlay_prim, self._robot_eef_overlay_color(eef_key), opacity=0.16)
+            set_local_matrix(overlay_prim, box_matrix)
+
     def _apply_preview_transforms(self) -> None:
         for spec in self.preview_specs:
             if spec.workspace_id not in self.workspace_entries:
@@ -1157,7 +1311,7 @@ class TaskWorkspaceEditor:
             self._register_float_model(
                 key=key,
                 getter=lambda origin=origin, index=index: float(
-                    normalize_quaternion_wxyz(origin.get("quaternion"))[index]
+                    ensure_vector(origin.get("quaternion"), 4, 0.0)[index]
                 ),
                 setter=lambda value, origin=origin, index=index: self._set_quaternion_component(
                     origin, "quaternion", index, value
@@ -1182,10 +1336,21 @@ class TaskWorkspaceEditor:
                 self._register_float_model(
                     key=key,
                     getter=lambda robot_pose=robot_pose, index=index: float(
-                        normalize_quaternion_wxyz(robot_pose.get("quaternion"))[index]
+                        ensure_vector(robot_pose.get("quaternion"), 4, 0.0)[index]
                     ),
                     setter=lambda value, robot_pose=robot_pose, index=index: self._set_quaternion_component(
                         robot_pose, "quaternion", index, value
+                    ),
+                )
+            for index, axis_name in enumerate(("x", "y", "z")):
+                key = f"robot_init.random_delta.{axis_name}"
+                self._register_float_model(
+                    key=key,
+                    getter=lambda robot_pose=robot_pose, index=index: float(
+                        ensure_vector(robot_pose.get("random", {}).get("delta_position"), 3, 0.0)[index]
+                    ),
+                    setter=lambda value, robot_pose=robot_pose, index=index: self._set_robot_random_delta_component(
+                        robot_pose, index, value
                     ),
                 )
 
@@ -1234,7 +1399,7 @@ class TaskWorkspaceEditor:
                         self._register_float_model(
                             key=key,
                             getter=lambda pose=pose, index=index: float(
-                                normalize_quaternion_wxyz(pose.get("quaternion"))[index]
+                                ensure_vector(pose.get("quaternion"), 4, 0.0)[index]
                             ),
                             setter=lambda value, pose=pose, index=index: self._set_quaternion_component(
                                 pose, "quaternion", index, value
@@ -1274,7 +1439,7 @@ class TaskWorkspaceEditor:
                     self._register_float_model(
                         key=key,
                         getter=lambda workspace=workspace, index=index: float(
-                            normalize_quaternion_wxyz(workspace.get("quaternion"))[index]
+                            ensure_vector(workspace.get("quaternion"), 4, 0.0)[index]
                         ),
                         setter=lambda value, workspace=workspace, index=index: self._set_quaternion_component(
                             workspace, "quaternion", index, value
@@ -1291,6 +1456,18 @@ class TaskWorkspaceEditor:
                             workspace, index, value
                         ),
                     )
+                for axis_index, axis_name in enumerate(("x", "y")):
+                    for bound_index, bound_name in enumerate(("min", "max")):
+                        key = f"workspace.{workspace_id}.blocked_zone.{axis_name}.{bound_name}"
+                        self._register_float_model(
+                            key=key,
+                            getter=lambda workspace=workspace, axis_index=axis_index, bound_index=bound_index: float(
+                                self._get_blocked_zone_component(workspace, axis_index, bound_index)
+                            ),
+                            setter=lambda value, workspace=workspace, axis_index=axis_index, bound_index=bound_index: (
+                                self._set_blocked_zone_component(workspace, axis_index, bound_index, value)
+                            ),
+                        )
 
     def _register_float_model(
         self,
@@ -1319,6 +1496,8 @@ class TaskWorkspaceEditor:
             return
         self._apply_model_to_stage(sync_models=True)
         self._mark_dirty(f"Updated {key}")
+        if ".quaternion." in key:
+            self._rebuild_ui()
 
     def _set_vector_component(
         self,
@@ -1335,7 +1514,19 @@ class TaskWorkspaceEditor:
     def _set_quaternion_component(self, container: dict[str, Any], field: str, index: int, value: float) -> None:
         current = ensure_vector(container.get(field), 4, 0.0)
         current[index] = float(value)
-        container[field] = normalize_quaternion_wxyz(current)
+        container[field] = current
+
+    def _quaternion_hint_text(self, quaternion_value: Any) -> str:
+        raw = ensure_vector(quaternion_value, 4, 0.0)
+        normalized = normalize_quaternion_wxyz(raw)
+        raw_norm = float(np.linalg.norm(np.asarray(raw, dtype=np.float64)))
+        normalized_text = ", ".join(f"{value:.4f}" for value in normalized)
+        if raw_norm < 1e-8:
+            return f"Normalized: [{normalized_text}] | raw norm: {raw_norm:.4f} -> identity fallback"
+        return f"Normalized: [{normalized_text}] | raw norm: {raw_norm:.4f}"
+
+    def _build_quaternion_hint(self, quaternion_value: Any) -> None:
+        ui.Label(self._quaternion_hint_text(quaternion_value), word_wrap=True, height=24)
 
     def _set_workspace_size_component(self, workspace: dict[str, Any], index: int, value: float) -> None:
         workspace["size"] = ensure_vector(workspace.get("size"), 3, 0.1)
@@ -1349,6 +1540,47 @@ class TaskWorkspaceEditor:
     def _set_random_delta_angle(self, pose: dict[str, Any], value: float) -> None:
         pose.setdefault("random", {})
         pose["random"]["delta_angle"] = float(value)
+
+    def _set_robot_random_delta_component(self, robot_pose: dict[str, Any], index: int, value: float) -> None:
+        robot_pose.setdefault("random", {})
+        robot_pose["random"]["delta_position"] = ensure_vector(robot_pose["random"].get("delta_position"), 3, 0.0)
+        robot_pose["random"]["delta_position"][index] = max(float(value), 0.0)
+
+    def _get_blocked_zone_component(self, workspace: dict[str, Any], axis_index: int, bound_index: int) -> float:
+        blocked_zone = normalize_blocked_zone(workspace.get("blocked_zone"))
+        if blocked_zone is None:
+            return 0.0
+        return float(blocked_zone[axis_index][bound_index])
+
+    def _set_blocked_zone_component(
+        self,
+        workspace: dict[str, Any],
+        axis_index: int,
+        bound_index: int,
+        value: float,
+    ) -> None:
+        blocked_zone = normalize_blocked_zone(workspace.get("blocked_zone"))
+        if blocked_zone is None:
+            blocked_zone = [[0.0, 0.0], [0.0, 0.0]]
+        blocked_zone[axis_index][bound_index] = float(value)
+        blocked_zone[axis_index] = sorted(blocked_zone[axis_index])
+        workspace["blocked_zone"] = blocked_zone
+
+    def _clear_blocked_zone(self, workspace: dict[str, Any]) -> None:
+        workspace.pop("blocked_zone", None)
+        self._apply_model_to_stage(sync_models=True)
+        self._mark_dirty("Cleared blocked_zone")
+
+    def _fill_blocked_zone_from_workspace_size(self, workspace: dict[str, Any]) -> None:
+        workspace["blocked_zone"] = workspace_full_blocked_zone(workspace.get("size", [0.1, 0.1, 0.1]))
+        self._apply_model_to_stage(sync_models=True)
+        self._mark_dirty("Filled blocked_zone from workspace size")
+
+    def _zero_robot_random_delta(self, robot_pose: dict[str, Any]) -> None:
+        robot_pose.setdefault("random", {})
+        robot_pose["random"]["delta_position"] = [0.0, 0.0, 0.0]
+        self._apply_model_to_stage(sync_models=True)
+        self._mark_dirty("Zeroed robot init random delta_position")
 
     def _sync_models_from_task(self) -> None:
         self.suspend_model_callbacks = True
@@ -1587,6 +1819,7 @@ class TaskWorkspaceEditor:
             [f"origin.quaternion.{axis}" for axis in ("w", "x", "y", "z")],
             axis_labels=("w", "x", "y", "z"),
         )
+        self._build_quaternion_hint(self._get_origin_entry().get("quaternion"))
 
     def _build_viewport_camera_ui(self) -> None:
         ui.Label("Viewport Camera (Not Saved)", height=22)
@@ -1620,6 +1853,13 @@ class TaskWorkspaceEditor:
                 width=180,
                 clicked_fn=lambda: self._select_handle(self._robot_handle_key()),
             )
+            robot_pose = self._get_robot_init_pose_entry()
+            if robot_pose is not None:
+                ui.Button(
+                    "Zero Random dPos",
+                    width=130,
+                    clicked_fn=lambda robot_pose=robot_pose: self._zero_robot_random_delta(robot_pose),
+                )
         self._build_vector_row(
             "Position",
             [f"robot_init.position.{axis}" for axis in ("x", "y", "z")],
@@ -1630,21 +1870,33 @@ class TaskWorkspaceEditor:
             [f"robot_init.quaternion.{axis}" for axis in ("w", "x", "y", "z")],
             axis_labels=("w", "x", "y", "z"),
         )
+        robot_pose = self._get_robot_init_pose_entry()
+        if robot_pose is not None:
+            self._build_quaternion_hint(robot_pose.get("quaternion"))
+        self._build_vector_row(
+            "Random dPos",
+            [f"robot_init.random_delta.{axis}" for axis in ("x", "y", "z")],
+            axis_labels=("x", "y", "z"),
+        )
+        ui.Label(
+            "Robot random delta_position is previewed as a green box in origin-local axes.",
+            word_wrap=True,
+            height=36,
+        )
 
     def _build_workspace_ui(self, workspace_id: str, workspace: dict[str, Any]) -> None:
         mode = "SAMPLE" if "poses" in workspace else "SPACE"
         ui.Label(f"Workspace: {workspace_id} ({mode})", height=22)
         if "poses" in workspace:
-            previews = self.preview_by_workspace.get(workspace_id, [])
-            if previews:
-                for spec in previews:
-                    ui.Label(
-                        f"Preview: {spec.preview_label} -> pose[{spec.pose_index}]",
-                        word_wrap=True,
-                        height=22,
-                    )
+            preview_message = self.preview_assignment_messages.get(
+                workspace_id,
+                f"Preview assignment: {len(self.preview_by_workspace.get(workspace_id, []))} object(s) for "
+                f"{len(workspace.get('poses', []))} pose(s).",
+            )
+            ui.Label(preview_message, word_wrap=True, height=36)
             for pose_index, _ in enumerate(workspace.get("poses", [])):
                 pose_handle_key = self._pose_handle_key(workspace_id, pose_index)
+                preview_spec = self.preview_spec_by_pose.get((workspace_id, pose_index))
                 with ui.HStack(height=28, spacing=8):
                     ui.Label(f"Pose {pose_index}", width=80)
                     ui.Button(
@@ -1652,6 +1904,15 @@ class TaskWorkspaceEditor:
                         width=120,
                         clicked_fn=lambda handle_key=pose_handle_key: self._select_handle(handle_key),
                     )
+                ui.Label(
+                    (
+                        f"Preview Object: {preview_spec.preview_label}"
+                        if preview_spec is not None
+                        else "Preview Object: none assigned"
+                    ),
+                    word_wrap=True,
+                    height=22,
+                )
                 self._build_vector_row(
                     "Position",
                     [f"pose.{workspace_id}.{pose_index}.position.{axis}" for axis in ("x", "y", "z")],
@@ -1662,6 +1923,7 @@ class TaskWorkspaceEditor:
                     [f"pose.{workspace_id}.{pose_index}.quaternion.{axis}" for axis in ("w", "x", "y", "z")],
                     axis_labels=("w", "x", "y", "z"),
                 )
+                self._build_quaternion_hint(workspace.get("poses", [])[pose_index].get("quaternion"))
                 self._build_vector_row(
                     "Random dPos",
                     [f"pose.{workspace_id}.{pose_index}.random_delta.{axis}" for axis in ("x", "y", "z")],
@@ -1680,6 +1942,16 @@ class TaskWorkspaceEditor:
                     width=180,
                     clicked_fn=lambda handle_key=workspace_handle_key: self._select_handle(handle_key),
                 )
+                ui.Button(
+                    "Fill Blocked",
+                    width=104,
+                    clicked_fn=lambda workspace=workspace: self._fill_blocked_zone_from_workspace_size(workspace),
+                )
+                ui.Button(
+                    "Clear Blocked",
+                    width=104,
+                    clicked_fn=lambda workspace=workspace: self._clear_blocked_zone(workspace),
+                )
             self._build_vector_row(
                 "Position",
                 [f"workspace.{workspace_id}.position.{axis}" for axis in ("x", "y", "z")],
@@ -1690,10 +1962,32 @@ class TaskWorkspaceEditor:
                 [f"workspace.{workspace_id}.quaternion.{axis}" for axis in ("w", "x", "y", "z")],
                 axis_labels=("w", "x", "y", "z"),
             )
+            self._build_quaternion_hint(workspace.get("quaternion"))
             self._build_vector_row(
                 "Size",
                 [f"workspace.{workspace_id}.size.{axis}" for axis in ("x", "y", "z")],
                 axis_labels=("x", "y", "z"),
+            )
+            self._build_vector_row(
+                "Blocked X",
+                [
+                    f"workspace.{workspace_id}.blocked_zone.x.min",
+                    f"workspace.{workspace_id}.blocked_zone.x.max",
+                ],
+                axis_labels=("min", "max"),
+            )
+            self._build_vector_row(
+                "Blocked Y",
+                [
+                    f"workspace.{workspace_id}.blocked_zone.y.min",
+                    f"workspace.{workspace_id}.blocked_zone.y.max",
+                ],
+                axis_labels=("min", "max"),
+            )
+            ui.Label(
+                "blocked_zone is expressed in workspace-local XY around the workspace center.",
+                word_wrap=True,
+                height=36,
             )
 
     def _build_vector_row(self, title: str, keys: list[str], axis_labels: tuple[str, ...]) -> None:

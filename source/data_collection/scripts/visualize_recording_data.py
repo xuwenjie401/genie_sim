@@ -492,6 +492,7 @@ class FFmpegVideoReader:
         self.frame_bytes = self.width * self.height * 3
         self.process: subprocess.Popen[bytes] | None = None
         self.next_frame_idx = 0
+        self.preloaded_frames: list[Image.Image] | None = None
         self.cache: dict[int, Image.Image] = {}
         self.cache_order: list[int] = []
         self.cache_limit = 8
@@ -522,6 +523,11 @@ class FFmpegVideoReader:
     def read_frame(self, frame_idx: int) -> Image.Image | None:
         if frame_idx < 0 or self.frame_bytes <= 0:
             return None
+        if self.preloaded_frames is not None:
+            if not self.preloaded_frames:
+                return None
+            safe_idx = min(frame_idx, len(self.preloaded_frames) - 1)
+            return self.preloaded_frames[safe_idx]
         cached = self.cache.get(frame_idx)
         if cached is not None:
             return cached.copy()
@@ -605,6 +611,26 @@ class FFmpegVideoReader:
             stale_idx = self.cache_order.pop(0)
             self.cache.pop(stale_idx, None)
 
+    def preload_all_frames(self) -> int:
+        if self.preloaded_frames is not None:
+            return len(self.preloaded_frames)
+        if self.frame_bytes <= 0 or not self._start():
+            self.preloaded_frames = []
+            return 0
+
+        frames: list[Image.Image] = []
+        while True:
+            frame = self._read_one_frame()
+            if frame is None:
+                break
+            frames.append(frame)
+
+        self.close()
+        self.cache.clear()
+        self.cache_order.clear()
+        self.preloaded_frames = frames
+        return len(frames)
+
 
 class RecordingViewer:
     def __init__(
@@ -647,20 +673,9 @@ class RecordingViewer:
         self.playing = True
         self.after_id: str | None = None
         self._next_frame_deadline: float | None = None
-        self._image_refs: list[ImageTk.PhotoImage] = []
+        self._playback_state_stride = max(int(round(self.base_playback_fps / 6.0)), 1)
+        self._last_state_rendered_frame = -1
 
-        self.root = tk.Tk()
-        self.root.title(f"Recording Viewer: {recording_dir.name}")
-        screen_w = self.root.winfo_screenwidth()
-        screen_h = self.root.winfo_screenheight()
-        width = min(1800, max(screen_w - 80, 1200))
-        height = min(1080, max(screen_h - 120, 800))
-        self.root.geometry(f"{width}x{height}")
-        self.pose_image_size = max(170, min(240, int(height * 0.19)))
-
-        self.root.configure(bg="#f5f1e8")
-        self.ui_font_family = self._pick_ui_font_family(font_family_override)
-        self.mono_font_family = self._pick_mono_font_family()
         self.videos_dir = self.recording_dir / "observations" / "videos"
         self.video_paths = {
             logical_name: find_video_for_logical_name(self.videos_dir, logical_name)
@@ -674,6 +689,20 @@ class RecordingViewer:
             )
             for logical_name, video_path in self.video_paths.items()
         }
+        self._preload_video_readers()
+
+        self.root = tk.Tk()
+        self.root.title(f"Recording Viewer: {recording_dir.name}")
+        screen_w = self.root.winfo_screenwidth()
+        screen_h = self.root.winfo_screenheight()
+        width = min(1800, max(screen_w - 80, 1200))
+        height = min(1080, max(screen_h - 120, 800))
+        self.root.geometry(f"{width}x{height}")
+        self.pose_image_size = max(170, min(240, int(height * 0.19)))
+
+        self.root.configure(bg="#f5f1e8")
+        self.ui_font_family = self._pick_ui_font_family(font_family_override)
+        self.mono_font_family = self._pick_mono_font_family()
         self.image_labels: dict[str, tk.Label] = {}
         self.pose_image_labels: dict[str, tk.Label] = {}
         self.text_widgets: dict[str, tk.Text] = {}
@@ -690,6 +719,29 @@ class RecordingViewer:
 
     def _update_playback_fps(self) -> None:
         self.playback_fps = max(self.base_playback_fps * self.play_rate, 0.1)
+        self._playback_state_stride = max(int(round(self.playback_fps / 6.0)), 1)
+
+    def _preload_video_readers(self) -> None:
+        available_readers = [
+            (logical_name, reader)
+            for logical_name, reader in self.video_readers.items()
+            if reader is not None
+        ]
+        if not available_readers:
+            return
+
+        print(
+            "preloading mp4 frames for smoother UI playback; please wait...",
+            flush=True,
+        )
+        for logical_name, reader in available_readers:
+            frame_count = reader.preload_all_frames()
+            source_name = reader.video_path.name
+            print(
+                f"  {logical_name}: loaded {frame_count} frame(s) from {source_name} "
+                f"at {reader.width}x{reader.height}",
+                flush=True,
+            )
 
     def _frame_interval_seconds(self) -> float:
         return 1.0 / self.playback_fps
@@ -1005,7 +1057,7 @@ class RecordingViewer:
     def _advance(self) -> None:
         if self.playing:
             self.frame_idx = (self.frame_idx + 1) % self.frame_count
-            self.render_frame()
+            self.render_frame(include_state=self._should_render_state_on_playback())
             now = time.monotonic()
             interval = self._frame_interval_seconds()
             if self._next_frame_deadline is None:
@@ -1016,14 +1068,37 @@ class RecordingViewer:
                     self._next_frame_deadline = now + interval
         self.schedule_next()
 
-    def render_frame(self) -> None:
+    def render_frame(self, include_state: bool = True) -> None:
         frame = self.frame_data[self.frame_idx]
-        self._image_refs = []
+        self._render_video_panes()
+        if include_state:
+            self._render_state_panels(frame)
+            self._last_state_rendered_frame = self.frame_idx
 
+        left_ga = self._get_gripper_action_value("left", self.frame_idx)
+        right_ga = self._get_gripper_action_value("right", self.frame_idx)
+
+        self.status_var.set(
+            f"frame {self.frame_idx + 1}/{self.frame_count} | "
+            f"time_stamp={frame.get('time_stamp', 'n/a'):.4f} | "
+            f"GA(left/right)={self._format_gripper_action_value(left_ga)}/{self._format_gripper_action_value(right_ga)} | "
+            f"{self._playback_summary()} | "
+            "keys: Space play/pause, Left/Right step, Up/+/= faster, Down/- slower, Esc quit"
+        )
+
+    def _should_render_state_on_playback(self) -> bool:
+        if not self.playing:
+            return True
+        if self.frame_idx == 0 or self._last_state_rendered_frame < 0:
+            return True
+        return (self.frame_idx - self._last_state_rendered_frame) % self._playback_state_stride == 0
+
+    def _render_video_panes(self) -> None:
         for logical_name in ("head", "left", "right"):
             image = self._load_frame_image(logical_name, self.frame_idx)
             self._render_image(logical_name, image)
 
+    def _render_state_panels(self, frame: dict[str, Any]) -> None:
         joint_names = self.joint_names
         joint_values = self._get_joint_values_for_frame(self.frame_idx)
         left_joints, right_joints = split_left_right_joints(joint_names, joint_values)
@@ -1034,7 +1109,6 @@ class RecordingViewer:
         self._render_pose_image("right_eef_pose", frame["ee"]["right"]["pose"])
         self.pose_numeric_labels["left_eef_pose"].configure(text=left_pose_text)
         self.pose_numeric_labels["right_eef_pose"].configure(text=right_pose_text)
-        # NOTE: codex arm_base
         self.robot_pose_labels["world_base_link"].configure(
             text=self._format_robot_pose_label(frame, "pose")
         )
@@ -1050,32 +1124,25 @@ class RecordingViewer:
         self._set_text("left_joints", self._format_joint_block("left", left_joints))
         self._set_text("right_joints", self._format_joint_block("right", right_joints))
 
-        left_ga = self._get_gripper_action_value("left", self.frame_idx)
-        right_ga = self._get_gripper_action_value("right", self.frame_idx)
-
-        self.status_var.set(
-            f"frame {self.frame_idx + 1}/{self.frame_count} | "
-            f"time_stamp={frame.get('time_stamp', 'n/a'):.4f} | "
-            f"GA(left/right)={self._format_gripper_action_value(left_ga)}/{self._format_gripper_action_value(right_ga)} | "
-            f"{self._playback_summary()} | "
-            "keys: Space play/pause, Left/Right step, Up/+/= faster, Down/- slower, Esc quit"
-        )
-
     def _load_frame_image(self, logical_name: str, frame_idx: int) -> Image.Image | None:
+        reader = self.video_readers.get(logical_name)
+        if reader is not None:
+            image = reader.read_frame(frame_idx)
+            if image is not None:
+                return image
         camera_dir = self.recording_dir / "camera" / str(frame_idx)
         image_path = find_image_for_frame(camera_dir, logical_name)
         if image_path is not None and image_path.is_file():
             return Image.open(image_path).convert("RGB")
-        reader = self.video_readers.get(logical_name)
-        if reader is None:
-            return None
-        return reader.read_frame(frame_idx)
+        return None
 
     def _render_image(self, logical_name: str, image: Image.Image | None) -> None:
         label = self.image_labels[logical_name]
         if image is None:
             if hasattr(label, "_base_pil_image"):
                 delattr(label, "_base_pil_image")
+            if hasattr(label, "_photo_ref"):
+                delattr(label, "_photo_ref")
             label.configure(text="missing image", image="")
             return
 
@@ -1084,15 +1151,15 @@ class RecordingViewer:
             image = image.resize((self.image_width, max(int(image.height * scale), 1)))
         label._base_pil_image = image
         photo = ImageTk.PhotoImage(image=image)
+        label._photo_ref = photo
         label.configure(image=photo, text="")
-        self._image_refs.append(photo)
 
     def _render_pose_image(self, key: str, pose_4x4: list[list[float]]) -> None:
         label = self.pose_image_labels[key]
         image = self._create_pose_overlay(pose_4x4)
         photo = ImageTk.PhotoImage(image=image)
+        label._photo_ref = photo
         label.configure(image=photo, text="")
-        self._image_refs.append(photo)
 
     def _create_pose_overlay(self, pose_4x4: list[list[float]]) -> Image.Image:
         fig_size_inches = self.pose_image_size / 100.0

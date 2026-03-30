@@ -673,22 +673,68 @@ class CommandController:
             np.random.seed(None)
             with open(scene_usd_dir + "/material_config.json", "r") as f:
                 material_config = json.load(f)
-            scene_usd_filename = os.path.basename(os.path.normpath(self.scene_usd_path))
-            scene_material_config = material_config.get(scene_usd_filename, {})
+            scene_usd_filename, scene_material_config = self._resolve_scene_material_config(material_config, stage)
             for random_config in scene_material_config.get("random_materials", []):
-                prim_paths = random_config.get("prim_paths", [])
-                material_buffer = random_config.get("material_buffer", [])
+                prim_paths = random_config["prim_paths"]
+                material_buffer = random_config["material_buffer"]
                 # Select len(prim_paths) materials from material_buffer for replacement
                 selected_materials = np.random.choice(material_buffer, size=len(prim_paths), replace=False)
                 for idx, prim_path in enumerate(prim_paths):
-                    # check if prim_path is a valid prim path
-                    if not stage.GetPrimAtPath(prim_path).IsValid():
-                        continue
                     mesh_prim = stage.GetPrimAtPath(prim_path)
                     material_path = selected_materials[idx]
                     material = UsdShade.Material.Get(stage, Sdf.Path(material_path))
                     UsdShade.MaterialBindingAPI(mesh_prim).UnbindAllBindings()
                     UsdShade.MaterialBindingAPI(mesh_prim).Bind(material)
+
+    def _resolve_scene_material_config(self, material_config, stage):
+        scene_usd_filename = os.path.basename(os.path.normpath(self.scene_usd_path))
+        scene_material_config = self._sanitize_scene_material_config(material_config.get(scene_usd_filename, {}), stage)
+        if scene_material_config.get("random_materials"):
+            return scene_usd_filename, scene_material_config
+
+        current_scene_stem = os.path.splitext(scene_usd_filename)[0]
+        current_scene_family = re.sub(r"_(\d+|galbot)$", "", current_scene_stem)
+        compatible_candidates = []
+        for candidate_filename, candidate_config in material_config.items():
+            sanitized_config = self._sanitize_scene_material_config(candidate_config, stage)
+            if not sanitized_config.get("random_materials"):
+                continue
+            candidate_stem = os.path.splitext(candidate_filename)[0]
+            candidate_family = re.sub(r"_(\d+|galbot)$", "", candidate_stem)
+            family_match = int(candidate_family == current_scene_family)
+            compatible_candidates.append((family_match, candidate_filename, sanitized_config))
+
+        if not compatible_candidates:
+            logger.warning(
+                f"No compatible material randomization config found for scene {scene_usd_filename}; "
+                "texture randomization will be skipped."
+            )
+            return scene_usd_filename, {}
+
+        compatible_candidates.sort(key=lambda item: (-item[0], item[1]))
+        _, fallback_filename, fallback_config = compatible_candidates[0]
+        logger.warning(
+            f"Material randomization config for scene {scene_usd_filename} is missing; "
+            f"falling back to {fallback_filename}."
+        )
+        return fallback_filename, fallback_config
+
+    def _sanitize_scene_material_config(self, scene_material_config, stage):
+        sanitized_random_materials = []
+        for random_config in scene_material_config.get("random_materials", []):
+            valid_prim_paths = [prim_path for prim_path in random_config.get("prim_paths", []) if stage.GetPrimAtPath(prim_path).IsValid()]
+            valid_material_buffer = [
+                material_path for material_path in random_config.get("material_buffer", []) if stage.GetPrimAtPath(material_path).IsValid()
+            ]
+            if not valid_prim_paths or len(valid_material_buffer) < len(valid_prim_paths):
+                continue
+            sanitized_random_materials.append(
+                {
+                    "prim_paths": valid_prim_paths,
+                    "material_buffer": valid_material_buffer,
+                }
+            )
+        return {"random_materials": sanitized_random_materials}
 
     def _play(self):
         self.ui_builder.my_world.play()
