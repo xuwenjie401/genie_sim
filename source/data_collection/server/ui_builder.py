@@ -311,6 +311,12 @@ class UIBuilder:
         positions = self._limit_joint_positions(positions, joint_indices)
         self.articulation.set_joint_positions(positions, joint_indices=joint_indices)
         self.articulation.set_joint_velocities(np.zeros(len(positions)), joint_indices=joint_indices)
+        # Keep controller targets aligned with the directly written articulation state so
+        # fixed joints are not pulled back by stale drive targets on the next physics step.
+        if hasattr(self.articulation, "set_joint_position_targets"):
+            self.articulation.set_joint_position_targets(positions, joint_indices=joint_indices)
+        if hasattr(self.articulation, "set_joint_velocity_targets"):
+            self.articulation.set_joint_velocity_targets(np.zeros(len(positions)), joint_indices=joint_indices)
 
     def _move_to(self, target_positions, joint_indices=None, is_trajectory=False, is_action=False):
         if not self.articulation:

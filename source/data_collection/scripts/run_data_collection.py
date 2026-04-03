@@ -64,12 +64,17 @@ if __name__ == "__main__":
     robot_rotation = startup_robot_pose.get("quaternion", [1, 0, 0, 0])
     stand = {"stand_type": "cylinder", "stand_size_x": 0.1, "stand_size_y": 0.1}
     robot_init_arm_pose = None
+    fixed_joint_reset_pose = None
     robot_init_arm_pose_noise = None
     robot_cfg = startup_robot_info.get("robot_cfg", task_info["robot"]["robot_cfg"])
     if "stand" in startup_robot_info:
         stand = startup_robot_info["stand"]
     if "init_arm_pose" in startup_robot_info:
         robot_init_arm_pose = startup_robot_info["init_arm_pose"]
+    if "fixed_joint_reset_pose" in startup_robot_info:
+        fixed_joint_reset_pose = startup_robot_info["fixed_joint_reset_pose"]
+    elif "init_joint_pose" in startup_robot_info:
+        fixed_joint_reset_pose = startup_robot_info["init_joint_pose"]
     if "init_arm_pose_noise" in startup_robot_info:
         robot_init_arm_pose_noise = startup_robot_info["init_arm_pose_noise"]
 
@@ -83,6 +88,7 @@ if __name__ == "__main__":
         stand_size_x=stand["stand_size_x"],
         stand_size_y=stand["stand_size_y"],
         robot_init_arm_pose=robot_init_arm_pose,
+        fixed_joint_reset_pose=fixed_joint_reset_pose,
         robot_init_arm_pose_noise=robot_init_arm_pose_noise,
     )
     agent = DataCollectionAgent(robot)

@@ -156,10 +156,19 @@
         ],
         "fps": 30,
         "num_of_episode": 100,
-        "noised_probability": 0.1
+        "noised_probability": 0.0
     },
     "robot": {
         "arm": "dual",
+        "fixed_joint_reset_pose": {
+            "leg_joint1": 0.61,
+            "leg_joint2": 1.16,
+            "leg_joint3": 0.537,
+            "leg_joint4": 0.0,
+            "leg_joint5": 0.0,
+            "head_joint1": 0.0,
+            "head_joint2": 0.3
+        },
         "init_arm_pose_noise": {
             ".*_arm_.*": {
                 "noise_type": "uniform",
