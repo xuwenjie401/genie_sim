@@ -1,0 +1,12 @@
+Exception has occurred: IndexError
+index 19 is out of bounds for axis 0 with size 18
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/sim_data_converter.py", line 602, in process_action_data
+    left_effector_position = omnipicker_sim_to_real(joint_position_state[left_effector_index])
+                                                    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/sim_data_converter.py", line 559, in convert_h5
+    self.process_action_data(f_in, action_group, i)
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/sim_data_converter.py", line 162, in convert
+    self.convert_h5()
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/extract_and_convert_data.py", line 48, in <module>
+    converter.convert()
+IndexError: index 19 is out of bounds for axis 0 with size 18

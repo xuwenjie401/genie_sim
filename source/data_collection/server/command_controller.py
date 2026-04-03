@@ -496,6 +496,65 @@ class CommandController:
             )
         return False
 
+    def _stop_recording_processes(
+        self,
+        recording_path: str | None = None,
+        wait_timeout: float = 30.0,
+        metadata_timeout: float = 5.0,
+        clear_process_list: bool = True,
+    ) -> bool:
+        if not self.process:
+            return True
+
+        recording_ready = True
+        for process in self.process:
+            try:
+                if process.poll() is None:
+                    os.killpg(os.getpgid(process.pid), signal.SIGINT)
+                    logger.info(f"Sent SIGINT to process group {process.pid}")
+            except ProcessLookupError:
+                logger.info(f"Process {process.pid} has exited")
+            except Exception as e:
+                logger.info(f"Failed to send signal to process {process.pid}: {e}")
+
+        for process in self.process:
+            try:
+                if process.poll() is None:
+                    process.wait(timeout=wait_timeout)
+            except subprocess.TimeoutExpired:
+                if recording_path:
+                    recording_ready = self._wait_for_recording_metadata(
+                        recording_path,
+                        timeout_seconds=metadata_timeout,
+                    )
+                else:
+                    recording_ready = False
+                if recording_ready:
+                    logger.warning(
+                        f"Recorder process {process.pid} did not exit after SIGINT, "
+                        f"but metadata is finalized; forcing SIGKILL and continuing"
+                    )
+                else:
+                    logger.error(
+                        f"Recorder process {process.pid} did not exit after SIGINT; forcing SIGKILL"
+                    )
+                try:
+                    os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+                    process.wait(timeout=5)
+                except Exception as kill_error:
+                    logger.error(
+                        f"Failed to force terminate process {process.pid}: {kill_error}"
+                    )
+            except Exception as e:
+                recording_ready = False
+                logger.error(
+                    f"Failed while waiting for recorder process {process.pid}: {e}"
+                )
+
+        if clear_process_list:
+            self.process = []
+        return recording_ready
+
     def _reap_extract_processes(self):
         active_processes = []
         for entry in self.extract_process:
@@ -1175,26 +1234,34 @@ class CommandController:
 
     def get_camera_prim_name(self, prim_path):
         prim_name = prim_path.split("/")[-1]
+        prim_name_lower = prim_name.lower()
         if "G1" in self.robot_name:
-            if "head" in prim_name.lower():
+            if "head" in prim_name_lower:
                 prim_name = "head"
-            elif "right" in prim_name.lower():
+            elif "right" in prim_name_lower:
                 prim_name = "hand_right"
-            elif "left" in prim_name.lower():
+            elif "left" in prim_name_lower:
                 prim_name = "hand_left"
-            elif "top" in prim_name.lower():
+            elif "top" in prim_name_lower:
                 prim_name = "head_front_fisheye"
         if "G2" in self.robot_name:
-            if "head_front" in prim_name.lower():
+            if "head_front" in prim_name_lower:
                 prim_name = "head"
-            elif "head_right" in prim_name.lower():
+            elif "head_right" in prim_name_lower:
                 prim_name = "head_stereo_right"
-            elif "head_left" in prim_name.lower():
+            elif "head_left" in prim_name_lower:
                 prim_name = "head_stereo_left"
-            elif "left_camera" in prim_name.lower() and "head" not in prim_name.lower():
+            elif "left_camera" in prim_name_lower and "head" not in prim_name_lower:
                 prim_name = "hand_right"
-            elif "right_camera" in prim_name.lower() and "head" not in prim_name.lower():
+            elif "right_camera" in prim_name_lower and "head" not in prim_name_lower:
                 prim_name = "hand_left"
+        if "agile" in self.robot_name.lower() or "galbot" in self.robot_name.lower():
+            if "head" in prim_name_lower:
+                prim_name = "head"
+            elif "left" in prim_name_lower and "head" not in prim_name_lower:
+                prim_name = "hand_left"
+            elif "right" in prim_name_lower and "head" not in prim_name_lower:
+                prim_name = "hand_right"
         return prim_name
 
     # def handle_get_observation(self):
@@ -1219,6 +1286,16 @@ class CommandController:
         """Handle Command 11: GetObservation / StartRecording / StopRecording"""
         if self.data["startRecording"]:
             with self._timing_context("start_recording"):
+                if self.process:
+                    logger.warning(
+                        "Found stale recorder processes before starting a new recording; "
+                        "terminating them to avoid orphaned rosbag writers"
+                    )
+                    self._stop_recording_processes(
+                        recording_path=self.path_to_save,
+                        wait_timeout=5.0,
+                        metadata_timeout=2.0,
+                    )
                 self.task_name = self.data["task_name"]
                 self.fps = self.data["fps"]
                 current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1428,48 +1505,12 @@ class CommandController:
             with self._timing_context("stop_recording"):
                 recording_ready = True
                 if self.publish_ros:
-                    for process in self.process:
-                        try:
-                            if process.poll() is None:  # Check if process is still running
-                                os.killpg(os.getpgid(process.pid), signal.SIGINT)
-                                logger.info(f"Sent SIGINT to process group {process.pid}")
-                        except ProcessLookupError:
-                            logger.info(f"Process {process.pid} has exited")
-                        except Exception as e:
-                            logger.info(f"Failed to send signal to process {process.pid}: {e}")
-                    for process in self.process:
-                        try:
-                            if process.poll() is None:
-                                process.wait(timeout=30)  # Wait for rosbag to exit completely
-                        except subprocess.TimeoutExpired:
-                            recording_ready = self._wait_for_recording_metadata(
-                                self.path_to_save,
-                                timeout_seconds=5.0,
-                            )
-                            if recording_ready:
-                                logger.warning(
-                                    f"Recorder process {process.pid} did not exit after SIGINT, "
-                                    f"but metadata is finalized; forcing SIGKILL and continuing"
-                                )
-                            else:
-                                logger.error(
-                                    f"Recorder process {process.pid} did not exit after SIGINT; forcing SIGKILL"
-                                )
-                            try:
-                                os.killpg(os.getpgid(process.pid), signal.SIGKILL)
-                                process.wait(timeout=5)
-                            except Exception as kill_error:
-                                logger.error(
-                                    f"Failed to force terminate process {process.pid}: {kill_error}"
-                                )
-                        except Exception as e:
-                            recording_ready = False
-                            logger.error(
-                                f"Failed while waiting for recorder process {process.pid}: {e}"
-                            )
+                    recording_ready = self._stop_recording_processes(
+                        recording_path=self.path_to_save,
+                        wait_timeout=30.0,
+                        metadata_timeout=5.0,
+                    )
                     self.ui_builder.remove_graph(self.graph_path)
-
-                    self.process = []
                 if recording_ready and self.path_to_save:
                     recording_ready = self._wait_for_recording_metadata(
                         self.path_to_save,
@@ -1622,6 +1663,16 @@ class CommandController:
                 logger.info("Extract process started")
                 self.extract_process.append((extract_sub_process, log_file, self.path_to_save))
             else:
+                if self.process:
+                    logger.warning(
+                        f"Task failed while recorder processes are still tracked; "
+                        f"terminating them before deleting {self.path_to_save}"
+                    )
+                    self._stop_recording_processes(
+                        recording_path=self.path_to_save,
+                        wait_timeout=5.0,
+                        metadata_timeout=2.0,
+                    )
                 # remove folder if exist
                 if os.path.exists(self.path_to_save):
                     shutil.rmtree(self.path_to_save)
@@ -1631,6 +1682,13 @@ class CommandController:
 
     def handle_exit(self):
         """Handle Command 17: Exit"""
+        if self.process:
+            logger.warning("Exit requested while recorder processes are still active; terminating them first")
+            self._stop_recording_processes(
+                recording_path=self.path_to_save,
+                wait_timeout=5.0,
+                metadata_timeout=2.0,
+            )
         # wait for extract process to finish
         for entry in self.extract_process:
             process, log_file, output_dir = self._unpack_extract_process_entry(entry)

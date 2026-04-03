@@ -132,26 +132,6 @@
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_011/",
                         "object_id": "geniesim_2025_storage_box_011_black"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_013/",
-                        "object_id": "geniesim_2025_storage_box_013_light_blue"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_014/",
-                        "object_id": "geniesim_2025_storage_box_014_white"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_015/",
-                        "object_id": "geniesim_2025_storage_box_015_pink"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_016/",
-                        "object_id": "geniesim_2025_storage_box_016_gray"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_017/",
-                        "object_id": "geniesim_2025_storage_box_017_black"
                     }
                 ]
             },

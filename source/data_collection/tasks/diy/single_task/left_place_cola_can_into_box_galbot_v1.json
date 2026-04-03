@@ -127,7 +127,7 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 100,
+        "num_of_episode": 30,
         "noised_probability": 0.1
     },
     "robot": {

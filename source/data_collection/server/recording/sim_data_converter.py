@@ -135,7 +135,8 @@ class SimDataConverter:
         self._task_id = task_id
         self._episode_id = episode_id
         self.gripper_names = gripper_names
-        self.robot_type = "G2A" if "G2" in robot_type else "A2D"
+        robot_type_lower = robot_type.lower()
+        self.robot_type = "G2A" if "g2" in robot_type_lower else "A2D"
         current_dir = os.path.dirname(os.path.abspath(__file__))
         # Find project root directory
         project_root = current_dir
@@ -149,10 +150,16 @@ class SimDataConverter:
         else:
             raise FileNotFoundError("Cannot find config/robot_cfg/robot_joint_names.json")
         with open(config_path, "r") as f:
-            if self.robot_type == "G2A":
-                self.config = json.load(f)["G2"]
+            config_map = json.load(f)
+            if "g2" in robot_type_lower:
+                config_key = "G2"
+            elif "agile" in robot_type_lower:
+                config_key = "AgileX"
+            elif "galbot" in robot_type_lower:
+                config_key = "galbot"
             else:
-                self.config = json.load(f)["G1"]
+                config_key = "G1"
+            self.config = config_map[config_key]
         self.joint_state = []
         self.joint_action = []
 

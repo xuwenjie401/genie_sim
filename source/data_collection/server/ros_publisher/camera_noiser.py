@@ -69,15 +69,29 @@ def truncated_absolute_normal(
 
 
 def get_random_parameters(noise_type):
+    # if noise_type == "gaussian":
+    #     return {"sigma": truncated_absolute_normal(mean=0.15, std=0.08, lower=0.1, upper=0.4, max_attempts=10000)}
+    # elif noise_type == "salt_pepper":
+    #     prob = np.random.uniform(0.002, 0.02)
+    #     return {"salt_prob": prob, "pepper_prob": prob}
+    # elif noise_type == "poisson":
+    #     return {"scale": np.random.uniform(0.05, 0.3)}
+    # elif noise_type == "speckle":
+    #     return {"sigma": np.random.uniform(0.05, 0.2)}
+    # elif noise_type == "quantization":
+    #     return {"bits": np.random.randint(4, 7)}
+    # else:
+    #     raise ValueError("Invalid noise type")
+    
     if noise_type == "gaussian":
-        return {"sigma": truncated_absolute_normal(mean=0.15, std=0.08, lower=0.1, upper=0.4, max_attempts=10000)}
+        return {"sigma": truncated_absolute_normal(mean=0.075, std=0.08, lower=0.05, upper=0.1, max_attempts=10000)}
     elif noise_type == "salt_pepper":
-        prob = np.random.uniform(0.002, 0.02)
+        prob = np.random.uniform(0.002, 0.015)
         return {"salt_prob": prob, "pepper_prob": prob}
     elif noise_type == "poisson":
-        return {"scale": np.random.uniform(0.05, 0.3)}
+        return {"scale": np.random.uniform(0.05, 0.125)}
     elif noise_type == "speckle":
-        return {"sigma": np.random.uniform(0.05, 0.2)}
+        return {"sigma": np.random.uniform(0.05, 0.125)}
     elif noise_type == "quantization":
         return {"bits": np.random.randint(4, 7)}
     else:

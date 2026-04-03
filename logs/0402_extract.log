@@ -1,0 +1,10 @@
+Exception has occurred: KeyError
+'head_front_left_color'
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/sim_data_converter.py", line 464, in convert_parameters
+    cam_pose_world = np.array(frame["cameras"][cam]["pose"])
+                              ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/sim_data_converter.py", line 160, in convert
+    self.convert_parameters()
+  File "/home/agxi/RealityLab/genie_sim/source/data_collection/server/recording/extract_and_convert_data.py", line 48, in <module>
+    converter.convert()
+KeyError: 'head_front_left_color'

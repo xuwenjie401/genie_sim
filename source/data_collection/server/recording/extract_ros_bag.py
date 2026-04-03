@@ -510,6 +510,14 @@ class RosExtrater:
 
         return camera_name
 
+    def resolve_camera_key(self, child_frame_id):
+        raw_camera_key = child_frame_id.split("/")[-1]
+        normalized_camera_key = self.post_process_camera_name(child_frame_id)
+        for candidate in (normalized_camera_key, raw_camera_key):
+            if candidate in self.camera_info:
+                return candidate
+        return normalized_camera_key
+
     def get_objects_size_map(self, label_dict):
         self.size_map = {}
         for key, value in label_dict.items():
@@ -1363,68 +1371,77 @@ class RosExtrater:
                                             ).tolist()
                                         )
                                     }
-                                elif (
-                                    "Camera" in transform.child_frame_id
-                                    or "Fisheye" in transform.child_frame_id
-                                ):
-                                    rotation_x_180 = np.array(
-                                        [
-                                            [1.0, 0.0, 0.0, 0],
-                                            [0.0, -1.0, 0.0, 0],
-                                            [0.0, 0.0, -1.0, 0],
-                                            [0, 0, 0, 1],
-                                        ]
-                                    )
-                                    camera_key = self.post_process_camera_name(
+                                else:
+                                    raw_camera_key = transform.child_frame_id.split("/")[-1]
+                                    normalized_camera_key = self.post_process_camera_name(
                                         transform.child_frame_id
                                     )
-                                    camera_poses[camera_key] = pose2mat(
-                                        (position, quat_wxyz_to_xyzw(rotation))
+                                    is_camera_transform = (
+                                        "Camera" in transform.child_frame_id
+                                        or "Fisheye" in transform.child_frame_id
+                                        or raw_camera_key in self.camera_info
+                                        or (
+                                            raw_camera_key.endswith("_color")
+                                            and normalized_camera_key in self.camera_info
+                                        )
                                     )
-                                    if (
-                                        self.with_senmatic
-                                        and camera_key in depth_image_paths
-                                        and camera_key in rgb_image_paths
-                                    ):
-                                        point_cloud_cameras.append(camera_key)
-                                    single_frame_state["cameras"][camera_key] = {
-                                        "pose": (
-                                            pose2mat((position, quat_wxyz_to_xyzw(rotation)))
-                                            @ rotation_x_180
-                                        ).tolist()
-                                    }
-                                elif "link" not in transform.child_frame_id:
-                                    single_frame_state["objects"][transform.child_frame_id] = {
-                                        "pose": pose2mat(
+                                    if is_camera_transform:
+                                        rotation_x_180 = np.array(
+                                            [
+                                                [1.0, 0.0, 0.0, 0],
+                                                [0.0, -1.0, 0.0, 0],
+                                                [0.0, 0.0, -1.0, 0],
+                                                [0, 0, 0, 1],
+                                            ]
+                                        )
+                                        camera_key = self.resolve_camera_key(transform.child_frame_id)
+                                        camera_poses[camera_key] = pose2mat(
+                                            (position, quat_wxyz_to_xyzw(rotation))
+                                        )
+                                        if (
+                                            self.with_senmatic
+                                            and camera_key in depth_image_paths
+                                            and camera_key in rgb_image_paths
+                                        ):
+                                            point_cloud_cameras.append(camera_key)
+                                        single_frame_state["cameras"][camera_key] = {
+                                            "pose": (
+                                                pose2mat((position, quat_wxyz_to_xyzw(rotation)))
+                                                @ rotation_x_180
+                                            ).tolist()
+                                        }
+                                    elif "link" not in transform.child_frame_id:
+                                        single_frame_state["objects"][transform.child_frame_id] = {
+                                            "pose": pose2mat(
+                                                (position, quat_wxyz_to_xyzw(rotation))
+                                            ).tolist()
+                                        }
+                                    elif "base_link" == transform.child_frame_id:
+
+                                        single_frame_state["robot"]["pose"] = pose2mat(
                                             (position, quat_wxyz_to_xyzw(rotation))
                                         ).tolist()
-                                    }
-                                elif "base_link" == transform.child_frame_id:
-
-                                    single_frame_state["robot"]["pose"] = pose2mat(
-                                        (position, quat_wxyz_to_xyzw(rotation))
-                                    ).tolist()
-                                elif self._matches_prim_path(
-                                    transform.child_frame_id,
-                                    self.arm_base_prim_paths["shared"],
-                                ):
-                                    single_frame_state["robot"]["arm_base_pose"] = pose2mat(
-                                        (position, quat_wxyz_to_xyzw(rotation))
-                                    ).tolist()
-                                elif self._matches_prim_path(
-                                    transform.child_frame_id,
-                                    self.arm_base_prim_paths["left"],
-                                ):
-                                    single_frame_state["robot"]["left_arm_base_pose"] = pose2mat(
-                                        (position, quat_wxyz_to_xyzw(rotation))
-                                    ).tolist()
-                                elif self._matches_prim_path(
-                                    transform.child_frame_id,
-                                    self.arm_base_prim_paths["right"],
-                                ):
-                                    single_frame_state["robot"]["right_arm_base_pose"] = pose2mat(
-                                        (position, quat_wxyz_to_xyzw(rotation))
-                                    ).tolist()
+                                    elif self._matches_prim_path(
+                                        transform.child_frame_id,
+                                        self.arm_base_prim_paths["shared"],
+                                    ):
+                                        single_frame_state["robot"]["arm_base_pose"] = pose2mat(
+                                            (position, quat_wxyz_to_xyzw(rotation))
+                                        ).tolist()
+                                    elif self._matches_prim_path(
+                                        transform.child_frame_id,
+                                        self.arm_base_prim_paths["left"],
+                                    ):
+                                        single_frame_state["robot"]["left_arm_base_pose"] = pose2mat(
+                                            (position, quat_wxyz_to_xyzw(rotation))
+                                        ).tolist()
+                                    elif self._matches_prim_path(
+                                        transform.child_frame_id,
+                                        self.arm_base_prim_paths["right"],
+                                    ):
+                                        single_frame_state["robot"]["right_arm_base_pose"] = pose2mat(
+                                            (position, quat_wxyz_to_xyzw(rotation))
+                                        ).tolist()
                     if "robot" in single_frame_state and "pose" not in single_frame_state["robot"]:
                         single_frame_state["robot"]["pose"] = pose2mat(
                             (self.robot_init_position, quat_wxyz_to_xyzw(self.robot_init_rotation))

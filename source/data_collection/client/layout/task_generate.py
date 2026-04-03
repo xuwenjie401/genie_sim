@@ -105,6 +105,11 @@ class TaskGenerator:
         self.origin_pose[:3, :3] = quat2mat_wxyz(origin_quaternion)
         self.origin_pose[:3, 3] = origin_position
         self._parser_scene_and_robot()
+        # NOTE: Save original task_related_objects before processing so candidate_objects
+        # can be re-sampled per generate() call instead of being locked to one choice.
+        self._original_task_related_objects = copy.deepcopy(
+            self.origin_task_template["objects"].get("task_related_objects", [])
+        )
         self._process_task_related_objects()
         self.workspaces_in_world_frame = self._get_workspace_in_world_frame()
 
@@ -487,6 +492,11 @@ class TaskGenerator:
         return task_instance, layouts, obj_infos, attach_objs, fix_obj_infos
 
     def generate(self, output_file):
+        # NOTE: Re-sample candidate_objects each time so different tasks get different objects
+        self.origin_task_template["objects"]["task_related_objects"] = copy.deepcopy(
+            self._original_task_related_objects
+        )
+        self._process_task_related_objects()
         task_instance, layouts, all_obj_infos, attach_objs, fix_obj_infos = self._pre_process(
             copy.deepcopy(self.origin_task_template)
         )
