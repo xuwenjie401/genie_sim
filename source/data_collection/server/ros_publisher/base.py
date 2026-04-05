@@ -4,6 +4,7 @@
 
 import omni.graph.core as og
 from isaacsim.core.nodes.scripts.utils import set_target_prims
+from isaacsim.core.utils.prims import delete_prim, get_prim_at_path
 
 from common.base_utils.logger import logger
 from common.base_utils.ros_nodes.sim_ros_node import JointStatePubRosNode
@@ -11,7 +12,7 @@ from common.base_utils.ros_nodes.sim_ros_node import JointStatePubRosNode
 
 class USDBase:
     def __init__(self):
-        pass
+        self._camera_cache = {}
 
     def _init_sensor(self, ros_domain_id):
         self.ros_domain_id = (int)(ros_domain_id)
@@ -66,15 +67,23 @@ class USDBase:
             publish_semantic_segment,
         )
 
-        camera = Camera(
-            prim_path=param["path"],
-            frequency=param["frequency"],
-            resolution=(param["resolution"]["width"], param["resolution"]["height"]),
+        camera_key = (
+            param["path"],
+            param["resolution"]["width"],
+            param["resolution"]["height"],
         )
-        camera.initialize()
+        camera = self._camera_cache.get(camera_key)
+        if camera is None:
+            camera = Camera(
+                prim_path=param["path"],
+                frequency=param["frequency"],
+                resolution=(param["resolution"]["width"], param["resolution"]["height"]),
+            )
+            camera.initialize()
+            self._camera_cache[camera_key] = camera
 
         step_size = param["frequency"]
-        camera_graph = []
+        camera_resources = []
         ros_nodes = []
         for publish in param["publish"]:
             if publish is None:
@@ -86,33 +95,129 @@ class USDBase:
                 topic = split[1]
             if publish == "rgb":
                 if not param.get("noised", False):
-                    camera_graph.append(publish_rgb(camera, step_size, ""))
+                    camera_resources.append(publish_rgb(camera, step_size, ""))
                 else:
+                    noised_resource, ros_node = publish_noised_rgb(
+                        camera=camera,
+                        step_size=step_size,
+                        topic="",
+                        **param["noise_parameters"],
+                    )
+                    camera_resources.append(noised_resource)
                     ros_nodes.append(
-                        publish_noised_rgb(
-                            camera=camera,
-                            step_size=step_size,
-                            topic="",
-                            **param["noise_parameters"],
-                        )
+                        ros_node
                     )
             elif publish == "info":
-                camera_graph.append(publish_camera_info(camera, step_size, topic))
+                camera_resources.append(publish_camera_info(camera, step_size, topic))
             elif publish == "pointcloud":
-                publish_pointcloud_from_depth(camera, step_size, topic)
+                camera_resources.append(publish_pointcloud_from_depth(camera, step_size, topic))
             elif publish == "depth":
-                camera_graph.append(publish_depth(camera, step_size, ""))
+                camera_resources.append(publish_depth(camera, step_size, ""))
             elif publish == "bbox2_loose":
-                publish_boundingbox2d_loose(camera, step_size, topic)
+                camera_resources.append(publish_boundingbox2d_loose(camera, step_size, topic))
             elif publish == "bbox2_tight":
-                publish_boundingbox2d_tight(camera, step_size, topic)
+                camera_resources.append(publish_boundingbox2d_tight(camera, step_size, topic))
             elif publish == "bbox3":
-                publish_boundingbox3d(camera, step_size, topic)
+                camera_resources.append(publish_boundingbox3d(camera, step_size, topic))
             elif publish == "semantic":
-                publish_semantic_segment(camera, step_size, topic)
+                camera_resources.append(publish_semantic_segment(camera, step_size, topic))
 
         # Note: camera.initialize() already called above, no need to call again
-        return camera_graph, ros_nodes
+        return camera_resources, ros_nodes
+
+    def _resource_to_path(self, resource):
+        if resource is None:
+            return None
+        if isinstance(resource, str):
+            return resource
+
+        for attr_name in ("path", "_path", "render_product_path", "_render_product_path"):
+            value = getattr(resource, attr_name, None)
+            if isinstance(value, str) and value.startswith("/"):
+                return value
+
+        get_path = getattr(resource, "GetPath", None)
+        if callable(get_path):
+            try:
+                path = get_path()
+                path_string = getattr(path, "pathString", None)
+                if isinstance(path_string, str) and path_string.startswith("/"):
+                    return path_string
+            except Exception:
+                pass
+
+        try:
+            resource_str = str(resource)
+        except Exception:
+            return None
+        if resource_str.startswith("/"):
+            return resource_str
+        return None
+
+    def _detach_resource(self, owner, target):
+        if owner is None or target is None:
+            return
+
+        detach_method = getattr(owner, "detach", None)
+        if not callable(detach_method):
+            return
+
+        detach_attempts = [[target], target]
+        for payload in detach_attempts:
+            try:
+                detach_method(payload)
+                return
+            except Exception:
+                continue
+
+        logger.warning(f"Failed to detach resource {target} from owner {owner}")
+
+    def _destroy_owned_resource(self, resource):
+        if resource is None:
+            return
+
+        destroy_method = getattr(resource, "destroy", None)
+        if callable(destroy_method):
+            try:
+                destroy_method()
+                return
+            except Exception:
+                pass
+
+        resource_path = self._resource_to_path(resource)
+        if not resource_path:
+            return
+
+        prim = get_prim_at_path(resource_path)
+        if prim.IsValid():
+            delete_prim(resource_path)
+
+    def cleanup_camera_resources(self, camera_resources):
+        if not camera_resources:
+            return
+
+        cleanup_paths = []
+        for resource in camera_resources:
+            if not resource:
+                continue
+
+            for detach_op in resource.get("detach_ops", []):
+                self._detach_resource(
+                    owner=detach_op.get("owner"),
+                    target=detach_op.get("target"),
+                )
+
+            for owned_resource in resource.get("owned_resources", []):
+                self._destroy_owned_resource(owned_resource)
+
+            cleanup_paths.extend(
+                cleanup_path for cleanup_path in resource.get("cleanup_paths", []) if cleanup_path
+            )
+
+        for cleanup_path in cleanup_paths:
+            prim = get_prim_at_path(cleanup_path)
+            if prim.IsValid():
+                delete_prim(cleanup_path)
 
     def _init_imu(self, param):
         from omni.isaac.sensor import IMUSensor

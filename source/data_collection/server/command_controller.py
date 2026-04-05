@@ -111,6 +111,9 @@ class CommandController:
         self.arm_base_prim_paths = {}
         self.graph_path = []
         self.camera_graph_path = []
+        self.camera_resource_records = []
+        self.camera_pipeline_signature = None
+        self.camera_pipeline_noised_flags = {}
         self.loop_count = 0
         self.publish_ros = publish_ros
         self.rendering_step = rendering_step
@@ -569,6 +572,54 @@ class CommandController:
                     f"Extract process {process.pid} for {output_dir} exited with code {return_code}"
                 )
         self.extract_process = active_processes
+
+    def _cleanup_ros_publishers(self):
+        if not self.ros_publishers:
+            return
+
+        for ros_publisher_node in self.ros_publishers:
+            destroy_node = getattr(ros_publisher_node, "destroy_node", None)
+            if not callable(destroy_node):
+                continue
+            try:
+                destroy_node()
+            except Exception as exc:
+                logger.warning(f"Failed to destroy ROS publisher node {ros_publisher_node}: {exc}")
+
+        self.ros_publishers = []
+
+    def _cleanup_camera_pipeline(self):
+        self._cleanup_ros_publishers()
+        if self.camera_resource_records:
+            self.sensor_base.cleanup_camera_resources(self.camera_resource_records)
+        self.camera_resource_records = []
+        self.camera_graph_path = []
+        self.camera_pipeline_signature = None
+        self.camera_pipeline_noised_flags = {}
+
+    def _build_camera_pipeline_signature(
+        self,
+        frequency,
+        camera_noised_flags,
+        noise_parameters,
+    ):
+        signature = []
+        for camera in self.data["camera_prim_list"]:
+            publish_targets = ["rgb"]
+            if "Fisheye" not in camera and "Top" not in camera and not self.data["render_semantic"]:
+                publish_targets.append("depth")
+            is_noised = bool(camera_noised_flags.get(camera, False))
+            signature.append(
+                (
+                    camera,
+                    int(frequency),
+                    tuple(self.cameras[camera]),
+                    tuple(publish_targets),
+                    bool(is_noised),
+                    json.dumps(noise_parameters if is_noised else {}, sort_keys=True),
+                )
+            )
+        return tuple(signature)
 
     def _init_robot_cfg(
         self,
@@ -1388,6 +1439,12 @@ class CommandController:
                     noised_camera_prim_list = [self.data["camera_prim_list"][i] for i in noised_camera_indices]
                     logger.info(f"noised_camera_indices{noised_camera_indices}")
                     logger.info(f"noised_camera_prim_list{noised_camera_prim_list}")
+                    camera_noised_flags = {}
+                    for camera in self.data["camera_prim_list"]:
+                        camera_noised_flags[camera] = (
+                            camera in noised_camera_prim_list and np.random.uniform() < noised_probability
+                        )
+                        self.camera_info_list[self.get_camera_prim_name(camera)]["noised"] = camera_noised_flags[camera]
                     self.sensor_base._init_sensor(self.loop_count)
                     for prim in self.object_asset_dict.keys():
                         if prim not in tf_target:
@@ -1425,8 +1482,25 @@ class CommandController:
                         "/World/RobotJointActionGraph",
                         "/ClockActionGraph",
                     ]
-
-                    if not self.camera_graph_path:
+                    pipeline_signature = self._build_camera_pipeline_signature(
+                        frequency=frequency,
+                        camera_noised_flags=camera_noised_flags,
+                        noise_parameters=noise_parameters,
+                    )
+                    should_reuse_pipeline = bool(self.camera_resource_records or self.ros_publishers)
+                    if should_reuse_pipeline and self.camera_pipeline_signature != pipeline_signature:
+                        logger.warning(
+                            "Camera pipeline configuration changed after initialization. "
+                            "Reusing the existing pipeline to avoid unsafe runtime teardown; "
+                            "restart the Isaac server if you need the new camera config to take effect."
+                        )
+                        for camera in self.data["camera_prim_list"]:
+                            prim_name = self.get_camera_prim_name(camera)
+                            self.camera_info_list[prim_name]["noised"] = self.camera_pipeline_noised_flags.get(
+                                camera,
+                                False,
+                            )
+                    if not should_reuse_pipeline:
                         for camera in self.data["camera_prim_list"]:
 
                             camera_param = {
@@ -1455,23 +1529,31 @@ class CommandController:
                                     "rgb:/" + camera.split("/")[-1] + "_rgb",
                                     # "depth:/" + camera.split("/")[-1],
                                 ]
-                            if camera in noised_camera_prim_list:
-                                camera_param["noised"] = np.random.uniform() < noised_probability
+                            camera_param["noised"] = camera_noised_flags[camera]
+                            if camera_param["noised"]:
                                 camera_param["noise_parameters"] = noise_parameters
-                            else:
-                                camera_param["noised"] = False
                             if "head_right_Camera" in camera or "head_left_Camera" in camera:
                                 camera_param["publish"].remove("depth:/" + camera.split("/")[-1])
-                            self.camera_info_list[self.get_camera_prim_name(camera)]["noised"] = camera_param["noised"]
-                            camera_graph, ros_nodes = self.sensor_base._init_camera(camera_param)
-                            self.ros_publishers += ros_nodes
-                        self.camera_graph_path.append(self.data["camera_prim_list"])
-                        # joint action
+                            camera_resources, ros_nodes = self.sensor_base._init_camera(camera_param)
+                            self.camera_resource_records.extend(camera_resources)
+                            self.ros_publishers.extend(ros_nodes)
+                            for resource in camera_resources:
+                                for cleanup_path in resource.get("cleanup_paths", []):
+                                    if cleanup_path and cleanup_path not in self.camera_graph_path:
+                                        self.camera_graph_path.append(cleanup_path)
+
                         articulation_action_node = self.sensor_base.publish_articulation_action(
                             robot=self.robot,
                             step_size=1,
                         )
                         self.ros_publishers.append(articulation_action_node)
+                        self.camera_pipeline_signature = pipeline_signature
+                        self.camera_pipeline_noised_flags = camera_noised_flags.copy()
+                    else:
+                        self.camera_pipeline_signature = self.camera_pipeline_signature or pipeline_signature
+                        if not self.camera_pipeline_noised_flags:
+                            self.camera_pipeline_noised_flags = camera_noised_flags.copy()
+                        logger.info("Reusing existing camera pipeline for this episode")
 
                     # XU: 不再使用compressed
                     
@@ -1932,6 +2014,13 @@ class CommandController:
             self._capture_camera(prim_path=camera, isRGB=True, isDepth=False, isSemantic=False, isGN=False)
 
     def _on_reset(self):
+        if self.process:
+            logger.warning("Reset requested while recorder processes are still active; terminating them first")
+            self._stop_recording_processes(
+                recording_path=self.path_to_save,
+                wait_timeout=5.0,
+                metadata_timeout=2.0,
+            )
         self._reset_stiffness()
         self.ui_builder._on_reset()
         self.articulation_refresh_pending = True

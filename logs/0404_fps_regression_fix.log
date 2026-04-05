@@ -1,0 +1,209 @@
+[INFO] [1775299154.810175834] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1775299154.812413209] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1775299154.812538346] [rosbag2_recorder]: Recording stopped
+2026-04-04T10:39:15Z [104,140ms] WARNING  [base.py:205] Failed to detach resource /Render/OmniverseKit/HydraTextures/Replicator from owner <omni.replicator.core.scripts.writers.NodeWriter object at 0x6ff340339c50>
+2026-04-04T10:39:15Z [104,140ms] WARNING  [base.py:205] Failed to detach resource /Render/OmniverseKit/HydraTextures/Replicator_01 from owner <omni.replicator.core.scripts.writers.NodeWriter object at 0x6ff594499c50>
+2026-04-04T10:39:15Z [104,140ms] WARNING  [base.py:205] Failed to detach resource /Render/OmniverseKit/HydraTextures/Replicator_02 from owner <omni.replicator.core.scripts.writers.NodeWriter object at 0x6ff5944c6a10>
+I0000 00:00:1775299155.182860    3442 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
+2026-04-04T10:39:15Z [104,354ms] INFO     [command_controller.py:1927] Extract process started
+2026-04-04T10:39:15Z [104,394ms] INFO     [command_controller.py:2088] /galbot_one_golf/joints/left_gripper_r_knuckle_joint
+2026-04-04T10:39:15Z [104,394ms] INFO     [command_controller.py:2089] /galbot_one_golf/joints/right_gripper_r_knuckle_joint
+2026-04-04T10:39:17Z [106,126ms] [Warning] [omni.physx.scripts.utils] PhysicsRigidBodyAPI is already defined
+2026-04-04T10:39:17Z [106,343ms] INFO     [command_controller.py:1203]  add rigid body to  /World/Objects/geniesim_2025_mouse_000
+2026-04-04T10:39:17Z [106,360ms] INFO     [command_controller.py:2315] Adding obstacles under prim path /World/Objects/geniesim_2025_mouse_000...
+2026-04-04T10:39:18Z [107,452ms] INFO     [motion_gen_reacher.py:464] [ObstacleDiag:dynamic_add:/World/Objects/geniesim_2025_mouse_000] loaded_mesh=1, skip_ignore_substring=0, skip_collision_disabled=0, skip_background_no_collision=0, skip_mesh_extract_none=0, extract_error=0
+2026-04-04T10:39:18Z [107,453ms] INFO     [motion_gen_reacher.py:464] [ObstacleDiag:dynamic_add:/World/Objects/geniesim_2025_mouse_000] loaded_mesh: ['/World/Objects/geniesim_2025_mouse_000/body/visual']
+2026-04-04T10:39:18Z [107,453ms] INFO     [motion_gen_reacher.py:473] Processing mesh 1/1: /World/Objects/geniesim_2025_mouse_000/body/visual
+2026-04-04T10:39:18Z [107,453ms] INFO     [motion_gen_reacher.py:473] Original face count: 204308
+2026-04-04T10:39:18Z [107,453ms] INFO     [motion_gen_reacher.py:473] Starting mesh simplification
+2026-04-04T10:39:21Z [110,168ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-04-04T10:39:21Z [110,168ms] INFO     [motion_gen_reacher.py:473] Simplification time: 2.715089797973633 seconds
+2026-04-04T10:39:21Z [110,168ms] INFO     [motion_gen_reacher.py:473] Simplification successful: 1000 faces
+2026-04-04T10:39:21Z [110,173ms] INFO     [command_controller.py:2315] Simplified geometry time: 2.7204 seconds
+2026-04-04T10:39:21Z [110,173ms] INFO     [command_controller.py:2315] New obstacle: /World/Objects/geniesim_2025_mouse_000/body/visual (type: mesh)
+2026-04-04T10:39:21Z [110,173ms] INFO     [command_controller.py:2315] Successfully added 1 new obstacles to cache
+2026-04-04T10:39:21Z [110,173ms] INFO     [command_controller.py:2315] Current total cache count: 34
+2026-04-04T10:39:21Z [110,597ms] INFO     [command_controller.py:1203]  add rigid body to  /World/Objects/geniesim_2025_beverage_bottle_002
+2026-04-04T10:39:21Z [110,610ms] INFO     [command_controller.py:2315] Adding obstacles under prim path /World/Objects/geniesim_2025_beverage_bottle_002...
+2026-04-04T10:39:21Z [110,657ms] INFO     [motion_gen_reacher.py:464] [ObstacleDiag:dynamic_add:/World/Objects/geniesim_2025_beverage_bottle_002] loaded_mesh=2, skip_ignore_substring=0, skip_collision_disabled=0, skip_background_no_collision=0, skip_mesh_extract_none=0, extract_error=0
+2026-04-04T10:39:21Z [110,657ms] INFO     [motion_gen_reacher.py:464] [ObstacleDiag:dynamic_add:/World/Objects/geniesim_2025_beverage_bottle_002] loaded_mesh: ['/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00', '/World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body']
+2026-04-04T10:39:21Z [110,657ms] INFO     [motion_gen_reacher.py:473] Processing mesh 1/2: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00
+2026-04-04T10:39:21Z [110,657ms] INFO     [motion_gen_reacher.py:473] Original face count: 16498
+2026-04-04T10:39:21Z [110,657ms] INFO     [motion_gen_reacher.py:473] Starting mesh simplification
+2026-04-04T10:39:21Z [110,943ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-04-04T10:39:21Z [110,943ms] INFO     [motion_gen_reacher.py:473] Simplification time: 0.2857985496520996 seconds
+2026-04-04T10:39:21Z [110,943ms] INFO     [motion_gen_reacher.py:473] Simplification successful: 1000 faces
+2026-04-04T10:39:21Z [110,943ms] INFO     [motion_gen_reacher.py:473] Processing mesh 2/2: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body
+2026-04-04T10:39:21Z [110,943ms] INFO     [motion_gen_reacher.py:473] Original face count: 4320
+2026-04-04T10:39:21Z [110,943ms] INFO     [motion_gen_reacher.py:473] Starting mesh simplification
+2026-04-04T10:39:21Z [110,979ms] INFO     [mesh_utils.py:61] Simplification with pymeshlab successful
+2026-04-04T10:39:21Z [110,979ms] INFO     [motion_gen_reacher.py:473] Simplification time: 0.03552365303039551 seconds
+2026-04-04T10:39:21Z [110,979ms] INFO     [motion_gen_reacher.py:473] Simplification successful: 1000 faces
+2026-04-04T10:39:21Z [110,979ms] INFO     [command_controller.py:2315] Simplified geometry time: 0.3222 seconds
+2026-04-04T10:39:21Z [110,979ms] INFO     [command_controller.py:2315] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/part_00 (type: mesh)
+2026-04-04T10:39:21Z [110,979ms] INFO     [command_controller.py:2315] New obstacle: /World/Objects/geniesim_2025_beverage_bottle_002/Aligned/body (type: mesh)
+2026-04-04T10:39:21Z [110,979ms] INFO     [command_controller.py:2315] Successfully added 2 new obstacles to cache
+2026-04-04T10:39:21Z [110,979ms] INFO     [command_controller.py:2315] Current total cache count: 36
+2026-04-04T10:39:24Z [114,084ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] updated=34, skip_attached=0, skip_invalid_prim=0, skip_distance=2
+2026-04-04T10:39:24Z [114,084ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_b/body/body', '/World/Background/home_b/part_00/part_00', '/World/Background/home_b/part_01/part_01', '/World/Background/home_b/part_02/part_02', '/World/Background/home_b/part_03/part_03', '/World/Background/home_b/part_04/part_04', '/World/Background/home_b/part_05/part_05', '/World/Background/home_b/part_06/part_06', '/World/Background/benchmark_ceiling_light_000/body/visual', '/World/Background/benchmark_ceiling_light_001/body/visual', '/World/Background/benchmark_ceiling_light_002/body/visual', '/World/Background/benchmark_ceiling_light_003/body/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_ceiling_light_000_01/body/visual', '/World/Background/benchmark_ceiling_light_000_02/body/visual', '/World/Background/benchmark_ceiling_light_000_03/body/visual', '/World/Background/benchmark_ceiling_light_000_04/body/visual', '/World/Background/benchmark_ceiling_light_000_05/body/visual', '/World/Background/benchmark_ceiling_light_000_06/body/visual', '/World/Background/benchmark_ceiling_light_000_07/body/visual']
+2026-04-04T10:39:24Z [114,084ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_bowl_025/Aligned/Sharp_fusion_1_Sharp_fusion_1_002 (196.313m)', '/World/Objects/geniesim_2025_cup_105/Aligned/body (190.867m)']
+2026-04-04T10:39:25Z [114,100ms] INFO     [motion_gen_reacher.py:1370] Fast obstacle update completed, time: 0.0557s, needs update: True
+2026-04-04T10:39:25Z [114,100ms] INFO     [command_controller.py:1597] Detach!!!!!
+2026-04-04T10:39:25Z [114,127ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] updated=34, skip_attached=0, skip_invalid_prim=0, skip_distance=2
+2026-04-04T10:39:25Z [114,127ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] updated samples: ['/World/Background/home_b/body/body', '/World/Background/home_b/part_00/part_00', '/World/Background/home_b/part_01/part_01', '/World/Background/home_b/part_02/part_02', '/World/Background/home_b/part_03/part_03', '/World/Background/home_b/part_04/part_04', '/World/Background/home_b/part_05/part_05', '/World/Background/home_b/part_06/part_06', '/World/Background/benchmark_ceiling_light_000/body/visual', '/World/Background/benchmark_ceiling_light_001/body/visual', '/World/Background/benchmark_ceiling_light_002/body/visual', '/World/Background/benchmark_ceiling_light_003/body/visual', '/World/Background/benchmark_ceiling_light_004/body/visual', '/World/Background/benchmark_ceiling_light_000_01/body/visual', '/World/Background/benchmark_ceiling_light_000_02/body/visual', '/World/Background/benchmark_ceiling_light_000_03/body/visual', '/World/Background/benchmark_ceiling_light_000_04/body/visual', '/World/Background/benchmark_ceiling_light_000_05/body/visual', '/World/Background/benchmark_ceiling_light_000_06/body/visual', '/World/Background/benchmark_ceiling_light_000_07/body/visual']
+2026-04-04T10:39:25Z [114,127ms] INFO     [motion_gen_reacher.py:720] [ObstacleDiag:update_pose] skip_distance samples: ['/World/Objects/geniesim_2025_bowl_025/Aligned/Sharp_fusion_1_Sharp_fusion_1_002 (196.313m)', '/World/Objects/geniesim_2025_cup_105/Aligned/body (190.867m)']
+2026-04-04T10:39:25Z [114,128ms] INFO     [motion_gen_reacher.py:1370] Fast obstacle update completed, time: 0.0272s, needs update: False
+2026-04-04T10:39:25Z [114,128ms] INFO     [command_controller.py:1597] Detach!!!!!
+2026-04-04T10:39:27Z [116,337ms] INFO     [command_controller.py:1919] publish_ros command: 
+                        unset PYTHONPATH
+                        unset LD_LIBRARY_PATH
+                        source /opt/ros/humble/setup.bash
+                        exec ros2 bag record -o /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/left_place_cola_can_into_gray_box_galbot_v1_0404_1839_1 -a
+                        
+2026-04-04T10:39:30Z [119,437ms] INFO     [command_controller.py:1919] frequency: 1, fps: 30, rendering_dt: 0.03333333333333333
+2026-04-04T10:39:30Z [119,437ms] INFO     [command_controller.py:1919] noised_probability0.0
+2026-04-04T10:39:30Z [119,438ms] INFO     [command_controller.py:1919] noised_camera_indices[0 1 2]
+2026-04-04T10:39:30Z [119,438ms] INFO     [command_controller.py:1919] noised_camera_prim_list['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color']
+2026-04-04T10:39:30Z [119,438ms] INFO     [command_controller.py:1420] ROS domain ID: 3
+2026-04-04T10:39:30Z [119,438ms] INFO     [command_controller.py:1919] tf_target['/galbot_one_golf/head_link2/head_front_left_color', '/galbot_one_golf/left_arm_link7/left_arm_color', '/galbot_one_golf/right_arm_link7/right_arm_color', '/World/Objects/geniesim_2025_target_grasp_object', '/World/Objects/geniesim_2025_bottle_017', '/World/Objects/geniesim_2025_mouse_000', '/World/Objects/geniesim_2025_beverage_bottle_002', '/World/Objects/geniesim_2025_target_storage_box', '/galbot_one_golf/left_gripper_tcp_link', '/galbot_one_golf/right_gripper_tcp_link', '/galbot_one_golf', '/galbot_one_golf/torso_base_link', '/galbot_one_golf/left_arm_base_link', '/galbot_one_golf/right_arm_base_link']
+2026-04-04T10:39:30Z [119,472ms] INFO     [data_collector_server.py:126] ================================================================================
+2026-04-04T10:39:30Z [119,472ms] INFO     [data_collector_server.py:126] Timing Statistics Report
+2026-04-04T10:39:30Z [119,472ms] INFO     [data_collector_server.py:126] ================================================================================
+2026-04-04T10:39:30Z [119,472ms] INFO     [data_collector_server.py:126] ui_builder.my_world.step:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 56.8181 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 8370
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.0068 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] on_physics_step:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 46.2049 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 8370
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.0055 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] on_command_step:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 34.4592 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 8370
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.0041 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_INIT_ROBOT:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 15.9479 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 15.9479 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] _init_robot_cfg:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 15.9479 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 15.9479 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] _init_robot:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 13.2837 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 13.2837 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] on_physics_step:ui_builder:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 11.0721 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 8370
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.0013 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_ADD_OBJECT:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 7.2341 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 20
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.3617 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_OBSERVATION, START_RECORDING, STOP_RECORDING:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 3.8374 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 3
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 1.2791 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] start_recording:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 3.5054 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 2
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 1.7527 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_LINEAR_MOVE:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 3.1109 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 387
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.0080 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_IK_STATUS:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 2.7999 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Call count: 5
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Average time: 0.5600 seconds
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_JOINT_POSITION:
+2026-04-04T10:39:30Z [119,473ms] INFO     [data_collector_server.py:126]   Total time: 0.7135 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 192
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0037 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] stop_recording:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.3319 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.3319 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] on_physics_step:publish_ros:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.3191 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 8369
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_DETACH_OBJ:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.2336 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 3
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0779 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_ATTACH_OBJ:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.1802 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 3
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0601 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_OBJECT_POSE:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.1425 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 70
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0020 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_RESET:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0970 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 3
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0323 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_TASK_STATUS:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0853 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0853 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_GRIPPER_STATE:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0396 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 181
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0002 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_EE_POSE:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0089 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 23
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0004 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_OBJECT_POSE:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0064 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 8
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0008 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_CHECKER_STATUS:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0053 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 2
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0026 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_FRAME_STATE:
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Total time: 0.0009 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Call count: 21
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126]   Average time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,474ms] INFO     [data_collector_server.py:126] rpc_server.step_command_STORE_CURRENT_STATE:
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Total time: 0.0007 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Call count: 2
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Average time: 0.0004 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126] rpc_server.step_command_GET_JOINT_POSITION:
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Total time: 0.0003 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Call count: 4
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Average time: 0.0001 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_TASK_METRIC:
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Total time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Call count: 1
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Average time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126] rpc_server.step_command_SET_TARGET_POINT:
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Total time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Call count: 2
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126]   Average time: 0.0000 seconds
+2026-04-04T10:39:30Z [119,475ms] INFO     [data_collector_server.py:126] ================================================================================
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 8393/30
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 8393/30, returning current sim time
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 8393/30
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 8393/30, returning current sim time
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] No adjacent samples found for interpolation at time 8393/30
+2026-04-04T10:39:30Z [119,298ms] [Warning] [isaacsim.core.simulation_manager.plugin] getSimulationTimeMonotonicAtTime: no data found for time 8393/30, returning current sim time
+[INFO] [1775299170.591596134] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1775299170.592510695] [rosbag2_storage]: Opened database '/home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/left_place_cola_can_into_gray_box_galbot_v1_0404_1839_1/left_place_cola_can_into_gray_box_galbot_v1_0404_1839_1_0.db3' for READ_WRITE.
+[INFO] [1775299170.592733437] [rosbag2_recorder]: Listening for topics...
+[INFO] [1775299170.592751606] [rosbag2_recorder]: Event publisher thread: Starting
+[INFO] [1775299170.593429378] [rosbag2_recorder]: Subscribed to topic '/soft_state'
+[INFO] [1775299170.593987091] [rosbag2_recorder]: Subscribed to topic '/rosout'
+[INFO] [1775299170.594219926] [rosbag2_recorder]: Subscribed to topic '/parameter_events'
+[INFO] [1775299170.594570321] [rosbag2_recorder]: Subscribed to topic '/left_arm_color_rgb'
+[INFO] [1775299170.594841497] [rosbag2_recorder]: Subscribed to topic '/head_front_left_color_rgb'
+[INFO] [1775299170.595019507] [rosbag2_recorder]: Subscribed to topic '/events/write_split'
+[INFO] [1775299170.595204461] [rosbag2_recorder]: Subscribed to topic '/soft_code'
+[INFO] [1775299170.595383202] [rosbag2_recorder]: Subscribed to topic '/right_arm_color_rgb'
+[INFO] [1775299170.595621079] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1775299170.595661811] [rosbag2_recorder]: Recording...
+[120.829s] Simulation App Shutting Down

@@ -68,6 +68,7 @@ class UIBuilder:
         self.current_curobo_motion: Optional[CuroboMotion] = None
         self.camera_prim_list = []
         self.camera_list = []
+        self._camera_map = {}
         self.rmp_move = False
         self.cmd_list = None
         self.reached = False
@@ -75,6 +76,7 @@ class UIBuilder:
         self.art_controllers = []
 
     def _init_solver(self, robot, enable_curobo, batch_num):
+        self._clear_camera_cache()
         self.enable_curobo = enable_curobo
         self.robot_name = robot.robot_name
         self.robot_prim_path = robot.robot_prim_path
@@ -175,15 +177,23 @@ class UIBuilder:
             "ppy": cy * scale_y,
         }
 
+    def _clear_camera_cache(self):
+        self._camera_map = {}
+        self.camera_prim_list = []
+        self.camera_list = []
+
     def _on_capture_cam(self, isRGB, isDepth, isSemantic):
         if self._currentCamera:
             resolution = [640, 480]
             if self._currentCamera in self.cameras:
                 resolution = self.cameras[self._currentCamera]
-            _Camera = Camera(prim_path=self._currentCamera, resolution=resolution)
-            _Camera.initialize()
-            self.camera_list.append(_Camera)
-            self.camera_prim_list.append(self._currentCamera)
+            _Camera = self._camera_map.get(self._currentCamera)
+            if _Camera is None:
+                _Camera = Camera(prim_path=self._currentCamera, resolution=resolution)
+                _Camera.initialize()
+                self._camera_map[self._currentCamera] = _Camera
+                self.camera_prim_list.append(self._currentCamera)
+                self.camera_list.append(_Camera)
             width, height = _Camera.get_resolution()
             self.currentCamInfo = self._get_authored_opencv_camera_info(self._currentCamera, width, height)
             if self.currentCamInfo is None:

@@ -102,8 +102,8 @@
                 ],
                 "candidate_objects": [
                     {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_007/",
-                        "object_id": "geniesim_2025_storage_box_007_light_blue"
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_008/",
+                        "object_id": "geniesim_2025_storage_box_008_white"
                     }
                 ]
             },
@@ -127,7 +127,7 @@
             "/galbot_one_golf/right_arm_link7/right_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 30,
+        "num_of_episode": 100,
         "noised_probability": 0.0
     },
     "robot": {
@@ -290,8 +290,8 @@
         {
             "action": "place",
             "action_description": {
-                "action_text": "将{object:geniesim_2025_target_grasp_object}放入蓝色收纳盒中",
-                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the blue storage box"
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入灰色收纳盒中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the gray storage box"
             },
             "active": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -348,11 +348,11 @@
             }
         }
     ],
-    "task": "place_cola_can_into_blue_box_galbot_v1",
+    "task": "left_place_cola_can_into_gray_box_galbot_v1",
     "task_description": {
-        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the blue storage box",
-        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个蓝色的收纳盒",
-        "task_name": "将{object:geniesim_2025_target_grasp_object}放入蓝色的收纳盒中"
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the gray storage box",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个灰色的收纳盒",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入灰色的收纳盒中"
     },
     "task_metric": {
         "filter_rules": [

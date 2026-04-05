@@ -15,6 +15,28 @@ from common.base_utils.ros_nodes.sim_ros_node import ImagePubRosNode
 from server.ros_publisher.camera_noiser import apply_noise_to_image, get_random_parameters
 
 
+def _build_cleanup_record(
+    *,
+    cleanup_paths=None,
+    detach_owner=None,
+    detach_target=None,
+    owned_resources=None,
+):
+    record = {
+        "cleanup_paths": cleanup_paths or [],
+        "detach_ops": [],
+        "owned_resources": owned_resources or [],
+    }
+    if detach_owner is not None and detach_target is not None:
+        record["detach_ops"].append(
+            {
+                "owner": detach_owner,
+                "target": detach_target,
+            }
+        )
+    return record
+
+
 def publish_boundingbox2d_loose(camera: Camera, freq: int, topic=""):
     render_product = camera._render_product_path
     step_size = int(60 / freq)
@@ -34,6 +56,11 @@ def publish_boundingbox2d_loose(camera: Camera, freq: int, topic=""):
     writer.attach([render_product])
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_semantic_segment(camera: Camera, freq: int, topic=""):
@@ -42,9 +69,10 @@ def publish_semantic_segment(camera: Camera, freq: int, topic=""):
     topic_name = camera.prim_path + "_semantic" if topic == "" else topic
     node_namespace = camera.prim_path
     frame_id = camera.prim_path.split("/")[-1]
+    graph_path = "/World/" + frame_id + "_semantic"
     og.Controller.edit(
         {
-            "graph_path": "/World/" + frame_id + "_semantic",
+            "graph_path": graph_path,
             "evaluator_name": "execution",
         },
         {
@@ -71,6 +99,7 @@ def publish_semantic_segment(camera: Camera, freq: int, topic=""):
             ],
         },
     )
+    return _build_cleanup_record(cleanup_paths=[graph_path])
 
 
 def publish_boundingbox2d_tight(camera: Camera, freq: int, topic=""):
@@ -92,6 +121,11 @@ def publish_boundingbox2d_tight(camera: Camera, freq: int, topic=""):
     writer.attach([render_product])
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_boundingbox3d(camera: Camera, freq: int, topic=""):
@@ -113,6 +147,11 @@ def publish_boundingbox3d(camera: Camera, freq: int, topic=""):
     writer.attach([render_product])
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_rgb(camera: Camera, freq: int, topic=""):
@@ -136,7 +175,11 @@ def publish_rgb(camera: Camera, freq: int, topic=""):
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
 
-    return gate_path
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_noised_rgb(camera: Camera, step_size: int, topic="", **kwargs):
@@ -169,7 +212,14 @@ def publish_noised_rgb(camera: Camera, step_size: int, topic="", **kwargs):
     ros_node = ImagePubRosNode(
         topic_name, get_msg_callback, frame_id, node_name=f"{frame_id}_node", step_size=step_size
     )
-    return ros_node
+    return (
+        _build_cleanup_record(
+            detach_owner=annotator,
+            detach_target=rp,
+            owned_resources=[rp],
+        ),
+        ros_node,
+    )
 
 
 def publish_camera_info(camera: Camera, freq: int, topic=""):
@@ -203,7 +253,11 @@ def publish_camera_info(camera: Camera, freq: int, topic=""):
         "PostProcessDispatch" + "IsaacSimulationGate", render_product
     )
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
-    return gate_path
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_pointcloud_from_depth(camera: Camera, freq: int, topic=""):
@@ -227,6 +281,11 @@ def publish_pointcloud_from_depth(camera: Camera, freq: int, topic=""):
 
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )
 
 
 def publish_depth(camera: Camera, freq: int, topic=""):
@@ -249,4 +308,8 @@ def publish_depth(camera: Camera, freq: int, topic=""):
 
     gate_path = omni.syntheticdata.SyntheticData._get_node_path(rv + "IsaacSimulationGate", render_product)
     og.Controller.attribute(gate_path + ".inputs:step").set(step_size)
-    return gate_path
+    return _build_cleanup_record(
+        cleanup_paths=[gate_path],
+        detach_owner=writer,
+        detach_target=render_product,
+    )

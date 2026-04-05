@@ -521,6 +521,24 @@ class PickStage(Stage):
         pick_up_direction = self.extra_params.get("pick_up_direction", "z")
         pre_grasp_vector = self.extra_params.get("pre_grasp_vector", [])
 
+        def get_pick_up_offset_and_constraint(add_x_lift_clearance=False):
+            goal_offset = [0.0, 0.0, pick_up_distance, 1.0, 0.0, 0.0, 0.0]
+            # NOTE: codex - Lift only needs approximate translation. Keep the path close in the
+            # orthogonal translation axes and leave orientation unconstrained so MotionGen can
+            # rotate slightly to reduce unnecessary joint motion.
+            path_constraint = [0.0, 0.0, 0.0, 1.0, 1.0, 0.0]
+            if pick_up_direction == "x":
+                goal_offset = [pick_up_distance, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+                if add_x_lift_clearance:
+                    goal_offset[2] = 0.02
+                    path_constraint = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+                else:
+                    path_constraint = [0.0, 0.0, 0.0, 0.0, 1.0, 1.0]
+            elif pick_up_direction == "y":
+                goal_offset = [0.0, pick_up_distance, 0.0, 1.0, 0.0, 0.0, 0.0]
+                path_constraint = [0.0, 0.0, 0.0, 1.0, 0.0, 1.0]
+            return goal_offset, path_constraint
+
         if self.use_pre_grasp:
             if pre_grasp_pose is None:
                 logger.info("No pre_grasp_pose found")
@@ -555,14 +573,7 @@ class PickStage(Stage):
             # pick up
             if pick_up_distance != 0.0:
                 gripper_action = "close"
-                goal_offset = [0, 0, pick_up_distance, 1, 0, 0, 0]
-                path_constraint = [0.1, 0.1, 0.1, 0.1, 0.1, 0.0]
-                if pick_up_direction == "x":
-                    goal_offset = [pick_up_distance, 0, 0, 1, 0, 0, 0]
-                    path_constraint = [0.1, 0.1, 0.1, 0, 0.1, 0.1]
-                elif pick_up_direction == "y":
-                    goal_offset = [0, pick_up_distance, 0, 1, 0, 0, 0]
-                    path_constraint = [0.1, 0.1, 0.1, 0.1, 0, 0.1]
+                goal_offset, path_constraint = get_pick_up_offset_and_constraint()
                 offset_and_constraint_in_goal_frame = False
                 from_current_pose = True
                 action_sequence.add_action(
@@ -604,15 +615,40 @@ class PickStage(Stage):
                     # pick-up
                     gripper_action = None
                     motion_type = pick_up_type
-                    transform_up = np.eye(4)
-                    if pick_up_direction == "x":
-                        transform_up[0, 3] = pick_up_distance
-                        transform_up[2, 3] = 0.02
-                    elif pick_up_direction == "y":
-                        transform_up[1, 3] = pick_up_distance
+                    if pick_up_distance == 0.0:
+                        transform_up = np.eye(4)
+                        action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
+                    elif motion_type in ["Simple", "Straight", "Normal"]:
+                        transform_up = np.eye(4)
+                        if pick_up_direction == "x":
+                            transform_up[0, 3] = pick_up_distance
+                            transform_up[2, 3] = 0.02
+                        elif pick_up_direction == "y":
+                            transform_up[1, 3] = pick_up_distance
+                        else:
+                            transform_up[2, 3] = pick_up_distance
+                        # NOTE: codex - Backend motion execution does not consume goal_offset, so
+                        # keep the legacy explicit target pose path for non-MotionGen lift modes.
+                        action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
                     else:
-                        transform_up[2, 3] = pick_up_distance
-                    action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
+                        goal_offset, path_constraint = get_pick_up_offset_and_constraint(add_x_lift_clearance=True)
+                        # NOTE: codex - Reuse the existing offset-based execution path for lift so
+                        # the motion generator can relax terminal orientation instead of solving a
+                        # fully specified lifted pose.
+                        action_sequence.add_action(
+                            Action(
+                                grasp_pose,
+                                gripper_action,
+                                np.eye(4),
+                                motion_type,
+                                extra_params={
+                                    "goal_offset": goal_offset,
+                                    "path_constraint": path_constraint,
+                                    "offset_and_constraint_in_goal_frame": False,
+                                    "from_current_pose": True,
+                                },
+                            )
+                        )
                 else:
                     action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "AvoidObs"))
                     # action_sequence.add_action(Action(grasp_pose, "open", np.eye(4), "Normal"))

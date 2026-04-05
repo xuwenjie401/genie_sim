@@ -108,6 +108,21 @@ def _append_unique(items, value):
         items.append(value)
 
 
+def _is_offset_only_constrained_lift(goal_offset, path_constraint, from_current_pose: bool) -> bool:
+    if not from_current_pose or goal_offset is None or path_constraint is None or len(path_constraint) != 6:
+        return False
+
+    goal_offset = np.asarray(goal_offset, dtype=np.float32)
+    path_constraint = np.asarray(path_constraint, dtype=np.float32)
+    if goal_offset.shape[0] != 7:
+        return False
+
+    has_translation_offset = np.linalg.norm(goal_offset[:3]) > 1e-6
+    has_rotation_offset = not np.allclose(goal_offset[3:], np.array([1.0, 0.0, 0.0, 0.0]), atol=1e-6)
+    orientation_is_unconstrained = np.count_nonzero(np.abs(path_constraint[:3]) > 1e-6) == 0
+    return has_translation_offset and not has_rotation_offset and orientation_is_unconstrained
+
+
 def _ensure_attached_collision_config(robot_cfg):
     kinematics_cfg = robot_cfg.setdefault("kinematics", {})
     extra_links = kinematics_cfg.get("extra_links") or {}
@@ -1217,11 +1232,25 @@ class CuroboMotion:
             quaternion=self.tensor_args.to_device(np.tile(ee_orientation_teleop_goal, (CUROBO_BATCH_SIZE, 1))),
             batch=CUROBO_BATCH_SIZE,
         )
+        use_partial_reach_for_lift = _is_offset_only_constrained_lift(
+            goal_offset, path_constraint, from_current_pose
+        )
         if path_constraint is not None and len(path_constraint) == 6:
+            pose_metric_kwargs = {
+                "hold_partial_pose": True,
+                "hold_vec_weight": self.tensor_args.to_device(path_constraint),
+                "project_to_goal_frame": offset_and_constraint_in_goal_frame,
+            }
+            if use_partial_reach_for_lift:
+                # NOTE: codex - For grasp lift we only need the translated end pose, not a fully
+                # fixed terminal orientation. Relax the terminal orientation cost while keeping the
+                # partial path constraint active.
+                pose_metric_kwargs.update(
+                    reach_partial_pose=True,
+                    reach_vec_weight=self.tensor_args.to_device([0.0, 0.0, 0.0, 1.0, 1.0, 1.0]),
+                )
             hold_pose_cost_metric = PoseCostMetric(
-                hold_partial_pose=True,
-                hold_vec_weight=self.tensor_args.to_device(path_constraint),
-                project_to_goal_frame=offset_and_constraint_in_goal_frame,
+                **pose_metric_kwargs,
             )
             self.plan_config.pose_cost_metric = hold_pose_cost_metric
         else:
@@ -1256,7 +1285,12 @@ class CuroboMotion:
                 self.num_targets += 1
                 paths = result.get_successful_paths()
                 position_filter_res = filter_paths_by_position_error(paths, result.position_error[result.success])
-                rotation_filter_res = filter_paths_by_rotation_error(paths, result.rotation_error[result.success])
+                if use_partial_reach_for_lift:
+                    # NOTE: codex - Rotation error is expected to vary for relaxed lift goals, so
+                    # only filter on position error when the terminal orientation constraint is off.
+                    rotation_filter_res = [True] * len(paths)
+                else:
+                    rotation_filter_res = filter_paths_by_rotation_error(paths, result.rotation_error[result.success])
                 filtered_paths = []
                 for i in range(len(paths)):
                     if position_filter_res[i] and rotation_filter_res[i]:
