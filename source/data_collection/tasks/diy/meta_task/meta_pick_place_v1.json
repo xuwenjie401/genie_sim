@@ -1,8 +1,0 @@
-{
-    "meta_task": true,
-    "tasks": [
-        {
-            "source/data_collection/tasks/diy/single_task/place_cola_can_into_blue_box_galbot_v1.json": 10,
-        }
-    ]
-}

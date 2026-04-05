@@ -765,7 +765,7 @@ class DataCollectionAgent(BaseAgent):
         from_current_pose = extra_params.get("from_current_pose", False)
         offset_and_constraint_in_goal_frame = extra_params.get("offset_and_constraint_in_goal_frame", True)
         disable_collision_links = extra_params.get("disable_collision_links", [])
-        if action_type == "reset" or action_type == "grasp":
+        if action_type == "grasp":
             disable_collision_links = []
         if remove_obstacles:
             self.robot.client.remove_objs_from_obstacle([objects[stage.passive_obj_id].prim_path])
@@ -998,7 +998,7 @@ class DataCollectionAgent(BaseAgent):
                 attempt_count = 0
                 stage_success = False
                 try_next_sequence = True
-                max_stage_attempts = STAGE_MAX_ATTEMPTIONS.get(stage.action_type, MAX_ATTEMPTIONS)
+                max_stage_attempts = STAGE_MAX_ATTEMPTS.get(stage.action_type, MAX_ATTEMPTIONS)
                 store_name = f"stage_{stage_id}"
                 self.robot.client.store_current_state(store_name)
                 logger.info(f"Store state {store_name}")

@@ -106,32 +106,24 @@
                         "object_id": "geniesim_2025_storage_box_007_light_blue"
                     },
                     {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_000/",
-                        "object_id": "geniesim_2025_storage_box_000_mint_green"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_002/",
-                        "object_id": "geniesim_2025_storage_box_002_white"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_003/",
-                        "object_id": "geniesim_2025_storage_box_003_pink"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_005/",
-                        "object_id": "geniesim_2025_storage_box_005_black"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_004/",
-                        "object_id": "geniesim_2025_storage_box_004_gray"
-                    },
-                    {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_008/",
                         "object_id": "geniesim_2025_storage_box_008_white"
                     },
                     {
                         "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_011/",
                         "object_id": "geniesim_2025_storage_box_011_black"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_006/",
+                        "object_id": "geniesim_2025_storage_box_006_mint_green"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_009/",
+                        "object_id": "geniesim_2025_storage_box_009_pink"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_010/",
+                        "object_id": "geniesim_2025_storage_box_010_gray"
                     }
                 ]
             },

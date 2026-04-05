@@ -118,6 +118,7 @@ class CommandController:
         self.publish_ros = publish_ros
         self.rendering_step = rendering_step
         self.process = []
+        self.deferred_recorder_processes = []
         self.extract_process = []
         self.recording_ready_for_extraction = False
         self.target_point = None
@@ -474,6 +475,7 @@ class CommandController:
         recording_path: str,
         timeout_seconds: float = 0.0,
         poll_interval: float = 0.5,
+        log_timeout: bool = True,
     ) -> bool:
         if not recording_path or not os.path.isdir(recording_path):
             logger.error(f"Recording path is not available: {recording_path}")
@@ -488,6 +490,9 @@ class CommandController:
                 break
             time.sleep(poll_interval)
 
+        if not log_timeout:
+            return False
+
         if self._recording_has_bag_payload(recording_path):
             logger.error(
                 f"Recording metadata was not finalized for {recording_path}; "
@@ -499,18 +504,64 @@ class CommandController:
             )
         return False
 
+    def _cleanup_deferred_recorder_processes(
+        self,
+        *,
+        kill_running: bool = False,
+        wait_timeout: float = 2.0,
+        reason: str = "cleanup",
+    ) -> None:
+        if not self.deferred_recorder_processes:
+            return
+
+        active_processes = []
+        for process in self.deferred_recorder_processes:
+            process_pid = getattr(process, "pid", "<unknown>")
+            try:
+                return_code = process.poll()
+                if return_code is None:
+                    if not kill_running:
+                        active_processes.append(process)
+                        continue
+                    logger.warning(
+                        f"{reason}: forcing deferred recorder process {process_pid} to exit"
+                    )
+                    os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+                    process.wait(timeout=wait_timeout)
+            except ProcessLookupError:
+                continue
+            except subprocess.TimeoutExpired:
+                logger.error(
+                    f"{reason}: deferred recorder process {process_pid} did not exit after SIGKILL"
+                )
+                active_processes.append(process)
+            except Exception as exc:
+                logger.warning(
+                    f"{reason}: failed to clean deferred recorder process {process_pid}: {exc}"
+                )
+                try:
+                    if process.poll() is None:
+                        active_processes.append(process)
+                except Exception:
+                    pass
+
+        self.deferred_recorder_processes = active_processes
+
     def _stop_recording_processes(
         self,
         recording_path: str | None = None,
         wait_timeout: float = 30.0,
         metadata_timeout: float = 5.0,
         clear_process_list: bool = True,
+        defer_cleanup_after_metadata: bool = False,
     ) -> bool:
         if not self.process:
             return True
 
+        tracked_processes = list(self.process)
         recording_ready = True
-        for process in self.process:
+        stop_started_at = time.monotonic()
+        for process in tracked_processes:
             try:
                 if process.poll() is None:
                     os.killpg(os.getpgid(process.pid), signal.SIGINT)
@@ -520,7 +571,30 @@ class CommandController:
             except Exception as e:
                 logger.info(f"Failed to send signal to process {process.pid}: {e}")
 
-        for process in self.process:
+        if defer_cleanup_after_metadata and recording_path:
+            metadata_ready = self._wait_for_recording_metadata(
+                recording_path,
+                timeout_seconds=metadata_timeout,
+                log_timeout=False,
+            )
+            if metadata_ready:
+                lingering_processes = [process for process in tracked_processes if process.poll() is None]
+                if lingering_processes:
+                    self.deferred_recorder_processes.extend(lingering_processes)
+                    lingering_pids = ", ".join(str(process.pid) for process in lingering_processes)
+                    logger.warning(
+                        f"Recording metadata finalized {time.monotonic() - stop_started_at:.2f}s after SIGINT; "
+                        f"continuing without waiting for recorder exit. Deferred cleanup for pids=[{lingering_pids}]"
+                    )
+                else:
+                    logger.info(
+                        f"Recording metadata finalized {time.monotonic() - stop_started_at:.2f}s after SIGINT"
+                    )
+                if clear_process_list:
+                    self.process = []
+                return True
+
+        for process in tracked_processes:
             try:
                 if process.poll() is None:
                     process.wait(timeout=wait_timeout)
@@ -1337,6 +1411,11 @@ class CommandController:
         """Handle Command 11: GetObservation / StartRecording / StopRecording"""
         if self.data["startRecording"]:
             with self._timing_context("start_recording"):
+                self._cleanup_deferred_recorder_processes(
+                    kill_running=True,
+                    wait_timeout=2.0,
+                    reason="start_recording",
+                )
                 if self.process:
                     logger.warning(
                         "Found stale recorder processes before starting a new recording; "
@@ -1590,7 +1669,8 @@ class CommandController:
                     recording_ready = self._stop_recording_processes(
                         recording_path=self.path_to_save,
                         wait_timeout=30.0,
-                        metadata_timeout=5.0,
+                        metadata_timeout=10.0,
+                        defer_cleanup_after_metadata=True,
                     )
                     self.ui_builder.remove_graph(self.graph_path)
                 if recording_ready and self.path_to_save:
@@ -1745,6 +1825,11 @@ class CommandController:
                 logger.info("Extract process started")
                 self.extract_process.append((extract_sub_process, log_file, self.path_to_save))
             else:
+                self._cleanup_deferred_recorder_processes(
+                    kill_running=True,
+                    wait_timeout=2.0,
+                    reason="task_status",
+                )
                 if self.process:
                     logger.warning(
                         f"Task failed while recorder processes are still tracked; "
@@ -1764,6 +1849,11 @@ class CommandController:
 
     def handle_exit(self):
         """Handle Command 17: Exit"""
+        self._cleanup_deferred_recorder_processes(
+            kill_running=True,
+            wait_timeout=2.0,
+            reason="exit",
+        )
         if self.process:
             logger.warning("Exit requested while recorder processes are still active; terminating them first")
             self._stop_recording_processes(
@@ -2014,6 +2104,11 @@ class CommandController:
             self._capture_camera(prim_path=camera, isRGB=True, isDepth=False, isSemantic=False, isGN=False)
 
     def _on_reset(self):
+        self._cleanup_deferred_recorder_processes(
+            kill_running=True,
+            wait_timeout=2.0,
+            reason="reset",
+        )
         if self.process:
             logger.warning("Reset requested while recorder processes are still active; terminating them first")
             self._stop_recording_processes(
