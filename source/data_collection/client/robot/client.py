@@ -581,6 +581,7 @@ class RpcClient:
         req = sim_observation_service_pb2.SetLightReq()
         for light in light_info:
             logger.info(light)
+            light_rotation = light.get("rotation", [1.0, 0.0, 0.0, 0.0])
             light_cfg = sim_observation_service_pb2.LightCfg()
             light_cfg.light_type = light["light_type"]
             light_cfg.light_prim = light["light_prim"]
@@ -591,8 +592,8 @@ class RpcClient:
                 light_cfg.light_rotation.rx,
                 light_cfg.light_rotation.ry,
                 light_cfg.light_rotation.rz,
-            ) = light["rotation"]
-            light_cfg.light_texture = light["texture"]
+            ) = light_rotation
+            light_cfg.light_texture = light.get("texture", "")
             req.lights.append(light_cfg)
         response = stub.set_light(req)
         return response

@@ -39,6 +39,24 @@ def contains_cjk(text):
     return bool(re.search(r"[\u4e00-\u9fff]", text or ""))
 
 
+def _normalize_light_type(light_type):
+    light_type_name_map = {
+        "Disk": "Disk",
+        "DiskLight": "Disk",
+        "Rect": "Rect",
+        "RectLight": "Rect",
+        "Sphere": "Sphere",
+        "SphereLight": "Sphere",
+        "Dome": "Dome",
+        "DomeLight": "Dome",
+        "Distant": "Distant",
+        "DistantLight": "Distant",
+    }
+    if light_type not in light_type_name_map:
+        raise ValueError(f"Unsupported light_type: {light_type}")
+    return light_type_name_map[light_type]
+
+
 def load_task_solution(task_info):
     stages = task_info["stages"]
 
@@ -129,6 +147,76 @@ class DataCollectionAgent(BaseAgent):
             },
         )
 
+    @staticmethod
+    def _sample_light_randomization_value(value_range, field_name, light_prim):
+        if not isinstance(value_range, dict):
+            raise ValueError(
+                f"scene_light_randomization.{field_name} for {light_prim} must be a dict with min/max values"
+            )
+        if "min" not in value_range or "max" not in value_range:
+            raise ValueError(
+                f"scene_light_randomization.{field_name} for {light_prim} must contain both min and max"
+            )
+        min_value = float(value_range["min"])
+        max_value = float(value_range["max"])
+        if min_value > max_value:
+            raise ValueError(
+                f"scene_light_randomization.{field_name} for {light_prim} has min > max: {min_value} > {max_value}"
+            )
+        if min_value == max_value:
+            return min_value
+        return float(np.random.uniform(min_value, max_value))
+
+    def apply_scene_light_randomization(self, task_info):
+        light_randomization_configs = task_info.get("scene_light_randomization", [])
+        if not light_randomization_configs:
+            return []
+
+        light_requests = []
+        applied_light_configs = []
+        for light_config in light_randomization_configs:
+            light_prim = light_config.get("light_prim")
+            if not light_prim:
+                raise ValueError("scene_light_randomization item missing light_prim")
+
+            light_type = _normalize_light_type(light_config.get("light_type"))
+            light_intensity = self._sample_light_randomization_value(
+                light_config.get("intensity"),
+                "intensity",
+                light_prim,
+            )
+            light_temperature = self._sample_light_randomization_value(
+                light_config.get("temperature"),
+                "temperature",
+                light_prim,
+            )
+
+            light_requests.append(
+                {
+                    "light_type": light_type,
+                    "light_prim": light_prim,
+                    "light_temperature": light_temperature,
+                    "light_intensity": light_intensity,
+                    "rotation": [1.0, 0.0, 0.0, 0.0],
+                    "texture": "",
+                }
+            )
+            applied_light_configs.append(
+                {
+                    "light_prim": light_prim,
+                    "light_type": light_type,
+                    "light_intensity": light_intensity,
+                    "light_temperature": light_temperature,
+                }
+            )
+
+        self.robot.client.set_light(light_requests)
+        task_info["scene_light_randomization_applied"] = applied_light_configs
+        for applied_light_config in applied_light_configs:
+            logger.info(f"Applied scene light randomization: {applied_light_config}")
+        time.sleep(0.5)
+        return applied_light_configs
+
     def generate_layout(self, task_file):
         self.task_file = task_file
         with open(task_file, "r") as f:
@@ -207,6 +295,8 @@ class DataCollectionAgent(BaseAgent):
                         ).tolist()
                 self.robot.client.set_light(light_infos)
                 time.sleep(2)
+
+        self.apply_scene_light_randomization(task_info)
 
         """ Set camera"""
         if "cameras" in task_info:

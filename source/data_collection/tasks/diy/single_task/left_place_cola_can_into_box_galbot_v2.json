@@ -272,6 +272,20 @@
             "background/home_b/home_b_galbot.usda"
         ]
     },
+    "scene_light_randomization": [
+        {
+            "light_prim": "/World/Light/Light_00/DiskLight_02/DiskLight_02",
+            "light_type": "Disk",
+            "intensity": {
+                "min": 10000.0,
+                "max": 65000.0
+            },
+            "temperature": {
+                "min": 6500.0,
+                "max": 6500.0
+            }
+        }
+    ],
     "stages": [
         {
             "action": "pick",

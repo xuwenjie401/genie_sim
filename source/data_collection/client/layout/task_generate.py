@@ -488,6 +488,7 @@ class TaskGenerator:
             "stages": task_template["stages"],
             "object_with_material": task_template.get("object_with_material", {}),
             "lights": task_template.get("lights", {}),
+            "scene_light_randomization": task_template.get("scene_light_randomization", []),
             "cameras": task_template.get("cameras", {}),
             "objects": [],
         }

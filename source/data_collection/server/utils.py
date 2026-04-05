@@ -59,10 +59,14 @@ class Light:
         self.intensity = intensity
         self.color = color
         self.orientation = orientation
-        base_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/data/" + texture_file
-        for file in os.listdir(base_folder):
-            if file.endswith(".hdr"):
-                self.texture_file = os.path.join(base_folder, file)
+        self.texture_file = None
+        if texture_file:
+            base_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/data/" + texture_file
+            if os.path.isdir(base_folder):
+                for file in os.listdir(base_folder):
+                    if file.endswith(".hdr"):
+                        self.texture_file = os.path.join(base_folder, file)
+                        break
 
     def initialize(self):
         # selection between different light types
@@ -70,7 +74,8 @@ class Light:
             light = UsdLux.DomeLight.Define(self.stage, Sdf.Path(self.prim_path))
             light.CreateIntensityAttr(self.intensity)
             light.CreateColorTemperatureAttr(self.color)
-            light.CreateTextureFileAttr().Set(Sdf.AssetPath(self.texture_file))
+            if self.texture_file:
+                light.CreateTextureFileAttr().Set(Sdf.AssetPath(self.texture_file))
         elif self.light_type == "Sphere":
             light = UsdLux.SphereLight.Define(self.stage, Sdf.Path(self.prim_path))
             light.CreateIntensityAttr(self.intensity)
@@ -522,4 +527,3 @@ def spawn_grasps_as_usd(
 
     print(f"[OK] 已生成 grasps: {N} 个，路径：{grasps_root_path}")
     print(f"     direction_axis={direction_axis}, grip_axis={grip_axis}, thick_axis=+{thick_axis_name}")
-

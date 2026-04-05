@@ -29,7 +29,7 @@ from isaacsim.sensors.camera import Camera
 from omni.kit.viewport.utility import get_active_viewport_and_window
 from omni.kit.viewport.utility.camera_state import ViewportCameraState
 from omni.physx.scripts import utils
-from pxr import Gf, PhysxSchema, Sdf, Usd, UsdGeom, UsdPhysics, UsdShade
+from pxr import Gf, PhysxSchema, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
 from isaacsim.core.utils.types import ArticulationAction
 
@@ -1956,15 +1956,23 @@ class CommandController:
 
     def handle_set_light(self):
         """Handle Command 30: SetLight"""
-        for light in self.data:
-            self._set_light(
-                light_type=light["light_type"],
-                light_prim=light["light_prim"],
-                light_temperature=light["light_temperature"],
-                light_intensity=light["light_intensity"],
-                light_rotation=light["light_rotation"],
-                light_texture=light["light_texture"],
-            )
+        try:
+            for light in self.data:
+                success = self._set_light(
+                    light_type=light["light_type"],
+                    light_prim=light["light_prim"],
+                    light_temperature=light["light_temperature"],
+                    light_intensity=light["light_intensity"],
+                    light_rotation=light["light_rotation"],
+                    light_texture=light["light_texture"],
+                )
+                if not success:
+                    self.data_to_send = "fail"
+                    return
+        except Exception as exc:
+            logger.exception(f"Failed to set light configuration: {exc}")
+            self.data_to_send = "fail"
+            return
         self.light_config = self.data
         self.data_to_send = "success"
 
@@ -2516,6 +2524,36 @@ class CommandController:
         light_texture,
     ):
         stage = omni.usd.get_context().get_stage()
+        existing_prim = stage.GetPrimAtPath(light_prim)
+        if existing_prim.IsValid():
+            usd_light_type = self._normalize_light_type_name(light_type)
+            prim_type_name = existing_prim.GetTypeName()
+            if prim_type_name != usd_light_type:
+                logger.error(
+                    f"Light type mismatch for {light_prim}: expected {usd_light_type}, got {prim_type_name}"
+                )
+                return False
+
+            light_schema = self._get_light_schema(existing_prim, usd_light_type)
+            intensity_attr = light_schema.GetIntensityAttr()
+            if not intensity_attr.IsValid():
+                intensity_attr = light_schema.CreateIntensityAttr()
+            intensity_attr.Set(light_intensity)
+
+            color_temperature_attr = light_schema.GetColorTemperatureAttr()
+            if not color_temperature_attr.IsValid():
+                color_temperature_attr = light_schema.CreateColorTemperatureAttr()
+            color_temperature_attr.Set(light_temperature)
+
+            enable_color_temperature_attr = light_schema.GetEnableColorTemperatureAttr()
+            if not enable_color_temperature_attr.IsValid():
+                enable_color_temperature_attr = light_schema.CreateEnableColorTemperatureAttr()
+            enable_color_temperature_attr.Set(True)
+            logger.info(
+                f"Updated existing light {light_prim}: intensity={light_intensity}, temperature={light_temperature}"
+            )
+            return True
+
         light = Light(
             light_type=light_type,
             prim_path=light_prim,
@@ -2526,6 +2564,39 @@ class CommandController:
             texture_file=light_texture,
         )
         light.initialize()
+        return True
+
+    @staticmethod
+    def _normalize_light_type_name(light_type):
+        light_type_name_map = {
+            "Disk": "DiskLight",
+            "DiskLight": "DiskLight",
+            "Rect": "RectLight",
+            "RectLight": "RectLight",
+            "Sphere": "SphereLight",
+            "SphereLight": "SphereLight",
+            "Dome": "DomeLight",
+            "DomeLight": "DomeLight",
+            "Distant": "DistantLight",
+            "DistantLight": "DistantLight",
+        }
+        if light_type not in light_type_name_map:
+            raise ValueError(f"Unsupported light_type: {light_type}")
+        return light_type_name_map[light_type]
+
+    @staticmethod
+    def _get_light_schema(light_prim, usd_light_type):
+        if usd_light_type == "DiskLight":
+            return UsdLux.DiskLight(light_prim)
+        if usd_light_type == "RectLight":
+            return UsdLux.RectLight(light_prim)
+        if usd_light_type == "SphereLight":
+            return UsdLux.SphereLight(light_prim)
+        if usd_light_type == "DomeLight":
+            return UsdLux.DomeLight(light_prim)
+        if usd_light_type == "DistantLight":
+            return UsdLux.DistantLight(light_prim)
+        raise ValueError(f"Unsupported USD light type: {usd_light_type}")
 
     def _get_joint_positions(self):
         self._initialize_articulation()
