@@ -57,6 +57,14 @@ def _fallback_english_label_from_path(obj_dir):
     return None
 
 
+def _sanitize_prim_path_token(value):
+    if not isinstance(value, str):
+        return "candidate"
+    sanitized_value = re.sub(r"[^0-9A-Za-z_]+", "_", value.strip())
+    sanitized_value = sanitized_value.strip("_")
+    return sanitized_value or "candidate"
+
+
 @lru_cache(maxsize=1024)
 def _load_asset_english_semantic_name(obj_dir):
     description_file = os.path.join(obj_dir, "description.py")
@@ -336,12 +344,24 @@ class TaskGenerator:
 
                 # Randomly select a candidate
                 selected_candidate = random.choice(obj["candidate_objects"]).copy()
+                candidate_unique_token = _sanitize_prim_path_token(
+                    selected_candidate.get("object_id")
+                    or os.path.basename(os.path.normpath(selected_candidate.get("data_info_dir", "")))
+                )
+                has_explicit_prim_path = "prim_path" in obj or "prim_path" in selected_candidate
 
                 # Overwrite candidate fields with external item fields
                 # External fields have higher priority and will overwrite corresponding fields in candidate
                 for key, value in obj.items():
                     if key != "candidate_objects":  # Skip the candidate_objects field itself
                         selected_candidate[key] = value
+
+                # Keep candidate variants on distinct prims so repeated episodes do not reuse
+                # the first-loaded asset under the generic object_id path.
+                if not has_explicit_prim_path:
+                    selected_candidate["prim_path"] = (
+                        f"/World/Objects/{obj['object_id']}__{candidate_unique_token}"
+                    )
 
                 processed_task_objs.append(selected_candidate)
             else:

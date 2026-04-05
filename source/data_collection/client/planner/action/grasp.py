@@ -20,6 +20,7 @@ from client.planner.common import (
     overweite_grasp_data,
 )
 from client.planner.func.common import (
+    filter_galbot_grasp_pose_by_approach_direction,
     filter_grasp_pose_by_gripper_up_direction,
     filter_grasp_poses_with_humanlike_posture,
     random_downsample,
@@ -46,6 +47,7 @@ class PickStage(Stage):
         arm = self.extra_params.get("arm", "right")
         grasp_offset = self.extra_params.get("grasp_offset", 0.0)
         pre_grasp_offset = self.extra_params.get("pre_grasp_offset", 0.0)
+        allow_galbot_top_down_grasp = self.extra_params.get("allow_galbot_top_down_grasp", False)
         grasp_lower_percentile = self.extra_params.get("grasp_lower_percentile", 0)
         grasp_upper_percentile = self.extra_params.get("grasp_upper_percentile", 100)
         disable_upside_down = self.extra_params.get("disable_upside_down", False)
@@ -126,6 +128,22 @@ class PickStage(Stage):
             grasp_widths = grasp_widths[upright_mask]
             logger.info(
                 f"{self.action_type}, {self.passive_obj_id}, Filtered upside-down grasp_poses: {grasp_poses.shape[0]}"
+            )
+
+        if "galbot" in robot.robot_cfg.lower() and len(grasp_poses) > 0:
+            grasp_poses, grasp_widths, _, galbot_filter_stats = filter_galbot_grasp_pose_by_approach_direction(
+                grasp_poses=grasp_poses,
+                grasp_widths=grasp_widths,
+                # Temporary debug assumption: world +x is robot front, world +z is up.
+                robot_base_rotation=np.eye(3),
+                allow_top_down_grasp=allow_galbot_top_down_grasp,
+            )
+            logger.info(
+                f"{self.action_type}, {self.passive_obj_id}, "
+                f"Filtered galbot approach poses: {galbot_filter_stats['num_output']}/"
+                f"{galbot_filter_stats['num_input']}, "
+                f"vertical_down_reject={galbot_filter_stats['num_reject_vertical_down']}, "
+                f"towards_robot_reject={galbot_filter_stats['num_reject_towards_robot']}"
             )
 
         if len(grasp_poses) == 0:

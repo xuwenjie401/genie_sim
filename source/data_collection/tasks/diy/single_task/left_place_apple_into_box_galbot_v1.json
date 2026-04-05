@@ -12,6 +12,36 @@
                 "workspace_id": "work_table",
                 "available_objects": [
                     {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+                        "object_id": "geniesim_2025_apple_000",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_001/",
+                        "object_id": "geniesim_2025_apple_001",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
+                        "object_id": "geniesim_2025_apple_002",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
+                        "object_id": "geniesim_2025_apple_003",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_004/",
+                        "object_id": "geniesim_2025_apple_004",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_005/",
+                        "object_id": "geniesim_2025_apple_005",
+                        "mass": 0.05
+                    },
+                    {
                         "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
                         "object_id": "geniesim_2025_beverage_bottle_001",
                         "mass": 0.05
@@ -57,11 +87,6 @@
                         "mass": 0.05
                     },
                     {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
-                        "object_id": "geniesim_2025_apple_000",
-                        "mass": 0.05
-                    },
-                    {
                         "data_info_dir": "objects/benchmark/green_apple/benchmark_green_apple_000/",
                         "object_id": "geniesim_2025_green_apple_000",
                         "mass": 0.05
@@ -69,16 +94,6 @@
                     {
                         "data_info_dir": "objects/benchmark/fruit/benchmark_fruit_021/",
                         "object_id": "geniesim_2025_fruit_021",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
-                        "object_id": "geniesim_2025_apple_003",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
-                        "object_id": "geniesim_2025_apple_002",
                         "mass": 0.05
                     }
                 ]
@@ -130,8 +145,28 @@
             {
                 "candidate_objects": [
                     {
-                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
-                        "object_id": "geniesim_2025_beverage_bottle_001"
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+                        "object_id": "geniesim_2025_apple_000"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_001/",
+                        "object_id": "geniesim_2025_apple_001"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
+                        "object_id": "geniesim_2025_apple_002"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
+                        "object_id": "geniesim_2025_apple_003"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_004/",
+                        "object_id": "geniesim_2025_apple_004"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_005/",
+                        "object_id": "geniesim_2025_apple_005"
                     }
                 ],
                 "mass": 0.05,

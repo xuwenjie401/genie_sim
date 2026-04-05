@@ -157,6 +157,52 @@ def random_downsample(transforms: np.ndarray, downsample_num: int, replace: bool
     return transforms, random_indices
 
 
+def filter_galbot_grasp_pose_by_approach_direction(
+    grasp_poses: np.ndarray,
+    grasp_widths: np.ndarray,
+    robot_base_rotation: np.ndarray,
+    vertical_threshold_deg: float = 15.0,
+    allow_top_down_grasp: bool = False,
+    reject_towards_robot: bool = True,
+    towards_robot_max_dot: float = 0.0,
+) -> tuple:
+    if grasp_poses.shape[1:] != (4, 4):
+        raise ValueError("grasp_poses must be of shape (N,4,4)")
+    if not isinstance(grasp_widths, np.ndarray) or len(grasp_widths) != len(grasp_poses):
+        raise ValueError("grasp_widths must be a numpy array with same length as grasp_poses")
+    robot_base_rotation = np.asarray(robot_base_rotation)
+    if robot_base_rotation.shape != (3, 3):
+        raise ValueError("robot_base_rotation must be a 3x3 rotation matrix")
+
+    da_world = grasp_poses[:, :3, 0]
+
+    if allow_top_down_grasp:
+        reject_vertical_down = np.zeros(len(grasp_poses), dtype=bool)
+    else:
+        vertical_cos = np.cos(np.deg2rad(vertical_threshold_deg))
+        reject_vertical_down = da_world[:, 2] <= -vertical_cos
+
+    # Convert approach direction from world frame into the robot base frame.
+    da_base = (robot_base_rotation.T @ da_world.T).T
+    if reject_towards_robot:
+        # Only reject poses whose approach direction is clearly close to -base_x.
+        reject_towards = da_base[:, 0] < towards_robot_max_dot
+    else:
+        reject_towards = np.zeros(len(grasp_poses), dtype=bool)
+
+    mask = ~(reject_vertical_down | reject_towards)
+    filtered_grasp_poses = grasp_poses[mask]
+    filtered_grasp_widths = grasp_widths[mask]
+    stats = {
+        "num_input": int(len(grasp_poses)),
+        "num_reject_vertical_down": int(np.sum(reject_vertical_down)),
+        "num_reject_towards_robot": int(np.sum(reject_towards)),
+        "num_output": int(len(filtered_grasp_poses)),
+    }
+
+    return filtered_grasp_poses, filtered_grasp_widths, mask, stats
+
+
 def filter_grasp_poses_with_humanlike_posture(grasp_poses: np.ndarray, grasp_widths: np.ndarray) -> tuple:
     mask = [pose[2, 1] > 0.0 and pose[0, 2] > 0 and pose[1, 2] > 0 for pose in grasp_poses]
     mask = np.array(mask)
