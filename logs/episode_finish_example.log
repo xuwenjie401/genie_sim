@@ -1,0 +1,19 @@
+2026-04-05T03:30:53Z [6,430,519ms] [Warning] [server.motion_generator.motion_gen_reacher] update lock joints time is 0.2952871322631836
+2026-04-05T03:30:53Z [6,430,523ms] [Warning] [server.motion_generator.motion_gen_reacher] joint goal plan did not converge: MotionGenStatus.INVALID_START_STATE_WORLD_COLLISION
+2026-04-05T03:30:53Z [6,430,572ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-04-05T03:30:53Z [6,430,572ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-04-05T03:30:53Z [6,430,550ms] [Warning] [server.motion_generator.motion_gen_reacher] lock joints is the same, no need to update
+2026-04-05T03:30:53Z [6,430,617ms] INFO     [ui_builder.py:261] no valid path constraint provided
+2026-04-05T03:30:53Z [6,430,571ms] [Warning] [curobo] Batch mode enable graph is only supported with num_graph_seeds==1
+2026-04-05T03:30:54Z [6,430,646ms] [Warning] [curobo] Start or End state in collision
+2026-04-05T03:30:54Z [6,430,647ms] [Warning] [server.motion_generator.motion_gen_reacher] plan did not converge to a solution: Invalid Problem
+2026-04-05T03:30:54Z [6,430,647ms] [Warning] [server.motion_generator.motion_gen_reacher] total time is 0.09690165519714355
+2026-04-05T03:30:54Z [6,430,697ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-04-05T03:30:54Z [6,430,697ms] INFO     [_server.py:608] gripper_action_timing{}
+2026-04-05T03:30:58Z [6,435,267ms] INFO     [command_controller.py:1590] Sent SIGINT to process group 69347
+[INFO] [1775359858.690506829] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1775359858.693451980] [rosbag2_recorder]: Event publisher thread: Exiting
+[INFO] [1775359858.693571664] [rosbag2_recorder]: Recording stopped
+2026-04-05T03:31:28Z [6,465,267ms] WARNING  [command_controller.py:1590] Recorder process 69347 did not exit after SIGINT, but metadata is finalized; forcing SIGKILL and continuing
+2026-04-05T03:31:29Z [6,466,401ms] ERROR    [command_controller.py:1713] Extract process 69198 for /home/agxi/RealityLab/genie_sim/source/data_collection/recording_data/left_place_cola_can_into_gray_box_galbot_v1_0405_1128_1 exited with code 1
+I0000 00:00:1775359889.758763   43926 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers

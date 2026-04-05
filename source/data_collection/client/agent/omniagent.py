@@ -28,6 +28,11 @@ from common.base_utils.transform_utils import (
 )
 
 MAX_ATTEMPTIONS = 4
+STAGE_MAX_ATTEMPTS = {
+    "pick": 3,
+    "grasp": 3,
+    "place": 2,
+}
 
 
 def contains_cjk(text):
@@ -993,10 +998,14 @@ class DataCollectionAgent(BaseAgent):
                 attempt_count = 0
                 stage_success = False
                 try_next_sequence = True
+                max_stage_attempts = STAGE_MAX_ATTEMPTIONS.get(stage.action_type, MAX_ATTEMPTIONS)
                 store_name = f"stage_{stage_id}"
                 self.robot.client.store_current_state(store_name)
                 logger.info(f"Store state {store_name}")
-                while not stage_success and try_next_sequence and attempt_count < MAX_ATTEMPTIONS:
+                logger.info(
+                    f"Stage {stage_id} {stage.action_type} max attempts: {max_stage_attempts}"
+                )
+                while not stage_success and try_next_sequence and attempt_count < max_stage_attempts:
                     # Execution
                     stage_success = True
                     attempt_count += 1
