@@ -1,0 +1,11 @@
+server
+
+2026-04-05T09:31:28Z [182,363ms] WARNING  [command_controller.py:1669] Recording metadata finalized 0.50s after SIGINT; continuing without waiting for recorder exit. Deferred cleanup for pids=[126691]
+2026-04-05T09:31:29Z [182,712ms] WARNING  [command_controller.py:1828] task_status: forcing deferred recorder process 126691 to exit
+
+
+
+client:
+2026-04-05T09:31:26Z [111,843ms] INFO     [run_data_collection.py:376] Stage 0 pick failed due to no more action sequence
+2026-04-05T09:31:26Z [111,843ms] WARNING  [run_data_collection.py:376] Stage 0 pick failed
+2026-04-05T09:31:26Z [111,843ms] WARNING  [run_data_collection.py:376] Task /home/agxi/RealityLab/genie_sim/source/data_collection/saved_task/left_place_apple_into_box_galbot_v1/left_place_apple_into_box_galbot_v1_1.json failed

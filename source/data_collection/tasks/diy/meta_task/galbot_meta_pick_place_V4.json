@@ -1,0 +1,13 @@
+{
+    "meta_task": true,
+    "tasks": [
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s2_v1.json",
+            "episodes": 10
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s2_v2.json",
+            "episodes": 200
+        }
+    ]
+}

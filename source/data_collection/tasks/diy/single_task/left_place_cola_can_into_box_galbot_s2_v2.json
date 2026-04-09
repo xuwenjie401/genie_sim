@@ -12,26 +12,6 @@
                 "workspace_id": "work_table",
                 "available_objects": [
                     {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
-                        "object_id": "geniesim_2025_apple_000",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_001/",
-                        "object_id": "geniesim_2025_apple_001",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
-                        "object_id": "geniesim_2025_apple_002",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
-                        "object_id": "geniesim_2025_apple_003",
-                        "mass": 0.05
-                    },
-                    {
                         "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
                         "object_id": "geniesim_2025_beverage_bottle_001",
                         "mass": 0.05
@@ -77,28 +57,28 @@
                         "mass": 0.05
                     },
                     {
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+                        "object_id": "geniesim_2025_apple_000",
+                        "mass": 0.05
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/green_apple/benchmark_green_apple_000/",
+                        "object_id": "geniesim_2025_green_apple_000",
+                        "mass": 0.05
+                    },
+                    {
                         "data_info_dir": "objects/benchmark/fruit/benchmark_fruit_021/",
                         "object_id": "geniesim_2025_fruit_021",
                         "mass": 0.05
                     },
                     {
-                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_001/",
-                        "object_id": "geniesim_2025_building_blocks_001",
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
+                        "object_id": "geniesim_2025_apple_003",
                         "mass": 0.05
                     },
                     {
-                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_009/",
-                        "object_id": "geniesim_2025_building_blocks_009",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_083/",
-                        "object_id": "geniesim_2025_building_blocks_083",
-                        "mass": 0.05
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/building_blocks/benchmark_building_blocks_089/",
-                        "object_id": "geniesim_2025_building_blocks_089",
+                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
+                        "object_id": "geniesim_2025_apple_002",
                         "mass": 0.05
                     }
                 ]
@@ -150,20 +130,8 @@
             {
                 "candidate_objects": [
                     {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
-                        "object_id": "geniesim_2025_apple_000"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_001/",
-                        "object_id": "geniesim_2025_apple_001"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_002/",
-                        "object_id": "geniesim_2025_apple_002"
-                    },
-                    {
-                        "data_info_dir": "objects/benchmark/apple/benchmark_apple_003/",
-                        "object_id": "geniesim_2025_apple_003"
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+                        "object_id": "geniesim_2025_beverage_bottle_001"
                     }
                 ],
                 "mass": 0.05,
@@ -175,11 +143,10 @@
     "recording_setting": {
         "camera_list": [
             "/galbot_one_golf/head_link2/head_front_left_color",
-            "/galbot_one_golf/left_arm_link7/left_arm_color",
-            "/galbot_one_golf/right_arm_link7/right_arm_color"
+            "/galbot_one_golf/left_arm_link7/left_arm_color"
         ],
         "fps": 30,
-        "num_of_episode": 5,
+        "num_of_episode": 10,
         "noised_probability": 0.0
     },
     "robot": {
@@ -222,8 +189,8 @@
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.8299999833106995,
-                0.0,
+                -0.8999999761581421,
+                -0.05000000074505806,
                 0.0
             ],
             "quaternion": [
@@ -234,8 +201,8 @@
             ],
             "random": {
                 "delta_position": [
-                    0.07999999821186066,
-                    0.06,
+                    0.07500000298023224,
+                    0.10000000149011612,
                     0.0
                 ]
             }
@@ -246,7 +213,7 @@
             "work_table": {
                 "material_obj_prim": {},
                 "position": [
-                    0.03500000014901161,
+                    -0.05000000074505806,
                     0.20000000298023224,
                     0.7599999904632568
                 ],
@@ -263,12 +230,12 @@
                 ],
                 "blocked_zone": [
                     [
-                        -0.10000000149011612,
+                        -0.07000000029802322,
                         0.25
                     ],
                     [
-                        0.019999999552965164,
-                        0.30000001192092896
+                        -0.30000001192092896,
+                        -0.07999999821186066
                     ]
                 ]
             },
@@ -277,8 +244,8 @@
                 "poses": [
                     {
                         "position": [
-                            0.09000000357627869,
-                            0.38999998569488525,
+                            0.05000000074505806,
+                            -0.0,
                             0.7699999809265137
                         ],
                         "quaternion": [
@@ -298,23 +265,23 @@
                 ]
             }
         },
-        "scene_id": "background/home_b/",
-        "scene_info_dir": "background/home_b/",
+        "scene_id": "background/restaurant_00/",
+        "scene_info_dir": "background/restaurant_00/",
         "scene_usd": [
-            "background/home_b/home_b_galbot.usda"
+            "background/restaurant_00/background_01.usda"
         ]
     },
     "scene_light_randomization": [
         {
-            "light_prim": "/World/Light/Light_00/DiskLight_02/DiskLight_02",
-            "light_type": "Disk",
+            "light_prim": "/World/proxy/Light/RectLight_04",
+            "light_type": "Rect",
             "intensity": {
-                "min": 10000.0,
-                "max": 65000.0
+                "min": 500.0,
+                "max": 10000.0
             },
             "temperature": {
-                "min": 6500.0,
-                "max": 6500.0
+                "min": 2000.0,
+                "max": 8000.0
             }
         }
     ],
@@ -414,7 +381,7 @@
             }
         }
     ],
-    "task": "left_place_apple_into_box_galbot_v1",
+    "task": "left_place_cola_can_into_box_galbot_v2",
     "task_description": {
         "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the storage box",
         "init_scene_text": "机器人在桌面前，桌面上放着3-5个物体和一个收纳盒",
@@ -470,8 +437,8 @@
     },
     "origin": {
         "position": [
-            2.91,
-            0.76,
+            -0.75,
+            1.4199999570846558,
             0.0
         ],
         "quaternion": [

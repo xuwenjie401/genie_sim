@@ -7,6 +7,20 @@ import open3d as o3d
 
 from common.base_utils.transform_utils import transform_points
 
+MAX_SDF_VOXELS = 8000000
+
+
+def _validate_sdf_shape(bounds_min, bounds_max, resolution):
+    shape = np.maximum(np.ceil((bounds_max - bounds_min) / resolution).astype(int), 1)
+    voxel_count = int(np.prod(shape.astype(np.int64), dtype=np.int64))
+    if voxel_count > MAX_SDF_VOXELS:
+        extents = (bounds_max - bounds_min).tolist()
+        raise ValueError(
+            f"SDF grid too large: extents={extents}, resolution={resolution}, "
+            f"shape={shape.tolist()}, voxels={voxel_count}. Check asset units and scale."
+        )
+    return shape
+
 
 def compute_sdf_from_obj_surface(mesh, resolution=2):  # 2mm
     if mesh is None or len(mesh.vertices) == 0:
@@ -16,7 +30,7 @@ def compute_sdf_from_obj_surface(mesh, resolution=2):  # 2mm
     triangles = o3d.core.Tensor(mesh.faces, dtype=o3d.core.Dtype.UInt32)
     scene = o3d.t.geometry.RaycastingScene()
     scene.add_triangles(vertices, triangles)
-    shape = np.ceil((bounds_max - bounds_min) / resolution).astype(int)
+    shape = _validate_sdf_shape(bounds_min, bounds_max, resolution)
 
     grid = np.mgrid[
         bounds_min[0] : bounds_max[0] : complex(0, shape[0]),
@@ -45,7 +59,9 @@ def compute_sdf_from_obj(obj_mes, bounds_max, bounds_min, resolution=2):  # 2mm
     _ = scene.add_triangles(vertices, triangles)  # Add all objects for computation
 
     # Create 3D grid for sampling
-    shape = np.ceil((np.array(bounds_max) - np.array(bounds_min)) / resolution).astype(int)
+    bounds_max = np.asarray(bounds_max, dtype=float)
+    bounds_min = np.asarray(bounds_min, dtype=float)
+    shape = _validate_sdf_shape(bounds_min, bounds_max, resolution)
     steps = (np.array(bounds_max) - np.array(bounds_min)) / shape
     grid = np.mgrid[
         bounds_min[0] : bounds_max[0] : steps[0],

@@ -4,6 +4,7 @@
 
 import argparse
 import os
+import signal
 import sys
 import termios
 
@@ -51,7 +52,9 @@ from isaacsim import SimulationApp
 simulation_app = SimulationApp(
     {
         "headless": args.headless,
-        "renderer": "RealTimePathTracing",
+        # "renderer": "RealTimePathTracing",
+        "disable_viewport_updates": args.headless,
+        "renderer": "RayTracedLighting",
         "extra_args": [
             "--/persistent/rtx/modes/rt2/enabled=true",
         ],
@@ -96,7 +99,36 @@ server_function = CommandController(
 rpc_server = GrpcServer(server_function=server_function)
 rpc_server.start()
 
-_saved_term = termios.tcgetattr(sys.stdin.fileno())
+
+def _capture_terminal_state():
+    if not sys.stdin.isatty():
+        logger.info("stdin is not a TTY; skip terminal state capture")
+        return None
+    try:
+        return termios.tcgetattr(sys.stdin.fileno())
+    except termios.error as exc:
+        logger.warning(f"failed to capture terminal state: {exc}")
+        return None
+
+
+def _restore_terminal_state(saved_state):
+    if saved_state is None:
+        return
+    try:
+        termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, saved_state)
+    except termios.error as exc:
+        logger.warning(f"failed to restore terminal state: {exc}")
+
+
+def _request_exit(_signum, _frame):
+    logger.info("received external stop signal, shutting down server")
+    rpc_server.server_function.exit = True
+
+
+signal.signal(signal.SIGINT, _request_exit)
+signal.signal(signal.SIGTERM, _request_exit)
+
+_saved_term = _capture_terminal_state()
 
 step = 0
 last_physics_time = 0
@@ -122,7 +154,7 @@ try:
             step += 1
             continue
 finally:
-    termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, _saved_term)
+    _restore_terminal_state(_saved_term)
     rpc_server.server_function.print_timing_stats()
     rpc_server.stop()
     simulation_app.close()

@@ -2,8 +2,20 @@
     "meta_task": true,
     "tasks": [
         {
-            "source/data_collection/tasks/diy/single_task/place_cola_can_into_blue_box_galbot_v1.json": 100,
-            "source/data_collection/tasks/diy/single_task/place_cola_can_into_blue_box_galbot_v2.json": 200
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_v2.json",
+            "episodes": 3
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_v3.json",
+            "episodes": 3
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_v4.json",
+            "episodes": 3
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_v5.json",
+            "episodes": 3
         }
     ]
 }

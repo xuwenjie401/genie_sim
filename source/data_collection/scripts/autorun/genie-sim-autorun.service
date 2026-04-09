@@ -1,0 +1,16 @@
+[Unit]
+Description=Genie Sim data collection autorun
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/agxi/RealityLab/genie_sim/source/data_collection
+ExecStart=/bin/bash /home/agxi/RealityLab/genie_sim/source/data_collection/scripts/autorun/run_autorun_data_collection.sh
+ExecStop=/bin/bash /home/agxi/RealityLab/genie_sim/source/data_collection/scripts/autorun/stop_autorun_data_collection.sh
+KillMode=none
+TimeoutStopSec=900
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

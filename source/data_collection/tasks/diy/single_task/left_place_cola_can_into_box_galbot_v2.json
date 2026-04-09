@@ -143,8 +143,7 @@
     "recording_setting": {
         "camera_list": [
             "/galbot_one_golf/head_link2/head_front_left_color",
-            "/galbot_one_golf/left_arm_link7/left_arm_color",
-            "/galbot_one_golf/right_arm_link7/right_arm_color"
+            "/galbot_one_golf/left_arm_link7/left_arm_color"
         ],
         "fps": 30,
         "num_of_episode": 10,
@@ -385,7 +384,7 @@
     "task": "left_place_cola_can_into_box_galbot_v2",
     "task_description": {
         "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the storage box",
-        "init_scene_text": "机器人在桌面前，桌面上放着3-5个{object:geniesim_2025_target_grasp_object}和一个收纳盒",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个物体和一个收纳盒",
         "task_name": "将{object:geniesim_2025_target_grasp_object}放入收纳盒中"
     },
     "task_metric": {

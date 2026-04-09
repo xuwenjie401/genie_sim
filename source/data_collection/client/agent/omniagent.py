@@ -1005,12 +1005,30 @@ class DataCollectionAgent(BaseAgent):
         fps=10,
         render_semantic=False,
         origin_task_info={},
+        episode_result_callback=None,
     ):
-        tasks = glob.glob(task_folder + "/*.json")
+        tasks = sorted(glob.glob(os.path.join(task_folder, "*.json")))
+        run_summary = {
+            "task_folder": task_folder,
+            "generated_episodes": len(tasks),
+            "attempted_episodes": 0,
+            "successful_episodes": 0,
+            "failed_episodes": 0,
+        }
         for index, task_file in enumerate(tasks):
             success = True
             if not self.check_task_file(task_file):
                 logger.error(f"Task file {task_file} check failed, skip this task")
+                run_summary["failed_episodes"] += 1
+                if episode_result_callback:
+                    episode_result_callback(
+                        {
+                            "task_file": task_file,
+                            "episode_index": index,
+                            "status": "validation_failed",
+                            "success": False,
+                        }
+                    )
                 continue
             task_info, objects = self.load_task(
                 task_file,
@@ -1172,7 +1190,20 @@ class DataCollectionAgent(BaseAgent):
 
             task_info.copy()
             self.robot.client.send_task_status(success, fail_stage_step)
+            run_summary["attempted_episodes"] += 1
             if success:
+                run_summary["successful_episodes"] += 1
                 logger.info(">>>>>>>>>>>>>>>>>>>>  TASK SUCCESS ! <<<<<<<<<<<<<<<<<<<<")
+            else:
+                run_summary["failed_episodes"] += 1
+            if episode_result_callback:
+                episode_result_callback(
+                    {
+                        "task_file": task_file,
+                        "episode_index": index,
+                        "status": "success" if success else "failed",
+                        "success": success,
+                    }
+                )
 
-        return True
+        return run_summary
