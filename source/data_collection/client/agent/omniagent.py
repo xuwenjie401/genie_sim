@@ -855,8 +855,8 @@ class DataCollectionAgent(BaseAgent):
         from_current_pose = extra_params.get("from_current_pose", False)
         offset_and_constraint_in_goal_frame = extra_params.get("offset_and_constraint_in_goal_frame", True)
         disable_collision_links = extra_params.get("disable_collision_links", [])
-        if action_type == "grasp":
-            disable_collision_links = []
+        # if action_type == "grasp":
+        #     disable_collision_links = []
         if remove_obstacles:
             self.robot.client.remove_objs_from_obstacle([objects[stage.passive_obj_id].prim_path])
 

@@ -1,0 +1,37 @@
+{
+    "meta_task": true,
+    "tasks": [
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "episodes": 10
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "episodes": 10
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "episodes": 10
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "episodes": 10
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "episodes": 250
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "episodes": 250
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "episodes": 250
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "episodes": 250
+        }
+    ]
+}

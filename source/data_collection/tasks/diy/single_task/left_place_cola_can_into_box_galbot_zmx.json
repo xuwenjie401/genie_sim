@@ -1,0 +1,416 @@
+{
+    "objects": {
+        "constraints": null,
+        "fix_objects": [],
+        "scene_objects": [
+            {
+                "sample": {
+                    "min_num": 3,
+                    "max_num": 3,
+                    "max_repeat": 1
+                },
+                "workspace_id": "box_poses",
+                "mass": 1000.0,
+                "workspace_relative_position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "workspace_relative_orientation": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "available_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0079/",
+                        "object_id": "geniesim_2025_distractor_tray_0079"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0158/",
+                        "object_id": "geniesim_2025_distractor_tray_0158"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0471/",
+                        "object_id": "geniesim_2025_distractor_tray_0471"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0491/",
+                        "object_id": "geniesim_2025_distractor_tray_0491"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0507/",
+                        "object_id": "geniesim_2025_distractor_tray_0507"
+                    }
+                ]
+            }
+        ],
+        "task_related_objects": [
+            {
+                "mass": 1000.0,
+                "object_id": "geniesim_2025_target_tray",
+                "workspace_id": "box_poses",
+                "workspace_relative_position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "workspace_relative_orientation": [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "candidate_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0079/",
+                        "object_id": "geniesim_2025_web_dish_0079"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0158/",
+                        "object_id": "geniesim_2025_web_dish_0158"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0471/",
+                        "object_id": "geniesim_2025_web_dish_0471"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0491/",
+                        "object_id": "geniesim_2025_web_dish_0491"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0507/",
+                        "object_id": "geniesim_2025_web_dish_0507"
+                    }
+                ]
+            },
+            {
+                "candidate_objects": [
+                    {
+                        "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+                        "object_id": "geniesim_2025_beverage_bottle_001"
+                    }
+                ],
+                "mass": 0.05,
+                "object_id": "geniesim_2025_target_grasp_object",
+                "workspace_id": "grasp_pose"
+            }
+        ]
+    },
+    "recording_setting": {
+        "camera_list": [
+            "/galbot_one_golf/head_link2/head_front_left_color",
+            "/galbot_one_golf/left_arm_link7/left_arm_color"
+        ],
+        "fps": 30,
+        "num_of_episode": 20,
+        "noised_probability": 0.0
+    },
+    "robot": {
+        "arm": "dual",
+        "fixed_joint_reset_pose": {
+            "leg_joint1": 0.61,
+            "leg_joint2": 1.16,
+            "leg_joint3": 0.537,
+            "leg_joint4": 0.0,
+            "leg_joint5": 0.0,
+            "head_joint1": 0.0,
+            "head_joint2": 0.3
+        },
+        "init_arm_pose_noise": {
+            ".*_arm_.*": {
+                "noise_type": "uniform",
+                "low": -0.01,
+                "high": 0.01
+            }
+        },
+        "init_arm_pose": {
+            "left_arm_joint1": 1.9,
+            "left_arm_joint2": -1.43,
+            "left_arm_joint3": -0.69,
+            "left_arm_joint4": -2.42,
+            "left_arm_joint5": -0.27,
+            "left_arm_joint6": 0.498,
+            "left_arm_joint7": 0.0,
+            "left_gripper_r_knuckle_joint": 0.0,
+            "right_arm_joint1": -1.9,
+            "right_arm_joint2": 1.43,
+            "right_arm_joint3": 0.69,
+            "right_arm_joint4": 2.42,
+            "right_arm_joint5": 0.27,
+            "right_arm_joint6": -0.498,
+            "right_arm_joint7": 0.0,
+            "right_gripper_r_knuckle_joint": 0.0
+        },
+        "robot_cfg": "galbot_fixed_dual.json",
+        "robot_id": "galbot",
+        "robot_init_pose": {
+            "position": [
+                -0.8299999833106995,
+                0.0,
+                0.0
+            ],
+            "quaternion": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "random": {
+                "delta_position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ]
+            }
+        }
+    },
+    "scene": {
+        "function_space_objects": {
+            "box_poses": {
+                "material_obj_prim": {},
+                "poses": [
+                    {
+                        "position": [
+                            0.20000000298023224,
+                            0.44999998807907104,
+                            0.7400000095367432
+                        ],
+                        "quaternion": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "position": [
+                            -0.15000000596046448,
+                            0.44999998807907104,
+                            0.7400000095367432
+                        ],
+                        "quaternion": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "position": [
+                            0.20000000298023224,
+                            0.10000000149011612,
+                            0.7400000095367432
+                        ],
+                        "quaternion": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "position": [
+                            -0.15000000596046448,
+                            0.10000000149011612,
+                            0.7400000095367432
+                        ],
+                        "quaternion": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    }
+                ]
+            },
+            "grasp_pose": {
+                "material_obj_prim": {},
+                "poses": [
+                    {
+                        "position": [
+                            0.02500000037252903,
+                            0.2750000059604645,
+                            0.7699999809265137
+                        ],
+                        "quaternion": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    }
+                ]
+            }
+        },
+        "scene_id": "background/home_b/",
+        "scene_info_dir": "background/home_b/",
+        "scene_usd": [
+            "background/home_b/home_b_02.usda"
+        ]
+    },
+    "stages": [
+        {
+            "action": "pick",
+            "action_description": {
+                "action_text": "{左/右}臂拿起桌面上的{object:geniesim_2025_target_grasp_object}",
+                "english_action_text": "{Left/Right} arm picks up the {object:geniesim_2025_target_grasp_object} on the table"
+            },
+            "active": {
+                "object_id": "gripper",
+                "primitive": null
+            },
+            "checker": [
+                {
+                    "checker_name": "distance_to_target",
+                    "params": {
+                        "object_id": "geniesim_2025_target_grasp_object",
+                        "rule": "lessThan",
+                        "target_id": "gripper",
+                        "value": 0.1
+                    }
+                }
+            ],
+            "extra_params": {
+                "arm": "left",
+                "disable_upside_down": true,
+                "flip_grasp": false,
+                "pick_up_distance": 0.15,
+                "pick_up_type": "AvoidObs",
+                "grasp_upper_percentile": 75
+            },
+            "passive": {
+                "object_id": "geniesim_2025_target_grasp_object",
+                "primitive": null
+            }
+        },
+        {
+            "action": "place",
+            "action_description": {
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入托盘中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the tray"
+            },
+            "active": {
+                "object_id": "geniesim_2025_target_grasp_object",
+                "primitive": null
+            },
+            "checker": [
+                {
+                    "checker_name": "distance_to_target",
+                    "params": {
+                        "object_id": "geniesim_2025_target_grasp_object",
+                        "rule": "lessThan",
+                        "target_id": "geniesim_2025_target_tray",
+                        "target_offset": {
+                            "frame": "world",
+                            "position": [
+                                0,
+                                0,
+                                -0.06
+                            ]
+                        },
+                        "value": 0.12
+                    }
+                }
+            ],
+            "extra_params": {
+                "arm": "left",
+                "place_with_origin_orientation": true,
+                "disable_collision_links": [
+                    "left_gripper.*",
+                    "right_gripper.*"
+                ]
+            },
+            "passive": {
+                "object_id": "geniesim_2025_target_tray",
+                "primitive": null
+            }
+        },
+        {
+            "action": "reset",
+            "action_description": {
+                "action_text": "{左/右}臂复位",
+                "english_action_text": "{Left/Right} arm resets"
+            },
+            "active": {
+                "object_id": "gripper",
+                "primitive": null
+            },
+            "extra_params": {
+                "arm": "left"
+            },
+            "passive": {
+                "object_id": "gripper",
+                "primitive": null
+            }
+        }
+    ],
+    "task": "left_place_cola_can_into_tray_galbot_zmx",
+    "task_description": {
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the tray",
+        "init_scene_text": "机器人在桌面前，桌面上放着一个可乐罐、若干物体和四个托盘",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入托盘中"
+    },
+    "task_metric": {
+        "filter_rules": [
+            {
+                "params": {
+                    "camera": "head",
+                    "downsample_ratio": 0.2,
+                    "gripper": "right",
+                    "out_view_allow_time": 0.2
+                },
+                "result_code": 4,
+                "rule_name": "is_gripper_in_view"
+            },
+            {
+                "params": {
+                    "camera": "head",
+                    "downsample_ratio": 0.2,
+                    "gripper": "left",
+                    "out_view_allow_time": 0.1
+                },
+                "result_code": 4,
+                "rule_name": "is_gripper_in_view"
+            },
+            {
+                "params": {
+                    "objects": [
+                        "geniesim_2025_target_grasp_object"
+                    ],
+                    "relative_position_range": [
+                        [
+                            -0.06,
+                            0.06
+                        ],
+                        [
+                            -0.05,
+                            0.05
+                        ],
+                        [
+                            -0.12,
+                            0.12
+                        ]
+                    ],
+                    "target": "geniesim_2025_target_tray"
+                },
+                "result_code": 1,
+                "rule_name": "is_object_relative_position_in_target"
+            }
+        ]
+    },
+    "origin": {
+        "position": [
+            -1.2999999523162842,
+            0.0,
+            0.0
+        ],
+        "quaternion": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

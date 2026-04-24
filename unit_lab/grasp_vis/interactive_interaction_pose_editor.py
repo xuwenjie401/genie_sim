@@ -62,6 +62,9 @@ LIGHT_PATH = f"{SCENE_ROOT}/KeyLight"
 UI_TITLE = "Interactive Interaction Pose Editor"
 MAIN_WINDOW_HEIGHT = 940
 CHOOSE_DIR_WINDOW_HEIGHT = 420
+EDITOR_CAMERA_PRIM_PATH = "/OmniverseKit_Persp"
+DEFAULT_EDITOR_CAMERA_TRANSLATE = (0.0, 0.28, -0.475)
+DEFAULT_EDITOR_CAMERA_ROTATE_XYZ_DEG = (148.0, 0.0, 179.5)
 
 AXES = ("+x", "-x", "+y", "-y", "+z", "-z")
 AXIS_VECS = {
@@ -134,7 +137,7 @@ try:
 except Exception:  # pragma: no cover - Isaac Sim package availability is runtime-specific
     ScrollingWindow = None
 
-from source.data_collection.common.base_utils.transform_utils import mat2quat_wxyz, quat2mat_wxyz
+from source.data_collection.common.base_utils.transform_utils import euler2mat, mat2quat_wxyz, quat2mat_wxyz
 
 
 @dataclass
@@ -286,6 +289,17 @@ def set_local_translate_scale(prim, t_xyz, s_xyz) -> None:
     s_op.Set(Gf.Vec3d(float(s_xyz[0]), float(s_xyz[1]), float(s_xyz[2])))
 
 
+def set_camera_transform(stage, camera_prim_path: str, translate_xyz: np.ndarray, rotate_xyz_deg: np.ndarray) -> bool:
+    camera_prim = stage.GetPrimAtPath(camera_prim_path)
+    if not camera_prim or not camera_prim.IsValid():
+        return False
+    camera_matrix = np.eye(4, dtype=np.float64)
+    camera_matrix[:3, :3] = euler2mat(np.radians(np.asarray(rotate_xyz_deg, dtype=np.float64)), order="xyz")
+    camera_matrix[:3, 3] = np.asarray(translate_xyz, dtype=np.float64)
+    set_local_matrix(camera_prim, camera_matrix)
+    return True
+
+
 def compute_world_matrix(prim) -> np.ndarray:
     xformable = UsdGeom.Xformable(prim)
     return gf_matrix_to_np(xformable.ComputeLocalToWorldTransform(Usd.TimeCode.Default()))
@@ -328,23 +342,82 @@ def build_rotation_from_x_axis(direction: np.ndarray) -> np.ndarray:
     return np.column_stack([x_axis, y_axis, z_axis])
 
 
-def primitive_item_to_pose(item: dict[str, Any]) -> tuple[list[float], list[float]]:
+def rotation_z_matrix(angle_rad: float) -> np.ndarray:
+    c = float(np.cos(angle_rad))
+    s = float(np.sin(angle_rad))
+    return np.array(
+        [
+            [c, -s, 0.0],
+            [s, c, 0.0],
+            [0.0, 0.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
+
+
+def is_passive_place_pose(role: str | None, pose_type: str | None) -> bool:
+    return role == "passive" and pose_type == "place"
+
+
+def default_direction_for_pose(role: str | None = None, pose_type: str | None = None) -> np.ndarray:
+    if is_passive_place_pose(role, pose_type):
+        return np.array([0.0, -1.0, 0.0], dtype=np.float64)
+    return np.array([1.0, 0.0, 0.0], dtype=np.float64)
+
+
+def normalize_direction_vector(
+    direction: list[float] | np.ndarray,
+    role: str | None = None,
+    pose_type: str | None = None,
+) -> np.ndarray:
+    vec = np.asarray(direction, dtype=np.float64)
+    norm = float(np.linalg.norm(vec))
+    if norm <= 1e-8:
+        return default_direction_for_pose(role, pose_type)
+    return vec / norm
+
+
+def build_rotation_from_negative_y_axis(direction: np.ndarray) -> np.ndarray:
+    # `passive/place` uses local -Y as the fall/insert direction.
+    return build_rotation_from_x_axis(direction) @ rotation_z_matrix(np.pi / 2.0)
+
+
+def primitive_rotation_from_direction(
+    direction: list[float] | np.ndarray,
+    role: str | None = None,
+    pose_type: str | None = None,
+) -> np.ndarray:
+    aligned_direction = normalize_direction_vector(direction, role, pose_type)
+    if is_passive_place_pose(role, pose_type):
+        return build_rotation_from_negative_y_axis(aligned_direction)
+    return build_rotation_from_x_axis(aligned_direction)
+
+
+def primitive_item_to_pose(
+    item: dict[str, Any],
+    role: str | None = None,
+    pose_type: str | None = None,
+) -> tuple[list[float], list[float]]:
     xyz = ensure_vector(item.get("xyz"), 3, 0.0)
-    direction = np.asarray(ensure_vector(item.get("direction"), 3, 0.0), dtype=np.float64)
-    R = build_rotation_from_x_axis(direction)
+    direction = ensure_vector(item.get("direction"), 3, 0.0)
+    R = primitive_rotation_from_direction(direction, role=role, pose_type=pose_type)
     quat = normalize_quaternion_wxyz(mat2quat_wxyz(R).tolist())
     return xyz, quat
 
 
-def pose_to_primitive_item(position: list[float] | np.ndarray, quaternion_wxyz: list[float] | np.ndarray) -> dict[str, list[float]]:
+def pose_to_primitive_item(
+    position: list[float] | np.ndarray,
+    quaternion_wxyz: list[float] | np.ndarray,
+    role: str | None = None,
+    pose_type: str | None = None,
+) -> dict[str, list[float]]:
     quat = np.asarray(normalize_quaternion_wxyz(quaternion_wxyz), dtype=np.float64)
     R = quat2mat_wxyz(quat)
-    direction = R[:, 0]
-    norm = float(np.linalg.norm(direction))
-    if norm <= 1e-8:
-        direction = np.array([1.0, 0.0, 0.0], dtype=np.float64)
+    if is_passive_place_pose(role, pose_type):
+        direction = -R[:, 1]
     else:
-        direction = direction / norm
+        direction = R[:, 0]
+    direction = normalize_direction_vector(direction, role, pose_type)
     return {
         "xyz": [float(v) for v in np.asarray(position, dtype=np.float64)],
         "direction": [float(v) for v in direction],
@@ -379,14 +452,6 @@ def yaw_pitch_deg_to_direction(yaw_deg: float, pitch_deg: float) -> np.ndarray:
     if norm <= 1e-8:
         return np.array([1.0, 0.0, 0.0], dtype=np.float64)
     return direction / norm
-
-
-def normalize_direction_vector(direction: list[float] | np.ndarray) -> np.ndarray:
-    vec = np.asarray(direction, dtype=np.float64)
-    norm = float(np.linalg.norm(vec))
-    if norm <= 1e-8:
-        return np.array([1.0, 0.0, 0.0], dtype=np.float64)
-    return vec / norm
 
 
 def axis_base(axis_name: str) -> str:
@@ -472,11 +537,8 @@ class AssetCatalog:
             raise RuntimeError("No benchmark objects were found under objects_root.")
 
     def _resolve_usd_path(self, object_dir: Path) -> Path | None:
-        for name in ("Aligned.usda", "Aligned.usd"):
-            candidate = object_dir / name
-            if candidate.exists():
-                return candidate
-        return None
+        candidate = object_dir / "Aligned.usd"
+        return candidate if candidate.exists() else None
 
     def _load_object_params(self, object_dir: Path) -> dict[str, Any]:
         params_path = object_dir / "object_parameters.json"
@@ -618,12 +680,10 @@ class InteractionDocument:
                 continue
             if "xyz" not in item or "direction" not in item:
                 continue
-            items.append(
-                {
-                    "xyz": ensure_vector(item.get("xyz"), 3, 0.0),
-                    "direction": ensure_vector(item.get("direction"), 3, 0.0),
-                }
-            )
+            cleaned = {key: copy.deepcopy(value) for key, value in item.items() if key not in {"xyz", "direction"}}
+            cleaned["xyz"] = ensure_vector(item.get("xyz"), 3, 0.0)
+            cleaned["direction"] = ensure_vector(item.get("direction"), 3, 0.0)
+            items.append(cleaned)
         return items
 
     def set_primitive_items(self, role: str, pose_type: str, primitive: str, items: list[dict[str, Any]]) -> None:
@@ -631,12 +691,10 @@ class InteractionDocument:
         pose_data = role_data.setdefault(pose_type, {})
         cleaned = []
         for item in items:
-            cleaned.append(
-                {
-                    "xyz": [float(v) for v in ensure_vector(item.get("xyz"), 3, 0.0)],
-                    "direction": [float(v) for v in ensure_vector(item.get("direction"), 3, 0.0)],
-                }
-            )
+            normalized_item = {key: copy.deepcopy(value) for key, value in item.items() if key not in {"xyz", "direction"}}
+            normalized_item["xyz"] = [float(v) for v in ensure_vector(item.get("xyz"), 3, 0.0)]
+            normalized_item["direction"] = [float(v) for v in ensure_vector(item.get("direction"), 3, 0.0)]
+            cleaned.append(normalized_item)
         if cleaned:
             pose_data[primitive] = cleaned
         else:
@@ -903,13 +961,14 @@ class InteractiveInteractionPoseEditor:
         try:
             item = self._selected_edit_item()
             if item is None:
+                default_direction = default_direction_for_pose(self.edit_role, self.edit_pose_type)
                 pose_values = {
                     "pose.x": 0.0,
                     "pose.y": 0.0,
                     "pose.z": 0.0,
-                    "direction.x": 1.0,
-                    "direction.y": 0.0,
-                    "direction.z": 0.0,
+                    "direction.x": float(default_direction[0]),
+                    "direction.y": float(default_direction[1]),
+                    "direction.z": float(default_direction[2]),
                 }
             else:
                 position = ensure_vector(item.get("xyz"), 3, 0.0)
@@ -971,7 +1030,11 @@ class InteractiveInteractionPoseEditor:
                 ],
                 dtype=np.float64,
             )
-            direction = normalize_direction_vector(raw_direction)
+            direction = normalize_direction_vector(
+                raw_direction,
+                role=self.edit_role,
+                pose_type=self.edit_pose_type,
+            )
         else:
             return
 
@@ -1213,12 +1276,28 @@ class InteractiveInteractionPoseEditor:
         )
 
     def _normalized_direction_preview_text(self) -> str:
-        direction = normalize_direction_vector(self._current_direction_input())
+        direction = normalize_direction_vector(
+            self._current_direction_input(),
+            role=self.edit_role,
+            pose_type=self.edit_pose_type,
+        )
         return f"Normalized Direction: x={direction[0]:.4f} y={direction[1]:.4f} z={direction[2]:.4f}"
 
     def _primitive_quaternion_preview_text(self) -> str:
-        direction = normalize_direction_vector(self._current_direction_input())
-        quaternion = normalize_quaternion_wxyz(mat2quat_wxyz(build_rotation_from_x_axis(direction)).tolist())
+        direction = normalize_direction_vector(
+            self._current_direction_input(),
+            role=self.edit_role,
+            pose_type=self.edit_pose_type,
+        )
+        quaternion = normalize_quaternion_wxyz(
+            mat2quat_wxyz(
+                primitive_rotation_from_direction(
+                    direction,
+                    role=self.edit_role,
+                    pose_type=self.edit_pose_type,
+                )
+            ).tolist()
+        )
         return (
             f"Derived Quaternion: w={quaternion[0]:.4f} x={quaternion[1]:.4f} "
             f"y={quaternion[2]:.4f} z={quaternion[3]:.4f}"
@@ -1520,7 +1599,8 @@ class InteractiveInteractionPoseEditor:
             self._set_status("Use Run GraspGen / Accept Preview for grasp labels.")
             return
         items = self.document.primitive_items(self.edit_role, self.edit_pose_type, self._current_primitive_name())
-        items.append({"xyz": [0.0, 0.0, 0.0], "direction": [1.0, 0.0, 0.0]})
+        default_direction = default_direction_for_pose(self.edit_role, self.edit_pose_type)
+        items.append({"xyz": [0.0, 0.0, 0.0], "direction": [float(v) for v in default_direction]})
         self.document.set_primitive_items(self.edit_role, self.edit_pose_type, self._current_primitive_name(), items)
         self.selected_pose_index = len(items) - 1
         self._sync_models_from_state()
@@ -1555,7 +1635,10 @@ class InteractiveInteractionPoseEditor:
         if item is None:
             self._set_status("No primitive pose selected to duplicate.")
             return
-        items.append({"xyz": list(item["xyz"]), "direction": list(item["direction"])})
+        duplicated = {key: copy.deepcopy(value) for key, value in item.items() if key not in {"xyz", "direction"}}
+        duplicated["xyz"] = list(item["xyz"])
+        duplicated["direction"] = list(item["direction"])
+        items.append(duplicated)
         self.document.set_primitive_items(self.edit_role, self.edit_pose_type, self._current_primitive_name(), items)
         self.selected_pose_index = len(items) - 1
         self._sync_models_from_state()
@@ -1849,14 +1932,17 @@ class InteractiveInteractionPoseEditor:
             for _ in range(10):
                 simulation_app.update()
 
-        size = np.asarray(entry.size, dtype=np.float64)
-        max_dim = float(np.max(size)) if size.size == 3 else 0.3
-        dist = max(0.35, max_dim * 3.2)
-        set_camera_view(
-            eye=[dist, dist * 0.7, dist * 0.95],
-            target=[0.0, 0.0, 0.0],
-            camera_prim_path="/OmniverseKit_Persp",
-        )
+        if not set_camera_transform(
+            self.stage,
+            EDITOR_CAMERA_PRIM_PATH,
+            np.asarray(DEFAULT_EDITOR_CAMERA_TRANSLATE, dtype=np.float64),
+            np.asarray(DEFAULT_EDITOR_CAMERA_ROTATE_XYZ_DEG, dtype=np.float64),
+        ):
+            set_camera_view(
+                eye=[0.0, 0.28, -0.475],
+                target=[0.0, 0.0, 0.0],
+                camera_prim_path=EDITOR_CAMERA_PRIM_PATH,
+            )
 
     def _apply_scene(self, force: bool = False) -> None:
         entry = self.catalog.get_entry(self.object_id)
@@ -1923,6 +2009,44 @@ class InteractiveInteractionPoseEditor:
             set_local_translate_scale(prim, translation, scale)
             set_display_color(prim, axis_color)
 
+    def _build_passive_place_marker(
+        self,
+        root_prim,
+        color: np.ndarray,
+        arrow_len: float,
+        thickness: float,
+        dot_radius: float,
+    ) -> None:
+        marker_path = str(root_prim.GetPath())
+
+        dot = create_prim(f"{marker_path}/dot", prim_type="Sphere")
+        UsdGeom.Sphere(dot).CreateRadiusAttr().Set(float(dot_radius))
+        set_display_color(dot, np.clip(color + 0.18, 0.0, 1.0))
+
+        shaft_len = max(float(arrow_len) * 0.68, dot_radius * 3.0)
+        head_len = max(float(arrow_len) - shaft_len, dot_radius * 2.8)
+        shaft_radius = max(float(thickness) * 0.55, dot_radius * 0.35)
+        head_radius = max(float(thickness) * 1.75, dot_radius * 0.75)
+
+        shaft = create_prim(f"{marker_path}/shaft", prim_type="Cylinder")
+        UsdGeom.Cylinder(shaft).CreateAxisAttr().Set(UsdGeom.Tokens.y)
+        UsdGeom.Cylinder(shaft).CreateHeightAttr().Set(float(shaft_len))
+        UsdGeom.Cylinder(shaft).CreateRadiusAttr().Set(float(shaft_radius))
+        shaft_matrix = np.eye(4, dtype=np.float64)
+        shaft_matrix[:3, 3] = np.array([0.0, -shaft_len / 2.0, 0.0], dtype=np.float64)
+        set_local_matrix(shaft, shaft_matrix)
+        set_display_color(shaft, color)
+
+        head = create_prim(f"{marker_path}/head", prim_type="Cone")
+        UsdGeom.Cone(head).CreateAxisAttr().Set(UsdGeom.Tokens.y)
+        UsdGeom.Cone(head).CreateHeightAttr().Set(float(head_len))
+        UsdGeom.Cone(head).CreateRadiusAttr().Set(float(head_radius))
+        head_matrix = np.eye(4, dtype=np.float64)
+        head_matrix[:3, :3] = rotation_z_matrix(np.pi)
+        head_matrix[:3, 3] = np.array([0.0, -(shaft_len + head_len / 2.0), 0.0], dtype=np.float64)
+        set_local_matrix(head, head_matrix)
+        set_display_color(head, np.clip(color + 0.08, 0.0, 1.0))
+
     def _build_grasp_group_from_arrays(self, root_path: str, poses: np.ndarray, widths: np.ndarray, base_color: np.ndarray, max_count: int) -> None:
         create_prim(root_path, prim_type="Xform")
         if poses.shape[0] == 0:
@@ -1943,30 +2067,48 @@ class InteractiveInteractionPoseEditor:
             )
             set_local_matrix(grasp_prim, np.asarray(pose, dtype=np.float64))
 
-    def _build_primitive_group(self, root_path: str, items: list[dict[str, Any]], base_color: np.ndarray) -> None:
+    def _build_primitive_group(
+        self,
+        root_path: str,
+        items: list[dict[str, Any]],
+        base_color: np.ndarray,
+        role: str,
+        pose_type: str,
+    ) -> None:
         create_prim(root_path, prim_type="Xform")
         pose_finger_len = max(float(ARGS.primitive_arrow_len) * 0.45, 0.02)
         pose_handle_len = max(float(ARGS.primitive_arrow_len) * 0.55, 0.028)
         pose_width = max(float(ARGS.primitive_arrow_len) * 0.42, float(ARGS.primitive_marker_size) * 3.6)
         contact_scale = float(ARGS.primitive_marker_size)
+        arrow_len = max(float(ARGS.primitive_arrow_len), float(ARGS.primitive_marker_size) * 6.0)
 
         for i, item in enumerate(items):
             xyz = np.asarray(item["xyz"], dtype=np.float64)
             direction = np.asarray(item["direction"], dtype=np.float64)
             pose_prim = create_prim(f"{root_path}/pose_{i:04d}", prim_type="Xform")
             T = np.eye(4, dtype=np.float64)
-            T[:3, :3] = build_rotation_from_x_axis(direction)
+            T[:3, :3] = primitive_rotation_from_direction(direction, role=role, pose_type=pose_type)
             T[:3, 3] = xyz
             set_local_matrix(pose_prim, T)
-            self._build_bracket_marker(
-                root_prim=pose_prim,
-                width=pose_width,
-                color=vary_color(base_color, i, len(items)),
-                finger_len=pose_finger_len,
-                handle_len=pose_handle_len,
-                thickness=float(ARGS.primitive_thickness),
-                contact_scale=contact_scale,
-            )
+            color = vary_color(base_color, i, len(items))
+            if is_passive_place_pose(role, pose_type):
+                self._build_passive_place_marker(
+                    root_prim=pose_prim,
+                    color=color,
+                    arrow_len=arrow_len,
+                    thickness=float(ARGS.primitive_thickness),
+                    dot_radius=contact_scale,
+                )
+            else:
+                self._build_bracket_marker(
+                    root_prim=pose_prim,
+                    width=pose_width,
+                    color=color,
+                    finger_len=pose_finger_len,
+                    handle_len=pose_handle_len,
+                    thickness=float(ARGS.primitive_thickness),
+                    contact_scale=contact_scale,
+                )
 
     def _build_handle_group(self) -> None:
         self._handle_records = {}
@@ -1979,18 +2121,27 @@ class InteractiveInteractionPoseEditor:
         create_prim(root_path, prim_type="Xform")
         for i, item in enumerate(items):
             handle_prim = create_prim(f"{root_path}/pose_{i:04d}", prim_type="Xform")
-            position, quaternion = primitive_item_to_pose(item)
+            position, quaternion = primitive_item_to_pose(item, role=self.edit_role, pose_type=self.edit_pose_type)
             set_local_matrix(handle_prim, pose_matrix(position, quaternion))
             color = np.array([1.0, 0.88, 0.18], dtype=np.float32) if i == self.selected_pose_index else np.array([1.0, 0.52, 0.14], dtype=np.float32)
-            self._build_bracket_marker(
-                root_prim=handle_prim,
-                width=max(float(ARGS.primitive_arrow_len) * 0.42, float(ARGS.primitive_marker_size) * 3.6),
-                color=color,
-                finger_len=max(float(ARGS.primitive_arrow_len) * 0.45, 0.02),
-                handle_len=max(float(ARGS.primitive_arrow_len) * 0.55, 0.028),
-                thickness=float(ARGS.primitive_thickness) * 1.1,
-                contact_scale=float(ARGS.primitive_marker_size) * 1.15,
-            )
+            if is_passive_place_pose(self.edit_role, self.edit_pose_type):
+                self._build_passive_place_marker(
+                    root_prim=handle_prim,
+                    color=color,
+                    arrow_len=max(float(ARGS.primitive_arrow_len), float(ARGS.primitive_marker_size) * 6.0),
+                    thickness=float(ARGS.primitive_thickness) * 1.1,
+                    dot_radius=float(ARGS.primitive_marker_size) * 1.15,
+                )
+            else:
+                self._build_bracket_marker(
+                    root_prim=handle_prim,
+                    width=max(float(ARGS.primitive_arrow_len) * 0.42, float(ARGS.primitive_marker_size) * 3.6),
+                    color=color,
+                    finger_len=max(float(ARGS.primitive_arrow_len) * 0.45, 0.02),
+                    handle_len=max(float(ARGS.primitive_arrow_len) * 0.55, 0.028),
+                    thickness=float(ARGS.primitive_thickness) * 1.1,
+                    contact_scale=float(ARGS.primitive_marker_size) * 1.15,
+                )
             self._handle_records[i] = HandleRecord(index=i, prim_path=str(handle_prim.GetPath()), last_world_matrix=compute_world_matrix(handle_prim))
 
     def _rebuild_overlay(self) -> None:
@@ -2013,7 +2164,7 @@ class InteractiveInteractionPoseEditor:
                     self._build_grasp_group_from_arrays(group_path, poses, widths, base_color, int(ARGS.max_stored_grasps))
                 else:
                     items = self.document.primitive_items(role, pose_type, primitive)
-                    self._build_primitive_group(group_path, items, base_color)
+                    self._build_primitive_group(group_path, items, base_color, role, pose_type)
 
         if self.generated is not None and self._view_matches("passive", "grasp", current_edit_label):
             poses, widths, _ = self._applied_generated_grasps()
@@ -2049,7 +2200,12 @@ class InteractiveInteractionPoseEditor:
                 continue
             local_matrix = object_inv @ current_world
             position, quaternion = matrix_to_pose(local_matrix)
-            updated = pose_to_primitive_item(position, quaternion)
+            updated = pose_to_primitive_item(
+                position,
+                quaternion,
+                role=self.edit_role,
+                pose_type=self.edit_pose_type,
+            )
             items[index]["xyz"] = updated["xyz"]
             items[index]["direction"] = updated["direction"]
             record.last_world_matrix = current_world

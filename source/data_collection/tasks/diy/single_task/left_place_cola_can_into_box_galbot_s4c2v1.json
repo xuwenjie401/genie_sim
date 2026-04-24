@@ -87,7 +87,7 @@
         "task_related_objects": [
             {
                 "mass": 1000.0,
-                "object_id": "geniesim_2025_target_storage_box",
+                "object_id": "geniesim_2025_target_tray",
                 "workspace_id": "box_poses",
                 "workspace_relative_position": [
                     0.0,
@@ -102,12 +102,24 @@
                 ],
                 "candidate_objects": [
                     {
-                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0085/",
-                        "object_id": "geniesim_2025_web_dish_0085"
-                    },
-                    {
                         "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0079/",
                         "object_id": "geniesim_2025_web_dish_0079"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0158/",
+                        "object_id": "geniesim_2025_web_dish_0158"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0471/",
+                        "object_id": "geniesim_2025_web_dish_0471"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0491/",
+                        "object_id": "geniesim_2025_web_dish_0491"
+                    },
+                    {
+                        "data_info_dir": "objects/benchmark/web_dish/benchmark_web_dish_0507/",
+                        "object_id": "geniesim_2025_web_dish_0507"
                     }
                 ]
             },
@@ -173,8 +185,8 @@
         "robot_id": "galbot",
         "robot_init_pose": {
             "position": [
-                -0.8299999833106995,
-                0.0,
+                -0.8999999761581421,
+                -0.05000000074505806,
                 0.0
             ],
             "quaternion": [
@@ -185,8 +197,8 @@
             ],
             "random": {
                 "delta_position": [
-                    0.07999999821186066,
-                    0.06,
+                    0.07500000298023224,
+                    0.10000000149011612,
                     0.0
                 ]
             }
@@ -197,7 +209,7 @@
             "work_table": {
                 "material_obj_prim": {},
                 "position": [
-                    0.03500000014901161,
+                    -0.05000000074505806,
                     0.20000000298023224,
                     0.7599999904632568
                 ],
@@ -228,7 +240,7 @@
                 "poses": [
                     {
                         "position": [
-                            0.09000000357627869,
+                            0.05000000074505806,
                             0.38999998569488525,
                             0.7699999809265137
                         ],
@@ -249,23 +261,23 @@
                 ]
             }
         },
-        "scene_id": "background/home_b/",
-        "scene_info_dir": "background/home_b/",
+        "scene_id": "background/restaurant_00/",
+        "scene_info_dir": "background/restaurant_00/",
         "scene_usd": [
-            "background/home_b/home_b_galbot.usda"
+            "background/restaurant_00/background_03.usda"
         ]
     },
     "scene_light_randomization": [
         {
-            "light_prim": "/World/Light/Light_00/DiskLight_02/DiskLight_02",
-            "light_type": "Disk",
+            "light_prim": "/World/proxy/Light/RectLight_05",
+            "light_type": "Rect",
             "intensity": {
-                "min": 10000.0,
-                "max": 65000.0
+                "min": 2000.0,
+                "max": 15000.0
             },
             "temperature": {
-                "min": 6500.0,
-                "max": 6500.0
+                "min": 2000.0,
+                "max": 12000.0
             }
         }
     ],
@@ -307,8 +319,8 @@
         {
             "action": "place",
             "action_description": {
-                "action_text": "将{object:geniesim_2025_target_grasp_object}放入收纳盒中",
-                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the storage box"
+                "action_text": "将{object:geniesim_2025_target_grasp_object}放入托盘中",
+                "english_action_text": "Place the {object:geniesim_2025_target_grasp_object} into the tray"
             },
             "active": {
                 "object_id": "geniesim_2025_target_grasp_object",
@@ -320,7 +332,7 @@
                     "params": {
                         "object_id": "geniesim_2025_target_grasp_object",
                         "rule": "lessThan",
-                        "target_id": "geniesim_2025_target_storage_box",
+                        "target_id": "geniesim_2025_target_tray",
                         "target_offset": {
                             "frame": "world",
                             "position": [
@@ -342,7 +354,7 @@
                 ]
             },
             "passive": {
-                "object_id": "geniesim_2025_target_storage_box",
+                "object_id": "geniesim_2025_target_tray",
                 "primitive": null
             }
         },
@@ -365,11 +377,11 @@
             }
         }
     ],
-    "task": "left_place_cola_can_into_box_galbot_v2",
+    "task": "left_place_cola_can_into_tray_galbot_v2",
     "task_description": {
-        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the storage box",
-        "init_scene_text": "机器人在桌面前，桌面上放着3-5个物体和一个收纳盒",
-        "task_name": "将{object:geniesim_2025_target_grasp_object}放入收纳盒中"
+        "english_task_name": "place the {object:geniesim_2025_target_grasp_object} into the tray",
+        "init_scene_text": "机器人在桌面前，桌面上放着3-5个物体和一个托盘",
+        "task_name": "将{object:geniesim_2025_target_grasp_object}放入托盘中"
     },
     "task_metric": {
         "filter_rules": [
@@ -412,7 +424,7 @@
                             0.12
                         ]
                     ],
-                    "target": "geniesim_2025_target_storage_box"
+                    "target": "geniesim_2025_target_tray"
                 },
                 "result_code": 1,
                 "rule_name": "is_object_relative_position_in_target"
@@ -421,8 +433,8 @@
     },
     "origin": {
         "position": [
-            2.91,
-            0.76,
+            -3.7799999713897705,
+            -0.699999988079071,
             0.0
         ],
         "quaternion": [

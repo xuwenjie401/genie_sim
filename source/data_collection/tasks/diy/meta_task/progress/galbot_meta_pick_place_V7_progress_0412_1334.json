@@ -1,0 +1,121 @@
+{
+    "meta_task_file": "source/data_collection/tasks/diy/meta_task/galbot_meta_pick_place_V7.json",
+    "status": "running",
+    "started_at": "2026-04-12T13:34:43+08:00",
+    "updated_at": "2026-04-12T22:48:23+08:00",
+    "locked_scene_usd": "background/restaurant_00/background_03.usda",
+    "tasks": [
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c3v1",
+            "requested_episodes": 10,
+            "generated_episodes": 10,
+            "attempted_episodes": 10,
+            "successful_episodes": 7,
+            "failed_episodes": 3,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/00_left_place_cola_can_into_box_galbot_s4c3v1"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c3v2",
+            "requested_episodes": 10,
+            "generated_episodes": 10,
+            "attempted_episodes": 10,
+            "successful_episodes": 7,
+            "failed_episodes": 3,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/01_left_place_cola_can_into_box_galbot_s4c3v2"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c2v1",
+            "requested_episodes": 10,
+            "generated_episodes": 10,
+            "attempted_episodes": 10,
+            "successful_episodes": 8,
+            "failed_episodes": 2,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/02_left_place_cola_can_into_box_galbot_s4c2v1"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c2v2",
+            "requested_episodes": 10,
+            "generated_episodes": 10,
+            "attempted_episodes": 10,
+            "successful_episodes": 4,
+            "failed_episodes": 6,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/03_left_place_cola_can_into_box_galbot_s4c2v2"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v1.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c3v1",
+            "requested_episodes": 250,
+            "generated_episodes": 250,
+            "attempted_episodes": 250,
+            "successful_episodes": 89,
+            "failed_episodes": 161,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/04_left_place_cola_can_into_box_galbot_s4c3v1"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c3v2.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c3v2",
+            "requested_episodes": 250,
+            "generated_episodes": 250,
+            "attempted_episodes": 250,
+            "successful_episodes": 0,
+            "failed_episodes": 250,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/05_left_place_cola_can_into_box_galbot_s4c3v2"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v1.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c2v1",
+            "requested_episodes": 250,
+            "generated_episodes": 250,
+            "attempted_episodes": 250,
+            "successful_episodes": 0,
+            "failed_episodes": 250,
+            "status": "completed",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/06_left_place_cola_can_into_box_galbot_s4c2v1"
+        },
+        {
+            "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "resolved_task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s4c2v2.json",
+            "runtime_task_id": "left_place_cola_can_into_box_galbot_s4c2v2",
+            "requested_episodes": 250,
+            "generated_episodes": 0,
+            "attempted_episodes": 0,
+            "successful_episodes": 0,
+            "failed_episodes": 0,
+            "status": "running",
+            "skip_reason": "",
+            "saved_task_dir": "source/data_collection/saved_task/galbot_meta_pick_place_V7/07_left_place_cola_can_into_box_galbot_s4c2v2"
+        }
+    ],
+    "totals": {
+        "requested_episodes": 1040,
+        "generated_episodes": 790,
+        "attempted_episodes": 790,
+        "successful_episodes": 115,
+        "failed_episodes": 675,
+        "skipped_tasks": 0
+    }
+}

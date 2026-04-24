@@ -8,7 +8,7 @@ CONDA_ENV_NAME="issac"
 ROS_ENV_BASHRC="${DATA_COLLECTION_DIR}/ros2_env.bashrc"
 ASSETS_ENV_BASHRC="${DATA_COLLECTION_DIR}/assets.bashrc"
 
-TASK_TEMPLATE="tasks/diy/meta_task/galbot_meta_pick_place_V2.json"
+TASK_TEMPLATE="tasks/diy/meta_task/galbot_meta_pick_place_zmx.json"
 TASK_NAME_OVERRIDE=""
 
 PRE_SERVER_SLEEP_SECONDS=60

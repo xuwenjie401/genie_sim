@@ -165,7 +165,18 @@ def summarize_interaction(interaction_path: Path) -> InteractionSummary:
     if not interaction_path.exists():
         return InteractionSummary(has_file=False, has_grasp=False, has_place=False)
 
-    data = load_json(interaction_path)
+    try:
+        data = load_json(interaction_path)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[warn] Failed to load interaction metadata: {interaction_path} ({exc})")
+        return InteractionSummary(
+            has_file=True,
+            has_grasp=False,
+            has_place=False,
+            raw_path=interaction_path,
+            detail_lines=(f"invalid interaction json: {exc}",),
+        )
+
     interaction = data.get("interaction", {})
     active = interaction.get("active", {})
     passive = interaction.get("passive", {})

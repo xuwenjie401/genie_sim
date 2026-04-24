@@ -853,6 +853,63 @@ class TaskWorkspaceEditor:
                 return candidate
         return None
 
+    def _is_preview_object_entry(self, obj_entry: Any) -> bool:
+        return isinstance(obj_entry, dict) and (
+            "data_info_dir" in obj_entry or "candidate_objects" in obj_entry or "metadata" in obj_entry
+        )
+
+    def _preview_sample_count(self, sample_entry: dict[str, Any], available_count: int) -> int:
+        if available_count <= 0:
+            return 0
+        if "num" in sample_entry:
+            return max(0, min(int(sample_entry.get("num", 0)), available_count))
+
+        max_num = min(int(sample_entry.get("max_num", available_count)), available_count)
+        min_num = min(int(sample_entry.get("min_num", 0)), max_num)
+        return max_num if max_num > 0 else min_num
+
+    def _expand_scene_object_group_for_preview(self, object_group: Any) -> list[dict[str, Any]]:
+        if self._is_preview_object_entry(object_group):
+            return [copy.deepcopy(object_group)]
+        if not isinstance(object_group, dict):
+            return []
+
+        sample_entry = object_group.get("sample")
+        available_objects = object_group.get("available_objects")
+        if not isinstance(sample_entry, dict) or not isinstance(available_objects, list):
+            return []
+
+        expanded_available: list[dict[str, Any]] = []
+        for candidate in available_objects:
+            expanded_available.extend(self._expand_scene_object_group_for_preview(candidate))
+
+        max_repeat = max(int(sample_entry.get("max_repeat", 1)), 1)
+        repeated_available: list[dict[str, Any]] = []
+        for _ in range(max_repeat):
+            repeated_available.extend(copy.deepcopy(expanded_available))
+
+        sample_count = self._preview_sample_count(sample_entry, len(repeated_available))
+        selected_objects = repeated_available[:sample_count]
+        inherited_fields = {
+            key: copy.deepcopy(value)
+            for key, value in object_group.items()
+            if key not in {"available_objects", "sample"}
+        }
+        for obj_entry in selected_objects:
+            for key, value in inherited_fields.items():
+                obj_entry[key] = copy.deepcopy(value)
+        return selected_objects
+
+    def _collect_scene_preview_objects(self) -> list[dict[str, Any]]:
+        scene_objects = self.task_data.get("objects", {}).get("scene_objects", [])
+        if not isinstance(scene_objects, list):
+            return []
+
+        preview_objects: list[dict[str, Any]] = []
+        for object_group in scene_objects:
+            preview_objects.extend(self._expand_scene_object_group_for_preview(object_group))
+        return preview_objects
+
     def _build_preview_specs(self) -> list[PreviewSpec]:
         preview_specs: list[PreviewSpec] = []
         sample_pose_counts = {
@@ -864,6 +921,10 @@ class TaskWorkspaceEditor:
 
         task_objects = self.task_data.get("objects", {}).get("task_related_objects", [])
         for obj_entry in task_objects:
+            workspace_id = str(obj_entry.get("workspace_id", ""))
+            if workspace_id in preview_candidates:
+                preview_candidates[workspace_id].append(obj_entry)
+        for obj_entry in self._collect_scene_preview_objects():
             workspace_id = str(obj_entry.get("workspace_id", ""))
             if workspace_id in preview_candidates:
                 preview_candidates[workspace_id].append(obj_entry)
