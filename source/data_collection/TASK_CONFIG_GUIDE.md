@@ -468,6 +468,7 @@ Different action types have different parameters. For detailed parameter descrip
         "arm": "auto",                    // "left", "right", "auto"
         "disable_upside_down": true,      // Disable upside-down grasping
         "flip_grasp": true,               // Flip grasp
+        "prioritize_grasp_pose_diversity": false, // Prefer diverse valid grasp poses
         "grasp_offset": 0.01,            // Grasp offset
         "pick_up_distance": 0.1,          // Lift distance
         "grasp_upper_percentile": 75     // Grasp upper percentile
@@ -1168,6 +1169,7 @@ Action extra parameters are defined in the `extra_params` field of `stages` to c
 - `grasp_upper_percentile` (float, optional): Grasp upper percentile (0-100), default `100`
 - `disable_upside_down` (bool, optional): Disable upside-down grasping, default `false`
 - `flip_grasp` (bool, optional): Flip grasp (180 degrees around z-axis), default `false`
+- `prioritize_grasp_pose_diversity` (bool, optional): Prefer diverse grasp poses after hard filters and IK checks, default `false`
 - `pick_up_distance` (float, optional): Lift distance (unit: meters), default `0.12`
 - `pick_up_type` (str, optional): Lift type, `"Simple"` or `"AvoidObs"`, default `"Simple"`
 - `use_near_point` (bool, optional): Whether to use nearby point, default `false`
@@ -1182,6 +1184,7 @@ Action extra parameters are defined in the `extra_params` field of `stages` to c
         "arm": "auto",
         "disable_upside_down": true,
         "flip_grasp": true,
+        "prioritize_grasp_pose_diversity": false,
         "grasp_offset": 0.01,
         "pick_up_distance": 0.1,
         "grasp_upper_percentile": 75

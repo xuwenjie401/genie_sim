@@ -1181,7 +1181,7 @@ class CuroboMotion:
         disable_collision_links: Name of links to disable collision with the world.
         from_current_pose: If True, the goal pose is the current ee pose + offset.
         """
-        # self.set_obstacles()
+        self.set_obstacles()
         t0 = time.time()
         self.reached = False
         if from_current_pose and not goal_offset:

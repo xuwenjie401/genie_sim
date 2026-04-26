@@ -23,6 +23,7 @@ from client.planner.func.common import (
     filter_galbot_grasp_pose_by_approach_direction,
     filter_grasp_pose_by_gripper_up_direction,
     filter_grasp_poses_with_humanlike_posture,
+    order_by_grasp_pose_diversity,
     random_downsample,
     sorted_by_joint_pos_dist_and_grasp_pose,
 )
@@ -56,6 +57,7 @@ class PickStage(Stage):
         error_type = error_data.get("type", None)
         set_grasp_pose_xy = self.extra_params.get("set_grasp_pose_xy", False)
         set_grasp_vertical = self.extra_params.get("set_grasp_vertical", False)
+        prioritize_grasp_pose_diversity = self.extra_params.get("prioritize_grasp_pose_diversity", False)
 
         """Select grasp points from Stage class"""
         """Filter out grasp poses without IK solutions"""
@@ -151,9 +153,18 @@ class PickStage(Stage):
             return []
 
         # Downsample if there are too many grasp points
-        grasp_poses, random_indices = random_downsample(grasp_poses, 300, False)
-        if random_indices is not None:
-            grasp_widths = grasp_widths[random_indices]
+        if prioritize_grasp_pose_diversity and grasp_poses.shape[0] > 300:
+            diverse_indices = order_by_grasp_pose_diversity(grasp_poses)[:300]
+            grasp_poses = grasp_poses[diverse_indices]
+            grasp_widths = grasp_widths[diverse_indices]
+            logger.info(
+                f"{self.action_type}, {self.passive_obj_id}, "
+                f"Downsampled grasp poses by diversity: {grasp_poses.shape[0]}"
+            )
+        else:
+            grasp_poses, random_indices = random_downsample(grasp_poses, 300, False)
+            if random_indices is not None:
+                grasp_widths = grasp_widths[random_indices]
 
         # grasp offset
         grasp_rotate = grasp_poses.copy()
@@ -433,7 +444,15 @@ class PickStage(Stage):
             logger.info("No grasp pose can pass next action IK")
             return []
         # downsample grasp pose
-        best_grasp_poses, _ = random_downsample(best_grasp_poses, 100, False)
+        if prioritize_grasp_pose_diversity and best_grasp_poses.shape[0] > 100:
+            diverse_indices = order_by_grasp_pose_diversity(best_grasp_poses)[:100]
+            best_grasp_poses = best_grasp_poses[diverse_indices]
+            logger.info(
+                f"{self.action_type}, {self.passive_obj_id}, "
+                f"Downsampled best grasp poses by diversity: {best_grasp_poses.shape[0]}"
+            )
+        else:
+            best_grasp_poses, _ = random_downsample(best_grasp_poses, 100, False)
         if best_grasp_poses.shape[0] >= 1:
             if error_type == "KeepClose":
                 robot.client.remove_objs_from_obstacle([objects[self.passive_obj_id].prim_path])
@@ -482,8 +501,14 @@ class PickStage(Stage):
             if len(best_grasp_poses) == 0:
                 logger.warning(f"{self.action_type}: No best_grasp_poses can pass curobo IK")
                 return []
+            if prioritize_grasp_pose_diversity:
+                idx_sorted = order_by_grasp_pose_diversity(best_grasp_poses)
+                logger.info(
+                    f"{self.action_type}, {self.passive_obj_id}, "
+                    f"Prioritized grasp pose diversity among {best_grasp_poses.shape[0]} poses"
+                )
             # if "G2" in robot.robot_cfg:
-            if False:
+            elif False:
                 is_right = arm == "right"
                 elbow_name = "arm_r_link4" if is_right else "arm_l_link4"
                 hand_name = "gripper_r_center_link" if is_right else "gripper_l_center_link"
@@ -645,9 +670,23 @@ class PickStage(Stage):
                             transform_up[1, 3] = pick_up_distance
                         else:
                             transform_up[2, 3] = pick_up_distance
-                        # NOTE: codex - Backend motion execution does not consume goal_offset, so
-                        # keep the legacy explicit target pose path for non-MotionGen lift modes.
-                        action_sequence.add_action(Action(grasp_pose, gripper_action, transform_up, motion_type))
+                        goal_offset, path_constraint = get_pick_up_offset_and_constraint(add_x_lift_clearance=True)
+                        # Keep the explicit target pose for backend RMPFlow while forwarding the
+                        # same lift intent used by MotionGen so backend IK can relax orientation.
+                        action_sequence.add_action(
+                            Action(
+                                grasp_pose,
+                                gripper_action,
+                                transform_up,
+                                motion_type,
+                                extra_params={
+                                    "goal_offset": goal_offset,
+                                    "path_constraint": path_constraint,
+                                    "offset_and_constraint_in_goal_frame": False,
+                                    "from_current_pose": True,
+                                },
+                            )
+                        )
                     else:
                         goal_offset, path_constraint = get_pick_up_offset_and_constraint(add_x_lift_clearance=True)
                         # NOTE: codex - Reuse the existing offset-based execution path for lift so

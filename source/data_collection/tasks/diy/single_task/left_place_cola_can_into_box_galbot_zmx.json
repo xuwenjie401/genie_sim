@@ -275,7 +275,8 @@
             "extra_params": {
                 "arm": "left",
                 "disable_upside_down": true,
-                "flip_grasp": false,
+                "flip_grasp": true,
+                "prioritize_grasp_pose_diversity": true,
                 "pick_up_distance": 0.15,
                 "pick_up_type": "AvoidObs",
                 "grasp_upper_percentile": 75

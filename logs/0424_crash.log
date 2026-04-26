@@ -1,0 +1,476 @@
+SdfPath> >
+
+2026-04-24T11:42:28Z [4,092ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.kit.graph.usd.commands' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.graph.usd.commands-1.3.1' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,092ms] [Error] [omni.ext.plugin] [ext: omni.kit.graph.usd.commands-1.3.1] Failed to startup python extension.
+[4.154s] [ext: omni.kvdb-107.3.26] startup
+[4.156s] [ext: omni.usdphysics-107.3.26] startup
+[4.158s] [ext: omni.physx.foundation-107.3.26] startup
+[4.159s] [ext: omni.localcache-107.3.26] startup
+[4.160s] [ext: omni.convexdecomposition-107.3.26] startup
+[4.162s] [ext: omni.physics-107.3.26] startup
+[4.164s] [ext: omni.physx.cooking-107.3.26] startup
+[4.166s] [ext: omni.physics.stageupdate-107.3.26] startup
+2026-04-24T11:42:28Z [4,157ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.physics.stageupdate from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physics.stageupdate-107.3.26+107.3.3.lx64.r.cp311.u353. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physics.stageupdate-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physics/stageupdate/__init__.py", line 14, in <module>
+    from .scripts.extension import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physics.stageupdate-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physics/stageupdate/scripts/extension.py", line 8, in <module>
+    from .live_sync import StageUpdateLiveSync
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physics.stageupdate-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physics/stageupdate/scripts/live_sync.py", line 1, in <module>
+    import omni.usd
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+    from ._impl import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+    from .api import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+    from pxr import Usd, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:28Z [4,158ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.physics.stageupdate' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physics.stageupdate-107.3.26+107.3.3.lx64.r.cp311.u353' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,158ms] [Error] [omni.ext.plugin] [ext: omni.physics.stageupdate-107.3.26] Failed to startup python extension.
+[4.220s] [ext: omni.physx-107.3.26] startup
+2026-04-24T11:42:28Z [4,216ms] [Error] [omni.kit.app._impl] [py stderr]: <frozen importlib._bootstrap>:241: RuntimeWarning: to-Python converter for (anonymous namespace)::UsdPhysicsRigidBodyAPI_CanApplyResult already registered; second conversion method ignored.
+2026-04-24T11:42:28Z [4,218ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.physx from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physx-107.3.26+107.3.3.lx64.r.cp311.u353. Error: extension class wrapper for base class pxrInternal_v0_24__pxrReserved__::UsdAPISchemaBase has not been created yet. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physx-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physx/__init__.py", line 53, in <module>
+    from .scripts import utils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physx-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physx/scripts/utils.py", line 3, in <module>
+    from pxr import Usd, UsdGeom, UsdShade, Sdf, Tf, Gf, UsdPhysics, PhysxSchema, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdPhysics/__init__.py", line 31, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: extension class wrapper for base class pxrInternal_v0_24__pxrReserved__::UsdAPISchemaBase has not been created yet
+
+2026-04-24T11:42:28Z [4,218ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.physx' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.physx-107.3.26+107.3.3.lx64.r.cp311.u353' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,218ms] [Error] [omni.ext.plugin] [ext: omni.physx-107.3.26] Failed to startup python extension.
+[4.340s] [ext: omni.index.libs-380600.8087.0] startup
+[4.340s] [ext: omni.physics.physx-107.3.26] startup
+2026-04-24T11:42:28Z [4,333ms] [Warning] [carb] Acquiring non optional plugin interface which is not listed as dependency: [omni::physx::IPhysxBenchmarks v1.0] (plugin: <default plugin>), by client: omni.physics.physx.plugin. Add it to CARB_PLUGIN_IMPL_DEPS() macro of a client.
+[4.344s] [ext: omni.index-1.0.1] startup
+[4.345s] [ext: omni.volume-0.5.2] startup
+[4.348s] [ext: omni.ujitso.client-0.0.0] startup
+[4.349s] [ext: omni.hydra.rtx.shadercache.vulkan-1.0.0] startup
+[4.350s] [ext: omni.kit.widget.searchable_combobox-1.0.6] startup
+[4.351s] [ext: omni.hydra.rtx-1.0.0] startup
+2026-04-24T11:42:28Z [4,360ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+[4.394s] [ext: omni.kit.widget.settings-1.2.6] startup
+[4.396s] [ext: omni.kit.hydra_texture-1.4.6] startup
+2026-04-24T11:42:28Z [4,389ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.kit.hydra_texture from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.hydra_texture-1.4.6+69cbf6ad.lx64.r.cp311. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.hydra_texture-1.4.6+69cbf6ad.lx64.r.cp311/omni/kit/hydra_texture/__init__.py", line 24, in <module>
+    from omni.hydratexture._hydra_texture import (
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.hydra_texture-1.4.6+69cbf6ad.lx64.r.cp311/omni/hydratexture/__init__.py", line 2, in <module>
+    import omni.usd
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+    from ._impl import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+    from .api import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+    from pxr import Usd, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:28Z [4,390ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.kit.hydra_texture' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.hydra_texture-1.4.6+69cbf6ad.lx64.r.cp311' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,390ms] [Error] [omni.ext.plugin] [ext: omni.kit.hydra_texture-1.4.6] Failed to startup python extension.
+[4.509s] [ext: omni.graph.tools-1.79.2] startup
+[4.534s] [ext: omni.kit.window.preferences-1.8.0] startup
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]: Traceback (most recent call last):
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.audiodeviceenum-1.0.2+69cbf6ad.lx64.r.cp311/omni/kit/audiodeviceenum/extension.py", line 54, in _register_page
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:     from .audio_page import AudioPreferences
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.audiodeviceenum-1.0.2+69cbf6ad.lx64.r.cp311/omni/kit/audiodeviceenum/audio_page.py", line 6, in <module>
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:     import omni.usd.audio
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+2026-04-24T11:42:28Z [4,528ms] [Error] [omni.kit.app._impl] [py stderr]:     from ._impl import *
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:     from .api import *
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:     from pxr import Usd, UsdUtils
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:     Tf.PreparePythonModule()
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:     module = importlib.import_module(
+2026-04-24T11:42:28Z [4,529ms] [Error] [omni.kit.app._impl] [py stderr]:              ^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-24T11:42:28Z [4,530ms] [Error] [omni.kit.app._impl] [py stderr]:   File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+2026-04-24T11:42:28Z [4,530ms] [Error] [omni.kit.app._impl] [py stderr]:     return _bootstrap._gcd_import(name[level:], package, level)
+2026-04-24T11:42:28Z [4,530ms] [Error] [omni.kit.app._impl] [py stderr]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-04-24T11:42:28Z [4,530ms] [Error] [omni.kit.app._impl] [py stderr]: TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+[4.541s] [ext: omni.kit.widget.material_preview-1.0.16] startup
+2026-04-24T11:42:28Z [4,533ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.kit.widget.material_preview from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16/omni/kit/widget/material_preview/__init__.py", line 9, in <module>
+    from .material_preview_producer import MaterialPreviewProducer
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16/omni/kit/widget/material_preview/material_preview_producer.py", line 11, in <module>
+    from .relevant_stage import RelevantStage
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16/omni/kit/widget/material_preview/relevant_stage.py", line 9, in <module>
+    from .stage_duplicate_utils import copy_prim
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16/omni/kit/widget/material_preview/stage_duplicate_utils.py", line 11, in <module>
+    from omni.usd.commands import UsdStageHelper
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+    from ._impl import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+    from .api import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+    from pxr import Usd, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:28Z [4,534ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.kit.widget.material_preview' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.widget.material_preview-1.0.16' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,534ms] [Error] [omni.ext.plugin] [ext: omni.kit.widget.material_preview-1.0.16] Failed to startup python extension.
+[4.620s] [ext: omni.graph-1.141.2] startup
+2026-04-24T11:42:28Z [4,620ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.graph.core from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/__init__.py", line 22, in <module>
+    from ._impl.extension import _PublicExtension  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/_impl/extension.py", line 23, in <module>
+    from .file_format_1_6 import migrate_compound_node_schema_data
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/_impl/file_format_1_6.py", line 5, in <module>
+    import omni.usd
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+    from ._impl import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+    from .api import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+    from pxr import Usd, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:28Z [4,621ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.graph.core' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,621ms] [Error] [omni.ext.plugin] [ext: omni.graph-1.141.2] Failed to startup python extension.
+[4.771s] [ext: omni.kit.window.material_graph-1.9.1] startup
+2026-04-24T11:42:28Z [4,763ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.kit.window.material_graph from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.window.material_graph-1.9.1. Error: extension class wrapper for base class pxrInternal_v0_24__pxrReserved__::UsdTyped has not been created yet. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.window.material_graph-1.9.1/omni/kit/window/material_graph/__init__.py", line 9, in <module>
+    from . import compound_registry, shader_registry
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.window.material_graph-1.9.1/omni/kit/window/material_graph/compound_registry.py", line 15, in <module>
+    from pxr import Usd, UsdShade, UsdUI
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUI/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: extension class wrapper for base class pxrInternal_v0_24__pxrReserved__::UsdTyped has not been created yet
+
+2026-04-24T11:42:28Z [4,763ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.kit.window.material_graph' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.kit.window.material_graph-1.9.1' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,763ms] [Error] [omni.ext.plugin] [ext: omni.kit.window.material_graph-1.9.1] Failed to startup python extension.
+[4.832s] [ext: omni.isaac.dynamic_control-2.0.7] startup
+2026-04-24T11:42:28Z [4,826ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+[4.837s] [ext: isaacsim.storage.native-1.5.1] startup
+2026-04-24T11:42:28Z [4,829ms] [Error] [omni.ext._impl._internal] Failed to import python module isaacsim.storage.native from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.storage.native. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.storage.native/isaacsim/storage/native/__init__.py", line 16, in <module>
+    from .impl.file_utils import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.storage.native/isaacsim/storage/native/impl/file_utils.py", line 21, in <module>
+    from pxr import Sdf, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:28Z [4,829ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'isaacsim.storage.native' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.storage.native' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:28Z [4,829ms] [Error] [omni.ext.plugin] [ext: isaacsim.storage.native-1.5.1] Failed to startup python extension.
+[4.940s] [ext: omni.graph.scriptnode-1.50.0] startup
+2026-04-24T11:42:29Z [4,932ms] [Error] [omni.ext._impl._internal] Failed to import python module omni.graph.scriptnode from /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph.scriptnode-1.50.0+107.3.0. Error: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >. Traceback:
+Traceback (most recent call last):
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 196, in _custom_importer
+    return _import_public(ext_module.path, ext_module.name, reload_enabled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py", line 103, in _import_public
+    module = import_module(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/custom_importer.py", line 85, in import_module
+    return importlib.import_module(name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph.scriptnode-1.50.0+107.3.0/omni/graph/scriptnode/__init__.py", line 5, in <module>
+    from ._impl.extension import _PublicExtension  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph.scriptnode-1.50.0+107.3.0/omni/graph/scriptnode/_impl/extension.py", line 10, in <module>
+    import omni.graph.core as og
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/__init__.py", line 22, in <module>
+    from ._impl.extension import _PublicExtension  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/_impl/extension.py", line 23, in <module>
+    from .file_format_1_6 import migrate_compound_node_schema_data
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph-1.141.2+69cbf6ad.lx64.r.cp311/omni/graph/core/_impl/file_format_1_6.py", line 5, in <module>
+    import omni.usd
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/__init__.py", line 43, in <module>
+    from ._impl import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/__init__.py", line 10, in <module>
+    from .api import *
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd-1.13.10+69cbf6ad.lx64.r.cp311/omni/usd/_impl/api.py", line 15, in <module>
+    from pxr import Usd, UsdUtils
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.usd.libs-1.0.1+69cbf6ad.lx64.r.cp311/pxr/UsdUtils/__init__.py", line 25, in <module>
+    Tf.PreparePythonModule()
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/pxr/Tf/__init__.py", line 86, in PreparePythonModule
+    module = importlib.import_module(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/agxi/miniconda3/envs/issac/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: No to_python (by-value) converter found for C++ type: std::vector<pxrInternal_v0_24__pxrReserved__::SdfPath, std::allocator<pxrInternal_v0_24__pxrReserved__::SdfPath> >
+
+2026-04-24T11:42:29Z [4,932ms] [Error] [carb.scripting-python.plugin] Exception: Extension python module: 'omni.graph.scriptnode' in '/home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/extscache/omni.graph.scriptnode-1.50.0+107.3.0' failed to load.
+
+At:
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(222): startup
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/kit/kernel/py/omni/ext/_impl/_internal.py(337): startup_extension
+  PythonExtension.cpp::startup()(2): <module>
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(534): _start_app
+  /home/agxi/miniconda3/envs/issac/lib/python3.11/site-packages/isaacsim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py(270): __init__
+  /home/agxi/RealityLab/genie_sim/unit_lab/grasp_vis/galbot_grasp_pose_collision_editor.py(728): <module>
+
+2026-04-24T11:42:29Z [4,932ms] [Error] [omni.ext.plugin] [ext: omni.graph.scriptnode-1.50.0] Failed to startup python extension.
+[5.028s] [ext: omni.hydra.engine.stats-1.0.3] startup
+[5.031s] [ext: omni.kit.viewport.legacy_gizmos-1.0.19] startup
+[5.033s] [ext: omni.kit.raycast.query-1.1.0] startup
+2026-04-24T11:42:29Z [0ms] [Warning] [carb.crashreporter-breakpad.plugin] [crash] A crash has occurred.  If a debugger should be attached, please set the '/crashreporter/debuggerAttachTimeoutMs' setting to a timeout in milliseconds.  This can be used to allow the crash reporter to wait for up to that long for a debugger to attach before processing or sending the crash report.
+2026-04-24T11:42:29Z [68ms] [Error] [carb.crashreporter-breakpad.plugin] 'crashreport.gui' exited with code 127

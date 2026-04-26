@@ -157,6 +157,44 @@ def random_downsample(transforms: np.ndarray, downsample_num: int, replace: bool
     return transforms, random_indices
 
 
+def order_by_grasp_pose_diversity(
+    grasp_poses: np.ndarray,
+    position_weight: float = 1.0,
+    orientation_weight: float = 1.0,
+) -> np.ndarray:
+    pose_count = grasp_poses.shape[0]
+    if pose_count <= 1:
+        return np.arange(pose_count)
+
+    positions = grasp_poses[:, :3, 3].astype(np.float64)
+    position_scale = np.std(positions, axis=0)
+    position_scale = np.where(position_scale > 1e-6, position_scale, 1.0)
+    position_features = positions / position_scale
+    orientation_features = grasp_poses[:, :3, :3].reshape(pose_count, -1).astype(np.float64)
+    features = np.concatenate(
+        [
+            position_features * float(position_weight),
+            orientation_features * float(orientation_weight),
+        ],
+        axis=1,
+    )
+    features = features - np.mean(features, axis=0, keepdims=True)
+
+    selected_indices = np.empty(pose_count, dtype=np.int64)
+    selected_indices[0] = np.random.randint(pose_count)
+    min_distances = np.sum((features - features[selected_indices[0]]) ** 2, axis=1)
+    min_distances[selected_indices[0]] = -np.inf
+
+    for output_index in range(1, pose_count):
+        next_index = int(np.argmax(min_distances))
+        selected_indices[output_index] = next_index
+        distances = np.sum((features - features[next_index]) ** 2, axis=1)
+        min_distances = np.minimum(min_distances, distances)
+        min_distances[next_index] = -np.inf
+
+    return selected_indices
+
+
 def filter_galbot_grasp_pose_by_approach_direction(
     grasp_poses: np.ndarray,
     grasp_widths: np.ndarray,
@@ -185,7 +223,7 @@ def filter_galbot_grasp_pose_by_approach_direction(
     # Convert approach direction from world frame into the robot base frame.
     da_base = (robot_base_rotation.T @ da_world.T).T
     if reject_towards_robot:
-        # Only reject poses whose approach direction is clearly close to -base_x.
+        # Reject poses with an approach component toward -base_x.
         reject_towards = da_base[:, 0] < towards_robot_max_dot
     else:
         reject_towards = np.zeros(len(grasp_poses), dtype=bool)
