@@ -123,6 +123,7 @@ class CommandController:
         self.recording_ready_for_extraction = False
         self.target_point = None
         self.debug_view = {}
+        self.debug_target_prim_paths = set()
         self.timeline = omni.timeline.get_timeline_interface()
         self.light_config = []
         self.attached_joints = {}
@@ -463,6 +464,23 @@ class CommandController:
                 if isinstance(arm_base_path, str) and arm_base_path and arm_base_path not in arm_base_paths:
                     arm_base_paths.append(arm_base_path)
         return arm_base_paths
+
+    def _is_debug_grasp_target(self, label_name, prim_path):
+        return any("target_grasp_object" in str(value) for value in (label_name, prim_path))
+
+    def _register_debug_target_prim_path(self, prim_path):
+        if not prim_path:
+            return
+        prim_path = str(prim_path)
+        self.debug_target_prim_paths.add(prim_path)
+        for curobo_motion in self.ui_builder.curoboMotion.values():
+            if hasattr(curobo_motion, "add_debug_target_prim_path"):
+                curobo_motion.add_debug_target_prim_path(prim_path)
+
+    def _sync_debug_target_position(self):
+        for curobo_motion in self.ui_builder.curoboMotion.values():
+            if hasattr(curobo_motion, "set_debug_target_position"):
+                curobo_motion.set_debug_target_position(self.target_point)
 
     def _unpack_extract_process_entry(self, entry):
         if len(entry) == 3:
@@ -1121,26 +1139,32 @@ class CommandController:
             self.ros_step = state_info["ros_step"]
             self.target_point = state_info["target_point"]
             # curobo related
-            if state_info["attach_states"] and state_info["attach_states"] != self.attach_states:
+            target_attach_states = state_info.get("attach_states", {})
+            if target_attach_states != self.attach_states:
+                logger.info(
+                    f"Playback reconcile attach states: current={self.attach_states}, "
+                    f"target={target_attach_states}, frame={self.playback_waited_frame_num}"
+                )
                 if self.playback_waited_frame_num == 1:
                     self.ui_builder.detach_objs()
-                else:
+                    self.attach_states = {}
+                elif target_attach_states:
                     # add current not attached
                     right_prims = [
                         path
-                        for path, is_right in state_info["attach_states"].items()
+                        for path, is_right in target_attach_states.items()
                         if is_right and path not in self.attach_states
                     ]
                     left_prims = [
                         path
-                        for path, is_right in state_info["attach_states"].items()
+                        for path, is_right in target_attach_states.items()
                         if not is_right and path not in self.attach_states
                     ]
                     if right_prims:
                         self.ui_builder.attach_objs(right_prims, True)
                     if left_prims:
                         self.ui_builder.attach_objs(left_prims, False)
-                    self.attach_states = state_info["attach_states"]
+                    self.attach_states = target_attach_states.copy()
         if self.playback_waited_frame_num >= MAX_PLAYBACK_WAITED_FRAME_NUM:
             # timestamp
             start_timstamp = state_info["timestamp"]
@@ -1936,6 +1960,10 @@ class CommandController:
     def handle_set_target_point(self):
         """Handle Command 27: SetTargetPoint"""
         self.target_point = self.data["target_position"]
+        self._sync_debug_target_position()
+        if self.debug:
+            for curobo_motion in self.ui_builder.curoboMotion.values():
+                curobo_motion.view_debug_world()
         self.data_to_send = "success"
 
     def handle_set_frame_state(self):
@@ -2367,6 +2395,8 @@ class CommandController:
     ):
         usd_path = os.path.join(self.sim_assets_root, usd_path)
         self.object_asset_dict[prim_path] = usd_path
+        if self._is_debug_grasp_target(label_name, prim_path):
+            self._register_debug_target_prim_path(prim_path)
         already_in_stage = False
         stage = omni.usd.get_context().get_stage()
         if stage:

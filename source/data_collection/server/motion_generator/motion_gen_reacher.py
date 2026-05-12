@@ -14,7 +14,7 @@ import torch
 from curobo.cuda_robot_model.cuda_robot_model import CudaRobotModel, CudaRobotModelConfig
 from curobo.geom.sdf.world import CollisionCheckerType
 from curobo.geom.sphere_fit import SphereFitType
-from curobo.geom.types import WorldConfig
+from curobo.geom.types import Sphere, WorldConfig
 from curobo.types.base import TensorDeviceType
 from curobo.types.math import Pose
 from curobo.types.robot import RobotConfig
@@ -48,6 +48,7 @@ except ImportError:
 CUROBO_BATCH_SIZE = 10
 MAX_MESH_FACES = 1000  # Maximum face count limit
 BACKGROUND_OBSTACLE_PREFIXES = ["/World/background", "/World/Background"]
+DEBUG_TARGET_NAME_HINTS = ("target_grasp_object",)
 ATTACHED_COLLISION_LINK_SPECS = {
     "attached_object": [
         "right_arm_link7",
@@ -72,6 +73,7 @@ ATTACHED_COLLISION_LINK_SPECS = {
         "left_gripper_r_finger_link",
     ],
 }
+ATTACHED_DEBUG_LINK_NAMES = tuple(ATTACHED_COLLISION_LINK_SPECS.keys())
 
 
 def _env_flag(name: str, default: bool = False) -> bool:
@@ -669,7 +671,12 @@ class CuroboMotion:
         self.usd_help.load_stage(stage)
         self.time_index = 0
         self.spheres = None
+        self.target_spheres = None
         self.obstacle_spheres = None
+        self.debug_target_position = None
+        self.debug_target_prim_paths = set()
+        self.debug_robot_arm_sphere_indices = None
+        self.debug_attached_target_sphere_indices = None
 
         # Maintain list of objects attached to robot
         self.attached_objects = []
@@ -882,6 +889,15 @@ class CuroboMotion:
                         translation=np.array([s.position[0], s.position[1], s.position[2]])
                     )
                     spheres_buffer[si].set_radius(float(s.radius))
+        for si in range(len(sph_list[0]), len(spheres_buffer)):
+            if hasattr(spheres_buffer[si], "set_visibility"):
+                spheres_buffer[si].set_visibility(False)
+            else:
+                spheres_buffer[si].set_radius(0.0)
+        for si in range(len(sph_list[0])):
+            if hasattr(spheres_buffer[si], "set_visibility"):
+                spheres_buffer[si].set_visibility(True)
+        return spheres_buffer
 
     def visualize_obstacles(self):
         sph_list = []
@@ -893,14 +909,68 @@ class CuroboMotion:
                 tensor_args=self.tensor_args,
             )
             sph_list += sph
-        self.visualize_spheres(
+        self.obstacle_spheres = self.visualize_spheres(
             [sph_list],
             self.obstacle_spheres,
             prim_prefix="/curobo/obstacle_sphere_",
             color=np.array([1.0, 0.25, 0.25]),
         )
 
-    def visualize_robot_spheres(self):
+    def set_debug_target_position(self, position):
+        self.debug_target_position = None if position is None else np.array(position, dtype=float)
+
+    def add_debug_target_prim_path(self, prim_path):
+        if prim_path:
+            self.debug_target_prim_paths.add(str(prim_path))
+
+    def _is_robot_arm_debug_link(self, link_name):
+        name = link_name.lower()
+        if "attached_object" in name:
+            return False
+        if "arm" in name or "gripper" in name:
+            return True
+        return bool(re.match(r"^(fl|fr)_base_link$", name) or re.match(r"^(fl|fr)_link\d+$", name))
+
+    def _get_sphere_indices_for_links(self, link_names):
+        kin_cfg = self.motion_gen.robot_cfg.kinematics.kinematics_config
+        sphere_indices = []
+        for link_name in link_names:
+            if link_name not in kin_cfg.link_name_to_idx_map:
+                continue
+            link_sphere_indices = kin_cfg.get_sphere_index_from_link_name(link_name)
+            sphere_indices.extend([int(idx) for idx in link_sphere_indices.cpu().numpy().tolist()])
+        return sorted(set(sphere_indices))
+
+    def _get_debug_robot_arm_sphere_indices(self):
+        if self.debug_robot_arm_sphere_indices is not None:
+            return self.debug_robot_arm_sphere_indices
+
+        arm_link_names = [
+            link_name for link_name in self.collision_link_names if self._is_robot_arm_debug_link(link_name)
+        ]
+        self.debug_robot_arm_sphere_indices = self._get_sphere_indices_for_links(arm_link_names)
+        return self.debug_robot_arm_sphere_indices
+
+    def _get_debug_attached_target_sphere_indices(self):
+        if self.debug_attached_target_sphere_indices is not None:
+            return self.debug_attached_target_sphere_indices
+
+        self.debug_attached_target_sphere_indices = self._get_sphere_indices_for_links(ATTACHED_DEBUG_LINK_NAMES)
+        return self.debug_attached_target_sphere_indices
+
+    def _is_debug_target_obstacle(self, obstacle_name):
+        obstacle_name = str(obstacle_name)
+        if self.debug_target_prim_paths:
+            for prim_path in self.debug_target_prim_paths:
+                if obstacle_name == prim_path or obstacle_name.startswith(prim_path + "/"):
+                    return True
+        return any(name_hint in obstacle_name for name_hint in DEBUG_TARGET_NAME_HINTS)
+
+    def _get_debug_target_obstacles(self):
+        objects = list(getattr(self.world_cfg, "objects", []))
+        return [obs for obs in objects if self._is_debug_target_obstacle(getattr(obs, "name", ""))]
+
+    def _get_current_robot_spheres(self):
         sim_js = self.robot.get_joints_state()
         sim_js_names = self.robot.dof_names
         cu_js = JointState(
@@ -912,8 +982,65 @@ class CuroboMotion:
         )
         cu_js.acceleration *= 0.0
         cu_js = cu_js.get_ordered_joint_state(self.motion_gen.kinematics.joint_names)
-        sph_list = self.motion_gen.kinematics.get_robot_as_spheres(cu_js.position)
-        self.visualize_spheres(sph_list, self.spheres, prim_prefix="/curobo/robot_sphere_")
+        kin_state = self.motion_gen.kinematics.get_state(cu_js.position)
+        return kin_state.get_link_spheres().cpu().numpy()[0]
+
+    def _get_robot_spheres_from_indices(self, sphere_indices, name_prefix):
+        robot_spheres = self._get_current_robot_spheres()
+        sph_list = []
+        for sphere_idx in sphere_indices:
+            s = robot_spheres[sphere_idx]
+            if np.isnan(s[0]) or s[3] <= 0.0:
+                continue
+            sph_list.append(
+                Sphere(
+                    name=name_prefix + str(sphere_idx),
+                    pose=[s[0], s[1], s[2], 1, 0, 0, 0],
+                    radius=s[3],
+                )
+            )
+        return sph_list
+
+    def _get_attached_target_spheres(self):
+        if not self.attached_objects:
+            return []
+        return self._get_robot_spheres_from_indices(
+            self._get_debug_attached_target_sphere_indices(),
+            "attached_target_curobo_sphere_",
+        )
+
+    def visualize_target_spheres(self):
+        sph_list = self._get_attached_target_spheres()
+        if not self.attached_objects:
+            target_obstacles = self._get_debug_target_obstacles()
+            if not target_obstacles and self.debug_target_prim_paths:
+                logger.warning(
+                    "Debug target is not present in curobo world_cfg; target spheres hidden. "
+                    f"registered_target_paths={sorted(self.debug_target_prim_paths)}"
+                )
+            for obs in target_obstacles:
+                sph_list += obs.get_bounding_spheres(
+                    200,
+                    surface_sphere_radius=0.005,
+                    pre_transform_pose=None,
+                    tensor_args=self.tensor_args,
+                )
+        self.target_spheres = self.visualize_spheres(
+            [sph_list],
+            self.target_spheres,
+            prim_prefix="/curobo/target_sphere_",
+            color=np.array([1.0, 0.85, 0.0]),
+        )
+
+    def visualize_robot_arm_spheres(self):
+        sph_list = self._get_robot_spheres_from_indices(
+            self._get_debug_robot_arm_sphere_indices(),
+            "robot_arm_curobo_sphere_",
+        )
+        self.spheres = self.visualize_spheres(sph_list=[sph_list], spheres_buffer=self.spheres)
+
+    def visualize_robot_spheres(self):
+        self.visualize_robot_arm_spheres()
 
     def kinematic_forward(self, joint_states, output_link_names=None):
         # joint_positions should [batch_size, dof]
@@ -1057,8 +1184,8 @@ class CuroboMotion:
 
     def view_debug_world(self):
         if self.debug:
-            self.visualize_robot_spheres()
-            self.visualize_obstacles()
+            self.visualize_robot_arm_spheres()
+            self.visualize_target_spheres()
 
     #NOTE: codex build a reusable active-joint state for both ee-pose planning and exact joint
     # goal planning during reset.

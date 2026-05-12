@@ -247,7 +247,7 @@
         "scene_id": "background/home_b/",
         "scene_info_dir": "background/home_b/",
         "scene_usd": [
-            "background/home_b/home_b_02.usda"
+            "background/home_b/home_b_02_no_texture.usda"
         ]
     },
     "stages": [

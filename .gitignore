@@ -28,6 +28,7 @@ checkpoint
 checkpoints
 
 source/geniesim/app/robot_cfg/*_recording.json
+source/data_collection/tasks/diy/meta_task/progress
 
 default.etcd
 python3*INFO*

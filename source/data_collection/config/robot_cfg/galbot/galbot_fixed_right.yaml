@@ -105,7 +105,11 @@ collision_spheres:
       "radius": 0.01
   - right_gripper_base_link:
     - "center": [0.0, 0.0, 0.0]
-      "radius": 0.05
+      "radius": 0.04
+    - "center": [0.08, -0.005, 0.014]
+      "radius": 0.02
+    - "center": [0.081, -0.005, -0.019]
+      "radius": 0.02
   - right_gripper_l_knuckle_link:
     - "center": [0.0, 0.0, 0.0]
       "radius": 0.005

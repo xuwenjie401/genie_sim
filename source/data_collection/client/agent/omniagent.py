@@ -35,6 +35,29 @@ STAGE_MAX_ATTEMPTS = {
 }
 
 
+def _extend_object_ids(value, output):
+    if isinstance(value, str):
+        output.append(value)
+    elif isinstance(value, list):
+        for item in value:
+            _extend_object_ids(item, output)
+    elif isinstance(value, dict):
+        for item in value.values():
+            _extend_object_ids(item, output)
+
+
+def _get_pick_target_object_ids(task_info):
+    for stage in task_info.get("stages", []):
+        if stage.get("action") != "pick":
+            continue
+        target_ids = []
+        _extend_object_ids(stage.get("passive", {}).get("object_id"), target_ids)
+        target_ids = [obj_id for obj_id in target_ids if obj_id != "gripper"]
+        if target_ids:
+            return target_ids
+    return []
+
+
 def contains_cjk(text):
     return bool(re.search(r"[\u4e00-\u9fff]", text or ""))
 
@@ -260,9 +283,10 @@ class DataCollectionAgent(BaseAgent):
                     continue
                 task_related_objs.append(obj_id)
 
+        debug_target_obj_ids = _get_pick_target_object_ids(task_info) or task_related_objs
         target_lookat_point = []
         for obj in task_info["objects"]:
-            if obj["object_id"] not in task_related_objs or "position" not in obj:
+            if obj["object_id"] not in debug_target_obj_ids or "position" not in obj:
                 continue
             target_lookat_point.append(obj["position"])
         if len(target_lookat_point):
@@ -1108,6 +1132,7 @@ class DataCollectionAgent(BaseAgent):
                 try_next_sequence = True
                 max_stage_attempts = STAGE_MAX_ATTEMPTS.get(stage.action_type, MAX_ATTEMPTIONS)
                 store_name = f"stage_{stage_id}"
+                stage_attached_obj_id = self.attached_obj_id
                 self.robot.client.store_current_state(store_name)
                 logger.info(f"Store state {store_name}")
                 logger.info(
@@ -1148,6 +1173,7 @@ class DataCollectionAgent(BaseAgent):
                             break
                     if not stage_success and try_next_sequence and not stage.action_sequence_buffer.empty():
                         self.robot.client.playback(store_name)
+                        self.attached_obj_id = stage_attached_obj_id
                         logger.info(f"Playback state {store_name}")
                     elif stage.checker_config:
                         for check_config in stage.checker_config:
@@ -1158,6 +1184,7 @@ class DataCollectionAgent(BaseAgent):
                                 try_next_sequence = True
                                 if not stage.action_sequence_buffer.empty():
                                     self.robot.client.playback(store_name)
+                                    self.attached_obj_id = stage_attached_obj_id
                                     logger.info(f"Playback state {store_name}")
                                 break
 
