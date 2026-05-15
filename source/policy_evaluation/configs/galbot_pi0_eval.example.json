@@ -1,0 +1,92 @@
+{
+  "name": "galbot_pi0_eval",
+  "output_dir": "output/policy_evaluation",
+  "prompt": "pick up the cola can and place it in the tray",
+  "max_steps": 2000,
+  "success_check_interval": 10,
+  "control_hz": 30,
+  "physics_step": 60,
+  "rendering_step": 30,
+  "initial_wait_sec": 5.0,
+  "enable_distractors": false,
+  "terminate_on_arm_reset": true,
+  "arm_reset_tolerance": 0.1,
+  "arm_reset_away_threshold": 0.25,
+  "arm_reset_consecutive_steps": 3,
+  "terminate_on_grasp_lost": true,
+  "grasp_steps_threshold": 600,
+  "grasp_judge_distance_threshold": 0.15,
+  "wait_for_gripper_close_hold": true,
+  "gripper_close_hold_timeout_sec": 6.0,
+  "gripper_close_max_force": 0.4,
+  "gripper_hold_stiffness": 10000.0,
+  "gripper_hold_max_force": 10.0,
+  "gripper_static_friction": null,
+  "gripper_dynamic_friction": null,
+  "object_static_friction": null,
+  "object_dynamic_friction": null,
+  "target_object_mass_override": null,
+  "object_mass_overrides": {},
+  "disable_object_sleep": true,
+  "headless": false,
+  "render": true,
+  "policy": {
+    "host": "localhost",
+    "port": 8181,
+    "timeout_sec": 30
+  },
+  "adapter": {
+    "arm": "left",
+    "state_dim": 8,
+    "action_arm_dim": 7,
+    "action_gripper_index": 7,
+    "action_open_threshold": 0.5,
+    "gripper_state_mode": "raw_mean",
+    "image_keys": {
+      "head": "cam_head",
+      "wrist": "cam_left",
+      "right_wrist": "cam_right"
+    }
+  },
+  "cameras": {
+    "head": "/galbot_one_golf/head_link2/head_front_left_color",
+    "wrist": "/galbot_one_golf/left_arm_link7/left_arm_color",
+    "right_policy": "zeros_like_left",
+    "observer": {
+      "prim_path": "/World/PolicyEval/ObserverCamera",
+      "position": [
+        0.0,
+        1.1,
+        1.5
+      ],
+      "target": [
+        -1.2,
+        0.25,
+        0.8
+      ],
+      "resolution": [
+        640,
+        480
+      ],
+      "focal_length": 18.14756,
+      "horizontal_aperture": 20.955,
+      "vertical_aperture": 15.2908,
+      "clipping_range": [
+        0.01,
+        100000.0
+      ]
+    }
+  },
+  "video": {
+    "enabled": true,
+    "fps": 20,
+    "every_n_steps": 1
+  },
+  "tasks": [
+    {
+      "task_template": "source/data_collection/tasks/diy/single_task/left_place_cola_can_into_box_galbot_s3c2v1.json",
+      "episodes": 5,
+      "prompt": "Use the left arm to pick up the cola can and place it into the tray."
+    }
+  ]
+}
