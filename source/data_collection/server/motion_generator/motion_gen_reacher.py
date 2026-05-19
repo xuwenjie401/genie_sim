@@ -563,6 +563,8 @@ class CuroboMotion:
         robot_list,
         step=100,
         debug=False,
+        skip_initial_obstacles=False,
+        apply_retract_config=True,
     ):
         self.name = name
         self.debug = debug
@@ -658,7 +660,8 @@ class CuroboMotion:
         self.robot = robot
         self.robot._articulation_view.initialize()
         self.idx_list = [self.robot.get_dof_index(x) for x in j_names]
-        self.robot.set_joint_positions(default_config, self.idx_list)
+        if apply_retract_config:
+            self.robot.set_joint_positions(default_config, self.idx_list)
         self.robot._articulation_view.set_max_efforts(
             values=np.array([5000 for i in range(len(self.idx_list))]),
             joint_indices=self.idx_list,
@@ -696,11 +699,14 @@ class CuroboMotion:
             f"sphere_counts={attached_sphere_counts}"
         )
 
-        # First extract and cache obstacle geometry information
-        self._extract_cached_obstacles(need_reset_cache=CuroboMotion.cached_obstacle_info == {})
+        if skip_initial_obstacles:
+            logger.info("Curobo initial obstacle extraction skipped; caller will load a local collision world.")
+        else:
+            # First extract and cache obstacle geometry information.
+            self._extract_cached_obstacles(need_reset_cache=CuroboMotion.cached_obstacle_info == {})
 
-        # Then set obstacles (will use cache now)
-        self.set_obstacles()
+            # Then set obstacles (will use cache now).
+            self.set_obstacles()
         self.link_names = self.motion_gen.kinematics.link_names
         self.ee_link_name = self.motion_gen.kinematics.ee_link
         kin_state = self.motion_gen.kinematics.get_state(self.motion_gen.get_retract_config().view(1, -1))

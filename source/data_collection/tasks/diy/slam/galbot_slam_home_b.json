@@ -1,0 +1,194 @@
+{
+    "task": "galbot_slam_home_b",
+    "recording_setting": {
+        "camera_list": [
+            "/galbot_one_golf/head_link2/head_front_left_color",
+            "/galbot_one_golf/left_arm_link7/left_arm_color",
+            "/galbot_one_golf/right_arm_link7/right_arm_color"
+        ],
+        "fps": 30,
+        "bag_output_dir": "source/data_collection/recording_data/slam"
+    },
+    "robot": {
+        "robot_id": "galbot",
+        "robot_cfg": "galbot_fixed_dual.json",
+        "robot_init_pose": {
+            "position": [
+                -0.8299999833106995,
+                0.0,
+                0.0
+            ],
+            "quaternion": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "fixed_joint_reset_pose": {
+            "leg_joint1": 0.61,
+            "leg_joint2": 1.16,
+            "leg_joint3": 0.537,
+            "leg_joint4": 0.0,
+            "leg_joint5": 0.0,
+            "head_joint1": 0.0,
+            "head_joint2": 0.3
+        },
+        "init_arm_pose": {
+            "left_arm_joint1": 1.9,
+            "left_arm_joint2": -1.43,
+            "left_arm_joint3": -0.69,
+            "left_arm_joint4": -2.42,
+            "left_arm_joint5": -0.27,
+            "left_arm_joint6": 0.498,
+            "left_arm_joint7": 0.0,
+            "left_gripper_r_knuckle_joint": 0.0,
+            "right_arm_joint1": -1.9,
+            "right_arm_joint2": 1.43,
+            "right_arm_joint3": 0.69,
+            "right_arm_joint4": 2.42,
+            "right_arm_joint5": 0.27,
+            "right_arm_joint6": -0.498,
+            "right_arm_joint7": 0.0,
+            "right_gripper_r_knuckle_joint": 0.0
+        }
+    },
+    "scene": {
+        "scene_id": "background/home_b/",
+        "scene_info_dir": "background/home_b/",
+        "scene_usd": [
+            "background/home_b/home_b_mix_objects.usda"
+        ]
+    },
+    "slam_setting": {
+        "control_hz": 60,
+        "linear_speed": 0.4,
+        "angular_speed": 0.7,
+        "max_linear_accel": 0.8,
+        "max_angular_accel": 1.2,
+        "command_timeout_sec": 0.25,
+        "vertical": {
+            "enabled": true,
+            "joint_names": [
+                "leg_joint1",
+                "leg_joint2",
+                "leg_joint3"
+            ],
+            "speed": 0.25,
+            "max_accel": 0.8,
+            "max_lower_delta": 0.4
+        },
+        "articulation_hold": {
+            "enabled": true,
+            "max_effort": 5000.0,
+            "stiffness": 50000.0,
+            "damping": 5000.0
+        },
+        "manipulation": {
+            "enabled": true,
+            "arm": "left",
+            "empty_position_base": [
+                0.55,
+                0.16,
+                0.9
+            ],
+            "empty_quaternion_base": [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            "empty_use_current_orientation": true,
+            "grasp_target": {
+                "object_id": "benchmark_beverage_bottle_001_001",
+                "asset_id": "benchmark_beverage_bottle_001",
+                "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001",
+                "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_001_001"
+            },
+            "place_target": {
+                "object_id": "benchmark_storage_box_007_003",
+                "asset_id": "benchmark_storage_box_007",
+                "data_info_dir": "objects/benchmark/storage_box/benchmark_storage_box_007",
+                "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_storage_box_007_003"
+            },
+            "grasp_offset_base": [
+                0.0,
+                0.0,
+                0.16
+            ],
+            "place_offset_base": [
+                0.0,
+                0.0,
+                0.18
+            ],
+            "lift_offset_base": [
+                0.0,
+                0.0,
+                0.18
+            ],
+            "grasp_quaternion_base": [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            "place_quaternion_base": [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            "trajopt_steps": 100,
+            "use_interaction_poses": true,
+            "fallback_to_object_offset": true,
+            "max_grasp_candidates": 12,
+            "max_place_candidates": 12,
+            "place_align_samples": 12,
+            "place_approach_up": 0.05,
+            "grasp_upper_percentile": 75.0,
+            "disable_upside_down_grasp": true,
+            "local_collision": {
+                "enabled": true,
+                "radius": 0.45,
+                "max_obstacles": 12,
+                "max_mesh_faces": 128,
+                "include_prefixes": [
+                    "/World/SceneObjectPlacer/PlacedObjects"
+                ]
+            },
+            "gripper": {
+                "close_max_force": 0.2,
+                "hold_stiffness": 10000.0,
+                "hold_max_force": 10.0,
+                "open_max_force": 100.0,
+                "settle_interval_sec": 0.1,
+                "settle_position_delta": 0.01,
+                "settle_max_samples": 50
+            }
+        },
+        "viewport": {
+            "third_person": {
+                "enabled": true,
+                "camera_prim": "/World/SLAMThirdPersonCamera",
+                "relative_position": [
+                    -0.8,
+                    0.8,
+                    1.8
+                ],
+                "look_at": [
+                    0.25,
+                    0.25,
+                    0.7
+                ],
+                "focal_length": 10.0
+            },
+            "head_camera": {
+                "enabled": true,
+                "camera_prim": "/galbot_one_golf/head_link2/head_front_left_color",
+                "window_title": "Galbot Head Camera",
+                "width": 640,
+                "height": 480
+            }
+        }
+    }
+}

@@ -1,0 +1,441 @@
+{
+    "scene_usd": "background/home_b/home_b_mix.usda",
+    "task_json": "/home/agxi/RealityLab/genie_sim/source/data_collection/tasks/diy/slam/galbot_slam_home_b.json",
+    "asset_root": "/home/agxi/.cache/modelscope/hub/datasets/agibot_world/GenieSimAssets",
+    "objects": [
+        {
+            "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+            "object_id": "benchmark_apple_000_002",
+            "source_object_id": "benchmark_apple_000",
+            "category": "apple",
+            "position": [
+                -1.680374264717102,
+                1.1053086519241333,
+                0.4929940998554229
+            ],
+            "quaternion": [
+                0.7042379940622857,
+                0.7089509394582759,
+                0.021102775324920883,
+                -0.03149739725663152
+            ],
+            "scale": 1.0000000000000009,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_apple_000_002",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/basket/benchmark_basket_000/",
+            "object_id": "benchmark_basket_000_007",
+            "source_object_id": "benchmark_basket_000",
+            "category": "basket",
+            "position": [
+                -1.6507327556610107,
+                1.5403470993041992,
+                0.5231369733810425
+            ],
+            "quaternion": [
+                0.7069446444511414,
+                0.7072688794563029,
+                -2.9549816958766456e-05,
+                -3.1004568256831717e-05
+            ],
+            "scale": 0.9999999999999999,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_basket_000_007",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+            "object_id": "benchmark_beverage_bottle_001_009",
+            "source_object_id": "benchmark_beverage_bottle_001",
+            "category": "beverage_bottle",
+            "position": [
+                -1.7636981010437012,
+                0.9851348996162415,
+                0.5300577282905579
+            ],
+            "quaternion": [
+                0.7069411873817444,
+                0.7072722264673964,
+                -0.0002992478526922583,
+                0.0002563237485112206
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_001_009",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_002/",
+            "object_id": "benchmark_beverage_bottle_002_010",
+            "source_object_id": "benchmark_beverage_bottle_002",
+            "category": "beverage_bottle",
+            "position": [
+                -2.645059108734131,
+                -0.6306334137916565,
+                0.8250463008880615
+            ],
+            "quaternion": [
+                0.7071059346199036,
+                0.7071076129678969,
+                0.00010338495623182634,
+                0.00010109256389153899
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_002_010",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
+            "object_id": "benchmark_beverage_bottle_008_014",
+            "source_object_id": "benchmark_beverage_bottle_008",
+            "category": "beverage_bottle",
+            "position": [
+                -1.5531989336013794,
+                0.9532181620597839,
+                0.5347384810447693
+            ],
+            "quaternion": [
+                0.7045845985412599,
+                0.7096180448053213,
+                -0.000280805053608481,
+                0.001641686220525363
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_008_014",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/book/benchmark_book_00/",
+            "object_id": "benchmark_book_00_015",
+            "source_object_id": "benchmark_book_00",
+            "category": "book",
+            "position": [
+                2.869982957839966,
+                0.988038957118988,
+                0.7204359173774719
+            ],
+            "quaternion": [
+                0.6004990935325623,
+                0.6015868700625825,
+                0.37160899726356506,
+                0.3733642050165553
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_book_00_015",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/book/benchmark_book_04/",
+            "object_id": "benchmark_book_04_019",
+            "source_object_id": "benchmark_book_04",
+            "category": "book",
+            "position": [
+                -0.4607822000980377,
+                0.8736617565155029,
+                0.4819973409175873
+            ],
+            "quaternion": [
+                0.5715796947479248,
+                0.5736364688194995,
+                0.4134502088318837,
+                0.41628929725496944
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_book_04_019",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/carton/benchmark_carton_000/",
+            "object_id": "benchmark_carton_000_033",
+            "source_object_id": "benchmark_carton_000",
+            "category": "carton",
+            "position": [
+                0.6204677224159241,
+                2.9017810821533203,
+                0.08475678414106369
+            ],
+            "quaternion": [
+                0.65302437543869,
+                0.6530242723481058,
+                -0.27121803833934033,
+                -0.27121806814166355
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_carton_000_033",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        },
+        {
+            "data_info_dir": "objects/benchmark/cup/benchmark_cup_043/",
+            "object_id": "benchmark_cup_043_052",
+            "source_object_id": "benchmark_cup_043",
+            "category": "cup",
+            "position": [
+                -1.5737897157669067,
+                1.8490371704101562,
+                0.48621442914009094
+            ],
+            "quaternion": [
+                0.7072687149047852,
+                0.7069446411889365,
+                0.00034185498795116196,
+                -0.00034978042660924587
+            ],
+            "scale": 0.9999999999999999,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_cup_043_052",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false
+        }
+    ],
+    "placements": [
+        {
+            "data_info_dir": "objects/benchmark/apple/benchmark_apple_000/",
+            "object_id": "benchmark_apple_000_002",
+            "source_object_id": "benchmark_apple_000",
+            "category": "apple",
+            "position": [
+                -1.680374264717102,
+                1.1053086519241333,
+                0.4929940998554229
+            ],
+            "quaternion": [
+                0.7042379940622857,
+                0.7089509394582759,
+                0.021102775324920883,
+                -0.03149739725663152
+            ],
+            "scale": 1.0000000000000009,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_apple_000_002",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_apple_000_002",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/basket/benchmark_basket_000/",
+            "object_id": "benchmark_basket_000_007",
+            "source_object_id": "benchmark_basket_000",
+            "category": "basket",
+            "position": [
+                -1.6507327556610107,
+                1.5403470993041992,
+                0.5231369733810425
+            ],
+            "quaternion": [
+                0.7069446444511414,
+                0.7072688794563029,
+                -2.9549816958766456e-05,
+                -3.1004568256831717e-05
+            ],
+            "scale": 0.9999999999999999,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_basket_000_007",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_basket_000_007",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_001/",
+            "object_id": "benchmark_beverage_bottle_001_009",
+            "source_object_id": "benchmark_beverage_bottle_001",
+            "category": "beverage_bottle",
+            "position": [
+                -1.7636981010437012,
+                0.9851348996162415,
+                0.5300577282905579
+            ],
+            "quaternion": [
+                0.7069411873817444,
+                0.7072722264673964,
+                -0.0002992478526922583,
+                0.0002563237485112206
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_001_009",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_beverage_bottle_001_009",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_002/",
+            "object_id": "benchmark_beverage_bottle_002_010",
+            "source_object_id": "benchmark_beverage_bottle_002",
+            "category": "beverage_bottle",
+            "position": [
+                -2.645059108734131,
+                -0.6306334137916565,
+                0.8250463008880615
+            ],
+            "quaternion": [
+                0.7071059346199036,
+                0.7071076129678969,
+                0.00010338495623182634,
+                0.00010109256389153899
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_002_010",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_beverage_bottle_002_010",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/beverage_bottle/benchmark_beverage_bottle_008/",
+            "object_id": "benchmark_beverage_bottle_008_014",
+            "source_object_id": "benchmark_beverage_bottle_008",
+            "category": "beverage_bottle",
+            "position": [
+                -1.5531989336013794,
+                0.9532181620597839,
+                0.5347384810447693
+            ],
+            "quaternion": [
+                0.7045845985412599,
+                0.7096180448053213,
+                -0.000280805053608481,
+                0.001641686220525363
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_beverage_bottle_008_014",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_beverage_bottle_008_014",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/book/benchmark_book_00/",
+            "object_id": "benchmark_book_00_015",
+            "source_object_id": "benchmark_book_00",
+            "category": "book",
+            "position": [
+                2.869982957839966,
+                0.988038957118988,
+                0.7204359173774719
+            ],
+            "quaternion": [
+                0.6004990935325623,
+                0.6015868700625825,
+                0.37160899726356506,
+                0.3733642050165553
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_book_00_015",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_book_00_015",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/book/benchmark_book_04/",
+            "object_id": "benchmark_book_04_019",
+            "source_object_id": "benchmark_book_04",
+            "category": "book",
+            "position": [
+                -0.4607822000980377,
+                0.8736617565155029,
+                0.4819973409175873
+            ],
+            "quaternion": [
+                0.5715796947479248,
+                0.5736364688194995,
+                0.4134502088318837,
+                0.41628929725496944
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_book_04_019",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_book_04_019",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/carton/benchmark_carton_000/",
+            "object_id": "benchmark_carton_000_033",
+            "source_object_id": "benchmark_carton_000",
+            "category": "carton",
+            "position": [
+                0.6204677224159241,
+                2.9017810821533203,
+                0.08475678414106369
+            ],
+            "quaternion": [
+                0.65302437543869,
+                0.6530242723481058,
+                -0.27121803833934033,
+                -0.27121806814166355
+            ],
+            "scale": 1.0,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_carton_000_033",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_carton_000_033",
+            "confirmed": true
+        },
+        {
+            "data_info_dir": "objects/benchmark/cup/benchmark_cup_043/",
+            "object_id": "benchmark_cup_043_052",
+            "source_object_id": "benchmark_cup_043",
+            "category": "cup",
+            "position": [
+                -1.5737897157669067,
+                1.8490371704101562,
+                0.48621442914009094
+            ],
+            "quaternion": [
+                0.7072687149047852,
+                0.7069446411889365,
+                0.00034185498795116196,
+                -0.00034978042660924587
+            ],
+            "scale": 0.9999999999999999,
+            "mass": 0.01,
+            "prim_path": "/World/SceneObjectPlacer/PlacedObjects/benchmark_cup_043_052",
+            "model_type": "convexDecomposition",
+            "add_rigid_body": true,
+            "kinematic": false,
+            "placement_id": "benchmark_cup_043_052",
+            "confirmed": true
+        }
+    ]
+}
