@@ -3,15 +3,30 @@
     "recording_setting": {
         "camera_list": [
             "/galbot_one_golf/head_link2/head_front_left_color",
-            "/galbot_one_golf/left_arm_link7/left_arm_color",
-            "/galbot_one_golf/right_arm_link7/right_arm_color"
+            "/galbot_one_golf/left_arm_link7/left_arm_color"
+        ],
+        "depth_camera_list": [
+            "/galbot_one_golf/head_link2/head_front_left_color"
+        ],
+        "mask_camera_list": [
+            "/galbot_one_golf/head_link2/head_front_left_color",
+            "/galbot_one_golf/left_arm_link7/left_arm_color"
         ],
         "fps": 30,
-        "bag_output_dir": "source/data_collection/recording_data/slam"
+        "ros_domain_id": 0,
+        "bag_output_dir": "/home/agxi/Datasets/output/galbot_home/",
+        "prewarm_publishers": false,
+        "bag_max_cache_size": 1073741824,
+        "bag_storage_preset_profile": "none",
+        "bag_use_sim_time": false,
+        "mask_annotator": "instance_id_segmentation",
+        "mask_robot_prim_path": "/galbot_one_golf",
+        "mask_semantic_filter": "class:robot",
+        "mask_fallback_to_nonzero_semantic": false
     },
     "robot": {
         "robot_id": "galbot",
-        "robot_cfg": "galbot_fixed_dual.json",
+        "robot_cfg": "galbot_slam.json",
         "robot_init_pose": {
             "position": [
                 -0.8299999833106995,
@@ -87,6 +102,8 @@
         "manipulation": {
             "enabled": true,
             "arm": "left",
+            "prewarm_on_start": false,
+            "prewarm_interaction_assets": false,
             "empty_position_base": [
                 0.55,
                 0.16,
@@ -147,6 +164,41 @@
             "place_approach_up": 0.05,
             "grasp_upper_percentile": 75.0,
             "disable_upside_down_grasp": true,
+            "grasp_vertical_threshold_deg": 20.0,
+            "grasp_reject_towards_robot": true,
+            "grasp_towards_robot_max_dot": 0.0,
+            "grasp_preferred_height_percentile": 45.0,
+            "grasp_distance_weight": 1.0,
+            "grasp_approach_weight": 0.35,
+            "grasp_height_weight": 0.25,
+            "grasp_orientation_weight": 0.35,
+            "grasp_upright_weight": 0.2,
+            "grasp_support_collision": true,
+            "grasp_support_z_margin": 0.1,
+            "grasp_support_xy_margin": 0.15,
+            "grasp_max_support_obstacles": 4,
+            "attach_on_close": true,
+            "attach_distance_threshold": 0.25,
+            "attach_max_closed_fraction": 0.98,
+            "detach_on_open_close_fraction": 0.35,
+            "detach_on_open_fraction_drop": 0.25,
+            "detach_on_open_timeout_sec": 1.2,
+            "disable_attached_target_collisions": true,
+            "attached_support_clearance": 0.015,
+            "joint_select_candidate_count": 4,
+            "joint_select_reject_threshold": 2.8,
+            "joint_select_path_weight": 0.05,
+            "joint_delta_weights": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                2.5,
+                2.5,
+                1.2
+            ],
+            "lift_force_support_collision": false,
+            "lift_retry_without_collision": true,
             "local_collision": {
                 "enabled": true,
                 "radius": 0.45,
@@ -158,9 +210,16 @@
             },
             "gripper": {
                 "close_max_force": 0.2,
-                "hold_stiffness": 10000.0,
-                "hold_max_force": 10.0,
+                "close_damping": 1000.0,
+                "open_stiffness": 5000.0,
+                "open_damping": 500.0,
+                "hold_stiffness": 5000.0,
+                "hold_damping": 500.0,
+                "hold_max_force": 5.0,
+                "hold_close_position_bias": 0.0,
                 "open_max_force": 100.0,
+                "min_close_duration_sec": 0.25,
+                "min_close_travel": 0.03,
                 "settle_interval_sec": 0.1,
                 "settle_position_delta": 0.01,
                 "settle_max_samples": 50

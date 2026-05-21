@@ -2,12 +2,7 @@
 # Copyright (c) 2023-2026, AgiBot Inc. All Rights Reserved.
 # Author: Genie Sim Team
 # License: Mozilla Public License Version 2.0
-"""Single-process Galbot SLAM keyboard teleop.
-
-This first version intentionally implements only scene loading and keyboard
-base movement. ROS publishing and ros2 bag recording will be added after this
-interactive loop is validated.
-"""
+"""Single-process Galbot SLAM keyboard teleop and ROS2 bag recording."""
 
 from __future__ import annotations
 
@@ -78,6 +73,7 @@ from slam_collection.gripper_control import LeftGripperStateMachine, gripper_con
 from slam_collection.keyboard_controller import KeyboardBaseController
 from slam_collection.manipulation_control import LeftArmManipulationController
 from slam_collection.posture_hold import ArticulationPostureHold, posture_hold_config_from_task
+from slam_collection.rosbag_recorder import SlamRosbagRecorder
 from slam_collection.vertical_lift import GalbotVerticalLiftController, vertical_lift_config_from_task
 from slam_collection.viewport_display import (
     ViewportDisplay,
@@ -256,6 +252,7 @@ def main() -> int:
     posture_hold = ArticulationPostureHold(articulation, posture_hold_config_from_task(task_info))
     vertical_lift = GalbotVerticalLiftController(articulation, vertical_lift_config_from_task(task_info))
     clear_viewport_selection()
+    manipulation.prewarm()
 
     keyboard = KeyboardBaseController()
     keyboard.start()
@@ -265,6 +262,17 @@ def main() -> int:
         head_view_from_config(task_info),
     )
     viewport_display.initialize(initial_position, initial_quaternion)
+    repo_root = os.path.dirname(os.path.dirname(root_directory))
+    recorder = SlamRosbagRecorder(
+        task_info=task_info,
+        task_config_path=task_config_path,
+        repo_root=repo_root,
+        robot_cfg=robot_cfg,
+        scene_usd=scene_usd,
+        scene_usd_path=scene_usd_path,
+        robot_usd_path=robot_usd_path,
+        rendering_dt=rendering_dt,
+    )
 
     control_hz = float(slam_setting.get("control_hz", 60.0))
     control_dt = 1.0 / max(control_hz, 1.0)
@@ -274,6 +282,7 @@ def main() -> int:
 
     logger.info("Galbot SLAM keyboard teleop started")
     logger.info("Controls: W/S forward/back, A/D strafe, Q/E yaw, R/F lift up/down, Space brake, X/Esc quit")
+    logger.info("Recording: B start rosbag, N stop rosbag")
     logger.info("Manipulation: H empty move, J move grasp, K move place, U open, I close, L lift, O reset")
     logger.info(f"Task config: {task_config_path}")
 
@@ -283,13 +292,22 @@ def main() -> int:
     frame = 0
 
     try:
+        if recorder.prewarm_publishers:
+            logger.info("Prewarming SLAM ROS publishers before keyboard control loop")
+            recorder.initialize()
+
         while simulation_app.is_running():
             now = time.monotonic()
             dt = now - last_step_time
             last_step_time = now
             command = keyboard.command()
             for action in keyboard.consume_actions():
-                manipulation.handle_action(action)
+                if action == "record_start":
+                    recorder.start()
+                elif action == "record_stop":
+                    recorder.stop()
+                else:
+                    manipulation.handle_action(action)
             if command.quit:
                 logger.info("Quit requested from keyboard")
                 break
@@ -322,14 +340,18 @@ def main() -> int:
             world.step(render=False)
             if frame % max(1, int(args.physics_step / args.render_fps)) == 0:
                 world.render()
+                recorder.tick(world.current_time)
 
             if duration is not None and now - start_time >= duration:
                 logger.info(f"Duration reached: {duration:.2f}s")
                 break
             frame += 1
     finally:
-        keyboard.stop()
-        simulation_app.close()
+        try:
+            recorder.shutdown()
+        finally:
+            keyboard.stop()
+            simulation_app.close()
     return 0
 
 

@@ -6,6 +6,7 @@ import json
 import os
 import pickle
 import re
+import time
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -32,6 +33,8 @@ class LocalCollisionConfig:
 class ManipulationConfig:
     enabled: bool = True
     arm: str = "left"
+    prewarm_on_start: bool = True
+    prewarm_interaction_assets: bool = True
     empty_position_base: tuple[float, float, float] = (0.55, 0.16, 0.90)
     empty_quaternion_base: tuple[float, float, float, float] = (0.0, 1.0, 0.0, 0.0)
     empty_use_current_orientation: bool = True
@@ -51,6 +54,33 @@ class ManipulationConfig:
     place_approach_up: float = 0.05
     grasp_upper_percentile: float = 75.0
     disable_upside_down_grasp: bool = True
+    grasp_vertical_threshold_deg: float = 20.0
+    grasp_reject_towards_robot: bool = True
+    grasp_towards_robot_max_dot: float = 0.0
+    grasp_preferred_height_percentile: float = 45.0
+    grasp_distance_weight: float = 1.0
+    grasp_approach_weight: float = 0.35
+    grasp_height_weight: float = 0.25
+    grasp_orientation_weight: float = 0.35
+    grasp_upright_weight: float = 0.20
+    grasp_support_collision: bool = True
+    grasp_support_z_margin: float = 0.10
+    grasp_support_xy_margin: float = 0.15
+    grasp_max_support_obstacles: int = 4
+    attach_on_close: bool = True
+    attach_distance_threshold: float = 0.25
+    attach_max_closed_fraction: float = 0.98
+    detach_on_open_close_fraction: float = 0.35
+    detach_on_open_fraction_drop: float = 0.25
+    detach_on_open_timeout_sec: float = 1.2
+    disable_attached_target_collisions: bool = True
+    attached_support_clearance: float = 0.015
+    joint_select_candidate_count: int = 4
+    joint_select_reject_threshold: float = 2.8
+    joint_select_path_weight: float = 0.05
+    joint_delta_weights: tuple[float, ...] = (1.0, 1.0, 1.0, 1.0, 2.5, 2.5, 1.2)
+    lift_force_support_collision: bool = False
+    lift_retry_without_collision: bool = True
     local_collision: LocalCollisionConfig = field(default_factory=LocalCollisionConfig)
 
 
@@ -60,6 +90,16 @@ class TargetContext:
     asset_id: str
     data_info_dir: str
     pose_world: np.ndarray
+
+
+@dataclass
+class AttachedTarget:
+    prim_path: str
+    tcp_to_object: np.ndarray
+    kinematic_attrs: list[tuple[Any, Any]] = field(default_factory=list)
+    collision_attrs: list[tuple[Any, Any]] = field(default_factory=list)
+    local_bbox_corners: np.ndarray | None = None
+    support_top_z: float | None = None
 
 
 class InteractionObject:
@@ -112,15 +152,25 @@ class LeftArmManipulationController:
         self.reset_joint_targets = self._initial_reset_joint_targets()
         self._last_motion_active = False
         self._completed_arm_motion = False
+        self._attached_target: AttachedTarget | None = None
+        self._pending_detach_on_open = False
+        self._pending_detach_start_time = 0.0
+        self._pending_detach_start_close_fraction: float | None = None
 
         if self.enabled:
-            logger.info("Left arm Curobo MotionGen will be initialized lazily on the first manipulation action")
+            if self.config.prewarm_on_start:
+                logger.info("Left arm Curobo MotionGen will be prewarmed before keyboard teleop starts")
+            else:
+                logger.info("Left arm Curobo MotionGen will be initialized lazily on the first manipulation action")
 
     def handle_action(self, action: str) -> None:
         if action == "gripper_open":
+            self._begin_gripper_release()
             self.gripper.command_open()
             return
         if action == "gripper_close":
+            if self._pending_detach_on_open:
+                self._complete_gripper_release(force_open=True, reason="new close command")
             self.gripper.command_close()
             return
         if not self.enabled:
@@ -152,11 +202,16 @@ class LeftArmManipulationController:
         elif action == "lift":
             self._plan_lift()
         elif action == "reset_arm":
+            self._detach_grasp_target()
+            self.gripper.command_open()
             self._plan_reset()
 
     def step(self) -> None:
         self.gripper.step()
+        self._maybe_detach_after_open()
+        self._update_grasp_attachment()
         if self.motion is None:
+            self._follow_attached_target()
             return
 
         was_active = self.is_motion_active()
@@ -170,6 +225,7 @@ class LeftArmManipulationController:
             self._completed_arm_motion = True
             logger.info(f"Left arm motion finished: {label}, success={success}")
         self._last_motion_active = is_active
+        self._follow_attached_target()
 
     def is_motion_active(self) -> bool:
         return self.motion is not None and getattr(self.motion, "cmd_plan", None) is not None
@@ -187,6 +243,44 @@ class LeftArmManipulationController:
         completed = self._completed_arm_motion
         self._completed_arm_motion = False
         return completed
+
+    def prewarm(self) -> None:
+        if not self.enabled or not self.config.prewarm_on_start:
+            return
+        start_time = time.monotonic()
+        logger.info("Prewarming left arm manipulation controller")
+        self._ensure_curobo()
+        self._preload_collision_modules()
+        if self.config.prewarm_interaction_assets:
+            self._preload_interaction_assets()
+        logger.info(f"Left arm manipulation prewarm finished in {time.monotonic() - start_time:.3f}s")
+
+    def _preload_collision_modules(self) -> None:
+        try:
+            from curobo.geom.types import WorldConfig  # noqa: F401
+            from server.motion_generator.mesh_utils import simplify_obstacles_from_stage  # noqa: F401
+        except Exception as exc:
+            logger.warning(f"Failed to preload Curobo collision modules: {exc}")
+
+    def _preload_interaction_assets(self) -> None:
+        warmed = []
+        for label, target in (("grasp", self.config.grasp_target), ("place", self.config.place_target)):
+            context = self._resolve_target_context(target, label)
+            if context is None:
+                continue
+            try:
+                _load_interaction(context.asset_id, context.data_info_dir)
+                _load_object_parameters(context.asset_id, context.data_info_dir)
+                if label == "grasp":
+                    _load_grasp_poses(context.asset_id, context.data_info_dir)
+                    _interaction_elements(context.asset_id, context.data_info_dir, "active", "place")
+                else:
+                    _interaction_elements(context.asset_id, context.data_info_dir, "passive", "place")
+                warmed.append(f"{label}:{context.asset_id}")
+            except Exception as exc:
+                logger.warning(f"Failed to preload {label} interaction assets for {context.asset_id}: {exc}")
+        if warmed:
+            logger.info(f"Preloaded interaction assets: {', '.join(warmed)}")
 
     def _initialize_curobo(self) -> None:
         if self.motion is not None:
@@ -224,9 +318,11 @@ class LeftArmManipulationController:
     def _plan_move_grasp(self) -> None:
         candidates = []
         ignore_paths = []
+        force_paths = []
         if self.config.use_interaction_poses:
             context = self._resolve_target_context(self.config.grasp_target, "grasp")
             if context is not None:
+                force_paths = [context.prim_path] + self._support_collision_paths(context)
                 candidates = self._grasp_candidates_from_interaction(context)
         if not candidates and self.config.fallback_to_object_offset:
             target = self._target_pose_from_object(
@@ -238,16 +334,24 @@ class LeftArmManipulationController:
             if target is not None:
                 position, quaternion, _prim_path = target
                 candidates = [(position, quaternion)]
-        self._plan_candidate_poses(candidates, "move_grasp", ignore_paths, self.config.max_grasp_candidates)
+        self._plan_candidate_poses(
+            candidates,
+            "move_grasp",
+            ignore_paths,
+            self.config.max_grasp_candidates,
+            force_prim_paths=force_paths,
+        )
 
     def _plan_move_place(self) -> None:
         candidates = []
         ignore_paths = []
+        force_paths = []
         if self.config.use_interaction_poses:
             grasp_context = self._resolve_target_context(self.config.grasp_target, "grasp")
             place_context = self._resolve_target_context(self.config.place_target, "place")
             if grasp_context is not None and place_context is not None:
                 ignore_paths = [grasp_context.prim_path]
+                force_paths = [place_context.prim_path]
                 candidates = self._place_candidates_from_interaction(grasp_context, place_context)
         if not candidates and self.config.fallback_to_object_offset:
             target = self._target_pose_from_object(
@@ -259,32 +363,85 @@ class LeftArmManipulationController:
             if target is not None:
                 position, quaternion, _prim_path = target
                 candidates = [(position, quaternion)]
-        self._plan_candidate_poses(candidates, "move_place", ignore_paths, self.config.max_place_candidates)
+        self._plan_candidate_poses(
+            candidates,
+            "move_place",
+            ignore_paths,
+            self.config.max_place_candidates,
+            force_prim_paths=force_paths,
+        )
 
-    def _plan_candidate_poses(self, candidates, label: str, ignore_prim_paths: list[str], max_candidates: int) -> None:
+    def _plan_candidate_poses(
+        self,
+        candidates,
+        label: str,
+        ignore_prim_paths: list[str],
+        max_candidates: int,
+        force_prim_paths: list[str] | None = None,
+    ) -> None:
         if not candidates:
             logger.warning(f"No candidate poses available for {label}")
             return
-        limited = list(candidates)[: max(1, int(max_candidates))]
+        candidate_limit = max(1, min(int(max_candidates), int(self.config.joint_select_candidate_count)))
+        limited = list(candidates)[:candidate_limit]
         logger.info(f"Trying {len(limited)}/{len(candidates)} candidate poses for {label}")
+        best_plan = None
+        best_idx_list = None
+        best_score = float("inf")
+        best_max_delta = float("inf")
+        best_index = -1
         for index, (position_base, quaternion_base) in enumerate(limited):
             if self._plan_to_base_pose(
                 position_base,
                 quaternion_base,
                 label=f"{label}[{index}]",
                 ignore_prim_paths=ignore_prim_paths,
+                force_prim_paths=force_prim_paths or [],
             ):
-                self.active_label = label
-                return
-        logger.warning(f"Curobo failed all candidate poses for {label}")
+                score, max_delta = self._current_plan_joint_score()
+                logger.info(f"{label}[{index}] joint-change score={score:.3f}, max_delta={max_delta:.3f}")
+                if score < best_score:
+                    best_plan = self.motion.cmd_plan
+                    best_idx_list = list(getattr(self.motion, "idx_list", []) or [])
+                    best_score = score
+                    best_max_delta = max_delta
+                    best_index = index
+        if best_plan is None:
+            logger.warning(f"Curobo failed all candidate poses for {label}")
+            return
 
-    def _plan_to_base_pose(self, position_base, quaternion_base, label: str, ignore_prim_paths=None) -> bool:
+        self.motion.cmd_plan = best_plan
+        self.motion.idx_list = best_idx_list or []
+        self.motion.cmd_idx = 0
+        self.active_label = label
+        threshold = float(self.config.joint_select_reject_threshold)
+        if best_max_delta > threshold:
+            logger.warning(
+                f"Selected {label}[{best_index}] despite large joint delta: "
+                f"max_delta={best_max_delta:.3f}, threshold={threshold:.3f}"
+            )
+        else:
+            logger.info(f"Selected {label}[{best_index}] with lower joint change")
+
+    def _plan_to_base_pose(
+        self,
+        position_base,
+        quaternion_base,
+        label: str,
+        ignore_prim_paths=None,
+        force_prim_paths=None,
+    ) -> bool:
         if self.motion is None:
             return False
         self._sync_locked_joints()
         position_base = np.asarray(position_base, dtype=np.float64)
         quaternion_base = _normalize_quat(np.asarray(quaternion_base, dtype=np.float64))
-        self._load_local_collision_world(position_base, ignore_prim_paths=ignore_prim_paths or [])
+        self.motion.cmd_plan = None
+        self._load_local_collision_world(
+            position_base,
+            ignore_prim_paths=ignore_prim_paths or [],
+            force_prim_paths=force_prim_paths or [],
+        )
         self.motion.target = _make_target_xform(position_base, quaternion_base)
         self.motion.caculate_ik_goal()
         self.motion.exclude_js(self.left_arm_joint_names)
@@ -295,6 +452,35 @@ class LeftArmManipulationController:
         self.active_label = label
         logger.info(f"Curobo planned left arm motion: {label}")
         return True
+
+    def _current_plan_joint_score(self) -> tuple[float, float]:
+        if self.motion is None or getattr(self.motion, "cmd_plan", None) is None:
+            return float("inf"), float("inf")
+        plan = self.motion.cmd_plan
+        joint_names = list(plan.joint_names)
+        if not joint_names:
+            return float("inf"), float("inf")
+        positions = plan.position.detach().cpu().numpy()
+        if positions.ndim != 2 or len(positions) == 0:
+            return float("inf"), float("inf")
+        current_all = self.articulation.get_joint_positions()
+        if current_all is None:
+            return float("inf"), float("inf")
+        current = []
+        for joint_name in joint_names:
+            try:
+                current.append(float(current_all[self.articulation.get_dof_index(joint_name)]))
+            except Exception:
+                current.append(float(positions[0, len(current)]))
+        current = np.asarray(current, dtype=np.float64)
+        final_delta = np.abs(_wrap_joint_delta(positions[-1] - current))
+        if len(positions) > 1:
+            path_delta = np.sum(np.abs(_wrap_joint_delta(np.diff(positions, axis=0))), axis=0)
+        else:
+            path_delta = np.zeros_like(final_delta)
+        weights = _fit_weights(self.config.joint_delta_weights, len(joint_names))
+        score = float(np.sum(weights * final_delta) + float(self.config.joint_select_path_weight) * np.sum(weights * path_delta))
+        return score, float(np.max(final_delta))
 
     def _plan_lift(self) -> None:
         if self.motion is None:
@@ -307,12 +493,63 @@ class LeftArmManipulationController:
         if current_quaternion_base is None:
             current_quaternion_base = np.asarray(self.config.empty_quaternion_base, dtype=np.float64)
         lift_offset = np.asarray(self.config.lift_offset_base, dtype=np.float64)
-        lift_goal_position_base = current_position_base + lift_offset
         ignore_paths = []
+        force_paths = []
         grasp_context = self._resolve_target_context(self.config.grasp_target, "grasp")
         if grasp_context is not None:
             ignore_paths.append(grasp_context.prim_path)
-        self._load_local_collision_world(lift_goal_position_base, ignore_prim_paths=ignore_paths)
+            if self.config.lift_force_support_collision:
+                force_paths.extend(self._support_collision_paths(grasp_context))
+        lift_offset = self._adjust_lift_offset_for_attached_clearance(lift_offset)
+        lift_goal_position_base = current_position_base + lift_offset
+        if not self._try_plan_lift(
+            current_position_base,
+            current_quaternion_base,
+            lift_offset,
+            lift_goal_position_base,
+            ignore_paths,
+            force_paths,
+            empty_collision_world=False,
+        ):
+            if not self.config.lift_retry_without_collision:
+                logger.warning("Curobo failed to plan left arm lift")
+                return
+            logger.warning("Retrying left arm lift with empty collision world")
+            if not self._try_plan_lift(
+                current_position_base,
+                current_quaternion_base,
+                lift_offset,
+                lift_goal_position_base,
+                ignore_paths,
+                force_paths=[],
+                empty_collision_world=True,
+            ):
+                logger.warning("Curobo failed to plan left arm lift")
+                return
+        self.active_label = "lift"
+        logger.info("Curobo planned left arm lift with partial path constraint")
+
+    def _try_plan_lift(
+        self,
+        current_position_base,
+        current_quaternion_base,
+        lift_offset,
+        lift_goal_position_base,
+        ignore_paths,
+        force_paths,
+        empty_collision_world: bool,
+    ) -> bool:
+        if self.motion is None:
+            return False
+        self.motion.cmd_plan = None
+        if empty_collision_world:
+            self._load_empty_collision_world()
+        else:
+            self._load_local_collision_world(
+                lift_goal_position_base,
+                ignore_prim_paths=ignore_paths,
+                force_prim_paths=force_paths,
+            )
         self.motion.target = _make_target_xform(current_position_base, current_quaternion_base)
         lift = list(lift_offset) + [1.0, 0.0, 0.0, 0.0]
         self.motion.caculate_ik_goal(
@@ -322,11 +559,7 @@ class LeftArmManipulationController:
             from_current_pose=True,
         )
         self.motion.exclude_js(self.left_arm_joint_names)
-        if self.motion.cmd_plan is None:
-            logger.warning("Curobo failed to plan left arm lift")
-            return
-        self.active_label = "lift"
-        logger.info("Curobo planned left arm lift with partial path constraint")
+        return self.motion.cmd_plan is not None
 
     def _plan_reset(self) -> None:
         if self.motion is None:
@@ -340,13 +573,22 @@ class LeftArmManipulationController:
         self.active_label = "reset_arm"
         logger.info("Curobo planned left arm reset")
 
-    def _load_local_collision_world(self, goal_position_base, ignore_prim_paths: list[str]) -> None:
+    def _load_local_collision_world(
+        self,
+        goal_position_base,
+        ignore_prim_paths: list[str],
+        force_prim_paths: list[str] | None = None,
+    ) -> None:
         if self.motion is None or not self.config.local_collision.enabled:
             return
         from curobo.geom.types import WorldConfig
         from server.motion_generator.mesh_utils import simplify_obstacles_from_stage
 
-        local_paths = self._select_local_collision_paths(goal_position_base, ignore_prim_paths)
+        local_paths = self._select_local_collision_paths(
+            goal_position_base,
+            ignore_prim_paths,
+            force_prim_paths=force_prim_paths or [],
+        )
         if not local_paths:
             world_config = WorldConfig()
         else:
@@ -377,6 +619,20 @@ class LeftArmManipulationController:
         self.motion.motion_gen.graph_planner.reset_buffer()
         logger.info(f"Loaded local Curobo collision world with {len(getattr(obstacle_world, 'objects', []))} objects")
 
+    def _load_empty_collision_world(self) -> None:
+        if self.motion is None:
+            return
+        from curobo.geom.types import WorldConfig
+
+        obstacle_world = WorldConfig().get_collision_check_world()
+        self.motion.world_cfg = obstacle_world
+        self.motion.motion_gen.world_coll_checker.load_collision_model(
+            obstacle_world,
+            fix_cache_reference=self.motion.motion_gen.use_cuda_graph,
+        )
+        self.motion.motion_gen.graph_planner.reset_buffer()
+        logger.info("Loaded empty Curobo collision world")
+
     def _sync_locked_joints(self) -> None:
         if self.motion is None:
             return
@@ -398,7 +654,12 @@ class LeftArmManipulationController:
         except Exception as exc:
             logger.warning(f"Failed to update Curobo kinematics locked joints: {exc}")
 
-    def _select_local_collision_paths(self, goal_position_base, ignore_prim_paths: list[str]) -> list[str]:
+    def _select_local_collision_paths(
+        self,
+        goal_position_base,
+        ignore_prim_paths: list[str],
+        force_prim_paths: list[str] | None = None,
+    ) -> list[str]:
         try:
             import omni.usd
             from pxr import Usd, UsdGeom
@@ -414,6 +675,8 @@ class LeftArmManipulationController:
         bbox_cache = UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_], useExtentsHint=True)
         include_prefixes = tuple(self.config.local_collision.include_prefixes)
         ignore_prim_paths = [str(path) for path in ignore_prim_paths if path]
+        forced_mesh_paths = self._mesh_paths_for_prim_paths(stage, force_prim_paths or [], ignore_prim_paths)
+        forced_set = set(forced_mesh_paths)
         candidates = []
         for prim in stage.Traverse():
             if not prim.IsA(UsdGeom.Mesh):
@@ -422,6 +685,8 @@ class LeftArmManipulationController:
             if prim_path.startswith(self.robot_cfg.robot_prim_path):
                 continue
             if any(prim_path.startswith(path) for path in ignore_prim_paths):
+                continue
+            if prim_path in forced_set:
                 continue
             if include_prefixes and not any(prim_path.startswith(prefix) for prefix in include_prefixes):
                 continue
@@ -437,7 +702,159 @@ class LeftArmManipulationController:
             except Exception:
                 continue
         candidates.sort(key=lambda item: item[0])
-        return [path for _distance, path in candidates[: int(self.config.local_collision.max_obstacles)]]
+        max_obstacles = int(self.config.local_collision.max_obstacles)
+        remaining_count = max(0, max_obstacles - len(forced_mesh_paths))
+        return forced_mesh_paths[:max_obstacles] + [path for _distance, path in candidates[:remaining_count]]
+
+    def _mesh_paths_for_prim_paths(self, stage, prim_paths: list[str], ignore_prim_paths: list[str]) -> list[str]:
+        try:
+            from pxr import Usd, UsdGeom
+        except Exception:
+            return []
+
+        mesh_paths = []
+        seen = set()
+        for prim_path in [str(path) for path in prim_paths if path]:
+            if any(prim_path.startswith(ignore_path) for ignore_path in ignore_prim_paths):
+                continue
+            root = stage.GetPrimAtPath(prim_path)
+            if not root or not root.IsValid():
+                continue
+            for prim in Usd.PrimRange(root):
+                path = str(prim.GetPath())
+                if path in seen:
+                    continue
+                if path.startswith(self.robot_cfg.robot_prim_path):
+                    continue
+                if any(path.startswith(ignore_path) for ignore_path in ignore_prim_paths):
+                    continue
+                if prim.IsA(UsdGeom.Mesh):
+                    seen.add(path)
+                    mesh_paths.append(path)
+        return mesh_paths
+
+    def _support_collision_paths(self, context: TargetContext) -> list[str]:
+        if not self.config.grasp_support_collision:
+            return []
+        try:
+            import omni.usd
+            from pxr import Usd, UsdGeom
+        except Exception as exc:
+            logger.warning(f"Cannot select grasp support collision paths: {exc}")
+            return []
+
+        stage = omni.usd.get_context().get_stage()
+        target_prim = stage.GetPrimAtPath(context.prim_path)
+        if not target_prim or not target_prim.IsValid():
+            return []
+
+        bbox_cache = UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_], useExtentsHint=True)
+        try:
+            target_box = bbox_cache.ComputeWorldBound(target_prim).ComputeAlignedBox()
+            target_min = np.array(target_box.GetMin(), dtype=np.float64)
+            target_max = np.array(target_box.GetMax(), dtype=np.float64)
+        except Exception:
+            return []
+
+        xy_margin = float(self.config.grasp_support_xy_margin)
+        z_margin = float(self.config.grasp_support_z_margin)
+        candidates = []
+        for prim in stage.Traverse():
+            if not prim.IsA(UsdGeom.Mesh):
+                continue
+            prim_path = str(prim.GetPath())
+            if prim_path.startswith(self.robot_cfg.robot_prim_path):
+                continue
+            if prim_path.startswith(context.prim_path):
+                continue
+            try:
+                box = bbox_cache.ComputeWorldBound(prim).ComputeAlignedBox()
+                min_point = np.array(box.GetMin(), dtype=np.float64)
+                max_point = np.array(box.GetMax(), dtype=np.float64)
+            except Exception:
+                continue
+            if max_point[2] > target_min[2] + z_margin:
+                continue
+            if max_point[2] < target_min[2] - 0.5:
+                continue
+            overlaps_xy = (
+                max_point[0] >= target_min[0] - xy_margin
+                and min_point[0] <= target_max[0] + xy_margin
+                and max_point[1] >= target_min[1] - xy_margin
+                and min_point[1] <= target_max[1] + xy_margin
+            )
+            if not overlaps_xy:
+                continue
+            z_gap = abs(float(target_min[2] - max_point[2]))
+            xy_center = 0.5 * (min_point[:2] + max_point[:2])
+            target_center = 0.5 * (target_min[:2] + target_max[:2])
+            xy_distance = float(np.linalg.norm(xy_center - target_center))
+            candidates.append((z_gap + 0.1 * xy_distance, prim_path))
+
+        candidates.sort(key=lambda item: item[0])
+        paths = [path for _score, path in candidates[: int(self.config.grasp_max_support_obstacles)]]
+        if paths:
+            logger.info(f"Forced grasp support collision paths: {paths}")
+        return paths
+
+    def _support_top_z(self, prim_paths: list[str]) -> float | None:
+        tops = []
+        for prim_path in prim_paths:
+            bounds = self._world_aabb(prim_path)
+            if bounds is not None:
+                _min_point, max_point = bounds
+                tops.append(float(max_point[2]))
+        if not tops:
+            return None
+        return float(max(tops))
+
+    def _world_aabb(self, prim_path: str) -> tuple[np.ndarray, np.ndarray] | None:
+        try:
+            import omni.usd
+            from pxr import Usd, UsdGeom
+        except Exception:
+            return None
+
+        stage = omni.usd.get_context().get_stage()
+        prim = stage.GetPrimAtPath(prim_path)
+        if not prim or not prim.IsValid():
+            return None
+        try:
+            bbox_cache = UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_], useExtentsHint=True)
+            box = bbox_cache.ComputeWorldBound(prim).ComputeAlignedBox()
+            return np.array(box.GetMin(), dtype=np.float64), np.array(box.GetMax(), dtype=np.float64)
+        except Exception:
+            return None
+
+    def _target_local_bbox_corners(self, prim_path: str, pose_world: np.ndarray) -> np.ndarray | None:
+        bounds = self._world_aabb(prim_path)
+        if bounds is None:
+            return None
+        min_point, max_point = bounds
+        corners_world = _aabb_corners(min_point, max_point)
+        corners_world_h = np.concatenate([corners_world, np.ones((len(corners_world), 1), dtype=np.float64)], axis=1)
+        corners_local_h = (np.linalg.inv(pose_world) @ corners_world_h.T).T
+        return corners_local_h[:, :3]
+
+    def _adjust_lift_offset_for_attached_clearance(self, lift_offset: np.ndarray) -> np.ndarray:
+        if self._attached_target is None or self._attached_target.support_top_z is None:
+            return lift_offset
+        if self._attached_target.local_bbox_corners is None:
+            return lift_offset
+        if lift_offset.shape[0] != 3 or lift_offset[2] <= 0.0:
+            return lift_offset
+        tcp_pose = self._current_tcp_pose_world()
+        if tcp_pose is None:
+            return lift_offset
+        object_pose = tcp_pose @ self._attached_target.tcp_to_object
+        min_z = _transformed_points_min_z(object_pose, self._attached_target.local_bbox_corners)
+        required = float(self._attached_target.support_top_z) + float(self.config.attached_support_clearance) - min_z
+        if required <= lift_offset[2]:
+            return lift_offset
+        adjusted = lift_offset.copy()
+        adjusted[2] = required
+        logger.info(f"Adjusted lift z offset for attached-object clearance: {lift_offset[2]:.3f} -> {adjusted[2]:.3f}")
+        return adjusted
 
     def _target_pose_from_object(self, target_spec, offset_base, quaternion_base, label: str):
         prim_path = self._resolve_target_prim_path(target_spec)
@@ -460,17 +877,85 @@ class LeftArmManipulationController:
             logger.warning(f"No interaction grasp poses found for {context.asset_id}")
             return []
         grasp_poses = grasp_poses.copy()
+        input_count = len(grasp_poses)
         if self.config.grasp_upper_percentile < 100.0 and len(grasp_poses) > 1:
             y_values = grasp_poses[:, 1, 3]
             upper = np.percentile(y_values, float(self.config.grasp_upper_percentile))
             grasp_poses = grasp_poses[y_values <= upper]
         world_poses = context.pose_world[np.newaxis, ...] @ grasp_poses
-        if self.config.disable_upside_down_grasp and len(world_poses) > 0:
-            world_poses = world_poses[world_poses[:, 2, 2] > 0.0]
         if len(world_poses) == 0:
             return []
-        world_poses = self._sort_pose_candidates(world_poses)
+        world_poses = self._filter_and_sort_grasp_candidates(grasp_poses, world_poses)
+        logger.info(f"Galbot grasp candidates kept/sorted: {len(world_poses)}/{input_count}")
         return [self._world_matrix_to_base_pose(pose) for pose in world_poses]
+
+    def _filter_and_sort_grasp_candidates(self, grasp_poses: np.ndarray, world_poses: np.ndarray) -> np.ndarray:
+        if len(world_poses) == 0:
+            return world_poses
+
+        mask = np.ones(len(world_poses), dtype=bool)
+        if self.config.disable_upside_down_grasp:
+            mask &= world_poses[:, 2, 2] > 0.0
+
+        base_rotation = self._base_pose_matrix()[:3, :3]
+        approach_world = world_poses[:, :3, 0]
+        approach_base = (base_rotation.T @ approach_world.T).T
+        if not self._allows_top_down_grasp_filter():
+            vertical_cos = np.cos(np.deg2rad(float(self.config.grasp_vertical_threshold_deg)))
+            mask &= approach_world[:, 2] > -vertical_cos
+        if self.config.grasp_reject_towards_robot:
+            mask &= approach_base[:, 0] >= float(self.config.grasp_towards_robot_max_dot)
+
+        if not np.any(mask):
+            logger.warning("Galbot grasp approach filter removed all candidates; falling back to upside-down-only filter")
+            mask = np.ones(len(world_poses), dtype=bool)
+            if self.config.disable_upside_down_grasp:
+                mask &= world_poses[:, 2, 2] > 0.0
+        if not np.any(mask):
+            mask = np.ones(len(world_poses), dtype=bool)
+
+        grasp_poses = grasp_poses[mask]
+        world_poses = world_poses[mask]
+        approach_base = approach_base[mask]
+
+        current_tcp = self._current_tcp_position_world()
+        if current_tcp is None:
+            current_tcp = world_poses[0, :3, 3]
+        distance_cost = _normalized_cost(np.linalg.norm(world_poses[:, :3, 3] - current_tcp[np.newaxis, :], axis=1))
+        approach_cost = _normalized_cost(1.0 - approach_base[:, 0])
+        upright_cost = _normalized_cost(1.0 - world_poses[:, 2, 2])
+
+        canonical_height = grasp_poses[:, 1, 3]
+        preferred_height = np.percentile(
+            canonical_height,
+            float(np.clip(self.config.grasp_preferred_height_percentile, 0.0, 100.0)),
+        )
+        height_cost = _normalized_cost(np.abs(canonical_height - preferred_height))
+        orientation_cost = self._orientation_cost_to_current_tcp(world_poses)
+
+        score = (
+            float(self.config.grasp_distance_weight) * distance_cost
+            + float(self.config.grasp_approach_weight) * approach_cost
+            + float(self.config.grasp_height_weight) * height_cost
+            + float(self.config.grasp_orientation_weight) * orientation_cost
+            + float(self.config.grasp_upright_weight) * upright_cost
+        )
+        return world_poses[np.argsort(score)]
+
+    def _allows_top_down_grasp_filter(self) -> bool:
+        return float(self.config.grasp_vertical_threshold_deg) >= 90.0
+
+    def _orientation_cost_to_current_tcp(self, poses_world: np.ndarray) -> np.ndarray:
+        current_pose = self._current_tcp_pose_world()
+        if current_pose is None or len(poses_world) == 0:
+            return np.zeros(len(poses_world), dtype=np.float64)
+        current_rotation = current_pose[:3, :3]
+        costs = []
+        for pose in poses_world:
+            delta = current_rotation.T @ pose[:3, :3]
+            cos_angle = np.clip((float(np.trace(delta)) - 1.0) * 0.5, -1.0, 1.0)
+            costs.append(np.arccos(cos_angle) / np.pi)
+        return np.asarray(costs, dtype=np.float64)
 
     def _place_candidates_from_interaction(
         self,
@@ -533,6 +1018,239 @@ class LeftArmManipulationController:
             return []
         world_poses = self._sort_pose_candidates(np.asarray(candidate_world_poses, dtype=np.float64))
         return [self._world_matrix_to_base_pose(pose) for pose in world_poses]
+
+    def _update_grasp_attachment(self) -> None:
+        if (
+            self.enabled
+            and self.config.attach_on_close
+            and not self._pending_detach_on_open
+            and self.gripper.consume_holding_started()
+        ):
+            self._attach_grasp_target()
+
+    def _begin_gripper_release(self) -> None:
+        if self._attached_target is None:
+            self._pending_detach_on_open = False
+            self._pending_detach_start_time = 0.0
+            self._pending_detach_start_close_fraction = None
+            return
+        self._pending_detach_on_open = True
+        self._pending_detach_start_time = time.monotonic()
+        self._pending_detach_start_close_fraction = self.gripper.close_fraction()
+        logger.info("Delaying grasp target detach until the gripper opens")
+
+    def _maybe_detach_after_open(self) -> None:
+        if not self._pending_detach_on_open:
+            return
+        if self._attached_target is None:
+            self._pending_detach_on_open = False
+            self._pending_detach_start_time = 0.0
+            self._pending_detach_start_close_fraction = None
+            return
+        close_fraction = self.gripper.close_fraction()
+        detach_threshold = float(self.config.detach_on_open_close_fraction)
+        if self._pending_detach_start_close_fraction is not None:
+            relative_threshold = self._pending_detach_start_close_fraction - float(
+                self.config.detach_on_open_fraction_drop
+            )
+            detach_threshold = min(detach_threshold, max(0.0, relative_threshold))
+        opened_enough = (
+            close_fraction is not None
+            and close_fraction <= detach_threshold
+        )
+        timed_out = (
+            float(self.config.detach_on_open_timeout_sec) > 0.0
+            and time.monotonic() - self._pending_detach_start_time
+            >= float(self.config.detach_on_open_timeout_sec)
+        )
+        if timed_out and not opened_enough:
+            self._complete_gripper_release(force_open=True, reason="open timeout")
+            return
+        if opened_enough or self.gripper.mode == "idle":
+            if close_fraction is None:
+                logger.info("Releasing grasp target after gripper open")
+            else:
+                logger.info(
+                    f"Releasing grasp target at gripper close fraction {close_fraction:.3f} "
+                    f"(threshold={detach_threshold:.3f})"
+                )
+            self._complete_gripper_release(force_open=False, reason="gripper opened")
+
+    def _complete_gripper_release(self, force_open: bool, reason: str) -> None:
+        if force_open:
+            logger.info(f"Force-completing gripper release: {reason}")
+            self.gripper.force_open_pose()
+        self._detach_grasp_target()
+
+    def _attach_grasp_target(self) -> None:
+        if self._attached_target is not None:
+            return
+        context = self._resolve_target_context(self.config.grasp_target, "grasp")
+        tcp_pose = self._current_tcp_pose_world()
+        if context is None or tcp_pose is None:
+            return
+
+        close_fraction = self.gripper.close_fraction()
+        if (
+            close_fraction is not None
+            and float(self.config.attach_max_closed_fraction) > 0.0
+            and close_fraction >= float(self.config.attach_max_closed_fraction)
+        ):
+            logger.warning(
+                f"Skip grasp target attachment: gripper closed fraction is {close_fraction:.3f} "
+                f"(threshold={self.config.attach_max_closed_fraction:.3f}); likely empty close"
+            )
+            return
+
+        distance = float(np.linalg.norm(context.pose_world[:3, 3] - tcp_pose[:3, 3]))
+        if distance > float(self.config.attach_distance_threshold):
+            logger.warning(
+                f"Skip grasp target attachment: target is {distance:.3f}m from TCP "
+                f"(threshold={self.config.attach_distance_threshold:.3f}m)"
+            )
+            return
+
+        support_paths = self._support_collision_paths(context)
+        support_top_z = self._support_top_z(support_paths)
+        kinematic_attrs = self._set_target_kinematic(context.prim_path, True)
+        collision_attrs = []
+        if self.config.disable_attached_target_collisions:
+            collision_attrs = self._set_target_collision_enabled(context.prim_path, False)
+        self._zero_target_velocities(context.prim_path)
+        self._attached_target = AttachedTarget(
+            prim_path=context.prim_path,
+            tcp_to_object=np.linalg.inv(tcp_pose) @ context.pose_world,
+            kinematic_attrs=kinematic_attrs,
+            collision_attrs=collision_attrs,
+            local_bbox_corners=self._target_local_bbox_corners(context.prim_path, context.pose_world),
+            support_top_z=support_top_z,
+        )
+        logger.info(f"Attached grasp target to left TCP follow: {context.prim_path}")
+
+    def _follow_attached_target(self) -> None:
+        if self._attached_target is None:
+            return
+        tcp_pose = self._current_tcp_pose_world()
+        if tcp_pose is None:
+            return
+        object_pose = tcp_pose @ self._attached_target.tcp_to_object
+        try:
+            _xform_prim(self._attached_target.prim_path).set_world_pose(
+                position=object_pose[:3, 3],
+                orientation=_matrix_to_quat_wxyz(object_pose[:3, :3]),
+            )
+            self._zero_target_velocities(self._attached_target.prim_path)
+        except Exception as exc:
+            logger.warning(f"Failed to follow attached grasp target; detaching: {exc}")
+            self._detach_grasp_target()
+
+    def _detach_grasp_target(self) -> None:
+        self._pending_detach_on_open = False
+        self._pending_detach_start_time = 0.0
+        self._pending_detach_start_close_fraction = None
+        if self._attached_target is None:
+            return
+        prim_path = self._attached_target.prim_path
+        for attr, previous_value in self._attached_target.collision_attrs:
+            try:
+                if previous_value is None:
+                    attr.Clear()
+                else:
+                    attr.Set(previous_value)
+            except Exception:
+                continue
+        for attr, previous_value in self._attached_target.kinematic_attrs:
+            try:
+                if previous_value is None:
+                    attr.Clear()
+                else:
+                    attr.Set(previous_value)
+            except Exception:
+                continue
+        self._zero_target_velocities(prim_path)
+        self._attached_target = None
+        logger.info(f"Detached grasp target from left TCP follow: {prim_path}")
+
+    def _set_target_kinematic(self, prim_path: str, enabled: bool) -> list[tuple[Any, Any]]:
+        try:
+            import omni.usd
+            from pxr import UsdPhysics
+        except Exception:
+            return []
+
+        stage = omni.usd.get_context().get_stage()
+        root = stage.GetPrimAtPath(prim_path)
+        if not root or not root.IsValid():
+            return []
+
+        saved_attrs = []
+        for prim in _iter_prim_tree(root):
+            attr = prim.GetAttribute("physics:kinematicEnabled")
+            if not attr or not attr.IsValid():
+                try:
+                    if prim.HasAPI(UsdPhysics.RigidBodyAPI):
+                        attr = UsdPhysics.RigidBodyAPI(prim).CreateKinematicEnabledAttr()
+                    else:
+                        continue
+                except Exception:
+                    continue
+            try:
+                saved_attrs.append((attr, attr.Get()))
+                attr.Set(bool(enabled))
+            except Exception:
+                continue
+        return saved_attrs
+
+    def _set_target_collision_enabled(self, prim_path: str, enabled: bool) -> list[tuple[Any, Any]]:
+        try:
+            import omni.usd
+            from pxr import UsdPhysics
+        except Exception:
+            return []
+
+        stage = omni.usd.get_context().get_stage()
+        root = stage.GetPrimAtPath(prim_path)
+        if not root or not root.IsValid():
+            return []
+
+        saved_attrs = []
+        for prim in _iter_prim_tree(root):
+            attr = prim.GetAttribute("physics:collisionEnabled")
+            if not attr or not attr.IsValid():
+                try:
+                    if prim.HasAPI(UsdPhysics.CollisionAPI):
+                        attr = UsdPhysics.CollisionAPI(prim).CreateCollisionEnabledAttr()
+                    else:
+                        continue
+                except Exception:
+                    continue
+            try:
+                saved_attrs.append((attr, attr.Get()))
+                attr.Set(bool(enabled))
+            except Exception:
+                continue
+        return saved_attrs
+
+    def _zero_target_velocities(self, prim_path: str) -> None:
+        try:
+            import omni.usd
+            from pxr import Gf
+        except Exception:
+            return
+
+        stage = omni.usd.get_context().get_stage()
+        root = stage.GetPrimAtPath(prim_path)
+        if not root or not root.IsValid():
+            return
+        zero = Gf.Vec3f(0.0, 0.0, 0.0)
+        for prim in _iter_prim_tree(root):
+            for attr_name in ("physics:velocity", "physics:angularVelocity"):
+                attr = prim.GetAttribute(attr_name)
+                if attr and attr.IsValid():
+                    try:
+                        attr.Set(zero)
+                    except Exception:
+                        continue
 
     def _resolve_target_prim_path(self, target_spec) -> str:
         if not target_spec:
@@ -685,6 +1403,10 @@ def manipulation_config_from_task(task_info: dict) -> ManipulationConfig:
     return ManipulationConfig(
         enabled=bool(raw.get("enabled", True)),
         arm=str(raw.get("arm", "left")),
+        prewarm_on_start=bool(raw.get("prewarm_on_start", ManipulationConfig.prewarm_on_start)),
+        prewarm_interaction_assets=bool(
+            raw.get("prewarm_interaction_assets", ManipulationConfig.prewarm_interaction_assets)
+        ),
         empty_position_base=_tuple3(raw.get("empty_position_base"), ManipulationConfig.empty_position_base),
         empty_quaternion_base=_tuple4(raw.get("empty_quaternion_base"), ManipulationConfig.empty_quaternion_base),
         empty_use_current_orientation=bool(
@@ -709,6 +1431,74 @@ def manipulation_config_from_task(task_info: dict) -> ManipulationConfig:
         grasp_upper_percentile=float(raw.get("grasp_upper_percentile", ManipulationConfig.grasp_upper_percentile)),
         disable_upside_down_grasp=bool(
             raw.get("disable_upside_down_grasp", ManipulationConfig.disable_upside_down_grasp)
+        ),
+        grasp_vertical_threshold_deg=float(
+            raw.get("grasp_vertical_threshold_deg", ManipulationConfig.grasp_vertical_threshold_deg)
+        ),
+        grasp_reject_towards_robot=bool(
+            raw.get("grasp_reject_towards_robot", ManipulationConfig.grasp_reject_towards_robot)
+        ),
+        grasp_towards_robot_max_dot=float(
+            raw.get("grasp_towards_robot_max_dot", ManipulationConfig.grasp_towards_robot_max_dot)
+        ),
+        grasp_preferred_height_percentile=float(
+            raw.get("grasp_preferred_height_percentile", ManipulationConfig.grasp_preferred_height_percentile)
+        ),
+        grasp_distance_weight=float(raw.get("grasp_distance_weight", ManipulationConfig.grasp_distance_weight)),
+        grasp_approach_weight=float(raw.get("grasp_approach_weight", ManipulationConfig.grasp_approach_weight)),
+        grasp_height_weight=float(raw.get("grasp_height_weight", ManipulationConfig.grasp_height_weight)),
+        grasp_orientation_weight=float(
+            raw.get("grasp_orientation_weight", ManipulationConfig.grasp_orientation_weight)
+        ),
+        grasp_upright_weight=float(raw.get("grasp_upright_weight", ManipulationConfig.grasp_upright_weight)),
+        grasp_support_collision=bool(
+            raw.get("grasp_support_collision", ManipulationConfig.grasp_support_collision)
+        ),
+        grasp_support_z_margin=float(raw.get("grasp_support_z_margin", ManipulationConfig.grasp_support_z_margin)),
+        grasp_support_xy_margin=float(raw.get("grasp_support_xy_margin", ManipulationConfig.grasp_support_xy_margin)),
+        grasp_max_support_obstacles=int(
+            raw.get("grasp_max_support_obstacles", ManipulationConfig.grasp_max_support_obstacles)
+        ),
+        attach_on_close=bool(raw.get("attach_on_close", ManipulationConfig.attach_on_close)),
+        attach_distance_threshold=float(
+            raw.get("attach_distance_threshold", ManipulationConfig.attach_distance_threshold)
+        ),
+        attach_max_closed_fraction=float(
+            raw.get("attach_max_closed_fraction", ManipulationConfig.attach_max_closed_fraction)
+        ),
+        detach_on_open_close_fraction=float(
+            raw.get("detach_on_open_close_fraction", ManipulationConfig.detach_on_open_close_fraction)
+        ),
+        detach_on_open_fraction_drop=float(
+            raw.get("detach_on_open_fraction_drop", ManipulationConfig.detach_on_open_fraction_drop)
+        ),
+        detach_on_open_timeout_sec=float(
+            raw.get("detach_on_open_timeout_sec", ManipulationConfig.detach_on_open_timeout_sec)
+        ),
+        disable_attached_target_collisions=bool(
+            raw.get("disable_attached_target_collisions", ManipulationConfig.disable_attached_target_collisions)
+        ),
+        attached_support_clearance=float(
+            raw.get("attached_support_clearance", ManipulationConfig.attached_support_clearance)
+        ),
+        joint_select_candidate_count=int(
+            raw.get("joint_select_candidate_count", ManipulationConfig.joint_select_candidate_count)
+        ),
+        joint_select_reject_threshold=float(
+            raw.get("joint_select_reject_threshold", ManipulationConfig.joint_select_reject_threshold)
+        ),
+        joint_select_path_weight=float(
+            raw.get("joint_select_path_weight", ManipulationConfig.joint_select_path_weight)
+        ),
+        joint_delta_weights=_tuple_float(
+            raw.get("joint_delta_weights"),
+            ManipulationConfig.joint_delta_weights,
+        ),
+        lift_force_support_collision=bool(
+            raw.get("lift_force_support_collision", ManipulationConfig.lift_force_support_collision)
+        ),
+        lift_retry_without_collision=bool(
+            raw.get("lift_retry_without_collision", ManipulationConfig.lift_retry_without_collision)
         ),
         local_collision=LocalCollisionConfig(
             enabled=bool(collision.get("enabled", True)),
@@ -788,6 +1578,43 @@ def _matrix_to_quat_wxyz(matrix) -> np.ndarray:
     return _normalize_quat(np.array([w, x, y, z], dtype=np.float64))
 
 
+def _normalized_cost(values) -> np.ndarray:
+    values = np.asarray(values, dtype=np.float64)
+    if len(values) == 0:
+        return values
+    value_min = float(np.min(values))
+    value_max = float(np.max(values))
+    if value_max - value_min < 1e-8:
+        return np.zeros_like(values)
+    return (values - value_min) / (value_max - value_min)
+
+
+def _aabb_corners(min_point: np.ndarray, max_point: np.ndarray) -> np.ndarray:
+    min_point = np.asarray(min_point, dtype=np.float64)
+    max_point = np.asarray(max_point, dtype=np.float64)
+    return np.array(
+        [
+            [x, y, z]
+            for x in (min_point[0], max_point[0])
+            for y in (min_point[1], max_point[1])
+            for z in (min_point[2], max_point[2])
+        ],
+        dtype=np.float64,
+    )
+
+
+def _transformed_points_min_z(transform: np.ndarray, points: np.ndarray) -> float:
+    points = np.asarray(points, dtype=np.float64)
+    points_h = np.concatenate([points, np.ones((len(points), 1), dtype=np.float64)], axis=1)
+    transformed = (np.asarray(transform, dtype=np.float64) @ points_h.T).T
+    return float(np.min(transformed[:, 2]))
+
+
+def _wrap_joint_delta(delta) -> np.ndarray:
+    delta = np.asarray(delta, dtype=np.float64)
+    return (delta + np.pi) % (2.0 * np.pi) - np.pi
+
+
 def _lift_path_constraint(lift_offset) -> list[float]:
     """Hold translation axes orthogonal to the requested base-frame lift."""
     offset = np.abs(np.asarray(lift_offset, dtype=np.float64))
@@ -813,6 +1640,12 @@ def _prim_path_exists(prim_path: str) -> bool:
         return bool(prim and prim.IsValid())
     except Exception:
         return False
+
+
+def _iter_prim_tree(root_prim):
+    yield root_prim
+    for child in root_prim.GetChildren():
+        yield from _iter_prim_tree(child)
 
 
 def _normalized_lookup_token(value: str) -> str:
@@ -981,3 +1814,22 @@ def _tuple4(value, default) -> tuple[float, float, float, float]:
     if len(value) != 4:
         raise ValueError("Expected a 4-value quaternion")
     return tuple(float(item) for item in value)
+
+
+def _tuple_float(value, default) -> tuple[float, ...]:
+    if value is None:
+        return tuple(float(item) for item in default)
+    return tuple(float(item) for item in value)
+
+
+def _fit_weights(values, count: int) -> np.ndarray:
+    weights = np.asarray(values, dtype=np.float64)
+    if len(weights) == count:
+        return weights
+    if len(weights) == 0:
+        return np.ones(count, dtype=np.float64)
+    if len(weights) > count:
+        return weights[:count]
+    padded = np.ones(count, dtype=np.float64)
+    padded[: len(weights)] = weights
+    return padded

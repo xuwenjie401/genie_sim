@@ -76,8 +76,10 @@ def read_camera_info(render_product_path: str) -> Dict:
     # Compute and store camera intrinsics matrix (k)
     fx = width * focalLength / horizontalAperture
     fy = height * focalLength / verticalAperture
-    cx = width * 0.5 + camera_info["horizontalOffset"] * width / horizontalAperture
-    cy = height * 0.5 + camera_info["verticalOffset"] * height / verticalAperture
+    # In rendered image coordinates, USD aperture offsets shift the principal point
+    # opposite the authored filmback offset direction.
+    cx = width * 0.5 - camera_info["horizontalOffset"] * width / horizontalAperture
+    cy = height * 0.5 - camera_info["verticalOffset"] * height / verticalAperture
     camera_info["k"] = np.asarray([[fx, 0.0, cx], [0.0, fy, cy], [0.0, 0.0, 1.0]])
     camera_info["r"] = np.eye(N=3, dtype=float)
     camera_info["p"] = np.concatenate((camera_info["k"], np.zeros(shape=[3, 1], dtype=float)), axis=1)

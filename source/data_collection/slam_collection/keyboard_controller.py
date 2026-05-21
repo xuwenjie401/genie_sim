@@ -31,6 +31,8 @@ class KeyboardBaseController:
         self._iface = carb.input.acquire_input_interface()
         key_enum = carb.input.KeyboardInput
         action_keys = {
+            key_enum.B: "record_start",
+            key_enum.N: "record_stop",
             key_enum.H: "empty_move",
             key_enum.J: "move_grasp",
             key_enum.K: "move_place",

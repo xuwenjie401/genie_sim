@@ -1,0 +1,56 @@
+{
+    "bag": "/home/agxi/Datasets/output/galbot_home/galbot_slam_home_b_20260519_202249",
+    "rgb_topic": "/head_front_left_color_rgb",
+    "depth_topic": "/head_front_left_color_depth",
+    "camera_info_topic": "/head_front_left_color_camera_info",
+    "rgb_frame": {
+        "topic": "/head_front_left_color_rgb",
+        "index": 0,
+        "header_stamp": 50.216669285,
+        "bag_timestamp_ns": 1779193370215130445
+    },
+    "depth_frame": {
+        "topic": "/head_front_left_color_depth",
+        "index": 0,
+        "header_stamp": 50.216669285,
+        "bag_timestamp_ns": 1779193370216603102
+    },
+    "rgb_depth_dt_sec": 0.0,
+    "intrinsics": {
+        "width": 640,
+        "height": 480,
+        "fx": 211.2,
+        "fy": 211.2,
+        "cx": 348.80000128,
+        "cy": 240.0,
+        "distortion_model": "plumb_bob",
+        "d": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "source": "/home/agxi/Datasets/output/galbot_home/galbot_slam_home_b_20260519_202249/camera_intrinsics.json"
+    },
+    "depth_scale_to_meters": 1.0,
+    "depth_is_range_converted_to_z": false,
+    "coordinate_frame": "ROS camera optical: +X right, +Y down, +Z forward",
+    "pointcloud": {
+        "path": "/home/agxi/RealityLab/genie_sim/outputs/slam_rgbd_pointcloud/galbot_slam_home_b_20260519_202249/head_front_left_color_frame_000000_50_216669.ply",
+        "point_count": 76800,
+        "image_width": 640,
+        "image_height": 480,
+        "stride": 2,
+        "valid_points_before_downsample": 76800,
+        "min_depth_m": 0.2955816984176636,
+        "max_depth_m": 2.4669604301452637,
+        "mean_depth_m": 1.2669974565505981,
+        "downsampled": false
+    },
+    "mask": {
+        "topic": "",
+        "excluded": false,
+        "present": false
+    }
+}

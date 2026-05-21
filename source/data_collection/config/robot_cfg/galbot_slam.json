@@ -1,0 +1,137 @@
+{
+    "robot": {
+        "robot_name": "galbot_fixed",
+        "base_prim_path": "/galbot_one_golf",
+        "arm_base_prim_path": "/galbot_one_golf/torso_base_link",
+        "arm_base_prim_paths": {
+            "left": "/galbot_one_golf/left_arm_base_link",
+            "right": "/galbot_one_golf/right_arm_base_link"
+        },
+        "arm": "dual",
+        "urdf_name": "/galbot/galbot_fixed_dual.urdf",
+        "robot_description": {
+            "right": "/galbot/galbot_fixed_right.yaml",
+            "left": "/galbot/galbot_fixed_left.yaml"
+        },
+        "robot_usd": "robot/galbot/galbot_slam.usda",
+        "initial_position": [],
+        "dof_nums": 7,
+        "joint_delta_time": 0.01,
+        "lock_joints": [
+            "leg_joint1",
+            "leg_joint2",
+            "leg_joint3",
+            "leg_joint4",
+            "leg_joint5",
+            "head_joint1",
+            "head_joint2"
+        ],
+        "active_arm_joints": {
+            "left": [
+                "left_arm_joint1",
+                "left_arm_joint2",
+                "left_arm_joint3",
+                "left_arm_joint4",
+                "left_arm_joint5",
+                "left_arm_joint6",
+                "left_arm_joint7"
+            ],
+            "right": [
+                "right_arm_joint1",
+                "right_arm_joint2",
+                "right_arm_joint3",
+                "right_arm_joint4",
+                "right_arm_joint5",
+                "right_arm_joint6",
+                "right_arm_joint7"
+            ]
+        },
+        "init_joint_position": []
+    },
+    "camera": {
+        "/galbot_one_golf/head_link2/head_front_left_color": [
+            640,
+            480
+        ],
+        "/galbot_one_golf/left_arm_link7/left_arm_color": [
+            640,
+            480
+        ],
+        "/galbot_one_golf/right_arm_link7/right_arm_color": [
+            640,
+            480
+        ]
+    },
+    "gripper": {
+        "gripper_type": "angular",
+        "gripper_name": {
+            "left": "galbot_gripper",
+            "right": "galbot_gripper"
+        },
+        "max_force": 10,
+        "finger_names": {
+            "left": [
+                "left_gripper_l_knuckle_joint",
+                "left_gripper_r_knuckle_joint"
+            ],
+            "right": [
+                "right_gripper_l_knuckle_joint",
+                "right_gripper_r_knuckle_joint"
+            ]
+        },
+        "end_effector_name": {
+            "left": "left_gripper_tcp_link",
+            "right": "right_gripper_tcp_link"
+        },
+        "end_effector_prim_path": {
+            "left": "/galbot_one_golf/left_gripper_tcp_link",
+            "right": "/galbot_one_golf/right_gripper_tcp_link"
+        },
+        "end_effector_center_prim_path": {
+            "left": "/galbot_one_golf/left_gripper_tcp_link",
+            "right": "/galbot_one_golf/right_gripper_tcp_link"
+        },
+        "gripper_controll_joint": {
+            "left": "/galbot_one_golf/joints/left_gripper_r_knuckle_joint",
+            "right": "/galbot_one_golf/joints/right_gripper_r_knuckle_joint"
+        },
+        "opened_positions": {
+            "left": [
+                0.0,
+                0.0
+            ],
+            "right": [
+                0.0,
+                0.0
+            ]
+        },
+        "closed_velocities": {
+            "left": [
+                80,
+                80
+            ],
+            "right": [
+                80,
+                80
+            ]
+        }
+    },
+    "closed_positions": {
+        "left": [
+            1.703,
+            1.703
+        ],
+        "right": [
+            1.703,
+            1.703
+        ]
+    },
+    "curobo": {
+        "curobo_config_file": {
+            "right": "galbot_fixed_right.yml",
+            "left": "galbot_fixed_left.yml"
+        },
+        "curobo_urdf_path": "galbot",
+        "curobo_urdf_name": "galbot/galbot_one_golf.urdf"
+    }
+}
